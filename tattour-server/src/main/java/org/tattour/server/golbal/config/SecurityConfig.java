@@ -1,4 +1,4 @@
-package org.tattour.api.global.config;
+package org.tattour.server.golbal.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
