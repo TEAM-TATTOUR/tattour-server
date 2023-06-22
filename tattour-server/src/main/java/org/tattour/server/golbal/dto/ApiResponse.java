@@ -1,7 +1,7 @@
 package org.tattour.server.golbal.dto;
 
-import javax.lang.model.type.ErrorType;
 import org.springframework.http.ResponseEntity;
+import org.tattour.server.golbal.exception.ErrorType;
 
 public class ApiResponse {
 
