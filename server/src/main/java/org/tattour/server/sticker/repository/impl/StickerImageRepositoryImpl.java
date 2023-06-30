@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.tattour.server.sticker.domain.StickerImage;
 
 @Repository
-public interface StickerImageRepositoryImpl extends JpaRepository<StickerImage, Long> {
+public interface StickerImageRepositoryImpl extends JpaRepository<StickerImage, Integer> {
 
-	List<StickerImage> findAllByStickerId(Long stickerId);
+	List<StickerImage> findAllByStickerId(Integer stickerId);
 }

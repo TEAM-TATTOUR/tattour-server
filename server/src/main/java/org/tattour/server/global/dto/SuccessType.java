@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.dto;
+package org.tattour.server.global.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

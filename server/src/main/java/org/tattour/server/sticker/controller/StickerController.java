@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.golbal.dto.ApiResponse;
-import org.tattour.server.golbal.dto.SuccessType;
+import org.tattour.server.global.dto.ApiResponse;
+import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.sticker.service.StickerService;
 import org.tattour.server.sticker.service.dto.response.StickerInfoRes;
 import org.tattour.server.sticker.service.dto.response.StickerSummaryListRes;
@@ -38,7 +38,7 @@ public class StickerController {
 
 	@GetMapping("/oo")
 	@Operation(summary = "커스텀 스티커 상세 정보 조회", description = "스티커 아이디 받음")
-	public ResponseEntity<?> getOneStickerInfo(@RequestParam(name = "stickerId") Long stickerId) {
+	public ResponseEntity<?> getOneStickerInfo(@RequestParam(name = "stickerId") Integer stickerId) {
 		StickerInfoRes response = stickerService.getOneStickerInfo(stickerId);
 		return ApiResponse.success(SuccessType.READ_STICKER_INFO_SUCCESS, response);
 	}

@@ -1,7 +1,7 @@
 package org.tattour.server.sticker.exception;
 
-import org.tattour.server.golbal.exception.BusinessException;
-import org.tattour.server.golbal.exception.ErrorType;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 
 public class NotFoundStickerException extends BusinessException {
 

@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.config.jwt;
+package org.tattour.server.global.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,8 +12,8 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.tattour.server.golbal.exception.ErrorType;
-import org.tattour.server.golbal.exception.UnauthorizedException;
+import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.global.exception.UnauthorizedException;
 
 @Service
 public class JwtService {

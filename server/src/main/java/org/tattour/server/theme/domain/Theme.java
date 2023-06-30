@@ -19,20 +19,17 @@ import org.tattour.server.sticker.domain.StickerTheme;
 @Entity
 public class Theme {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String description;
+    @Column(columnDefinition = "text")
+    private String imageUrl;
 
-	private String name;
+    @OneToMany(mappedBy = "theme")
+    private List<StickerTheme> stickerThemes;
 
-	private String description;
-
-	@Column(name = "image_url")
-	private String imageUrl;
-
-	@OneToMany(mappedBy = "theme")
-	private List<StickerTheme> stickerThemes;
-
-	@OneToMany(mappedBy = "theme")
-	private List<CustomTheme> customThemes;
+    @OneToMany(mappedBy = "theme")
+    private List<CustomTheme> customThemes;
 }

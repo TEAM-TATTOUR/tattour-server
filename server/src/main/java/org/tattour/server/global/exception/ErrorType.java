@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.exception;
+package org.tattour.server.global.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

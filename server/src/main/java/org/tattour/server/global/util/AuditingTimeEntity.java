@@ -1,6 +1,6 @@
-package org.tattour.server.golbal.util;
+package org.tattour.server.global.util;
 
-import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -14,8 +14,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class AuditingTimeEntity {
 
 	@CreatedDate
-	private LocalDateTime createdAt;
+	@Column(columnDefinition = "Timestamp")
+	private String createdAt;
 
 	@LastModifiedDate
-	private LocalDateTime lastUpdatedAt;
+	@Column(columnDefinition = "Timestamp")
+	private String lastUpdatedAt;
 }

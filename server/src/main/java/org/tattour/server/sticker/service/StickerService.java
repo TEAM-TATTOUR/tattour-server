@@ -11,11 +11,11 @@ public interface StickerService {
 
 	StickerSummaryListRes getHotCustomStickerList();
 
-	StickerSummaryListRes getSimilarStickerList(int stickerId);
+	StickerSummaryListRes getSimilarStickerList(Integer stickerId);
 
 	StickerSummaryListRes getSearchStickerList(String word);
 
 	StickerSummaryListRes getFilterStickerList(String order, String theme, String style);
 
-	StickerInfoRes getOneStickerInfo(Long stickerId);
+	StickerInfoRes getOneStickerInfo(Integer stickerId);
 }

@@ -1,7 +1,7 @@
-package org.tattour.server.golbal.dto;
+package org.tattour.server.global.dto;
 
 import org.springframework.http.ResponseEntity;
-import org.tattour.server.golbal.exception.ErrorType;
+import org.tattour.server.global.exception.ErrorType;
 
 public class ApiResponse {
 

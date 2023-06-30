@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
 
 @Table(name = "custom")
@@ -23,9 +23,7 @@ public class Custom extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	// user, sticker  추가
+	private Integer id;
 /*
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
@@ -45,35 +43,34 @@ public class Custom extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
 	private List<CustomImage> images;
 
-
-	@Column(name = "hane_design")
-	private boolean haveDesign;
+	@Column(name = "have_design", columnDefinition = "tinyint")
+	private Boolean haveDesign;
 
 	private String size;
 
 	private String name;
 
-	@Column(name = "main_image_url")
+	@Column(name = "main_image_url", columnDefinition = "text")
 	private String mainImageUrl;
 
 	private String description;
 
 	private String demand;
 
-	private int count;
+	private Integer count;
 
-	@Column(name = "is_colored")
-	private boolean isColored;
+	@Column(name = "is_colored", columnDefinition = "tinyint")
+	private Boolean isColored;
 
-	@Column(name = "is_public")
-	private boolean isPublic;
+	@Column(name = "is_public", columnDefinition = "tinyint")
+	private Boolean isPublic;
 
-	@Column(name = "is_completed")
-	private boolean isCompleted;
+	@Column(name = "is_completed", columnDefinition = "tinyint")
+	private Boolean isCompleted;
 
 //	@Enumerated(value = EnumType.STRING)
 	private String process;
 
 	@Column(name = "view_count")
-	private int viewCount;
+	private Integer viewCount;
 }

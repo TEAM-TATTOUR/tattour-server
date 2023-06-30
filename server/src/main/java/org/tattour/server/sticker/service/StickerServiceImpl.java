@@ -32,7 +32,7 @@ public class StickerServiceImpl implements StickerService {
 	}
 
 	@Override
-	public StickerSummaryListRes getSimilarStickerList(int stickerId) {
+	public StickerSummaryListRes getSimilarStickerList(Integer stickerId) {
 		return null;
 	}
 
@@ -47,7 +47,7 @@ public class StickerServiceImpl implements StickerService {
 	}
 
 	@Override
-	public StickerInfoRes getOneStickerInfo(Long stickerId) {
+	public StickerInfoRes getOneStickerInfo(Integer stickerId) {
 		Sticker sticker = stickerRepository.findById(stickerId)
 			.orElseThrow(NotFoundStickerException::new);
 		List<StickerImage> images = stickerImageRepository.findAllByStickerId(stickerId);

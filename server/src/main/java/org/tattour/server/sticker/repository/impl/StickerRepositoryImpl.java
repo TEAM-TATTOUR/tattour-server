@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.tattour.server.sticker.domain.Sticker;
 
 @Repository
-public interface StickerRepositoryImpl extends JpaRepository<Sticker, Long> {
+public interface StickerRepositoryImpl extends JpaRepository<Sticker, Integer> {
 
 	List<Sticker> findAllByIsCustomTrueAndStateTrue();
 	List<Sticker> findAllByStateTrue();

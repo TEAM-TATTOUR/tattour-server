@@ -18,12 +18,12 @@ public class StickerImage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sticker_id")
 	private Sticker sticker;
 
-	@Column(name = "image_url")
+	@Column(name = "image_url", columnDefinition = "text")
 	private String imageUrl;
 }

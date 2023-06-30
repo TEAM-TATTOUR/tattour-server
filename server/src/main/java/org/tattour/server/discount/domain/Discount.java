@@ -1,7 +1,6 @@
 package org.tattour.server.discount.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
 
 @Table(name = "discount")
@@ -20,7 +19,7 @@ public class Discount extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	private String name;
 
@@ -28,7 +27,7 @@ public class Discount extends AuditingTimeEntity {
 	private List<Sticker> stickers;
 
 	@Column(name = "discount_rate")
-	private int discountRate;
+	private Integer discountRate;
 
 	@Column(name = "start_at")
 	private LocalDateTime startAt;
@@ -36,6 +35,6 @@ public class Discount extends AuditingTimeEntity {
 	@Column(name = "expired_at")
 	private LocalDateTime expiredAt;
 
-	@Column(name = "is_ended")
-	private boolean isEnded;
+	@Column(name = "is_ended", columnDefinition = "tinyint")
+	private Boolean isEnded;
 }

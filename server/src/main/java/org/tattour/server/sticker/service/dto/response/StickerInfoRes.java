@@ -12,7 +12,7 @@ import org.tattour.server.sticker.domain.StickerImage;
 @Builder(access = AccessLevel.PRIVATE)
 public class StickerInfoRes {
 
-	private Long id;
+	private Integer id;
 	private String name;
 	private String description;
 	private int price;
