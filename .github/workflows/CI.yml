@@ -43,4 +43,6 @@ jobs:
       run: chmod +x ./tattour-server/gradlew
       
     - name: Build with Gradle
-      run: ./tattour-server/gradlew build
+      run: |
+        cd ./tattour-server
+        ./gradlew build
