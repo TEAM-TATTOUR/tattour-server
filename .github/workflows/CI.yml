@@ -32,17 +32,17 @@ jobs:
         
     - name : make application.yaml
       run: |
-        mkdir ./tattour-server/src/main/resources
-        cd ./tattour-server/src/main/resources
+        mkdir ./server/src/main/resources
+        cd ./server/src/main/resources
         touch ./application.yaml
         echo "${{ secrets.TATTOUR_PROD_APPLICATION }}" >> ./application.yaml
         cat ./application.yaml
       shell: bash        
 
     - name: Grant execute permission for gradlew
-      run: chmod +x ./tattour-server/gradlew
+      run: chmod +x ./server/gradlew
       
     - name: Build with Gradle
       run: |
-        cd ./tattour-server
+        cd ./server
         ./gradlew build
