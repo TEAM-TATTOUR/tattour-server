@@ -73,8 +73,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY }}
       run:
         aws deploy create-deployment 
-        --application-name tattour-server-codedeploy
-        --deployment-group-name tattour-server-codedeploy-group
+        --application-name tattour-codeDepoly
+        --deployment-group-name tattour-codeDepoly-group
         --file-exists-behavior OVERWRITE 
         --s3-location bucket=tattour-storage,bundleType=zip,key=tattour_server.zip
         --region ap-northeast-2
