@@ -1,4 +1,4 @@
-name: GO-SOPT-Server CD
+name: Tattour-Server CD
 on:
   push:
     branches: [ main ]
