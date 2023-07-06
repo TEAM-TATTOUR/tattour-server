@@ -79,4 +79,4 @@ done
 
 echo "> 스위칭"
 sleep 10
-/home/ubuntu/app/nonstop/switch.sh#!/bin/bash
+/home/ubuntu/app/nonstop/switch.sh
