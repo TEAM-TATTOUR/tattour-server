@@ -64,7 +64,7 @@ jobs:
         aws-region: ap-northeast-2
         
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./tattour_server.zip s3:tattour-storage
+      run: aws s3 cp --region ap-northeast-2 ./tattour_server.zip s3://tattour-storage\
       
     # Deploy
     - name: Deploy
