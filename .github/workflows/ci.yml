@@ -1,6 +1,5 @@
 name: Tattour-Server CI
 on:
-  push:
   pull_request:
     branches: [ "main", "production" ]
 
