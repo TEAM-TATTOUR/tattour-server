@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Table(name = "banner")
 @Entity
@@ -14,8 +14,8 @@ public class Banner extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
-	@Column(name = "image_url")
+	@Column(name = "image_url",columnDefinition = "text")
 	private String imageUrl;
 }

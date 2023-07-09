@@ -16,20 +16,20 @@ import org.tattour.server.sticker.domain.StickerStyle;
 @Entity
 public class Style {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	@Column(name = "image_url")
-	private String imageUrl;
+    @Column(name = "image_url", columnDefinition = "text")
+    private String imageUrl;
 
-	@OneToMany(mappedBy = "style")
-	private List<StickerStyle> stickerStyles;
+    @OneToMany(mappedBy = "style")
+    private List<StickerStyle> stickerStyles;
 
-	@OneToMany(mappedBy = "style")
-	private List<CustomStyle> customStyles;
+    @OneToMany(mappedBy = "style")
+    private List<CustomStyle> customStyles;
 }

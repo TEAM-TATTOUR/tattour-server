@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.util;
+package org.tattour.server.global.util;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;
