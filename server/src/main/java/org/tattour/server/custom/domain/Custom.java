@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
 
 @Table(name = "custom")
@@ -23,7 +23,7 @@ public class Custom extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	// user, sticker  추가
 /*
@@ -46,14 +46,14 @@ public class Custom extends AuditingTimeEntity {
 	private List<CustomImage> images;
 
 
-	@Column(name = "hane_design")
+	@Column(name = "have_design", columnDefinition = "tinyint")
 	private boolean haveDesign;
 
 	private String size;
 
 	private String name;
 
-	@Column(name = "main_image_url")
+	@Column(name = "main_image_url", columnDefinition = "text")
 	private String mainImageUrl;
 
 	private String description;
@@ -62,13 +62,13 @@ public class Custom extends AuditingTimeEntity {
 
 	private int count;
 
-	@Column(name = "is_colored")
+	@Column(name = "is_colored", columnDefinition = "tinyint")
 	private boolean isColored;
 
-	@Column(name = "is_public")
+	@Column(name = "is_public", columnDefinition = "tinyint")
 	private boolean isPublic;
 
-	@Column(name = "is_completed")
+	@Column(name = "is_completed", columnDefinition = "tinyint")
 	private boolean isCompleted;
 
 //	@Enumerated(value = EnumType.STRING)

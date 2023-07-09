@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.tattour.server.discount.domain.Discount;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Table(name = "sticker")
 @Entity
@@ -21,20 +21,20 @@ public class Sticker extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+	private Integer id;
 	private String name;
 	private String description;
 	private int price;
 	private String composition;
 	private int width;
 	private int height;
+	@Column(columnDefinition = "tinyint")
 	private boolean state;
 
-	@Column(name = "is_custom")
+	@Column(name = "is_custom", columnDefinition = "tinyint")
 	private boolean isCustom;
 
-	@Column(name = "main_image_url")
+	@Column(name = "main_image_url", columnDefinition = "text")
 	private String mainImageUrl;
 
 	@ManyToOne(fetch = FetchType.LAZY)

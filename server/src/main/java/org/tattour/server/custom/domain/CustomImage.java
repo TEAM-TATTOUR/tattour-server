@@ -9,20 +9,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
 
 @Table(name = "custom_image")
 @Entity
-public class CustomImage extends AuditingTimeEntity {
+public class CustomImage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "custom_id")
 	private Custom custom;
 
-	@Column(name = "image_url")
+	@Column(name = "image_url", columnDefinition = "text")
 	private String imageUrl;
 }

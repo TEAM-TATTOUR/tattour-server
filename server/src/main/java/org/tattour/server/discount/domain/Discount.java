@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.tattour.server.golbal.util.AuditingTimeEntity;
+import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
 
 @Table(name = "discount")
@@ -20,7 +20,7 @@ public class Discount extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	private String name;
 
@@ -36,6 +36,6 @@ public class Discount extends AuditingTimeEntity {
 	@Column(name = "expired_at")
 	private LocalDateTime expiredAt;
 
-	@Column(name = "is_ended")
+	@Column(name = "is_ended", columnDefinition = "tinyint")
 	private boolean isEnded;
 }
