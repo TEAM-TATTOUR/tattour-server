@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Builder
-public class GetUserRes {
+public class GetUserProfileRes {
     private Integer id;
     private String name;
     private Integer point;

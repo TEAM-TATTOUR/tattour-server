@@ -1,18 +1,16 @@
 package org.tattour.server.user.service.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.tattour.server.sticker.domain.Sticker;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class ProductLikedRes {
     private Integer id;
     private Integer userId;
-    private Sticker sticker;
+    //TODO : sticker 정보도 주는 방식으로 변경하기
+    private Integer stickerId;
     private String createdAt;
 }
