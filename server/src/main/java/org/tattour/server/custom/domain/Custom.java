@@ -24,8 +24,6 @@ public class Custom extends AuditingTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	// user, sticker  추가
 /*
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id")
@@ -45,9 +43,8 @@ public class Custom extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
 	private List<CustomImage> images;
 
-
 	@Column(name = "have_design", columnDefinition = "tinyint")
-	private boolean haveDesign;
+	private Boolean haveDesign;
 
 	private String size;
 
@@ -60,20 +57,20 @@ public class Custom extends AuditingTimeEntity {
 
 	private String demand;
 
-	private int count;
+	private Integer count;
 
 	@Column(name = "is_colored", columnDefinition = "tinyint")
-	private boolean isColored;
+	private Boolean isColored;
 
 	@Column(name = "is_public", columnDefinition = "tinyint")
-	private boolean isPublic;
+	private Boolean isPublic;
 
 	@Column(name = "is_completed", columnDefinition = "tinyint")
-	private boolean isCompleted;
+	private Boolean isCompleted;
 
 //	@Enumerated(value = EnumType.STRING)
 	private String process;
 
 	@Column(name = "view_count")
-	private int viewCount;
+	private Integer viewCount;
 }

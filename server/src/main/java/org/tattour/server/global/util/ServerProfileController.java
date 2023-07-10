@@ -1,4 +1,4 @@
-package org.tattour.server;
+package org.tattour.server.golbal.util;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;

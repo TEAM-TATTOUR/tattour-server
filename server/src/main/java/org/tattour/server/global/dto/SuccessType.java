@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.dto;
+package org.tattour.server.global.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,9 @@ public enum SuccessType {
 	 * 200 OK
 	 */
 	LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공했습니다."),
-	READ_POST_SUCCESS(HttpStatus.OK, "게시물 조회에 성공했습니다."),
-	READ_POST_LIST_SUCCESS(HttpStatus.OK, "게시물 리스트 조회에 성공했습니다."),
+	READ_ALL_STICKER_SUCCESS(HttpStatus.OK, "모든 스티커 요약 정보 조회에 성공했습니다."),
+	READ_HOT_CUSTOM_STICKER_SUCCESS(HttpStatus.OK, "인기 스티커 요약 정보 조회에 성공했습니다."),
+	READ_STICKER_INFO_SUCCESS(HttpStatus.OK, "한 게시물 상세 정보 조회에 성공했습니다."),
 
 	/**
 	 * 201 CREATED

@@ -8,11 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
 import org.tattour.server.custom.domain.CustomStyle;
 import org.tattour.server.custom.domain.CustomTheme;
 import org.tattour.server.sticker.domain.StickerStyle;
 import org.tattour.server.sticker.domain.StickerTheme;
 
+@Getter
 @Table(name = "theme")
 @Entity
 public class Theme {

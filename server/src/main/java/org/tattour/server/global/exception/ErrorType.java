@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.exception;
+package org.tattour.server.global.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,7 @@ public enum ErrorType {
 	 */
 	NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 데이터입니다."),
 	NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다"),
+	NOT_FOUND_STICKER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스티커입니다"),
 
 	/**
 	 * 405 METHOD NOT ALLOWED
