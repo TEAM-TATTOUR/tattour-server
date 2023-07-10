@@ -13,7 +13,7 @@ public class SwaggerConfig {
 	public OpenAPI openAPI() {
 		Info info = new Info()
 			.title("API Document")
-			.description("Q-Dang API Document")
+			.description("Tattour API Document")
 			.version("v1");
 		return new OpenAPI()
 			.components(new Components())
