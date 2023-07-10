@@ -14,7 +14,6 @@ import org.tattour.server.user.domain.User;
 public class PointChargeRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     private Integer chargeAmount;
     @Column(columnDefinition = "tinyint")

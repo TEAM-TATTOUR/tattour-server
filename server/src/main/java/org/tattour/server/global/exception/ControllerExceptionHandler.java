@@ -1,4 +1,4 @@
-package org.tattour.server.golbal.exception;
+package org.tattour.server.global.exception;
 
 import java.util.Objects;
 import javax.validation.ConstraintViolationException;
@@ -12,7 +12,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.tattour.server.golbal.dto.ApiResponse;
+import org.tattour.server.global.dto.ApiResponse;
 
 @Slf4j
 @ControllerAdvice

@@ -1,7 +1,6 @@
 package org.tattour.server.discount.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,7 +27,7 @@ public class Discount extends AuditingTimeEntity {
 	private List<Sticker> stickers;
 
 	@Column(name = "discount_rate")
-	private int discountRate;
+	private Integer discountRate;
 
 	@Column(name = "start_at")
 	private LocalDateTime startAt;
@@ -37,5 +36,5 @@ public class Discount extends AuditingTimeEntity {
 	private LocalDateTime expiredAt;
 
 	@Column(name = "is_ended", columnDefinition = "tinyint")
-	private boolean isEnded;
+	private Boolean isEnded;
 }

@@ -9,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
 import org.tattour.server.custom.domain.CustomStyle;
 import org.tattour.server.sticker.domain.StickerStyle;
 
+@Getter
 @Table(name = "style")
 @Entity
 public class Style {
