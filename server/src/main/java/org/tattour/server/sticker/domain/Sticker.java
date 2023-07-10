@@ -26,15 +26,15 @@ public class Sticker extends AuditingTimeEntity {
 	private Integer id;
 	private String name;
 	private String description;
-	private int price;
+	private Integer price;
 	private String composition;
-	private int width;
-	private int height;
+	private Integer width;
+	private Integer height;
 	@Column(columnDefinition = "tinyint")
-	private boolean state;
+	private Boolean state;
 
 	@Column(name = "is_custom", columnDefinition = "tinyint")
-	private boolean isCustom;
+	private Boolean isCustom;
 
 	@Column(name = "main_image_url", columnDefinition = "text")
 	private String mainImageUrl;

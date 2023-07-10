@@ -11,11 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
+import org.tattour.server.user.domain.User;
 
 @Table(name = "custom")
 @Entity
@@ -24,11 +26,10 @@ public class Custom extends AuditingTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-/*
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "user_id")
 	private User user;
- */
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sticker_id")
