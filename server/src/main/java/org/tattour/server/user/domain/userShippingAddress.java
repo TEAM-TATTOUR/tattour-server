@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 public class userShippingAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     private String recipientName;
     private String contact;

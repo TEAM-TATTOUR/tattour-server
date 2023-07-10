@@ -13,10 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.tattour.server.discount.domain.Discount;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "sticker")
 @Entity
 public class Sticker extends AuditingTimeEntity {

@@ -49,6 +49,13 @@ dependencies {
 
     // S3
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // model struct
+    implementation 'org.mapstruct:mapstruct:1.5.4.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.4.Final'
 }
 
 tasks.named('test') {

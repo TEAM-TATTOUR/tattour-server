@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 public class PhoneNumberVerificationCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     private Integer verification_code;
     @Column(columnDefinition = "Timestamp")
