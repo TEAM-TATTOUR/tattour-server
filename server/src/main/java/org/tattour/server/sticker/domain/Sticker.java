@@ -12,9 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
 import org.tattour.server.discount.domain.Discount;
 import org.tattour.server.golbal.util.AuditingTimeEntity;
 
+@Getter
 @Table(name = "sticker")
 @Entity
 public class Sticker extends AuditingTimeEntity {

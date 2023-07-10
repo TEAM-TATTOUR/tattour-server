@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Table(name = "sticker_image")
 @Entity
 public class StickerImage {
