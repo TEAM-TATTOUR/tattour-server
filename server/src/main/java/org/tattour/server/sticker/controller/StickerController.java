@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
@@ -29,17 +29,26 @@ public class StickerController {
 		return ApiResponse.success(SuccessType.READ_ALL_STICKER_SUCCESS, response);
 	}
 
-	@GetMapping("/asd")
+	@GetMapping("/custom/hot")
 	@Operation(summary = "인기 커스텀 스티커 조회", description = "주문이 가장 많은 커스텀 스티커 조회")
 	public ResponseEntity<?> getHotCustomStickerList() {
 		StickerSummaryListRes response = stickerService.getHotCustomStickerList();
 		return ApiResponse.success(SuccessType.READ_HOT_CUSTOM_STICKER_SUCCESS, response);
 	}
 
-	@GetMapping("/oo")
+	@GetMapping("/{stickerId}")
 	@Operation(summary = "커스텀 스티커 상세 정보 조회", description = "스티커 아이디 받음")
-	public ResponseEntity<?> getOneStickerInfo(@RequestParam(name = "stickerId") Integer stickerId) {
+	public ResponseEntity<?> getOneStickerInfo(@PathVariable(name = "stickerId") Integer stickerId) {
 		StickerInfoRes response = stickerService.getOneStickerInfo(stickerId);
 		return ApiResponse.success(SuccessType.READ_STICKER_INFO_SUCCESS, response);
 	}
+
+	@GetMapping("/{stickerId}/related")
+	@Operation(summary = "비슷한 스티커 조회", description = "스티커 아이디 받음")
+	public ResponseEntity<?> getSimilarStickerList(@PathVariable(name = "stickerId") Integer stickerId) {
+		StickerSummaryListRes response = stickerService.getSimilarStickerList(stickerId);
+		return ApiResponse.success(SuccessType.READ_STICKER_INFO_SUCCESS, response);
+	}
+
+
 }

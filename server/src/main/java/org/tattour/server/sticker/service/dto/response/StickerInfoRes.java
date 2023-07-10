@@ -6,21 +6,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import org.tattour.server.sticker.domain.Sticker;
 import org.tattour.server.sticker.domain.StickerImage;
 
+@Getter
 @Builder(access = AccessLevel.PRIVATE)
 public class StickerInfoRes {
 
 	private Integer id;
 	private String name;
 	private String description;
-	private int price;
+	private Integer price;
 	private String composition;
-	private int width;
-	private int height;
-	private boolean isCustom;
-	private int shippingCost;
+	private Integer width;
+	private Integer height;
+	private Boolean isCustom;
+	private Integer shippingCost;
 	private List<String> stickerThemes;
 	private List<String> stickerStyles;
 	private List<String> images;
@@ -50,7 +52,7 @@ public class StickerInfoRes {
 			.composition(sticker.getComposition())
 			.width(sticker.getWidth())
 			.height(sticker.getHeight())
-			.isCustom(sticker.isCustom())
+			.isCustom(sticker.getIsCustom())
 			.shippingCost(3000)
 			.stickerThemes(stickerThemes)
 			.stickerStyles(stickerStyles)

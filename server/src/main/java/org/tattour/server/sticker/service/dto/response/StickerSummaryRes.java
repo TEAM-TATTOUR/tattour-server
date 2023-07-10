@@ -14,8 +14,8 @@ public class StickerSummaryRes {
 	private Integer id;
 	private String name;
 	private String imageUrl;
-	private int price;
-	private boolean isCustom;
+	private Integer price;
+	private Boolean isCustom;
 
 	public static StickerSummaryRes of(Sticker sticker) {
 		return StickerSummaryRes.builder()
@@ -23,7 +23,7 @@ public class StickerSummaryRes {
 			.name(sticker.getName())
 			.imageUrl(sticker.getMainImageUrl())
 			.price(sticker.getPrice())
-			.isCustom(sticker.isCustom())
+			.isCustom(sticker.getIsCustom())
 			.build();
 	}
 }
