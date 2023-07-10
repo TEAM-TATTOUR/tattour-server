@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void saveUser(SaveUserReq req) {
-        userRepository.save(User.of(req));
+    public User saveUser(SaveUserReq req) {
+        return userRepository.save(User.of(req));
     }
 
     @Override

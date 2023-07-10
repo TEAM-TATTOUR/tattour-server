@@ -28,7 +28,7 @@ public class JwtService {
 	}
 
 	// JWT 토큰 발급
-	public String issuedToken(Long userId) {
+	public String issuedToken(Integer userId) {
 		String strUserId = String.valueOf(userId);
 		final Date now = new Date();
 
