@@ -11,6 +11,8 @@ import org.tattour.server.sticker.repository.impl.StickerImageRepositoryImpl;
 import org.tattour.server.sticker.repository.impl.StickerRepositoryImpl;
 import org.tattour.server.sticker.service.dto.response.StickerInfoRes;
 import org.tattour.server.sticker.service.dto.response.StickerSummaryListRes;
+import org.tattour.server.user.domain.User;
+import org.tattour.server.user.exception.NotFoundUserException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +20,13 @@ public class StickerServiceImpl implements StickerService {
 
 	private final StickerRepositoryImpl stickerRepository;
 	private final StickerImageRepositoryImpl stickerImageRepository;
+
+	@Override
+	public Sticker getStickerByStickerId(Integer stickerId) {
+		Sticker sticker = stickerRepository.findById(stickerId)
+				.orElseThrow(NotFoundStickerException::new);
+		return sticker;
+	}
 
 	@Override
 	public StickerSummaryListRes getAllStickerList() {

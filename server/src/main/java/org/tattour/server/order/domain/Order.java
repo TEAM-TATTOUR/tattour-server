@@ -15,7 +15,6 @@ import org.tattour.server.user.domain.User;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     private String productName;
     private String productSize;
