@@ -14,7 +14,6 @@ import org.tattour.server.user.domain.User;
 public class UserPointLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     private String content;
     @Column(columnDefinition = "Timestamp")

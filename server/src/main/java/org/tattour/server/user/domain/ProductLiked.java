@@ -14,7 +14,6 @@ import org.tattour.server.sticker.domain.Sticker;
 public class ProductLiked {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "INT UNSIGNED")
     private Integer id;
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
