@@ -8,8 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
 import org.tattour.server.theme.domain.Theme;
 
+@Getter
 @Table(name = "sticker_theme")
 @Entity
 public class StickerTheme {
