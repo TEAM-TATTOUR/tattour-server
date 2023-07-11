@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.exception.UnauthorizedException;
 
@@ -28,7 +29,7 @@ public class JwtService {
 	}
 
 	// JWT 토큰 발급
-	public String issuedToken(Long userId) {
+	public String issuedToken(Integer userId) {
 		String strUserId = String.valueOf(userId);
 		final Date now = new Date();
 
@@ -78,5 +79,11 @@ public class JwtService {
 	public String getJwtContents(String token) {
 		final Claims claims = getBody(token);
 		return (String) claims.get("userId");
+	}
+
+	// Jwt 토큰에서 추출한 userId와 Path variable의 userId를 비교
+	public void compareJwtWithPathVar(Integer jwtUserId, Integer userId){
+		if (jwtUserId != userId)
+			throw new BusinessException(ErrorType.TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION);
 	}
 }

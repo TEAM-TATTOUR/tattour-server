@@ -18,6 +18,7 @@ import org.tattour.server.global.dto.ApiResponse;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ControllerExceptionHandler {
+//	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 400 Error
@@ -79,8 +80,9 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<?> handleInternalServerException(Exception e) {
-		log.info("e ={}", e);
-		e.printStackTrace();
+		System.out.println("e = " + e);
+		System.out.println("e.getClass() = " + e.getClass());
+		System.out.println(("e.getMessage() = " + e.getMessage()));
 		return ApiResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
 	}
 
@@ -89,6 +91,9 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<?> handleBusinessException(BusinessException e) {
+		System.out.println("e = " + e);
+		System.out.println("e.getClass() = " + e.getClass());
+		System.out.println(("e.getMessage() = " + e.getMessage()));
 		return ApiResponse.error(e.getErrorType());
 	}
 }
