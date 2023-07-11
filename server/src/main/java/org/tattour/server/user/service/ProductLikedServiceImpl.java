@@ -8,6 +8,7 @@ import org.tattour.server.sticker.domain.Sticker;
 import org.tattour.server.sticker.service.StickerServiceImpl;
 import org.tattour.server.user.domain.ProductLiked;
 import org.tattour.server.user.domain.User;
+import org.tattour.server.user.provider.impl.UserProviderImpl;
 import org.tattour.server.user.repository.impl.ProductLikedRepositoryImpl;
 import org.tattour.server.user.service.dto.request.SaveProductLikedReq;
 import org.tattour.server.user.service.dto.response.ProductLikedListRes;
@@ -18,11 +19,12 @@ import org.tattour.server.user.service.dto.response.ProductLikedRes;
 public class ProductLikedServiceImpl implements ProductLikedService {
     private final ProductLikedRepositoryImpl productLikedRepository;
     private final UserServiceImpl userService;
+    private final UserProviderImpl userProvider;
     private final StickerServiceImpl stickerService;
 
     @Override
     public void saveProductLiked(SaveProductLikedReq req) {
-        User user = userService.getUserByUserId(req.getUserId());
+        User user = userProvider.getUserByUserId(req.getUserId());
         Sticker sticker = stickerService.getStickerByStickerId(req.getStickerId());
 
         productLikedRepository.save(ProductLiked.of(user, sticker));

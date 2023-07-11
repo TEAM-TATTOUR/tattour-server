@@ -13,7 +13,6 @@ public interface EntityDtoMapper {
     EntityDtoMapper INSTANCE = Mappers.getMapper(EntityDtoMapper.class);
 
     // User
-    @Mapping(target = "id", source = "user.id")
     GetUserProfileRes toGetUserProfileRes(User user);
 
     // ProductLiked

@@ -56,6 +56,9 @@ dependencies {
     // model struct
     implementation 'org.mapstruct:mapstruct:1.5.4.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.4.Final'
+
+    // kakao oauth
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
 }
 
 tasks.named('test') {
