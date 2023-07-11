@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
-import org.tattour.server.sticker.domain.Sticker;
-import org.tattour.server.user.domain.ProductLiked;
-import org.tattour.server.user.domain.User;
-import org.tattour.server.user.service.dto.response.GetUserProfileRes;
-import org.tattour.server.user.service.dto.response.ProductLikedRes;
+import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.user.domain.ProductLiked;
+import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.service.dto.response.ProductLikedRes;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
