@@ -9,9 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Table(name = "custom_image")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomImage {
 
 	@Id

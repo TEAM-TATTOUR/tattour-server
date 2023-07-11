@@ -14,16 +14,21 @@ public class StickerSummaryRes {
 	private Integer id;
 	private String name;
 	private String imageUrl;
-	private int price;
-	private boolean isCustom;
+	private Integer price;
+	private Integer discountRate;
+	private Integer discountPrice;
+	private Boolean isCustom;
 
 	public static StickerSummaryRes of(Sticker sticker) {
+		Integer discountRate = sticker.getDiscount().getDiscountRate();
 		return StickerSummaryRes.builder()
 			.id(sticker.getId())
 			.name(sticker.getName())
 			.imageUrl(sticker.getMainImageUrl())
 			.price(sticker.getPrice())
-			.isCustom(sticker.isCustom())
+			.discountRate(discountRate)
+			.discountPrice(sticker.getPrice()*(100-discountRate)/100)
+			.isCustom(sticker.getIsCustom())
 			.build();
 	}
 }

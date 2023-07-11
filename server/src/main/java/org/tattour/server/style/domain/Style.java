@@ -9,13 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.tattour.server.custom.domain.CustomStyle;
 import org.tattour.server.sticker.domain.StickerStyle;
 
 @Getter
 @Table(name = "style")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Style {
 
     @Id
