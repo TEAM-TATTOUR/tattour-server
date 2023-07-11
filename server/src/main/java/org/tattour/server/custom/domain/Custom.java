@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.global.util.AuditingTimeEntity;
@@ -24,6 +28,8 @@ import org.tattour.server.user.domain.User;
 @Table(name = "custom")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Custom extends AuditingTimeEntity {
 
 	@Id
@@ -44,6 +50,9 @@ public class Custom extends AuditingTimeEntity {
 	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
 	private List<CustomStyle> customStyles;
 
+	@Column(name = "main_image_url", columnDefinition = "text")
+	private String mainImageUrl;
+
 	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
 	private List<CustomImage> images;
 
@@ -53,9 +62,6 @@ public class Custom extends AuditingTimeEntity {
 	private String size;
 
 	private String name;
-
-	@Column(name = "main_image_url", columnDefinition = "text")
-	private String mainImageUrl;
 
 	private String description;
 
@@ -72,9 +78,36 @@ public class Custom extends AuditingTimeEntity {
 	@Column(name = "is_completed", columnDefinition = "tinyint")
 	private Boolean isCompleted;
 
-//	@Enumerated(value = EnumType.STRING)
-	private String process;
+	@Enumerated(value = EnumType.STRING)
+	private Process process;
 
 	@Column(name = "view_count")
 	private Integer viewCount;
+
+	public static Custom from(User user, Sticker sticker, List<CustomTheme> customThemes,
+		List<CustomStyle> customStyles, String mainImageUrl, List<CustomImage> images,
+		Boolean haveDesign, String size, String name, String description, String demand,
+		Integer count, Boolean isColored, Boolean isPublic, Boolean isCompleted, Process process,
+		Integer viewCount) {
+		return Custom.builder()
+			.user(user)
+			.sticker(sticker)
+			.customThemes(customThemes)
+			.customStyles(customStyles)
+			.mainImageUrl(mainImageUrl)
+			.images(images)
+			.haveDesign(haveDesign)
+			.size(size)
+			.name(name)
+			.description(description)
+			.demand(demand)
+			.count(count)
+			.isColored(isColored)
+			.isPublic(isPublic)
+			.isCompleted(isCompleted)
+			.process(process)
+			.viewCount(viewCount)
+			.build();
+	}
+
 }
