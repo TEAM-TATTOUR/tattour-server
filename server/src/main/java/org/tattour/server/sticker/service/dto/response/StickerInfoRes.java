@@ -18,6 +18,8 @@ public class StickerInfoRes {
 	private String name;
 	private String description;
 	private Integer price;
+	private Integer discountRate;
+	private Integer discountPrice;
 	private String composition;
 	private Integer width;
 	private Integer height;
@@ -33,6 +35,7 @@ public class StickerInfoRes {
 		List<String> stickerThemes = new ArrayList<>();
 		List<String> stickerStyles = new ArrayList<>();
 		stickerImages.add(sticker.getMainImageUrl());
+		Integer discountRate = sticker.getDiscount().getDiscountRate();
 		images.stream()
 			.map(image -> stickerImages.add(image.getImageUrl()))
 			.collect(Collectors.toList());
@@ -49,6 +52,8 @@ public class StickerInfoRes {
 			.name(sticker.getName())
 			.description(sticker.getDescription())
 			.price(sticker.getPrice())
+			.discountRate(discountRate)
+			.discountPrice(sticker.getPrice()*(100-discountRate)/100)
 			.composition(sticker.getComposition())
 			.width(sticker.getWidth())
 			.height(sticker.getHeight())
