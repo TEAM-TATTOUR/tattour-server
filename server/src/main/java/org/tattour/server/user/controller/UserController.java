@@ -110,6 +110,10 @@ public class UserController {
             return ApiResponse.success(SuccessType.CODE_VALIDATION_FAIL, GetVerifyCodeRes.of(false));
     }
 
-//    @Operation(summary = "인증번호 검증")
-//    @GetMapping("/phoneNum/verification")
+//    @Operation(summary = "좋아요 누른 타투 저장")
+//    @GetMapping("/{userId}/products/save")
+//
+//    @Operation(summary = "좋아요한 타투 불러오기")
+//    @GetMapping("/{userId}/products/saved")
+
 }
