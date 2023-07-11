@@ -23,13 +23,6 @@ public class StickerController {
 
 	private final StickerService stickerService;
 
-	@GetMapping
-	@Operation(summary = "스티커 전체 조회")
-	public ResponseEntity<?> getAllStickerList() {
-		StickerSummaryListRes response = stickerService.getAllStickerList();
-		return ApiResponse.success(SuccessType.READ_ALL_STICKER_SUCCESS, response);
-	}
-
 	@GetMapping("/custom/hot")
 	@Operation(summary = "인기 커스텀 스티커 조회", description = "주문이 가장 많은 커스텀 스티커 조회")
 	public ResponseEntity<?> getHotCustomStickerList() {
