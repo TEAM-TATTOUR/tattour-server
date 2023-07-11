@@ -20,6 +20,7 @@ public enum ErrorType {
 	 */
 	VALIDATION_UNAUTHORIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, "리소스에 접근 권한이 없습니다."),
 	TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
+	TOKEN_USERID_PATH_USERID_MISMATCH(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
 
 	/**
 	 * 404 NOT FOUND

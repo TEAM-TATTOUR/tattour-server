@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
-import org.tattour.server.user.service.dto.request.AddUserInfoReq;
+import org.tattour.server.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.user.service.dto.request.SaveUserReq;
 
 @Entity
@@ -63,8 +63,14 @@ public class User {
                 .build();
     }
 
-    public void setUserInfo(AddUserInfoReq req){
+    public void setUserInfo(UpdateUserInfoReq req){
+        System.out.println("name : " + req.getName());
         this.name = req.getName();
         this.phoneNumber = req.getPhoneNumber();
+    }
+
+    public void deleteToken(){
+        this.accessToken = null;
+        this.refreshToken = null;
     }
 }
