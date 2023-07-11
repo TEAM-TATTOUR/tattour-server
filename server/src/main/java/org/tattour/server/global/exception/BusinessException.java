@@ -18,8 +18,4 @@ public class BusinessException extends RuntimeException {
 	public ErrorType getErrorType() {
 		return errorType;
 	}
-
-	public int getStatusCode() {
-		return errorType.getStatusCode();
-	}
 }
