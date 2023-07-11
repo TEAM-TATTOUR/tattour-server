@@ -10,6 +10,24 @@ import org.tattour.server.sticker.domain.Sticker;
 public interface StickerRepositoryImpl extends JpaRepository<Sticker, Integer> {
 
 	List<Sticker> findAllByIsCustomTrueAndStateTrue();
+
 	List<Sticker> findAllByStateTrue();
-	Optional<Sticker> findByIdAndStateTrue(Integer stickerId);
+
+	List<Sticker> findByNameContaining(String name);
+
+	List<Sticker> findAllByStateTrueOrderByPriceAsc();
+	List<Sticker> findAllByStateTrueOrderByPriceDesc();
+
+	List<Sticker> findAllByStickerThemes_IdAndStateTrue(Integer stickerThemesId);
+	List<Sticker> findAllByStickerThemes_IdAndStateTrueOrderByPriceAsc(Integer stickerThemesId);
+	List<Sticker> findAllByStickerThemes_IdAndStateTrueOrderByPriceDesc(Integer stickerThemesId);
+
+	List<Sticker> findAllByStickerStyles_IdAndStateTrue(Integer stickerStyleId);
+	List<Sticker> findAllByStickerStyles_IdAndStateTrueOrderByPriceAsc(Integer stickerStyleId);
+	List<Sticker> findAllByStickerStyles_IdAndStateTrueOrderByPriceDesc(Integer stickerStyleId);
+
+	List<Sticker> findAllByStickerThemes_IdAndStickerStyles_IdAndStateTrue(Integer stickerThemesId, Integer stickerStyleId);
+	List<Sticker> findAllByStickerThemes_IdAndStickerStyles_IdAndStateTrueOrderByPriceAsc(Integer stickerThemesId, Integer stickerStyleId);
+	List<Sticker> findAllByStickerThemes_IdAndStickerStyles_IdAndStateTrueOrderByPriceDesc(Integer stickerThemesId, Integer stickerStyleId);
+
 }
