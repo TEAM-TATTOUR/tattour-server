@@ -30,7 +30,7 @@ public class User {
     private String email;
     private Integer point;
     private String phoneNumber;
-    private String loginType;
+    private String socialType;
     @Column(columnDefinition = "Timestamp")
     private String created_at;
     @Column(columnDefinition = "Timestamp")
@@ -42,7 +42,7 @@ public class User {
     @Builder
     public User(String email, String loginType) {
         this.email = email;
-        this.loginType = loginType;
+        this.socialType = loginType;
     }
 
     //TODO : mapper로 할지 생각해보기

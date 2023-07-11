@@ -8,12 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.tattour.server.theme.domain.Theme;
 
 @Getter
 @Table(name = "sticker_theme")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StickerTheme {
 
 	@Id
