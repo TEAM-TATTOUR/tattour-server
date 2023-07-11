@@ -6,10 +6,11 @@
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
     <!-- 로그 파일이 저장될 경로 -->
-    <property name="LOG_PATH" value="/usr/tattour_server/logs"/>
+    <springProperty name="filePath" source="logging.file.path"/>
+    <property name="LOG_PATH" value="logs"/>
 
     <!-- 로그 파일 이름 -->
-    <property name="LOG_FILE_NAME" value="errorLog"/>
+    <property name="LOG_FILE_NAME" value="errorlog"/>
 
     <!-- 로그 출력 패턴 -->
     <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,21 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
+import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
+import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
+import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
+import org.tattour.server.domain.user.service.impl.ProductLikedServiceImpl;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
-import org.tattour.server.infra.sms.provider.PhoneNumberVerificationCodeProviderImpl;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.infra.sms.provider.impl.PhoneNumberVerificationCodeProviderImpl;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.SocialLoginRequest;
@@ -29,7 +38,7 @@ import org.tattour.server.domain.user.controller.dto.request.LoginReq;
 import org.tattour.server.domain.user.controller.dto.request.PatchUserInfoReq;
 import org.tattour.server.domain.user.controller.dto.response.GetVerifyCodeRes;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
-import org.tattour.server.domain.user.service.UserServiceImpl;
+import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/user")
@@ -41,6 +50,8 @@ public class UserController {
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
+    private final ProductLikedServiceImpl productLikedService;
+    private final ProductLikedProviderImpl productLikedProvider;
     private final JwtService jwtService;
 
     @Operation(summary = "소셜 회원가입/로그인")
@@ -107,10 +118,51 @@ public class UserController {
             return ApiResponse.success(SuccessType.CODE_VALIDATION_FAIL, GetVerifyCodeRes.of(false));
     }
 
-//    @Operation(summary = "좋아요 누른 타투 저장")
-//    @GetMapping("/{userId}/products/save")
-//
-//    @Operation(summary = "좋아요한 타투 불러오기")
-//    @GetMapping("/{userId}/products/saved")
+    @Operation(summary = "좋아요 누른 타투 저장")
+    @PostMapping("/{userId}/productLiked/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> saveProductLiked(
+            @UserId Integer jwtUserId,
+            @PathVariable("userId") Integer userId,
+            @RequestBody PostProductLikedReq request
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
+        // 중복 검사
+        if(productLikedProvider.checkDuplicationByStickerId(request.getStickerId()))
+            throw new BusinessException(ErrorType.ALREADY_EXIST_PRODUCTLIKED_EXCEPTION);
+
+        productLikedService.saveProductLiked(SaveProductLikedReq.of(userId, request.getStickerId()));
+
+        return ApiResponse.success(SuccessType.CREATE_SUCCESS);
+    }
+
+    @Operation(summary = "좋아요 누른 타투 삭제")
+    @DeleteMapping("/{userId}/productLiked/delete")
+    public ResponseEntity<?> deleteProductLiked(
+            @UserId Integer jwtUserId,
+            @PathVariable("userId") Integer userId,
+            @RequestBody DeleteProductLikedReq request
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+        productLikedService.deleteProductLiked(DeleteProductLikedInfo.of(userId,
+                request.getStickerId()));
+
+        return ApiResponse.success(SuccessType.DELETE_SUSCCESS);
+    }
+
+    @Operation(summary = "좋아요 누른 타투 불러오기")
+    @GetMapping("/{userId}/productLiked/saved")
+    public ResponseEntity<?> getProductLiked(
+            @UserId Integer jwtUserId,
+            @PathVariable("userId") Integer userId
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
+        return ApiResponse.success(SuccessType.GET_SUCCESS, productLikedProvider.getLikedProductsByUserId(userId));
+    }
+
+//    @Operation(summary = "배송지 등록")
+//    @PostMapping("/{userId}/address")
 
 }

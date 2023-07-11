@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
-import org.tattour.server.domain.user.service.dto.response.ProductLikedRes;
+import org.tattour.server.domain.user.provider.dto.response.ProductLikedRes;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {

@@ -1,4 +1,4 @@
-package org.tattour.server.infra.sms.provider;
+package org.tattour.server.infra.sms.provider.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.sms.domain.PhoneNumberVerificationCode;
+import org.tattour.server.infra.sms.provider.PhoneNumberVerificationCodeProvider;
 import org.tattour.server.infra.sms.repository.PhoneNumberVerificationCodeRepositoryImpl;
 
 @Service
 @RequiredArgsConstructor
-public class PhoneNumberVerificationCodeProviderImpl implements PhoneNumberVerificationCodeProvider{
+public class PhoneNumberVerificationCodeProviderImpl implements
+        PhoneNumberVerificationCodeProvider {
     private final PhoneNumberVerificationCodeRepositoryImpl phoneNumberVerificationCodeRepository;
     @Override
     public int getLatestValidVerificationCode(Integer userId) {
