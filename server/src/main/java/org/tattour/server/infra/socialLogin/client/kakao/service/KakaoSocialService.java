@@ -10,10 +10,10 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoAccessTokenResponse;
 import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.SocialLoginRequest;
-import org.tattour.server.user.domain.User;
-import org.tattour.server.user.provider.impl.UserProviderImpl;
-import org.tattour.server.user.service.UserServiceImpl;
-import org.tattour.server.user.service.dto.request.SaveUserReq;
+import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.service.UserServiceImpl;
+import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 
 @Service
 @RequiredArgsConstructor

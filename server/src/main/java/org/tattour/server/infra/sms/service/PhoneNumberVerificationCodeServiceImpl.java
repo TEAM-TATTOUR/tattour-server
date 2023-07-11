@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.infra.sms.domain.PhoneNumberVerificationCode;
 import org.tattour.server.infra.sms.repository.PhoneNumberVerificationCodeRepositoryImpl;
-import org.tattour.server.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 
 @Service
 @RequiredArgsConstructor
