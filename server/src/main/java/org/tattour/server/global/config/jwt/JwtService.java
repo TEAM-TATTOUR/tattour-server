@@ -84,6 +84,6 @@ public class JwtService {
 	// Jwt 토큰에서 추출한 userId와 Path variable의 userId를 비교
 	public void compareJwtWithPathVar(Integer jwtUserId, Integer userId){
 		if (jwtUserId != userId)
-			throw new BusinessException(ErrorType.TOKEN_USERID_PATH_USERID_MISMATCH);
+			throw new BusinessException(ErrorType.TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION);
 	}
 }

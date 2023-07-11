@@ -9,12 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.user.domain.User;
 
 @Entity
 @DynamicInsert
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PhoneNumberVerificationCode {
     @Id

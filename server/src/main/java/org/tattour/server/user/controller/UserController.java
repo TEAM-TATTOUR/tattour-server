@@ -19,11 +19,16 @@ import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.infra.sms.provider.PhoneNumberVerificationCodeProviderImpl;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.SocialLoginRequest;
+import org.tattour.server.user.controller.dto.request.GetVerifyCodeReq;
 import org.tattour.server.user.controller.dto.request.LoginReq;
 import org.tattour.server.user.controller.dto.request.PatchUserInfoReq;
+import org.tattour.server.user.controller.dto.response.GetVerifyCodeRes;
 import org.tattour.server.user.controller.dto.response.LoginRes;
 import org.tattour.server.user.provider.impl.UserProviderImpl;
 import org.tattour.server.user.service.UserServiceImpl;
@@ -38,6 +43,7 @@ public class UserController {
     private final SocialServiceProvider socialServiceProvider;
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
+    private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final JwtService jwtService;
 
     @Operation(summary = "소셜 회원가입/로그인")
@@ -80,10 +86,30 @@ public class UserController {
 
     @Operation(summary = "user 로그아웃")
     @PatchMapping("/{userId}/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> userLogout(
+            @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId
     ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
         userService.userLogout(userId);
         return ApiResponse.success(SuccessType.LOGOUT_SUCCESS);
     }
+
+    @Operation(summary = "인증번호 검증")
+    @GetMapping("/phoneNum/verification")
+    public ResponseEntity<?> verififyCode(
+            @UserId Integer jwtUserId,
+            @RequestBody GetVerifyCodeReq request){
+        jwtService.compareJwtWithPathVar(jwtUserId, request.getUserId());
+
+        if(phoneNumberVerificationCodeProvider.compareVerficationCode(request.getUserId(), request.getVerificationCode()))
+            return ApiResponse.success(SuccessType.CODE_VERIFICATION_SUCCESS, GetVerifyCodeRes.of(true));
+        else
+            return ApiResponse.success(SuccessType.CODE_VALIDATION_FAIL, GetVerifyCodeRes.of(false));
+    }
+
+//    @Operation(summary = "인증번호 검증")
+//    @GetMapping("/phoneNum/verification")
 }

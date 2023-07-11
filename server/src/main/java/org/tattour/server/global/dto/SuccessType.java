@@ -18,6 +18,7 @@ public enum SuccessType {
 	READ_ALL_STICKER_SUCCESS(HttpStatus.OK, "모든 스티커 요약 정보 조회에 성공했습니다."),
 	READ_HOT_CUSTOM_STICKER_SUCCESS(HttpStatus.OK, "인기 스티커 요약 정보 조회에 성공했습니다."),
 	READ_STICKER_INFO_SUCCESS(HttpStatus.OK, "한 게시물 상세 정보 조회에 성공했습니다."),
+	CODE_VERIFICATION_SUCCESS(HttpStatus.OK, "인증코드 검증에 성공했습니다."),
 
 	/**
 	 * 201 CREATED
@@ -26,6 +27,12 @@ public enum SuccessType {
 	SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입이 완료됐습니다."),
 	CREATE_BOARD_SUCCESS(HttpStatus.CREATED, "게시물 생성이 완료됐습니다."),
 	CREATE_EMOTION_SUCCESS(HttpStatus.CREATED, "감정 기록에 성공했습니다."),
+
+	/**
+	 * 202 ACCEPTED
+	 */
+	CODE_VALIDATION_FAIL(HttpStatus.ACCEPTED, "인증번호 검증에 실패했습니다."),
+
 	;
 
 

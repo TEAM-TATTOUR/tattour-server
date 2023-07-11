@@ -43,6 +43,7 @@ public class SmsServiceImpl {
     private final PhoneNumberVerificationCodeServiceImpl phoneNumberVerificationCodeService;
 
     // 인증번호 sms 전송
+    @Transactional
     public SmsRes sendVerificationCode(SendVerificationCodeReq request)
             throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
 
@@ -88,6 +89,7 @@ public class SmsServiceImpl {
         return smsRes;
     }
 
+    @Transactional
     public SmsRes sendSms(String recipientPhoneNumber, String content)
             throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
         Long time = System.currentTimeMillis();

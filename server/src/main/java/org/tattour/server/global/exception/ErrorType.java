@@ -20,7 +20,7 @@ public enum ErrorType {
 	 */
 	VALIDATION_UNAUTHORIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, "리소스에 접근 권한이 없습니다."),
 	TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
-	TOKEN_USERID_PATH_USERID_MISMATCH(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
+	TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
 
 	/**
 	 * 404 NOT FOUND
@@ -28,6 +28,7 @@ public enum ErrorType {
 	NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 데이터입니다."),
 	NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다"),
 	NOT_FOUND_STICKER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스티커입니다"),
+	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.NOT_FOUND, "인증번호가 존재하지 않습니다."),
 
 	/**
 	 * 405 METHOD NOT ALLOWED
