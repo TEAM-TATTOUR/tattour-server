@@ -12,15 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.tattour.server.discount.domain.Discount;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "sticker")
 @Entity
 public class Sticker extends AuditingTimeEntity {
@@ -30,15 +29,15 @@ public class Sticker extends AuditingTimeEntity {
 	private Integer id;
 	private String name;
 	private String description;
-	private int price;
+	private Integer price;
 	private String composition;
-	private int width;
-	private int height;
+	private Integer width;
+	private Integer height;
 	@Column(columnDefinition = "tinyint")
-	private boolean state;
+	private Boolean state;
 
 	@Column(name = "is_custom", columnDefinition = "tinyint")
-	private boolean isCustom;
+	private Boolean isCustom;
 
 	@Column(name = "main_image_url", columnDefinition = "text")
 	private String mainImageUrl;

@@ -10,11 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.sticker.domain.Sticker;
 
+@Getter
 @Table(name = "discount")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Discount extends AuditingTimeEntity {
 
 	@Id

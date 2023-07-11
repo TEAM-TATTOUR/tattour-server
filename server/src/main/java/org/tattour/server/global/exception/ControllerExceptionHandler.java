@@ -79,8 +79,8 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<?> handleInternalServerException(Exception e) {
-		System.out.println("e = " + e);
-		System.out.println("e.getClass() = " + e.getClass());
+		log.info("e ={}", e);
+		e.printStackTrace();
 		return ApiResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
 	}
 
