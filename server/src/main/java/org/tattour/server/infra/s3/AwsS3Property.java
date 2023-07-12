@@ -1,12 +1,12 @@
-package org.tattour.server.global.config.s3;
+package org.tattour.server.infra.s3;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Getter
 @Setter
+@Getter
 @Configuration
 @ConfigurationProperties("cloud.aws.s3")
 public class AwsS3Property {
@@ -15,5 +15,4 @@ public class AwsS3Property {
 	private String secretKey;
 	private String bucket;
 	private String region;
-//	private String bucketUrl;
 }

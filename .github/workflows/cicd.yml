@@ -24,6 +24,7 @@ jobs:
     
     - name: make application.properties
       run: |
+        #mkdir ./server/src/main/resources
         cd ./server/src/main/resources
         touch ./application.yaml
         echo "${{ secrets.TATTOUR_PROD_APPLICATION }}" >> ./application.yaml
