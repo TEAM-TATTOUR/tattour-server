@@ -7,7 +7,7 @@
 
     <!-- 로그 파일이 저장될 경로 -->
 <!--    <springProperty name="filePath" source="logging.file.path"/>-->
-    <property name="LOG_PATH" value="/logs"/>
+    <property name="LOG_PATH" value="/home/ubuntu/app/logs"/>
 
     <!-- 로그 파일 이름 -->
     <property name="LOG_FILE_NAME" value="error"/>
@@ -28,7 +28,7 @@
 
         아래에서는 info로 설정하였는데, 이 경우엔 INFO 보다 위에 있는 DEBUG와 TRACE는 표시하지 않는다.
     -->
-    <property name="LOG_LEVEL" value="info"/>
+    <property name="LOG_LEVEL" value="warn"/>
 
     <!-- CONSOLE에 로그 출력 세팅 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
