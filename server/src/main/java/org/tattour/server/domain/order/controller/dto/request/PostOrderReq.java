@@ -9,4 +9,9 @@ public class PostOrderReq {
     private Integer productCount;
     private Integer shippingFee;
     private Integer totalAmount;
+    private String recipientName;
+    private String contact;
+    private String mailingAddress;
+    private String baseAddress;
+    private String detailAddress;
 }

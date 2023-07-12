@@ -12,6 +12,8 @@ import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
+import org.tattour.server.global.config.jwt.JwtService;
+import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 
@@ -21,6 +23,7 @@ import org.tattour.server.global.dto.SuccessType;
 public class OrderController {
     private final OrderProviderImpl orderProvider;
     private final OrderServiceImpl orderService;
+    private final JwtService jwtService;
 
     @Operation(summary = "결제 페이지 불러오기")
     @GetMapping("/ordersheet")
@@ -32,8 +35,10 @@ public class OrderController {
     @Operation(summary = "결제하기")
     @PostMapping
     public ResponseEntity<?> order (
+            @UserId Integer jwtUserId,
             @RequestBody PostOrderReq req
     ){
+        jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
         orderService.saveOrder(req);
 
         return ApiResponse.success(SuccessType.GET_SUCCESS);

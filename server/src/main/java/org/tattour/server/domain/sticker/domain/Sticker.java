@@ -31,8 +31,7 @@ public class Sticker extends AuditingTimeEntity {
 	private String description;
 	private Integer price;
 	private String composition;
-	private Integer width;
-	private Integer height;
+	private String size;
 	@Column(columnDefinition = "tinyint")
 	private Boolean state;
 
