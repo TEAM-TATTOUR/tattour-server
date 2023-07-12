@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
+import org.tattour.server.domain.user.service.dto.request.DeductUserPointReq;
 import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
@@ -37,5 +38,13 @@ public class UserServiceImpl implements UserService {
         User user = userProvider.getUserById(userId);
         user.deleteToken();
         userRepository.save(user);
+    }
+
+    @Override
+    public void userDeductPoint(DeductUserPointReq req) {
+        User user = userProvider.getUserById(req.getUserId());
+        int resultPoint = user.getPoint() - req.getAmount();
+
+        user.setUserPoint(resultPoint);
     }
 }
