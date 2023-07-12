@@ -19,15 +19,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User saveUser(SaveUserReq req) {
-        return userRepository.save(User.of(req));
+    public User saveUser(SaveUserReq request) {
+        return userRepository.save(User.of(request));
     }
 
     @Override
     @Transactional
-    public void updateUserInfo(UpdateUserInfoReq req) {
-        User user = userProvider.getUserById(req.getUserId());
-        user.setUserInfo(req);
+    public void updateUserInfo(UpdateUserInfoReq request) {
+        User user = userProvider.getUserById(request.getUserId());
+        user.setUserInfo(request);
         userRepository.save(user);
     }
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUserShippingAddr(SaveUserShippingAddrReq req) {
+    public void saveUserShippingAddr(SaveUserShippingAddrReq request) {
 
     }
 }

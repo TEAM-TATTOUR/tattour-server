@@ -7,6 +7,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -21,6 +23,9 @@ public class JwtService {
 
 	@Value("${jwt.secret}")
 	private String jwtSecret;
+
+	@Value("${jwt.access-expired}")
+	private Integer accessExpired;
 
 	@PostConstruct
 	protected void init() {
@@ -37,7 +42,8 @@ public class JwtService {
 		final Claims claims = Jwts.claims()
 			.setSubject("access_token")
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
+			.setExpiration(Date.from(Instant.now().plus(accessExpired, ChronoUnit.MINUTES)));
+//			.setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
 
 		//private claim 등록
 		claims.put("userId", strUserId);

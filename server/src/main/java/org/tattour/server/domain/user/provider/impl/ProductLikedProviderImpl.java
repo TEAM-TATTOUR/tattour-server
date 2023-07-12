@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.domain.ProductLiked;
-import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedRes;

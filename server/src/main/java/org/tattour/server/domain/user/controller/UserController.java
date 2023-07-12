@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
+import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
 import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
+import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 import org.tattour.server.domain.user.service.impl.ProductLikedServiceImpl;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
+import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
@@ -52,6 +55,7 @@ public class UserController {
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final ProductLikedServiceImpl productLikedService;
     private final ProductLikedProviderImpl productLikedProvider;
+    private final UserShippingAddressServiceImpl userShippingAddressService;
     private final JwtService jwtService;
 
     @Operation(summary = "소셜 회원가입/로그인")
@@ -162,7 +166,24 @@ public class UserController {
         return ApiResponse.success(SuccessType.GET_SUCCESS, productLikedProvider.getLikedProductsByUserId(userId));
     }
 
-//    @Operation(summary = "배송지 등록")
-//    @PostMapping("/{userId}/address")
+    @Operation(summary = "배송지 등록")
+    @PostMapping("/{userId}/address")
+    public ResponseEntity<?> createShippingAddr(
+            @UserId Integer jwtUserId,
+            @PathVariable("userId") Integer userId,
+            @RequestBody PostUserShippingAddrReq request
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+        userShippingAddressService.saveUserShippingAddr(
+                SaveUserShippingAddrReq.of(
+                        userId,
+                        request.getRecipientName(),
+                        request.getContact(),
+                        request.getMailingAddress(),
+                        request.getBaseAddress(),
+                        request.getDetailAddress()));
+
+        return ApiResponse.success(SuccessType.CREATE_SUCCESS);
+    }
 
 }
