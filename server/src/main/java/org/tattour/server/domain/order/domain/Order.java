@@ -24,7 +24,7 @@ public class Order {
     private Integer productAmount;
     private Integer shippingFee;
     private Integer totalAmount;
-    private String status;
+    private String shippingStatus;
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
     @Column(columnDefinition = "Timestamp")
