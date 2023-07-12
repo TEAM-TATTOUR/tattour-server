@@ -37,4 +37,25 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sticker_id")
     private Sticker sticker;
+
+    private Order(String productName, String productSize, String productImageUrl,
+            Integer productCount,
+            Integer productAmount, Integer shippingFee, Integer totalAmount, User user,
+            Sticker sticker) {
+        this.productName = productName;
+        this.productSize = productSize;
+        this.productImageUrl = productImageUrl;
+        this.productCount = productCount;
+        this.productAmount = productAmount;
+        this.shippingFee = shippingFee;
+        this.totalAmount = totalAmount;
+        this.user = user;
+        this.sticker = sticker;
+    }
+
+    public static Order of(String productName, String productSize, String productImageUrl,
+            Integer productCount, Integer productAmount, Integer shippingFee, Integer totalAmount,
+            User user, Sticker sticker){
+        return new Order(productName, productSize, productImageUrl, productCount, productAmount, shippingFee, totalAmount, user, sticker);
+    }
 }
