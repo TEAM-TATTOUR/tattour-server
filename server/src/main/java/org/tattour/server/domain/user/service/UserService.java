@@ -14,7 +14,4 @@ public interface UserService {
 
     // 로그아웃
     void userLogout(Integer userId);
-
-    // 배송지 등록
-    void saveUserShippingAddr(SaveUserShippingAddrReq req);
 }

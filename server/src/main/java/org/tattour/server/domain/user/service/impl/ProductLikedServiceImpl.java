@@ -2,7 +2,6 @@ package org.tattour.server.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
@@ -24,17 +23,17 @@ public class ProductLikedServiceImpl implements ProductLikedService {
     private final StickerServiceImpl stickerService;
 
     @Override
-    public void saveProductLiked(SaveProductLikedReq request) {
-        User user = userProvider.getUserById(request.getUserId());
-        Sticker sticker = stickerService.getStickerByStickerId(request.getStickerId());
+    public void saveProductLiked(SaveProductLikedReq req) {
+        User user = userProvider.getUserById(req.getUserId());
+        Sticker sticker = stickerService.getStickerByStickerId(req.getStickerId());
 
         productLikedRepository.save(ProductLiked.of(user, sticker));
     }
 
     @Override
-    public void deleteProductLiked(DeleteProductLikedInfo request) {
+    public void deleteProductLiked(DeleteProductLikedInfo req) {
         ProductLiked productLiked = productLikedProvider.getProductLikedByIdAndUserId(
-                request.getStickerId(), request.getUserId());
+                req.getStickerId(), req.getUserId());
 
         productLikedRepository.delete(productLiked);
     }
