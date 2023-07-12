@@ -5,11 +5,11 @@ import org.tattour.server.domain.user.domain.User;
 
 public interface UserProvider {
     // 유저 가져오기
-    User getUserByUserId(Integer userId);
+    User getUserById(Integer id);
 
     // 유저 프로필 가져오기
-    GetUserProfileRes getUserProfile(Integer userId);
+    GetUserProfileRes getUserProfile(Integer id);
 
     // 이메일로 유저 중복 확인
-    Integer checkDuplicateByEmail(String email);
+    Integer checkDuplicationByEmail(String email);
 }

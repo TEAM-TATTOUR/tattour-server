@@ -12,7 +12,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserR
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.SocialLoginRequest;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.UserServiceImpl;
+import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 
 @Service
@@ -40,7 +40,7 @@ public class KakaoSocialService extends SocialService{
 
         // Access Token으로 유저 정보 불러오기
         KakaoUserRes userResponse = kakaoApiClient.getUserInformation("Bearer " + tokenResponse.getAccessToken());
-        Integer userId = userProvider.checkDuplicateByEmail(userResponse.getKakaoAccount().getEmail());
+        Integer userId = userProvider.checkDuplicationByEmail(userResponse.getKakaoAccount().getEmail());
 
         // 존재하지 않으면 유저 생성
         if(Objects.isNull(userId)){

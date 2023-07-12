@@ -44,6 +44,7 @@ public enum ErrorType {
 	 * 409 CONFLICT
 	 */
 	ALREADY_EXIST_USER_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 유저 이름입니다"),
+	ALREADY_EXIST_PRODUCTLIKED_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 좋아요한 상품입니다"),
 
 	/**
 	 * 500 INTERNAL SERVER ERROR

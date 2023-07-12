@@ -16,19 +16,19 @@ public class UserProviderImpl implements UserProvider {
     private final UserRepositoryImpl userRepository;
 
     @Override
-    public User getUserByUserId(Integer userId) {
-        User user = userRepository.findById(userId)
+    public User getUserById(Integer id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(NotFoundUserException::new);
         return user;
     }
 
     @Override
-    public GetUserProfileRes getUserProfile(Integer userId) {
-        return EntityDtoMapper.INSTANCE.toGetUserProfileRes(getUserByUserId(userId));
+    public GetUserProfileRes getUserProfile(Integer id) {
+        return EntityDtoMapper.INSTANCE.toGetUserProfileRes(getUserById(id));
     }
 
     @Override
-    public Integer checkDuplicateByEmail(String email) {
+    public Integer checkDuplicationByEmail(String email) {
         return userRepository.findByEmail(email).map(User::getId).orElse(null);
     }
 }

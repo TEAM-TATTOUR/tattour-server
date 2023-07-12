@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.infra.sms.controller.dto.request.PostSendCodeReq;
-import org.tattour.server.infra.sms.service.SmsServiceImpl;
+import org.tattour.server.infra.sms.service.impl.SmsServiceImpl;
 import org.tattour.server.infra.sms.service.dto.request.SendVerificationCodeReq;
 
 @RestController

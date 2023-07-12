@@ -1,4 +1,4 @@
-package org.tattour.server.infra.sms.service;
+package org.tattour.server.infra.sms.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +26,7 @@ import org.tattour.server.infra.sms.service.dto.request.MessageDto;
 import org.tattour.server.infra.sms.service.dto.request.SendVerificationCodeReq;
 import org.tattour.server.infra.sms.service.dto.request.SmsReq;
 import org.tattour.server.infra.sms.service.dto.response.SmsRes;
+import org.tattour.server.infra.sms.service.impl.PhoneNumberVerificationCodeServiceImpl;
 
 @Service
 @Transactional

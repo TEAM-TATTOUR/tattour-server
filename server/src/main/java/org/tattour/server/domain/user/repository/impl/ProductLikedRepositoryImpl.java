@@ -1,6 +1,7 @@
 package org.tattour.server.domain.user.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.tattour.server.domain.user.domain.ProductLiked;
@@ -10,4 +11,8 @@ public interface ProductLikedRepositoryImpl extends JpaRepository<ProductLiked, 
     <S extends ProductLiked> S save(S entity);
 
     List<ProductLiked> findAllByUser_Id(Integer userId);
+
+    Optional<ProductLiked> findByIdAndUser_Id(Integer id, Integer userId);
+
+    Optional<ProductLiked> findProductLikedBySticker_Id(Integer stickerId);
 }
