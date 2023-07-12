@@ -12,6 +12,7 @@ import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.domain.CustomImage;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
+import org.tattour.server.domain.custom.domain.Process;
 import org.tattour.server.domain.custom.repository.impl.CustomImageRepositoryImpl;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
 import org.tattour.server.domain.custom.repository.impl.CustomStyleRepositoryImpl;
@@ -41,47 +42,51 @@ public class CustomServiceImpl implements CustomService {
 
 	@Override
 	@Transactional
-	public CustomInfo createCustom(CreateCustomInfo customInfo, Integer userId) {
+	public CustomInfo createCustom(CreateCustomInfo CreatecustomInfo, Integer userId) {
 		User user = userRepository.getReferenceById(userId);
 		List<CustomTheme> customThemes = new ArrayList<>();
 		List<CustomStyle> customStyles = new ArrayList<>();
 		String mainImageUrl = null;
 		List<CustomImage> customImages = new ArrayList<>();
-
-		if (!Objects.isNull(customInfo.getThemes())) {
-			customThemes = customInfo.getThemes().stream()
+		Process process = null;
+		if (!Objects.isNull(CreatecustomInfo.getThemes())) {
+			customThemes = CreatecustomInfo.getThemes().stream()
 				.map(theme -> CustomTheme.of(themeRepository.getOne(theme)))
 				.collect(Collectors.toList());
 		}
-		if (!Objects.isNull(customInfo.getStyles())) {
-			customStyles = customInfo.getStyles().stream()
+		if (!Objects.isNull(CreatecustomInfo.getStyles())) {
+			customStyles = CreatecustomInfo.getStyles().stream()
 				.map(style -> CustomStyle.of(styleRepository.getOne(style)))
 				.collect(Collectors.toList());
 		}
-		if(!Objects.isNull(customInfo.getMainImage())) {
-			mainImageUrl = s3Service.uploadImage(customInfo.getMainImage(), directoryPath);
+		if(!Objects.isNull(CreatecustomInfo.getMainImage())) {
+			mainImageUrl = s3Service.uploadImage(CreatecustomInfo.getMainImage(), directoryPath);
 		}
-		if(!Objects.isNull(customInfo.getImages())) {
-			customImages = s3Service.uploadImageList(customInfo.getImages(), directoryPath)
+		if(!Objects.isNull(CreatecustomInfo.getImages())) {
+			customImages = s3Service.uploadImageList(CreatecustomInfo.getImages(), directoryPath)
 				.stream()
 				.map(image -> CustomImage.of(image))
 				.collect(Collectors.toList());
+		}
+		if(!Objects.isNull(CreatecustomInfo.getImages())) {
+			process = Process.receiving;
 		}
 		Custom custom = Custom.from(user,
 			customThemes,
 			customStyles,
 			mainImageUrl,
 			customImages,
-			customInfo.getHaveDesign(),
-			customInfo.getSize(),
-			customInfo.getName(),
-			customInfo.getDescription(),
-			customInfo.getDemand(),
-			customInfo.getCount(),
-			customInfo.getIsColored(),
-			customInfo.getIsPublic(),
-			customInfo.getIsCompleted(),
-			customInfo.getViewCount()
+			CreatecustomInfo.getHaveDesign(),
+			CreatecustomInfo.getSize(),
+			CreatecustomInfo.getName(),
+			CreatecustomInfo.getDescription(),
+			CreatecustomInfo.getDemand(),
+			CreatecustomInfo.getCount(),
+			CreatecustomInfo.getIsColored(),
+			CreatecustomInfo.getIsPublic(),
+			CreatecustomInfo.getIsCompleted(),
+			CreatecustomInfo.getViewCount(),
+			process
 		);
 		for (CustomTheme customTheme : customThemes) {
 			customTheme.setCustom(custom);
@@ -93,6 +98,6 @@ public class CustomServiceImpl implements CustomService {
 			customImage.setCustom(custom);
 		}
 		customRepository.save(custom);
-		return null;
+		return CustomInfo.of(custom);
 	}
 }

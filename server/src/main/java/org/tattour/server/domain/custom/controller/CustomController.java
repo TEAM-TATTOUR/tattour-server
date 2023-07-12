@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.custom.controller.dto.request.ApplyCustomReq;
+import org.tattour.server.domain.custom.controller.dto.response.ApplyCustomRes;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.global.config.resolver.UserId;
@@ -36,13 +37,14 @@ public class CustomController {
 	@Operation(summary = "커스텀 도안 신청", description = "haveDesign은 notNull이어야함!"
 		+ " data 는 application/json 타입으로, mainImage 는 file. image 는 file 리스트로 보내기!")
 	public ResponseEntity<?> createCustom(
-		@UserId Integer userId,
+//		@UserId Integer userId,
 		@RequestPart(value = "data") ApplyCustomReq request,
 		@RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
 		@RequestPart(value = "images", required = false) List<MultipartFile> images
 		) {
-		CustomInfo response = customService.createCustom(request.newCustomInfo(mainImage, images), userId);
-		return ApiResponse.success(SuccessType.LOGIN_SUCCESS, response);
+		CustomInfo customInfo = customService.createCustom(request.newCustomInfo(mainImage, images), 1);
+		ApplyCustomRes response = ApplyCustomRes.of(customInfo);
+		return ApiResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
 	}
 
 

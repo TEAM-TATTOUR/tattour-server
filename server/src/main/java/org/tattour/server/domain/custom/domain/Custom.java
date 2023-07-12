@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.User;
 
@@ -113,11 +112,9 @@ public class Custom {
 		List<CustomImage> images,
 		Boolean haveDesign, String size, String name, String description, String demand,
 		Integer count, Boolean isColored, Boolean isPublic, Boolean isCompleted,
-//		Process process,
-		Integer viewCount) {
+		Integer viewCount, Process process) {
 		return Custom.builder()
 			.user(user)
-//			.sticker(sticker)
 			.customThemes(customThemes)
 			.customStyles(customStyles)
 			.mainImageUrl(mainImageUrl)
@@ -132,6 +129,7 @@ public class Custom {
 			.isPublic(isPublic)
 			.isCompleted(isCompleted)
 			.viewCount(viewCount)
+			.process(process)
 			.build();
 	}
 
