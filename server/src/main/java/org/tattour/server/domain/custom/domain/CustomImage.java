@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "custom_image")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomImage {
 
 	@Id
@@ -29,4 +33,14 @@ public class CustomImage {
 
 	@Column(name = "image_url", columnDefinition = "text")
 	private String imageUrl;
+
+	public static CustomImage of(String imageUrl) {
+		return CustomImage.builder()
+			.imageUrl(imageUrl)
+			.build();
+	}
+
+	public void setCustom(Custom custom) {
+		this.custom = custom;
+	}
 }

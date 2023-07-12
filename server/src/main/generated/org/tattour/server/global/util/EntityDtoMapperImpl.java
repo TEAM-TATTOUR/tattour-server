@@ -12,7 +12,7 @@ import org.tattour.server.domain.user.service.dto.response.ProductLikedRes;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-11T18:08:27+0900",
+    date = "2023-07-12T01:06:13+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -26,7 +26,6 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
 
         GetUserProfileRes.GetUserProfileResBuilder getUserProfileRes = GetUserProfileRes.builder();
 
-        getUserProfileRes.id( user.getId() );
         getUserProfileRes.name( user.getName() );
         getUserProfileRes.point( user.getPoint() );
 

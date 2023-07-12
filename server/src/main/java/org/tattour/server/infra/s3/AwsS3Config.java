@@ -1,4 +1,4 @@
-package org.tattour.server.global.config;
+package org.tattour.server.infra.s3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -7,7 +7,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.tattour.server.global.config.s3.AwsS3Property;
 
 @Configuration
 @RequiredArgsConstructor

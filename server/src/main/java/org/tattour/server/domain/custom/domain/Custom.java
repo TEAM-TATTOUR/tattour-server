@@ -30,7 +30,7 @@ import org.tattour.server.domain.user.domain.User;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Custom extends AuditingTimeEntity {
+public class Custom {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,14 +84,40 @@ public class Custom extends AuditingTimeEntity {
 	@Column(name = "view_count")
 	private Integer viewCount;
 
-	public static Custom from(User user, Sticker sticker, List<CustomTheme> customThemes,
-		List<CustomStyle> customStyles, String mainImageUrl, List<CustomImage> images,
+	public void setSticker(Sticker sticker) {
+		this.sticker = sticker;
+	}
+
+	public void setCustomThemes(
+		List<CustomTheme> customThemes) {
+		this.customThemes = customThemes;
+	}
+
+	public void setCustomStyles(
+		List<CustomStyle> customStyles) {
+		this.customStyles = customStyles;
+	}
+
+	public void setMainImageUrl(String mainImageUrl) {
+		this.mainImageUrl = mainImageUrl;
+	}
+
+	public void setProcess(Process process) {
+		this.process = process;
+	}
+
+	public static Custom from(User user,
+//		Sticker sticker,
+		List<CustomTheme> customThemes,List<CustomStyle> customStyles,
+		String mainImageUrl,
+		List<CustomImage> images,
 		Boolean haveDesign, String size, String name, String description, String demand,
-		Integer count, Boolean isColored, Boolean isPublic, Boolean isCompleted, Process process,
+		Integer count, Boolean isColored, Boolean isPublic, Boolean isCompleted,
+//		Process process,
 		Integer viewCount) {
 		return Custom.builder()
 			.user(user)
-			.sticker(sticker)
+//			.sticker(sticker)
 			.customThemes(customThemes)
 			.customStyles(customStyles)
 			.mainImageUrl(mainImageUrl)
@@ -105,7 +131,6 @@ public class Custom extends AuditingTimeEntity {
 			.isColored(isColored)
 			.isPublic(isPublic)
 			.isCompleted(isCompleted)
-			.process(process)
 			.viewCount(viewCount)
 			.build();
 	}
