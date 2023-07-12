@@ -14,11 +14,10 @@ public class StickerSummaryListRes {
 	private List<StickerSummaryRes> stickers;
 
 	public static StickerSummaryListRes of(List<Sticker> stickers) {
-		return new StickerSummaryListRes(
-			stickers
-				.stream()
-				.map(StickerSummaryRes::of)
-				.collect(Collectors.toList())
-		);
+		List<StickerSummaryRes> stickerSummaryRes = stickers
+			.stream()
+			.map(StickerSummaryRes::of)
+			.collect(Collectors.toList());
+		return new StickerSummaryListRes(stickerSummaryRes);
 	}
 }
