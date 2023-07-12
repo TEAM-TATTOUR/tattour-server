@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.domain.theme.domain.Theme;
@@ -17,6 +19,8 @@ import org.tattour.server.domain.theme.domain.Theme;
 @Table(name = "custom_theme")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomTheme {
 
 	@Id
@@ -30,4 +34,20 @@ public class CustomTheme {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "theme_id")
 	private Theme theme;
+
+	public static CustomTheme from(Custom custom, Theme theme) {
+		return CustomTheme.builder()
+			.custom(custom)
+			.theme(theme)
+			.build();
+	}
+	public static CustomTheme of(Theme theme) {
+		return CustomTheme.builder()
+			.theme(theme)
+			.build();
+	}
+
+	public void setCustom(Custom custom) {
+		this.custom = custom;
+	}
 }

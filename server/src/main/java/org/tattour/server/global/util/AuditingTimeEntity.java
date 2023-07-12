@@ -13,11 +13,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class AuditingTimeEntity {
 
-	@CreatedDate
+//	@CreatedDate
 	@Column(columnDefinition = "Timestamp")
 	private String createdAt;
 
-	@LastModifiedDate
+//	@LastModifiedDate
 	@Column(columnDefinition = "Timestamp")
 	private String lastUpdatedAt;
 }
