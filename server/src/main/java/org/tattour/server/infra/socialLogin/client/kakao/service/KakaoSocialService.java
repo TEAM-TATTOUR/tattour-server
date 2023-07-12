@@ -27,7 +27,7 @@ public class KakaoSocialService extends SocialService{
     private final UserProviderImpl userProvider;
 
     @Override
-    public Integer login(SocialLoginRequest request) {
+    public Integer login(SocialLoginRequest req) {
         System.out.println(clientId);
 
         // Authorization code로 Access Token 불러오기
@@ -35,7 +35,7 @@ public class KakaoSocialService extends SocialService{
                 "authorization_code",
                 clientId,
                 "http://localhost:8080/kakao/callback",
-                request.getCode()
+                req.getCode()
         );
 
         // Access Token으로 유저 정보 불러오기
