@@ -2,6 +2,7 @@ package org.tattour.server.domain.point.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.domain.UserPointLog;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImpl;
@@ -20,15 +21,17 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public void savePointChargeRequest(SavePointChargeRequestReq req) {
+        User user = userProvider.getUserById(req.getUserId());
+        PointChargeRequest pointChargeRequest = PointChargeRequest.of(req.getChargeAmount(), user);
 
+        pointChargeRequestRepository.save(pointChargeRequest);
     }
 
     @Override
     public void savePointLog(SaveUserPointLogReq req) {
         User user = userProvider.getUserById(req.getUserId());
-        int resultPointAmount = user.getPoint() - req.getAmount();
         UserPointLog userPointLog = UserPointLog.of(req.getContent(), req.getAmount(),
-                resultPointAmount, user);
+                req.getResultPoint(), user);
 
         userPointLogRepository.save(userPointLog);
     }

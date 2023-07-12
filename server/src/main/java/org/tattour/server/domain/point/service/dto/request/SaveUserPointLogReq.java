@@ -10,8 +10,9 @@ public class SaveUserPointLogReq {
     private String content;
     private Integer amount;
     private Integer userId;
+    private Integer resultPoint;
 
-    public static SaveUserPointLogReq of(String content, Integer amount, Integer userId) {
-        return new SaveUserPointLogReq(content, amount, userId);
+    public static SaveUserPointLogReq of(String content, Integer amount, Integer userId, Integer resultPoint) {
+        return new SaveUserPointLogReq(content, amount, userId, resultPoint);
     }
 }

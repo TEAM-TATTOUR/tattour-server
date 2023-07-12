@@ -30,6 +30,7 @@ public enum SuccessType {
 	SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입이 완료됐습니다."),
 	CREATE_CUSTOM_SUCCESS(HttpStatus.CREATED, "커스텀 도안 신청이 완료됐습니다."),
 	CREATE_ORDER_SUCCESS(HttpStatus.CREATED, "주문에 성공했습니다."),
+	CREATE_POINT_CHARGE_REQUEST_SUCCESS(HttpStatus.CREATED, "포인트 충전 요청에 성공했습니다."),
 
 	/**
 	 * 202 ACCEPTED

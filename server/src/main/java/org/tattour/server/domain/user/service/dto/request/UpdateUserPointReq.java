@@ -6,11 +6,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class DeductUserPointReq {
+public class UpdateUserPointReq {
     private int userId;
     private int amount;
 
-    public static DeductUserPointReq of(int userId, int amount){
-        return new DeductUserPointReq(userId, amount);
+    public static UpdateUserPointReq of(int userId, int amount){
+        return new UpdateUserPointReq(userId, amount);
     }
 }

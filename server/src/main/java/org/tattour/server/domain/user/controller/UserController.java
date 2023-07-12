@@ -2,6 +2,7 @@ package org.tattour.server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
+import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
+import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
+import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
 import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
@@ -23,6 +28,7 @@ import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
 import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.ProductLikedServiceImpl;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImpl;
@@ -56,11 +62,11 @@ public class UserController {
     private final ProductLikedServiceImpl productLikedService;
     private final ProductLikedProviderImpl productLikedProvider;
     private final UserShippingAddressServiceImpl userShippingAddressService;
+    private final PointServiceImpl pointService;
     private final JwtService jwtService;
 
     @Operation(summary = "소셜 회원가입/로그인")
     @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> login(@RequestHeader("code") String code, @RequestBody LoginReq request) {
         SocialService socialService = socialServiceProvider.getSocialService(request.getSocialPlatform());
 
@@ -74,16 +80,15 @@ public class UserController {
 
     @Operation(summary = "user 이름, 전화번호 추가")
     @PatchMapping("/{userId}/profile")
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> updateUserProfile(
             @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId,
-            @RequestBody PatchUserInfoReq patchUserInfoReq
+            @RequestBody PatchUserInfoReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
-        userService.updateUserInfo(UpdateUserInfoReq.of(userId, patchUserInfoReq.getName(),
-                patchUserInfoReq.getPhoneNumber()));
+        userService.updateUserInfo(UpdateUserInfoReq.of(userId, req.getName(),
+                req.getPhoneNumber()));
 
         return ApiResponse.success(SuccessType.UPDATE_SUCCESS);
     }
@@ -98,7 +103,6 @@ public class UserController {
 
     @Operation(summary = "user 로그아웃")
     @PatchMapping("/{userId}/logout")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> userLogout(
             @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId
@@ -113,10 +117,10 @@ public class UserController {
     @GetMapping("/phoneNum/verification")
     public ResponseEntity<?> verififyCode(
             @UserId Integer jwtUserId,
-            @RequestBody GetVerifyCodeReq request){
-        jwtService.compareJwtWithPathVar(jwtUserId, request.getUserId());
+            @RequestBody GetVerifyCodeReq req){
+        jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
 
-        if(phoneNumberVerificationCodeProvider.compareVerficationCode(request.getUserId(), request.getVerificationCode()))
+        if(phoneNumberVerificationCodeProvider.compareVerficationCode(req.getUserId(), req.getVerificationCode()))
             return ApiResponse.success(SuccessType.CODE_VERIFICATION_SUCCESS, GetVerifyCodeRes.of(true));
         else
             return ApiResponse.success(SuccessType.CODE_VALIDATION_FAIL, GetVerifyCodeRes.of(false));
@@ -124,19 +128,18 @@ public class UserController {
 
     @Operation(summary = "좋아요 누른 타투 저장")
     @PostMapping("/{userId}/productLiked/save")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> saveProductLiked(
             @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId,
-            @RequestBody PostProductLikedReq request
+            @RequestBody PostProductLikedReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
         // 중복 검사
-        if(productLikedProvider.checkDuplicationByStickerId(request.getStickerId()))
+        if(productLikedProvider.checkDuplicationByStickerId(req.getStickerId()))
             throw new BusinessException(ErrorType.ALREADY_EXIST_PRODUCTLIKED_EXCEPTION);
 
-        productLikedService.saveProductLiked(SaveProductLikedReq.of(userId, request.getStickerId()));
+        productLikedService.saveProductLiked(SaveProductLikedReq.of(userId, req.getStickerId()));
 
         return ApiResponse.success(SuccessType.CREATE_SUCCESS);
     }
@@ -146,11 +149,11 @@ public class UserController {
     public ResponseEntity<?> deleteProductLiked(
             @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId,
-            @RequestBody DeleteProductLikedReq request
+            @RequestBody DeleteProductLikedReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, userId);
         productLikedService.deleteProductLiked(DeleteProductLikedInfo.of(userId,
-                request.getStickerId()));
+                req.getStickerId()));
 
         return ApiResponse.success(SuccessType.DELETE_SUSCCESS);
     }
@@ -171,19 +174,37 @@ public class UserController {
     public ResponseEntity<?> createShippingAddr(
             @UserId Integer jwtUserId,
             @PathVariable("userId") Integer userId,
-            @RequestBody PostUserShippingAddrReq request
+            @RequestBody PostUserShippingAddrReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, userId);
         userShippingAddressService.saveUserShippingAddr(
                 SaveUserShippingAddrReq.of(
                         userId,
-                        request.getRecipientName(),
-                        request.getContact(),
-                        request.getMailingAddress(),
-                        request.getBaseAddress(),
-                        request.getDetailAddress()));
+                        req.getRecipientName(),
+                        req.getContact(),
+                        req.getMailingAddress(),
+                        req.getBaseAddress(),
+                        req.getDetailAddress()));
 
         return ApiResponse.success(SuccessType.CREATE_SUCCESS);
+    }
+
+    @Operation(summary = "포인트 충전 신청")
+    @PostMapping("/{userId}/point/charge")
+    public ResponseEntity<?> createPointChargeRequest(
+            @UserId Integer jwtUserId,
+            @PathVariable("userId") Integer userId,
+            @RequestBody @Valid PostPointChargeRequest req
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
+        pointService.savePointChargeRequest(
+                SavePointChargeRequestReq.of(req.getUserId(), req.getChargeAmount()));
+        Integer resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), req.getChargeAmount()));
+        pointService.savePointLog(
+                SaveUserPointLogReq.of("포인트 충전 요청", req.getChargeAmount(), req.getUserId(), resultPoint));
+
+        return ApiResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
     }
 
 }

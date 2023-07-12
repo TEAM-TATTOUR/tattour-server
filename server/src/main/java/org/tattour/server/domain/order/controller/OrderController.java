@@ -14,12 +14,15 @@ import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.user.service.dto.request.DeductUserPointReq;
+import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 
 @RestController
 @RequestMapping("/order")
@@ -28,6 +31,7 @@ public class OrderController {
     private final OrderProviderImpl orderProvider;
     private final OrderServiceImpl orderService;
     private final PointServiceImpl pointService;
+    private final UserProviderImpl userProvider;
     private final UserServiceImpl userService;
     private final JwtService jwtService;
 
@@ -45,10 +49,17 @@ public class OrderController {
             @RequestBody PostOrderReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
+
+        // TODO: 지우기
+        System.out.println(userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount()));
+
+        if(userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount()))
+            throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
+
         orderService.saveOrder(req);
+        int resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), -Math.abs(req.getTotalAmount())));
         pointService.savePointLog(
-                SaveUserPointLogReq.of("상품 구매", req.getTotalAmount(), req.getUserId()));
-        userService.userDeductPoint(DeductUserPointReq.of(req.getUserId(), req.getTotalAmount()));
+                SaveUserPointLogReq.of("상품 구매", -Math.abs(req.getTotalAmount()), req.getUserId(), resultPoint));
 
         return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
     }

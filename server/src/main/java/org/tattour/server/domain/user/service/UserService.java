@@ -1,8 +1,7 @@
 package org.tattour.server.domain.user.service;
 
-import org.tattour.server.domain.user.service.dto.request.DeductUserPointReq;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
-import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
 
@@ -16,6 +15,6 @@ public interface UserService {
     // 로그아웃
     void userLogout(Integer userId);
 
-    // 유저 포인트 차감
-    void userDeductPoint(DeductUserPointReq req);
+    // 유저 포인트 수정
+    Integer updateUserPoint(UpdateUserPointReq req);
 }
