@@ -1,12 +1,14 @@
 package org.tattour.server.domain.order.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
@@ -27,6 +29,7 @@ import org.tattour.server.global.exception.ErrorType;
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@Tag(name = "Order", description = "Order API Document")
 public class OrderController {
     private final OrderProviderImpl orderProvider;
     private final OrderServiceImpl orderService;
@@ -42,6 +45,7 @@ public class OrderController {
     ){
         return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(req));
     }
+
     @Operation(summary = "결제하기")
     @PostMapping
     public ResponseEntity<?> order (
@@ -49,9 +53,6 @@ public class OrderController {
             @RequestBody PostOrderReq req
     ){
         jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
-
-        // TODO: 지우기
-        System.out.println(userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount()));
 
         if(userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount()))
             throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
@@ -62,5 +63,17 @@ public class OrderController {
                 SaveUserPointLogReq.of("상품 구매", -Math.abs(req.getTotalAmount()), req.getUserId(), resultPoint));
 
         return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
+    }
+
+    // TODO : pageable로 리팩토링하기
+    @Operation(summary = "결제 내역 불러오기")
+    @GetMapping
+    public ResponseEntity<?> getUserOrderList (
+            @UserId Integer jwtUserId,
+            @RequestParam("userId") Integer userId
+    ){
+        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
+        return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderHistoryByUserId(userId));
     }
 }

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.domain.sticker.domain.Sticker;
@@ -18,6 +19,7 @@ import org.tattour.server.domain.user.domain.User;
 @Entity
 @Table(name = "order_history")
 @DynamicInsert
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id
