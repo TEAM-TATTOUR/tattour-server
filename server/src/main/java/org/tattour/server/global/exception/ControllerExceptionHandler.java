@@ -4,6 +4,8 @@ import java.util.Objects;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -18,7 +20,7 @@ import org.tattour.server.global.dto.ApiResponse;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ControllerExceptionHandler {
-//	final Logger logger = LoggerFactory.getLogger(this.getClass());
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 400 Error
@@ -80,9 +82,12 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<?> handleInternalServerException(Exception e) {
-		System.out.println("e = " + e);
-		System.out.println("e.getClass() = " + e.getClass());
-		System.out.println(("e.getMessage() = " + e.getMessage()));
+//		System.out.println("e = " + e);
+//		System.out.println("e.getClass() = " + e.getClass());
+//		System.out.println(("e.getMessage() = " + e.getMessage()));
+
+		logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
+
 		return ApiResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
 	}
 
@@ -91,9 +96,12 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<?> handleBusinessException(BusinessException e) {
-		System.out.println("e = " + e);
-		System.out.println("e.getClass() = " + e.getClass());
-		System.out.println(("e.getMessage() = " + e.getMessage()));
+//		System.out.println("e = " + e);
+//		System.out.println("e.getClass() = " + e.getClass());
+//		System.out.println(("e.getMessage() = " + e.getMessage()));
+
+		logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
+
 		return ApiResponse.error(e.getErrorType());
 	}
 }
