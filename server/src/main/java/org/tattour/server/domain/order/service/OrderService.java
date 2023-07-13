@@ -1,9 +1,8 @@
 package org.tattour.server.domain.order.service;
 
-import org.tattour.server.domain.order.service.dto.request.PostOrderReq;
-import org.tattour.server.domain.order.service.dto.response.PostOrderRes;
+import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 
 public interface OrderService {
     // 결제하기
-    PostOrderRes order(PostOrderReq postOrderReq);
+    void saveOrder(PostOrderReq req);
 }

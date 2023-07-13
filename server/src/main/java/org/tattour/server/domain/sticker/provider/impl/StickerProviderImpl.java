@@ -27,7 +27,7 @@ public class StickerProviderImpl implements StickerProvider {
         Integer discountedPrice = null;
 
         // 할인률이 null이 아닐 때
-        if(!Objects.isNull(sticker.getDiscount().getDiscountRate()))
+        if(!Objects.isNull(sticker.getDiscount()))
             discountedPrice = (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate()))/100;
 
         return GetOrderSheetStickerInfo.of(

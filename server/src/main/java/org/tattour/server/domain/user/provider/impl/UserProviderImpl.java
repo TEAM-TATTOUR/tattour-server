@@ -31,4 +31,9 @@ public class UserProviderImpl implements UserProvider {
     public Integer checkDuplicationByEmail(String email) {
         return userRepository.findByEmail(email).map(User::getId).orElse(null);
     }
+
+    @Override
+    public boolean isUserPointLack(Integer userId, Integer totalAmount) {
+        return totalAmount > getUserById(userId).getPoint();
+    }
 }

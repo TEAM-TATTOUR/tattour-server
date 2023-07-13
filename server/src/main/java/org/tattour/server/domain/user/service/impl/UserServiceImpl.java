@@ -7,8 +7,8 @@ import org.tattour.server.domain.user.exception.NotFoundUserException;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
-import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
 
@@ -44,5 +44,16 @@ public class UserServiceImpl implements UserService {
         User user = userProvider.getUserById(userId);
         user.deleteToken();
         userRepository.save(user);
+    }
+
+    @Override
+    public Integer updateUserPoint(UpdateUserPointReq req) {
+        User user = userProvider.getUserById(req.getUserId());
+        int resultPoint = user.getPoint() + req.getAmount();
+
+        user.setUserPoint(resultPoint);
+        userRepository.save(user);
+
+        return resultPoint;
     }
 }

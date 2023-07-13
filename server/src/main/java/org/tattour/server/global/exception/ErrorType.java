@@ -25,6 +25,11 @@ public enum ErrorType {
 	TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
 
 	/**
+	 * 403 FORBIDDEN
+	 */
+	LACK_OF_POINT_EXCEPTION(HttpStatus.FORBIDDEN, "포인트가 부족하여 결제할 수 없습니다."),
+
+	/**
 	 * 404 NOT FOUND
 	 */
 	NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 데이터입니다."),
