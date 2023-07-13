@@ -21,11 +21,12 @@ public class UpdateCustomReq {
 	private Integer count;
 	private Boolean isPublic;
 	private Boolean isCompleted;
+	private Integer price;
 	private Integer viewCount;
 
 	public UpdateCustomInfo newUpdateCustomInfo(MultipartFile mainImage, List<MultipartFile> images) {
 		return UpdateCustomInfo.from(customId, size, mainImage, images, isColored,
-			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount);
+			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price);
 	}
 
 }

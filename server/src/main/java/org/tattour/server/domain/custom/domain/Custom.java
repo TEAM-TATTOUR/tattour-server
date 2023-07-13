@@ -84,6 +84,8 @@ public class Custom {
 	@Column(name = "view_count")
 	private Integer viewCount;
 
+	private Integer price;
+
 	public void setSticker(Sticker sticker) {
 		this.sticker = sticker;
 	}
@@ -144,6 +146,13 @@ public class Custom {
 
 	public void setViewCount(Integer viewCount) {
 		this.viewCount = viewCount;
+	}
+
+	public void calPrice() {
+		price = size.getPrice() * count;
+		if (isPublic) {
+			price -= size.getDiscountPrice();
+		}
 	}
 
 	public static Custom from(

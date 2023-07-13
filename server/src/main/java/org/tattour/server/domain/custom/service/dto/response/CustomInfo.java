@@ -48,7 +48,7 @@ public class CustomInfo {
 			.mainImageUrl(custom.getMainImageUrl())
 			.images(images)
 			.haveDesign(custom.getHaveDesign())
-			.size(custom.getSize().getValue())
+			.size(custom.getSize().getSize())
 			.name(custom.getName())
 			.description(custom.getDescription())
 			.demand(custom.getDemand())

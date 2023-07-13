@@ -12,6 +12,7 @@ import org.tattour.server.domain.custom.domain.CustomSize;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
 import org.tattour.server.domain.custom.domain.CustomProcess;
+import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
@@ -54,46 +55,24 @@ public class CustomServiceImpl implements CustomService {
 	@Transactional
 	public CustomInfo updateCustom(UpdateCustomInfo updateCustomInfo) {
 		Custom custom = getCustomById(updateCustomInfo.getCustomId());
-		if (!Objects.isNull(updateCustomInfo.getCount())) {
-			custom.setCount(updateCustomInfo.getCount());
+		if (!Objects.isNull(updateCustomInfo.getSize())) {
+			custom.setSize(CustomSize.getCustomSize(updateCustomInfo.getSize()));
 		}
-		if (!Objects.isNull(updateCustomInfo.getDemand())) {
-			custom.setDemand(updateCustomInfo.getDemand());
-		}
-		if (!Objects.isNull(updateCustomInfo.getDescription())) {
-			custom.setDescription(updateCustomInfo.getDescription());
-		}
-		if (!Objects.isNull(updateCustomInfo.getIsColored())) {
-			custom.setColored(updateCustomInfo.getIsColored());
-		}
-		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
-			custom.setCompleted(updateCustomInfo.getIsCompleted());
-			custom.setCustomProcess(CustomProcess.RECEIVING);
-		}
-		if (!Objects.isNull(updateCustomInfo.getIsPublic())) {
-			custom.setPublic(updateCustomInfo.getIsPublic());
-		}
-		if(!Objects.isNull(updateCustomInfo.getMainImage())) {
-			String mainImageUrl = s3Service.uploadImage(updateCustomInfo.getMainImage(), directoryPath);
+		if (!Objects.isNull(updateCustomInfo.getMainImage())) {
+			String mainImageUrl = s3Service.uploadImage(updateCustomInfo.getMainImage(),
+				directoryPath);
 			custom.setMainImageUrl(mainImageUrl);
 		}
-		if(!Objects.isNull(updateCustomInfo.getImages())) {
-			List<CustomImage> customImages = s3Service.uploadImageList(updateCustomInfo.getImages(), directoryPath)
+		if (!Objects.isNull(updateCustomInfo.getImages())) {
+			List<CustomImage> customImages = s3Service.uploadImageList(updateCustomInfo.getImages(),
+					directoryPath)
 				.stream()
 				.map(image -> CustomImage.from(image, custom))
 				.collect(Collectors.toList());
 			custom.setImages(customImages);
 		}
-		if (!Objects.isNull(updateCustomInfo.getName())) {
-			custom.setName(updateCustomInfo.getName());
-		}
-		if (!Objects.isNull(updateCustomInfo.getSize())) {
-			System.out.println("updateCustomInfo.getSize() = " + updateCustomInfo.getSize());
-			custom.setSize(CustomSize.getCustomSize(updateCustomInfo.getSize()));
-			System.out.println("custom = " + custom.getSize());
-		}
-		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
-			custom.setViewCount(updateCustomInfo.getViewCount());
+		if (!Objects.isNull(updateCustomInfo.getIsColored())) {
+			custom.setColored(updateCustomInfo.getIsColored());
 		}
 		if (!Objects.isNull(updateCustomInfo.getThemes())) {
 			List<CustomTheme> customThemes = updateCustomInfo.getThemes().stream()
@@ -106,6 +85,36 @@ public class CustomServiceImpl implements CustomService {
 				.map(styleId -> CustomStyle.from(custom, styleService.getStyleById(styleId)))
 				.collect(Collectors.toList());
 			custom.setCustomStyles(customStyles);
+		}
+		if (!Objects.isNull(updateCustomInfo.getName())) {
+			custom.setName(updateCustomInfo.getName());
+		}
+		if (!Objects.isNull(updateCustomInfo.getDemand())) {
+			custom.setDemand(updateCustomInfo.getDemand());
+		}
+		if (!Objects.isNull(updateCustomInfo.getDescription())) {
+			custom.setDescription(updateCustomInfo.getDescription());
+		}
+		if (!Objects.isNull(updateCustomInfo.getIsPublic())) {
+			custom.setPublic(updateCustomInfo.getIsPublic());
+		}
+		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
+			custom.setCompleted(updateCustomInfo.getIsCompleted());
+			custom.setCustomProcess(CustomProcess.RECEIVING);
+		}
+		if (!Objects.isNull(updateCustomInfo.getCount())) {
+			custom.setCount(updateCustomInfo.getCount());
+		}
+		if (!Objects.isNull(custom.getCount()) && !Objects.isNull(custom.getSize())
+			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(updateCustomInfo.getPrice())) {
+			custom.calPrice();
+			if (updateCustomInfo.getPrice().equals(custom.getPrice())) {
+				throw new InvalidCustomPriceException();
+			}
+		}
+
+		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
+			custom.setViewCount(updateCustomInfo.getViewCount());
 		}
 		customRepository.save(custom);
 		return CustomInfo.of(custom);
