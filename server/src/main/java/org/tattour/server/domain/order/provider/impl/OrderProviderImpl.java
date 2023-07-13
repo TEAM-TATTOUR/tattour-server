@@ -1,17 +1,27 @@
 package org.tattour.server.domain.order.provider.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
+import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.OrderProvider;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderAmountRes;
+import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderPointRes;
+import org.tattour.server.domain.order.provider.dto.response.PageInfoRes;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.global.util.EntityDtoMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +64,29 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public GetUserOrderHistoryListRes getUserOrderHistory(Integer userId) {
-        return null;
+    public GetOrderHistoryListRes getOrderHistory(int page) {
+        Page<Order> getOrderHistoryResPage = orderRepository.findAll(
+                PageRequest.of(
+                        page-1,
+                        10,
+                        Sort.by("createdAt")));
+        List<GetOrderHistoryRes> getOrderHistoryResList =
+                EntityDtoMapper.INSTANCE.toGetOrderHistoryListRes(getOrderHistoryResPage);
+
+        return GetOrderHistoryListRes.of(
+                getOrderHistoryResList,
+                PageInfoRes.of(
+                        page,
+                        getOrderHistoryResPage.getTotalElements(),
+                        getOrderHistoryResPage.getTotalPages()));
+    }
+
+    @Override
+    public GetUserOrderHistoryListRes getOrderHistoryByUserId(Integer userId) {
+        List<GetUserOrderHistoryRes> getUserOrderHistoryResList =
+                EntityDtoMapper.INSTANCE
+                        .toGetUserOrderHistoryListRes(orderRepository.findAllByUser_Id(userId));
+
+        return GetUserOrderHistoryListRes.of(getUserOrderHistoryResList);
     }
 }

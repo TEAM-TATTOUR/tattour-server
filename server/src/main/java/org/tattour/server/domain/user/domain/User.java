@@ -64,9 +64,12 @@ public class User {
     }
 
     public void setUserInfo(UpdateUserInfoReq req){
-        System.out.println("name : " + req.getName());
         this.name = req.getName();
         this.phoneNumber = req.getPhoneNumber();
+    }
+
+    public void setUserPoint(int amount){
+        this.point = amount;
     }
 
     public void deleteToken(){

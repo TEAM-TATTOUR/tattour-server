@@ -21,8 +21,7 @@ public class StickerInfo {
 	private Integer discountRate;
 	private Integer discountPrice;
 	private String composition;
-	private Integer width;
-	private Integer height;
+	private String size;
 	private Boolean isCustom;
 	private Integer shippingCost;
 	private List<String> stickerThemes;
@@ -55,8 +54,7 @@ public class StickerInfo {
 			.discountRate(discountRate)
 			.discountPrice(sticker.getPrice()*(100-discountRate)/100)
 			.composition(sticker.getComposition())
-			.width(sticker.getWidth())
-			.height(sticker.getHeight())
+			.size(sticker.getSize())
 			.isCustom(sticker.getIsCustom())
 			.shippingCost(3000)
 			.stickerThemes(stickerThemes)

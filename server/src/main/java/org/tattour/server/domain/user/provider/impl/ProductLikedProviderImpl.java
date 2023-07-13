@@ -1,12 +1,13 @@
 package org.tattour.server.domain.user.provider.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
-import org.tattour.server.domain.user.provider.dto.response.ProductLikedRes;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -29,12 +30,15 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
     }
 
+    //TODO : 리팩토링?
     @Override
     public ProductLikedListRes getLikedProductsByUserId(Integer userId) {
         List<ProductLiked> productLikedList = productLikedRepository.findAllByUser_Id(userId);
-        List<ProductLikedRes> productLikedResList = EntityDtoMapper.INSTANCE.toProductLikedResList(productLikedList);
+        List<Sticker> stickerList = productLikedList.stream()
+                .map(ProductLiked::getSticker)
+                .collect(Collectors.toList());
 
-        return new ProductLikedListRes(productLikedResList);
+        return new ProductLikedListRes(EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
     }
 
     @Override

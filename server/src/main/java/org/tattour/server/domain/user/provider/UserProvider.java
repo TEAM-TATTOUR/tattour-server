@@ -12,4 +12,7 @@ public interface UserProvider {
 
     // 이메일로 유저 중복 확인
     Integer checkDuplicationByEmail(String email);
+
+    // 포인트 부족 확인
+    boolean isUserPointLack(Integer userId, Integer totalAmount);
 }

@@ -4,12 +4,13 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@Builder
 public class ProductLikedListRes {
-    List<ProductLikedRes> stickersliked;
+    List<StickerLikedInfo> stickersliked;
 }
