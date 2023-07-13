@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
+import org.tattour.server.domain.point.domain.PointChargeRequest;
+import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
@@ -36,4 +38,9 @@ public interface EntityDtoMapper {
     GetOrderHistoryRes toGetOrderHistoryRes(Order order);
     @IterableMapping(elementTargetType = GetOrderHistoryRes.class)
     List<GetOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList);
+
+    // Point
+    @Mapping(target = "userId", source = "user.id")
+    GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
+    List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList);
 }
