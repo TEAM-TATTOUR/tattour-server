@@ -29,6 +29,8 @@ public class PointChargeRequest {
     @Column(columnDefinition = "tinyint")
     private Boolean isAmountMatched;
     @Column(columnDefinition = "tinyint")
+    private Boolean isApproved;
+    @Column(columnDefinition = "tinyint")
     private Boolean isCompleted;
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
@@ -47,5 +49,12 @@ public class PointChargeRequest {
 
     public static PointChargeRequest of(Integer chargeAmount, User user){
         return new PointChargeRequest(chargeAmount, user);
+    }
+
+    public void setConditions(boolean isDeposited, boolean isAmountMatched,boolean isApproved, boolean isCompleted){
+        this.isDeposited = isDeposited;
+        this.isAmountMatched = isAmountMatched;
+        this.isApproved = isApproved;
+        this.isCompleted = isCompleted;
     }
 }

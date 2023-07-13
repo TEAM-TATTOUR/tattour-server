@@ -49,4 +49,5 @@ public interface EntityDtoMapper {
     @Mapping(target = "userId", source = "user.id")
     GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
     List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList);
+
 }

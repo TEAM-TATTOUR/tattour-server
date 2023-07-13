@@ -17,6 +17,7 @@ public class GetPointChargeRequestRes {
     private Integer transferredAmount;
     private Boolean isDeposited;
     private Boolean isAmountMatched;
+    private Boolean isApproved;
     private Boolean isCompleted;
     private String createdAt;
     private String lastUpdatedAt;
