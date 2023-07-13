@@ -26,9 +26,9 @@ import org.tattour.server.domain.user.domain.User;
 @Getter
 @Table(name = "custom")
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Custom {
 
 	@Id
@@ -101,35 +101,60 @@ public class Custom {
 		this.mainImageUrl = mainImageUrl;
 	}
 
+	public void setImages(List<CustomImage> images) {
+		this.images = images;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDemand(String demand) {
+		this.demand = demand;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public void setColored(Boolean colored) {
+		isColored = colored;
+	}
+
+	public void setPublic(Boolean aPublic) {
+		isPublic = aPublic;
+	}
+
+	public void setCompleted(Boolean completed) {
+		isCompleted = completed;
+	}
+
 	public void setProcess(Process process) {
 		this.process = process;
 	}
 
-	public static Custom from(User user,
-//		Sticker sticker,
-		List<CustomTheme> customThemes,List<CustomStyle> customStyles,
-		String mainImageUrl,
-		List<CustomImage> images,
-		Boolean haveDesign, String size, String name, String description, String demand,
-		Integer count, Boolean isColored, Boolean isPublic, Boolean isCompleted,
-		Integer viewCount, Process process) {
+	public void setViewCount(Integer viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public static Custom from(
+		User user,
+		Boolean haveDesign,
+		Boolean isCompleted,
+		Integer viewCount) {
 		return Custom.builder()
 			.user(user)
-			.customThemes(customThemes)
-			.customStyles(customStyles)
-			.mainImageUrl(mainImageUrl)
-			.images(images)
 			.haveDesign(haveDesign)
-			.size(size)
-			.name(name)
-			.description(description)
-			.demand(demand)
-			.count(count)
-			.isColored(isColored)
-			.isPublic(isPublic)
 			.isCompleted(isCompleted)
 			.viewCount(viewCount)
-			.process(process)
 			.build();
 	}
 

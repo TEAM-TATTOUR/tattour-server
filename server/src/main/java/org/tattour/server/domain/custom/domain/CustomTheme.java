@@ -41,13 +41,4 @@ public class CustomTheme {
 			.theme(theme)
 			.build();
 	}
-	public static CustomTheme of(Theme theme) {
-		return CustomTheme.builder()
-			.theme(theme)
-			.build();
-	}
-
-	public void setCustom(Custom custom) {
-		this.custom = custom;
-	}
 }
