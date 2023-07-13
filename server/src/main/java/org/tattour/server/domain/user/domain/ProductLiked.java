@@ -12,13 +12,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.domain.sticker.domain.Sticker;
 
 @Entity
 @DynamicInsert
-@Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductLiked {
