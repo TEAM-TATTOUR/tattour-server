@@ -48,7 +48,7 @@ public class CustomInfo {
 			.mainImageUrl(custom.getMainImageUrl())
 			.images(images)
 			.haveDesign(custom.getHaveDesign())
-			.size(custom.getSize())
+			.size(custom.getSize().getSize())
 			.name(custom.getName())
 			.description(custom.getDescription())
 			.demand(custom.getDemand())
@@ -56,7 +56,7 @@ public class CustomInfo {
 			.isColored(custom.getIsColored())
 			.isPublic(custom.getIsPublic())
 			.isCompleted(custom.getIsCompleted())
-			.process(custom.getProcess().getName())
+			.process(custom.getProcess().getValue())
 			.viewCount(custom.getViewCount())
 			.build();
 	}

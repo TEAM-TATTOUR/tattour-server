@@ -58,7 +58,8 @@ public class Custom {
 	@Column(name = "have_design", columnDefinition = "tinyint")
 	private Boolean haveDesign;
 
-	private String size;
+	@Enumerated(value = EnumType.STRING)
+	private CustomSize size;
 
 	private String name;
 
@@ -78,10 +79,12 @@ public class Custom {
 	private Boolean isCompleted;
 
 	@Enumerated(value = EnumType.STRING)
-	private Process process;
+	private CustomProcess process;
 
 	@Column(name = "view_count")
 	private Integer viewCount;
+
+	private Integer price;
 
 	public void setSticker(Sticker sticker) {
 		this.sticker = sticker;
@@ -105,7 +108,7 @@ public class Custom {
 		this.images = images;
 	}
 
-	public void setSize(String size) {
+	public void setSize(CustomSize size) {
 		this.size = size;
 	}
 
@@ -137,7 +140,7 @@ public class Custom {
 		isCompleted = completed;
 	}
 
-	public void setProcess(Process process) {
+	public void setCustomProcess(CustomProcess process) {
 		this.process = process;
 	}
 
@@ -145,14 +148,25 @@ public class Custom {
 		this.viewCount = viewCount;
 	}
 
+	public void calPrice() {
+		price = size.getPrice() * count;
+		if (isPublic) {
+			price -= size.getDiscountPrice();
+		}
+	}
+
 	public static Custom from(
 		User user,
 		Boolean haveDesign,
+		String name,
+		String mainImageUrl,
 		Boolean isCompleted,
 		Integer viewCount) {
 		return Custom.builder()
 			.user(user)
 			.haveDesign(haveDesign)
+			.name(name)
+			.mainImageUrl(mainImageUrl)
 			.isCompleted(isCompleted)
 			.viewCount(viewCount)
 			.build();
