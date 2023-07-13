@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserByUserId(Integer userId) {
         return userRepository.findById(userId)
             .orElseThrow(NotFoundUserException::new);

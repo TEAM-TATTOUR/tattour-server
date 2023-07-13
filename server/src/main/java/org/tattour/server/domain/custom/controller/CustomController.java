@@ -22,7 +22,6 @@ import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/custom")
@@ -34,11 +33,11 @@ public class CustomController {
 	@PostMapping(value = "/apply")
 	@Operation(summary = "커스텀 도안 신청", description = "포인트 결제하면 haveDesign 만 넘겨주기")
 	public ResponseEntity<?> createCustom(
-//		@UserId Integer userId,
+		@UserId Integer userId,
 		@RequestBody ApplyCustomReq request
 	) {
 		ApplyCustomRes response = ApplyCustomRes.of(
-			(customService.createCustom(request.getHaveDesign(), 1)));
+			(customService.createCustom(request.getHaveDesign(), userId)));
 		return ApiResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
 	}
 
@@ -46,12 +45,12 @@ public class CustomController {
 	@Operation(summary = "커스텀 도안 수정", description = " data 는 application/json 타입으로 보내기"
 		+ " mainImage 는 file. image 는 file 리스트로 보내기!")
 	public ResponseEntity<?> updateCustom(
-//		@UserId Integer userId,
+		@UserId Integer userId,
 		@RequestPart(value = "data") UpdateCustomReq request,
 		@RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
 		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		CustomInfo response = customService.updateCustom(request.newUpdateCustomInfo(1, mainImage, images));
+		CustomInfo response = customService.updateCustom(request.newUpdateCustomInfo(userId, mainImage, images));
 		return ApiResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

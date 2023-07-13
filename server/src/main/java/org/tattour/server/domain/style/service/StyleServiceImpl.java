@@ -37,6 +37,4 @@ public class StyleServiceImpl implements StyleService {
 		List<Style> styles = styleRepository.findAll();
 		return StyleSummaryList.of(styles);
 	}
-
-
 }

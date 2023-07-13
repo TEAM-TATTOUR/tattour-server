@@ -227,9 +227,10 @@ public class UserController {
 	@GetMapping("/{userId}/custom/complete")
 	@Operation(summary = "신청한 커스텀 도안 조회")
 	public ResponseEntity<?> getUserCustomCompleteList(
-//        @UserId Integer jwtUserId,
-		@PathVariable(value = "userId") Integer pathUserId
+		@UserId Integer jwtUserId,
+		@PathVariable(value = "userId") Integer userId
 	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(1);
 		return ApiResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
@@ -237,9 +238,10 @@ public class UserController {
 	@GetMapping("/{userId}/custom/incomplete")
 	@Operation(summary = "커스텀 도안 임시저장 조회")
 	public ResponseEntity<?> getUserCustomIncompleteList(
-//        @UserId Integer jwtUserId,
+		@UserId Integer jwtUserId,
 		@PathVariable(value = "userId") Integer userId
 	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(1);
 		return ApiResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
@@ -247,10 +249,11 @@ public class UserController {
 	@GetMapping("/{userId}/custom/{customId}")
 	@Operation(summary = "내 도안 상세정보 조회")
 	public ResponseEntity<?> getOneUserCustomInfo(
-//		@UserId Integer jwtUserId,
+		@UserId Integer jwtUserId,
 		@PathVariable(value = "userId") Integer userId,
 		@PathVariable(value = "customId") Integer customId
-		) {
+	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 		Custom custom = customService.getCustomById(customId, userId);
 		CustomInfo response = CustomInfo.of(custom);
 		return ApiResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
