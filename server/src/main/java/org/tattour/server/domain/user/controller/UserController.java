@@ -54,7 +54,7 @@ import org.tattour.server.domain.user.controller.dto.response.LoginRes;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User API Document")
 public class UserController {
@@ -217,7 +217,7 @@ public class UserController {
                 SavePointChargeRequestReq.of(req.getUserId(), req.getChargeAmount()));
         Integer resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), req.getChargeAmount()));
         pointService.savePointLog(
-                SaveUserPointLogReq.of("포인트 충전 요청", null, req.getChargeAmount(), req.getUserId(), resultPoint));
+                SaveUserPointLogReq.of("포인트 충전 요청", null, req.getChargeAmount(), resultPoint, req.getUserId()));
 
 		return ApiResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
 	}

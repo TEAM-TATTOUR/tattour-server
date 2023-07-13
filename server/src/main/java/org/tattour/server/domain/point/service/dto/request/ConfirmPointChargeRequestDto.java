@@ -8,11 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfirmPointChargeRequestDto {
     private int id;
+    private int userId;
     private int transferredAmount;
-    private boolean isApproved;
     private String reason;
 
-    public static ConfirmPointChargeRequestDto of(int id, int transferredAmount, boolean isApproved, String reason) {
-        return new ConfirmPointChargeRequestDto(id, transferredAmount, isApproved, reason);
+    public static ConfirmPointChargeRequestDto of(int id, int userId, int transferredAmount, String reason) {
+        return new ConfirmPointChargeRequestDto(id, userId, transferredAmount,reason);
     }
 }

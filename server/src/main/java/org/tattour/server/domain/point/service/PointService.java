@@ -4,6 +4,7 @@ import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeReq
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
+import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 
 public interface PointService {
     // 포인트 충전 요청 저장하기
@@ -15,6 +16,6 @@ public interface PointService {
     // 포인트 충전 요청 수정하기
     void updatePointChargeRequest(PatchPointChangeRequestReq req);
 
-    // 포인트 충전 요청 상태 확정
-    void confirmPointChargeRequest(ConfirmPointChargeRequestDto req);
+    // 포인트 충전 요청 상태 검증
+    ConfirmPointChargeResponseDto confirmPointChargeRequest(ConfirmPointChargeRequestDto req);
 }

@@ -60,7 +60,7 @@ public class OrderController {
         orderService.saveOrder(req);
         int resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), -Math.abs(req.getTotalAmount())));
         pointService.savePointLog(
-                SaveUserPointLogReq.of("상품 구매", null, -Math.abs(req.getTotalAmount()), req.getUserId(), resultPoint));
+                SaveUserPointLogReq.of("상품 구매", null, -Math.abs(req.getTotalAmount()), resultPoint, req.getUserId()));
 
         return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
     }

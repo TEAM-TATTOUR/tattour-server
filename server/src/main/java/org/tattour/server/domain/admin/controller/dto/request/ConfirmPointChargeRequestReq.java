@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConfirmPointChargeRequestReq {
     private int id;
+    private int userId;
     private int transferredAmount;
-    private boolean isApproved;
     private String reason;
 }

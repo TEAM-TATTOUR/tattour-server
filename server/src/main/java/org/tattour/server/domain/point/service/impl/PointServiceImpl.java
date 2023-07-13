@@ -3,8 +3,16 @@ package org.tattour.server.domain.point.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tattour.server.domain.custom.service.CustomServiceImpl;
+import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
+import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
+import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
+import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.domain.UserPointLog;
+import org.tattour.server.domain.point.provider.dto.request.GetPointChargeRequestAfterDate;
+import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImpl;
@@ -15,9 +23,10 @@ import org.tattour.server.domain.point.service.dto.request.SavePointChargeReques
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
+import org.tattour.server.global.util.EntityDtoMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +36,8 @@ public class PointServiceImpl implements PointService {
     private final UserProviderImpl userProvider;
     private final UserServiceImpl userService;
     private final PointProviderImpl pointProvider;
+    private final CustomServiceImpl customService;
+    private final OrderProviderImpl orderProvider;
 
     @Override
     @Transactional
@@ -69,9 +80,37 @@ public class PointServiceImpl implements PointService {
             // PointChargeRequest의 상태를 변경하기
             updatePointChargeRequest(
                     PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),true, true, true, true));
+            return null;
         } else {
             // 일치하지 않으면
+            String baseDate = pointChargeRequest.getCreatedAt();
 
+            // 유저 정보
+            User user = userProvider.getUserById(req.getUserId());
+            GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
+
+            // 포인트 충전 내역
+            GetPointChargeRequestListRes getPointChargeRequestListRes =
+                    pointProvider.getPointChargeRequestAfterDate(
+                            GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
+            getPointChargeRequestListRes
+                    .getGetPointChargeRequestResList()
+                    .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(pointChargeRequest));
+
+            // 구매 내역
+            GetUserOrderHistoryListRes getUserOrderHistoryListRes =
+                    orderProvider.getOrderHistoryAfterDate(
+                            GetOrderHistoryAfterDateReq.of(req.getUserId(), baseDate));
+
+            // 커스텀 신청내역
+            CustomApplySummaryInfoList customApplySummaryInfoList =
+                    customService.getCustomApplySummaryInfoList(
+                            GetCustomSummaryInfo.of(req.getUserId(), baseDate));
+
+            return ConfirmPointChargeResponseDto.of(getUserInfoDto,  getPointChargeRequestListRes, getUserOrderHistoryListRes, customApplySummaryInfoList);
+        }
+    }
+}
 
 //            // PointChargeRequest의 상태를 변경하기
 //            updatePointChargeRequest(
@@ -86,6 +125,3 @@ public class PointServiceImpl implements PointService {
 //
 //            // 유저 포인트 처리
 //            userService.updateUserPoint(UpdateUserPointReq.of(user.getId(), -amount));
-        }
-    }
-}
