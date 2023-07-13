@@ -1,6 +1,6 @@
 package org.tattour.server.domain.user.provider;
 
-import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.domain.User;
 
 public interface UserProvider {

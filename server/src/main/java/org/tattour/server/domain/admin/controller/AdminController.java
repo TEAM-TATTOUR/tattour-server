@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeReq;
+import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
-import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestReq;
+import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
@@ -45,12 +45,13 @@ public class AdminController {
         return ApiResponse.success(SuccessType.GET_SUCCESS, pointProvider.getAllPointChargeRequest(userId, isCompleted));
     }
 
-    @Operation(summary = "포인트 충전 요청 상태 확정")
+    @Operation(summary = "포인트 충전 요청 검증")
     @PostMapping("/point/request/confirm")
     public ResponseEntity<?> confirmPointChargeRequest(
-            @RequestBody ConfirmPointChargeReq req
+            @RequestBody ConfirmPointChargeRequestReq req
     ){
-        pointService.confirmPointChargeRequest(ConfirmPointChargeRequestReq.of(req.getId(), req.isApproved()));
+        pointService.confirmPointChargeRequest(
+                ConfirmPointChargeRequestDto.of(req.getId(), req.getTransferredAmount(), req.isApproved(), req.getReason()));
         return ApiResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
     }
 }

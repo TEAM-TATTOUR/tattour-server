@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ConfirmPointChargeReq {
+public class ConfirmPointChargeRequestReq {
     private int id;
+    private int transferredAmount;
     private boolean isApproved;
+    private String reason;
 }

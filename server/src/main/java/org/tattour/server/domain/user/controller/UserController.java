@@ -202,7 +202,7 @@ public class UserController {
                 SavePointChargeRequestReq.of(req.getUserId(), req.getChargeAmount()));
         Integer resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), req.getChargeAmount()));
         pointService.savePointLog(
-                SaveUserPointLogReq.of("포인트 충전 요청", req.getChargeAmount(), req.getUserId(), resultPoint));
+                SaveUserPointLogReq.of("포인트 충전 요청", null, req.getChargeAmount(), req.getUserId(), resultPoint));
 
         return ApiResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
     }

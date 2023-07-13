@@ -13,7 +13,7 @@ import org.tattour.server.domain.point.provider.dto.response.GetPointChargeReque
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {

@@ -51,7 +51,8 @@ public class PointChargeRequest {
         return new PointChargeRequest(chargeAmount, user);
     }
 
-    public void setConditions(boolean isDeposited, boolean isAmountMatched,boolean isApproved, boolean isCompleted){
+    public void setProperties(Integer transferredAmount, boolean isDeposited, boolean isAmountMatched,boolean isApproved, boolean isCompleted){
+        this.transferredAmount = transferredAmount;
         this.isDeposited = isDeposited;
         this.isAmountMatched = isAmountMatched;
         this.isApproved = isApproved;
