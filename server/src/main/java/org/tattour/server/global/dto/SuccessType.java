@@ -12,7 +12,7 @@ public enum SuccessType {
 	 */
 	GET_SUCCESS(HttpStatus.OK, "조회에 성공했습니다."),
 	UPDATE_SUCCESS(HttpStatus.OK, "갱신에 성공했습니다."),
-	DELETE_SUSCCESS(HttpStatus.OK, "삭제에 성공했습니다."),
+	DELETE_SUCCESS(HttpStatus.OK, "삭제에 성공했습니다."),
 	LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공했습니다."),
 	LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃에 성공했습니다."),
 	READ_ALL_STICKER_SUCCESS(HttpStatus.OK, "모든 스티커 요약 정보 조회에 성공했습니다."),
@@ -22,6 +22,11 @@ public enum SuccessType {
 	READ_SIMILAR_STICKER_SUCCESS(HttpStatus.OK, "비슷한 스티커 리스트 조회에 성공했습니다"),
 	READ_FILTER_ALL_STICKER_SUCCESS(HttpStatus.OK, "스티커 필터링 조회에 성공했습니다."),
 	READ_SEARCH_ALL_STICKER_SUCCESS(HttpStatus.OK, "스티커 검색 조회에 성공했습니다."),
+	READ_ALL_THEME_SUCCESS(HttpStatus.OK, "테마 조회에 성공했습니다."),
+	READ_ALL_THEME_SUMMARY_SUCCESS(HttpStatus.OK, "테마 요약 정보 조회에 성공했습니다."),
+	READ_ALL_STYLE_SUCCESS(HttpStatus.OK, "스타일 조회에 성공했습니다."),
+	READ_ALL_STYLE_SUMMARY_SUCCESS(HttpStatus.OK, "스타일 요약 정보 조회에 성공했습니다."),
+	UPDATE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 업데이트에 성공했습니다"),
 
 	/**
 	 * 201 CREATED

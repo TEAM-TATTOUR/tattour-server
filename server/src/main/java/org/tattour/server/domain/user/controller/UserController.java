@@ -155,7 +155,7 @@ public class UserController {
         productLikedService.deleteProductLiked(DeleteProductLikedInfo.of(userId,
                 req.getStickerId()));
 
-        return ApiResponse.success(SuccessType.DELETE_SUSCCESS);
+        return ApiResponse.success(SuccessType.DELETE_SUCCESS);
     }
 
     @Operation(summary = "좋아요 누른 타투 불러오기")

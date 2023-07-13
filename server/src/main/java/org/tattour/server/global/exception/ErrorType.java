@@ -35,6 +35,7 @@ public enum ErrorType {
 	NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 데이터입니다."),
 	NOT_FOUND_USER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다"),
 	NOT_FOUND_STICKER_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스티커입니다"),
+	NOT_FOUND_CUSTOM_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 커스텀입니다"),
 	NOT_FOUND_THEME_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 테마입니다"),
 	NOT_FOUND_STYLE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스타일입니다"),
 	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.NOT_FOUND, "인증번호가 존재하지 않습니다."),

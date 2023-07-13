@@ -9,6 +9,7 @@ public interface UserService {
     // 유저 생성
     User saveUser(SaveUserReq req);
 
+    User getUserByUserId(Integer userId);
     // 회원가입 시 이름, 전화번호 추가
     void updateUserInfo(UpdateUserInfoReq req);
 
