@@ -9,12 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.domain.user.domain.User;
 
 @Entity
 @DynamicInsert
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PointChargeRequest {
     @Id
@@ -26,6 +28,8 @@ public class PointChargeRequest {
     private Boolean isDeposited;
     @Column(columnDefinition = "tinyint")
     private Boolean isAmountMatched;
+    @Column(columnDefinition = "tinyint")
+    private Boolean isApproved;
     @Column(columnDefinition = "tinyint")
     private Boolean isCompleted;
     @Column(columnDefinition = "Timestamp")
@@ -45,5 +49,12 @@ public class PointChargeRequest {
 
     public static PointChargeRequest of(Integer chargeAmount, User user){
         return new PointChargeRequest(chargeAmount, user);
+    }
+
+    public void setConditions(boolean isDeposited, boolean isAmountMatched,boolean isApproved, boolean isCompleted){
+        this.isDeposited = isDeposited;
+        this.isAmountMatched = isAmountMatched;
+        this.isApproved = isApproved;
+        this.isCompleted = isCompleted;
     }
 }

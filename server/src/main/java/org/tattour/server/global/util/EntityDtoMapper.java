@@ -8,9 +8,10 @@ import org.springframework.data.domain.Page;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
+import org.tattour.server.domain.point.domain.PointChargeRequest;
+import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
-import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
 
@@ -22,6 +23,13 @@ public interface EntityDtoMapper {
     GetUserProfileRes toGetUserProfileRes(User user);
 
     // StickerLikedInfo
+    @Mapping(target = "discountPrice",
+            expression = "java(sticker.getDiscount() != null ? "
+                    + "sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate()) / 100 "
+                    + ": null)")
+    @Mapping(target = "discountRate",
+            expression = "java(sticker.getDiscount() != null ? "
+                    + "sticker.getDiscount().getDiscountRate() : null)")
     StickerLikedInfo toStickerLikedInfo(Sticker sticker);
     List<StickerLikedInfo> toStickerLikedInfoList(List<Sticker> stickerList);
 
@@ -36,4 +44,10 @@ public interface EntityDtoMapper {
     GetOrderHistoryRes toGetOrderHistoryRes(Order order);
     @IterableMapping(elementTargetType = GetOrderHistoryRes.class)
     List<GetOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList);
+
+    // Point
+    @Mapping(target = "userId", source = "user.id")
+    GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
+    List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList);
+
 }

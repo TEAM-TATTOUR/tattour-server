@@ -43,6 +43,7 @@ public enum ErrorType {
 	NOT_FOUND_STYLE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스타일입니다"),
 	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.NOT_FOUND, "인증번호가 존재하지 않습니다."),
 	NOT_FOUND_SAVE_IMAGE_EXCEPTION(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다"),
+	NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 포인트 충전 요청입니다."),
 	NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다"),
 
 	/**
