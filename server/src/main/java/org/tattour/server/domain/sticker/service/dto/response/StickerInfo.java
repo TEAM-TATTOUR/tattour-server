@@ -12,7 +12,7 @@ import org.tattour.server.domain.sticker.domain.StickerImage;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class StickerInfoRes {
+public class StickerInfo {
 
 	private Integer id;
 	private String name;
@@ -29,7 +29,7 @@ public class StickerInfoRes {
 	private List<String> images;
 
 
-	public static StickerInfoRes from(Sticker sticker, List<StickerImage> images) {
+	public static StickerInfo from(Sticker sticker, List<StickerImage> images) {
 		List<String> stickerImages = new ArrayList<>();
 		List<String> stickerThemes = new ArrayList<>();
 		List<String> stickerStyles = new ArrayList<>();
@@ -46,7 +46,7 @@ public class StickerInfoRes {
 			.stream()
 			.map(style -> stickerStyles.add(style.getStyle().getName()))
 			.collect(Collectors.toList());
-		return StickerInfoRes.builder()
+		return StickerInfo.builder()
 			.id(sticker.getId())
 			.name(sticker.getName())
 			.description(sticker.getDescription())

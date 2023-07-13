@@ -1,8 +1,8 @@
 package org.tattour.server.domain.search.service;
 
-import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryListRes;
+import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 
 public interface SearchService {
 
-	StickerSummaryListRes searchSticker(String word);
+	StickerSummaryList searchSticker(String word);
 }

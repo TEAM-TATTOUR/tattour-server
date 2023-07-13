@@ -9,15 +9,15 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class StickerSummaryListRes {
+public class StickerSummaryList {
 
-	private List<StickerSummaryRes> stickers;
+	private List<StickerSummary> stickers;
 
-	public static StickerSummaryListRes of(List<Sticker> stickers) {
-		List<StickerSummaryRes> stickerSummaryRes = stickers
+	public static StickerSummaryList of(List<Sticker> stickers) {
+		List<StickerSummary> stickerSummary = stickers
 			.stream()
-			.map(StickerSummaryRes::of)
+			.map(StickerSummary::of)
 			.collect(Collectors.toList());
-		return new StickerSummaryListRes(stickerSummaryRes);
+		return new StickerSummaryList(stickerSummary);
 	}
 }

@@ -9,13 +9,14 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.domain.StickerImage;
 import org.tattour.server.domain.sticker.domain.StickerSort;
 import org.tattour.server.domain.sticker.repository.impl.StickerImageRepositoryImpl;
 import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
-import org.tattour.server.domain.sticker.service.dto.response.StickerInfoRes;
-import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryListRes;
+import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
+import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.exception.NotFoundStyleException;
@@ -34,6 +35,7 @@ public class StickerServiceImpl implements StickerService {
 	private final StyleRepositoryImpl styleRepository;
 
 	@Override
+	@Transactional(readOnly = true)
 	public Sticker getStickerByStickerId(Integer stickerId) {
 		 Sticker sticker = stickerRepository.findById(stickerId)
 			.orElseThrow(NotFoundStickerException::new);
@@ -41,28 +43,32 @@ public class StickerServiceImpl implements StickerService {
 	}
 
 	@Override
-	public StickerInfoRes getOneStickerInfo(Integer stickerId) {
+	@Transactional(readOnly = true)
+	public StickerInfo getOneStickerInfo(Integer stickerId) {
 		Sticker sticker = stickerRepository.findById(stickerId)
 			.orElseThrow(NotFoundStickerException::new);
 		List<StickerImage> images = stickerImageRepository.findAllByStickerId(stickerId);
 
-		return StickerInfoRes.from(sticker, images);
+		return StickerInfo.from(sticker, images);
 	}
 
 	@Override
-	public StickerSummaryListRes getAllStickerList() {
+	@Transactional(readOnly = true)
+	public StickerSummaryList getAllStickerList() {
 		List<Sticker> stickers = stickerRepository.findAllByStateTrue();
-		return StickerSummaryListRes.of(stickers);
+		return StickerSummaryList.of(stickers);
 	}
 
 	@Override
-	public StickerSummaryListRes getHotCustomStickerList() {
+	@Transactional(readOnly = true)
+	public StickerSummaryList getHotCustomStickerList() {
 		List<Sticker> stickers = stickerRepository.findAllByIsCustomTrueAndStateTrue();
-		return StickerSummaryListRes.of(stickers);
+		return StickerSummaryList.of(stickers);
 	}
 
 	@Override
-	public StickerSummaryListRes getSimilarStickerList(Integer stickerId) {
+	@Transactional(readOnly = true)
+	public StickerSummaryList getSimilarStickerList(Integer stickerId) {
 		List<Sticker> result = new ArrayList<>();
 		Sticker sticker = getStickerByStickerId(stickerId);
 		List<Theme> themes = sticker.getStickerThemes().stream()
@@ -74,36 +80,37 @@ public class StickerServiceImpl implements StickerService {
 		addStickerListByThemeList(result, themes);
 		addStickerListByStyleList(result, styles);
 		result.remove(sticker);
-		return StickerSummaryListRes.of(result);
+		return StickerSummaryList.of(result);
 	}
 
 	@Override
-	public StickerSummaryListRes getSearchStickerList(String word) {
+	public StickerSummaryList getSearchStickerList(String word) {
 		return null;
 	}
 
 	@Override
-	public StickerSummaryListRes getFilterStickerList(String sort, String theme, String style) {
+	@Transactional(readOnly = true)
+	public StickerSummaryList getFilterStickerList(String sort, String theme, String style) {
 		List<Sticker> result = new ArrayList<>();
-		StickerSort stickerSort = getStickerSort(sort);
+		StickerSort stickerSort = StickerSort.getStickerSort(sort);
 		if (theme.isEmpty() && theme.isEmpty()) {
 			result = stickerRepository.findAll();
 			sortStickerListByStickerSort(result, stickerSort);
-			return StickerSummaryListRes.of(result);
+			return StickerSummaryList.of(result);
 		}
 		if (style.isEmpty()) {
 			Theme fileterTheme = themeRepository.findByName(theme)
 				.orElseThrow(NotFoundThemeException::new);
 			addStickerListByTheme(result, fileterTheme);
 			sortStickerListByStickerSort(result, stickerSort);
-			return StickerSummaryListRes.of(result);
+			return StickerSummaryList.of(result);
 		}
 		if (theme.isEmpty()) {
 			Style filterStyle = styleRepository.findByName(style)
 				.orElseThrow(NotFoundStyleException::new);
 			addStickerListByStyle(result, filterStyle);
 			sortStickerListByStickerSort(result, stickerSort);
-			return StickerSummaryListRes.of(result);
+			return StickerSummaryList.of(result);
 		}
 		Theme fileterTheme = themeRepository.findByName(theme)
 			.orElseThrow(NotFoundThemeException::new);
@@ -112,7 +119,7 @@ public class StickerServiceImpl implements StickerService {
 		addStickerListByTheme(result, fileterTheme);
 		addStickerListByStyle(result, filterStyle);
 		sortStickerListByStickerSort(result, stickerSort);
-		return StickerSummaryListRes.of(result);
+		return StickerSummaryList.of(result);
 	}
 
 	@Override
@@ -161,15 +168,6 @@ public class StickerServiceImpl implements StickerService {
 				Collections.sort( stickers, (o1,o2) -> o2.getPrice() - o1.getPrice() );
 			case PRICE_LOW:
 				Collections.sort( stickers, (o1,o2) -> o1.getPrice() - o2.getPrice() );
-		}
-	}
-
-	private StickerSort getStickerSort(String sort) {
-		String upperCaseSort = sort.toUpperCase();
-		try {
-			return StickerSort.valueOf(upperCaseSort);
-		} catch (Exception e) {
-			throw new ConstraintViolationException(new HashSet<>());
 		}
 	}
 }
