@@ -7,7 +7,7 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class StickerSummaryRes {
+public class StickerSummary {
 
 	private Integer id;
 	private String name;
@@ -17,9 +17,9 @@ public class StickerSummaryRes {
 	private Integer discountPrice;
 	private Boolean isCustom;
 
-	public static StickerSummaryRes of(Sticker sticker) {
+	public static StickerSummary of(Sticker sticker) {
 		Integer discountRate = sticker.getDiscount().getDiscountRate();
-		return StickerSummaryRes.builder()
+		return StickerSummary.builder()
 			.id(sticker.getId())
 			.name(sticker.getName())
 			.imageUrl(sticker.getMainImageUrl())
