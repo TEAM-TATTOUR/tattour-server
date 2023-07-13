@@ -3,6 +3,7 @@ package org.tattour.server.domain.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tattour.server.domain.user.exception.NotFoundUserException;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
@@ -21,6 +22,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User saveUser(SaveUserReq request) {
         return userRepository.save(User.of(request));
+    }
+
+    @Override
+    public User getUserByUserId(Integer userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(NotFoundUserException::new);
     }
 
     @Override

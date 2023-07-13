@@ -7,13 +7,21 @@ import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.repository.impl.StyleRepositoryImpl;
 import org.tattour.server.domain.style.service.dto.response.StyleInfoList;
 import org.tattour.server.domain.style.service.dto.response.StyleSummaryList;
+import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.global.exception.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
 public class StyleServiceImpl implements StyleService {
 
 	private final StyleRepositoryImpl styleRepository;
-	
+
+	@Override
+	public Style getStyleById(Integer styleId) {
+		return styleRepository.findById(styleId)
+			.orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_STYLE_EXCEPTION));
+	}
+
 	@Override
 	public StyleInfoList getAllStyle() {
 		List<Style> styles = styleRepository.findAll();

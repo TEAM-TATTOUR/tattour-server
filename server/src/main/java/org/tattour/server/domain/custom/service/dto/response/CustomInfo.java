@@ -43,7 +43,6 @@ public class CustomInfo {
 		return CustomInfo.builder()
 			.id(custom.getId())
 			.userId(custom.getUser().getId())
-//			.stickerId(custom.getSticker().getId())
 			.themes(themes)
 			.styles(styles)
 			.mainImageUrl(custom.getMainImageUrl())
