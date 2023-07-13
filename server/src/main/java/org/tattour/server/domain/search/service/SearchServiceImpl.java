@@ -3,10 +3,11 @@ package org.tattour.server.domain.search.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
-import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryListRes;
+import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.repository.impl.StyleRepositoryImpl;
 import org.tattour.server.domain.theme.domain.Theme;
@@ -22,12 +23,13 @@ public class SearchServiceImpl implements SearchService {
 	private final StyleRepositoryImpl styleRepository;
 
 	@Override
-	public StickerSummaryListRes searchSticker(String word) {
+	@Transactional(readOnly = true)
+	public StickerSummaryList searchSticker(String word) {
 		List<Sticker> result = stickerRepository.findByNameContaining(word);
 		List<Theme> themes = themeRepository.findByNameLike(word);
 		List<Style> styles = styleRepository.findByNameLike(word);
 		stickerService.addStickerListByThemeList(result, themes);
 		stickerService.addStickerListByStyleList(result, styles);
-		return StickerSummaryListRes.of(result);
+		return StickerSummaryList.of(result);
 	}
 }

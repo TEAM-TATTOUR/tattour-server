@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
@@ -52,6 +53,7 @@ public class UserController {
     private final SocialServiceProvider socialServiceProvider;
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
+    private final CustomService customService;
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final ProductLikedServiceImpl productLikedService;
     private final ProductLikedProviderImpl productLikedProvider;
@@ -186,4 +188,24 @@ public class UserController {
         return ApiResponse.success(SuccessType.CREATE_SUCCESS);
     }
 
+    @GetMapping("/{userId}/custom/completion")
+    @Operation(summary = "신청한 커스텀 도안 임시저장 조회")
+    public ResponseEntity<?> getUserCustomCompletionList() {
+
+        return null;
+    }
+
+    @GetMapping("/{userId}/custom/incompletion")
+    @Operation(summary = "신청한 커스텀 도안 임시저장 조회")
+    public ResponseEntity<?> getUserCustomInCompletionList() {
+
+        return null;
+    }
+
+    @GetMapping("/{userId}/custom/{customId}")
+    @Operation(summary = "내 도안 상세정보 조회")
+    public ResponseEntity<?> getOneUserCustomInfo() {
+
+        return null;
+    }
 }

@@ -58,7 +58,8 @@ public class Custom {
 	@Column(name = "have_design", columnDefinition = "tinyint")
 	private Boolean haveDesign;
 
-	private String size;
+	@Enumerated(value = EnumType.STRING)
+	private CustomSize size;
 
 	private String name;
 
@@ -78,7 +79,7 @@ public class Custom {
 	private Boolean isCompleted;
 
 	@Enumerated(value = EnumType.STRING)
-	private Process process;
+	private CustomProcess process;
 
 	@Column(name = "view_count")
 	private Integer viewCount;
@@ -105,7 +106,7 @@ public class Custom {
 		this.images = images;
 	}
 
-	public void setSize(String size) {
+	public void setSize(CustomSize size) {
 		this.size = size;
 	}
 
@@ -137,7 +138,7 @@ public class Custom {
 		isCompleted = completed;
 	}
 
-	public void setProcess(Process process) {
+	public void setCustomProcess(CustomProcess process) {
 		this.process = process;
 	}
 

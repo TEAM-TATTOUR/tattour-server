@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.domain.CustomImage;
+import org.tattour.server.domain.custom.domain.CustomSize;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
-import org.tattour.server.domain.custom.domain.Process;
+import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
@@ -67,7 +68,7 @@ public class CustomServiceImpl implements CustomService {
 		}
 		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
 			custom.setCompleted(updateCustomInfo.getIsCompleted());
-			custom.setProcess(Process.receiving);
+			custom.setCustomProcess(CustomProcess.RECEIVING);
 		}
 		if (!Objects.isNull(updateCustomInfo.getIsPublic())) {
 			custom.setPublic(updateCustomInfo.getIsPublic());
@@ -87,7 +88,9 @@ public class CustomServiceImpl implements CustomService {
 			custom.setName(updateCustomInfo.getName());
 		}
 		if (!Objects.isNull(updateCustomInfo.getSize())) {
-			custom.setSize(updateCustomInfo.getSize());
+			System.out.println("updateCustomInfo.getSize() = " + updateCustomInfo.getSize());
+			custom.setSize(CustomSize.getCustomSize(updateCustomInfo.getSize()));
+			System.out.println("custom = " + custom.getSize());
 		}
 		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
 			custom.setViewCount(updateCustomInfo.getViewCount());

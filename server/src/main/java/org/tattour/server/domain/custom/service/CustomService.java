@@ -10,4 +10,6 @@ public interface CustomService {
 	Integer createCustom(Boolean haveDesign, Integer userId);
 
 	CustomInfo updateCustom(UpdateCustomInfo updateCustomInfo);
+
+
 }
