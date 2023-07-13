@@ -17,10 +17,13 @@ import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
+import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
 import org.tattour.server.domain.style.service.StyleService;
 import org.tattour.server.domain.theme.service.ThemeService;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
+import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.global.exception.UnauthorizedException;
 import org.tattour.server.infra.s3.S3Service;
 
 @Service
@@ -37,16 +40,21 @@ public class CustomServiceImpl implements CustomService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Custom getCustomById(Integer customId) {
-		return customRepository.findById(customId)
+	public Custom getCustomById(Integer customId, Integer userId) {
+		Custom custom = customRepository.findById(customId)
 			.orElseThrow(NotFoundCustomException::new);
+		User user = userService.getUserByUserId(userId);
+		if (!custom.getUser().equals(user)) {
+			throw new UnauthorizedException();
+		}
+		return custom;
 	}
 
 	@Override
 	@Transactional
 	public Integer createCustom(Boolean haveDesign, Integer userId) {
 		User user = userService.getUserByUserId(userId);
-		Custom custom = Custom.from(user, haveDesign, false, 0);
+		Custom custom = Custom.from(user, haveDesign, "임시 저장", "기본 이미지 url",false, 0);
 		customRepository.save(custom);
 		return custom.getId();
 	}
@@ -54,7 +62,7 @@ public class CustomServiceImpl implements CustomService {
 	@Override
 	@Transactional
 	public CustomInfo updateCustom(UpdateCustomInfo updateCustomInfo) {
-		Custom custom = getCustomById(updateCustomInfo.getCustomId());
+		Custom custom = getCustomById(updateCustomInfo.getCustomId(), updateCustomInfo.getUserId());
 		if (!Objects.isNull(updateCustomInfo.getSize())) {
 			custom.setSize(CustomSize.getCustomSize(updateCustomInfo.getSize()));
 		}
@@ -99,14 +107,17 @@ public class CustomServiceImpl implements CustomService {
 			custom.setPublic(updateCustomInfo.getIsPublic());
 		}
 		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
-			custom.setCompleted(updateCustomInfo.getIsCompleted());
-			custom.setCustomProcess(CustomProcess.RECEIVING);
+			if (updateCustomInfo.getIsCompleted()) {
+				custom.setCompleted(updateCustomInfo.getIsCompleted());
+				custom.setCustomProcess(CustomProcess.RECEIVING);
+			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getCount())) {
 			custom.setCount(updateCustomInfo.getCount());
 		}
 		if (!Objects.isNull(custom.getCount()) && !Objects.isNull(custom.getSize())
-			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(updateCustomInfo.getPrice())) {
+			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(
+			updateCustomInfo.getPrice())) {
 			custom.calPrice();
 			if (updateCustomInfo.getPrice().equals(custom.getPrice())) {
 				throw new InvalidCustomPriceException();
@@ -118,5 +129,17 @@ public class CustomServiceImpl implements CustomService {
 		}
 		customRepository.save(custom);
 		return CustomInfo.of(custom);
+	}
+
+	@Override
+	public CustomSummaryList getCustomSummaryCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedTrue(userId);
+		return CustomSummaryList.of(customs);
+	}
+
+	@Override
+	public CustomSummaryList getCustomSummaryInCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
+		return CustomSummaryList.of(customs);
 	}
 }

@@ -51,7 +51,7 @@ public class CustomController {
 		@RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
 		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		CustomInfo response = customService.updateCustom(request.newUpdateCustomInfo(mainImage, images));
+		CustomInfo response = customService.updateCustom(request.newUpdateCustomInfo(1, mainImage, images));
 		return ApiResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

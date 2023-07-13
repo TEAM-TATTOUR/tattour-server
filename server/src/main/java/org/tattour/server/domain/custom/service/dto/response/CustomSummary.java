@@ -12,16 +12,12 @@ public class CustomSummary {
 	private Integer id;
 	private String name;
 	private String imageUrl;
-	private Integer price;
-	private Integer discountRate;
-	private Integer discountPrice;
 
 	public static CustomSummary of(Custom custom) {
 		return CustomSummary.builder()
 			.id(custom.getId())
 			.name(custom.getName())
 			.imageUrl(custom.getMainImageUrl())
-//			.price(custom.getPrice)
 			.build();
 
 	}

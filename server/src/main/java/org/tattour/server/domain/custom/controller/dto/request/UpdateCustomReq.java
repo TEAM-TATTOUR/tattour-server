@@ -24,8 +24,8 @@ public class UpdateCustomReq {
 	private Integer price;
 	private Integer viewCount;
 
-	public UpdateCustomInfo newUpdateCustomInfo(MultipartFile mainImage, List<MultipartFile> images) {
-		return UpdateCustomInfo.from(customId, size, mainImage, images, isColored,
+	public UpdateCustomInfo newUpdateCustomInfo(Integer userId, MultipartFile mainImage, List<MultipartFile> images) {
+		return UpdateCustomInfo.from(userId, customId, size, mainImage, images, isColored,
 			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price);
 	}
 

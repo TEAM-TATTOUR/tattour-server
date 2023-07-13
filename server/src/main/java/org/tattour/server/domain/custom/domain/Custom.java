@@ -158,11 +158,15 @@ public class Custom {
 	public static Custom from(
 		User user,
 		Boolean haveDesign,
+		String name,
+		String mainImageUrl,
 		Boolean isCompleted,
 		Integer viewCount) {
 		return Custom.builder()
 			.user(user)
 			.haveDesign(haveDesign)
+			.name(name)
+			.mainImageUrl(mainImageUrl)
 			.isCompleted(isCompleted)
 			.viewCount(viewCount)
 			.build();

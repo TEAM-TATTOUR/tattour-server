@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder(access = AccessLevel.PRIVATE)
 public class UpdateCustomInfo {
 
+	private Integer userId;
 	private Integer customId;
 	private String size;
 	private MultipartFile mainImage;
@@ -26,7 +27,7 @@ public class UpdateCustomInfo {
 	private Integer viewCount;
 	private Integer price;
 
-	public static UpdateCustomInfo from(Integer customId, String size,
+	public static UpdateCustomInfo from(Integer userId, Integer customId, String size,
 		MultipartFile mainImage, List<MultipartFile> images, Boolean isColored,
 		List<Integer> themes, List<Integer> styles, String name, String description, String demand,
 		Integer count, Boolean isPublic, Boolean isCompleted, Integer viewCount, Integer price) {
