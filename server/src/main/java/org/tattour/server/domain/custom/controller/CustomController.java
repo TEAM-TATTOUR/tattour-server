@@ -1,8 +1,11 @@
 package org.tattour.server.domain.custom.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +36,7 @@ public class CustomController {
 	@PostMapping(value = "/apply")
 	@Operation(summary = "커스텀 도안 신청", description = "포인트 결제하면 haveDesign 만 넘겨주기")
 	public ResponseEntity<?> createCustom(
-		@UserId Integer userId,
+		@Parameter(hidden = true) @UserId Integer userId,
 		@RequestBody ApplyCustomReq request
 	) {
 		ApplyCustomRes response = ApplyCustomRes.of(
@@ -42,15 +45,18 @@ public class CustomController {
 	}
 
 	@PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "커스텀 도안 수정", description = " data 는 application/json 타입으로 보내기"
+	@Operation(summary = "커스텀 도안 수정", description = "data 는 application/json 타입으로 보내기"
 		+ " mainImage 는 file. image 는 file 리스트로 보내기!")
 	public ResponseEntity<?> updateCustom(
-		@UserId Integer userId,
-		@RequestPart(value = "data") UpdateCustomReq request,
-		@RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
-		@RequestPart(value = "images", required = false) List<MultipartFile> images
+		@Parameter(hidden = true) @UserId Integer userId,
+		@Parameter(name = "customInfo",
+			description = "application/json 타입으로 보내기",
+			style = ParameterStyle.FORM) @RequestPart(value = "customInfo") @Valid UpdateCustomReq customInfo,
+		@RequestPart(value = "customMainImage") MultipartFile customMainImage,
+		@RequestPart(value = "customImages", required = false) List<MultipartFile> customImages
 	) {
-		CustomInfo response = customService.updateCustom(request.newUpdateCustomInfo(userId, mainImage, images));
+		CustomInfo response = customService.updateCustom(
+			customInfo.newUpdateCustomInfo(userId, customMainImage, customImages));
 		return ApiResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

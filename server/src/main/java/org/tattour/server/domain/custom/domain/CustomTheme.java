@@ -19,7 +19,7 @@ import org.tattour.server.domain.theme.domain.Theme;
 @Table(name = "custom_theme")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomTheme {
 

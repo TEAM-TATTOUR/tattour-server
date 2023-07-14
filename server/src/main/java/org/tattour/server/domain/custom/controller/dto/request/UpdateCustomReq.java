@@ -1,6 +1,7 @@
 package org.tattour.server.domain.custom.controller.dto.request;
 
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 @NoArgsConstructor
 public class UpdateCustomReq {
 
+	@NotNull
 	private Integer customId;
 	private String size;
 	private Boolean isColored;
@@ -28,5 +30,4 @@ public class UpdateCustomReq {
 		return UpdateCustomInfo.from(userId, customId, size, mainImage, images, isColored,
 			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price);
 	}
-
 }
