@@ -1,4 +1,4 @@
-package org.tattour.server.domain.user.service.dto.response;
+package org.tattour.server.domain.user.provider.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

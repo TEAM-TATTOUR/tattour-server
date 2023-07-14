@@ -39,6 +39,7 @@ public enum ErrorType {
 	NOT_FOUND_CUSTOM_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 커스텀입니다"),
 	NOT_FOUND_CUSTOM_PROCESS_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 커스텀상태입니다"),
 	NOT_FOUND_CUSTOM_SIZE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 커스텀 크기입니다"),
+	NOT_FOUND_ORDER_HISTORY(HttpStatus.NOT_FOUND, "존재하지 않는 결제내역입니다."),
 	NOT_FOUND_THEME_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 테마입니다"),
 	NOT_FOUND_STYLE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 스타일입니다"),
 	NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.NOT_FOUND, "인증번호가 존재하지 않습니다."),
@@ -56,6 +57,9 @@ public enum ErrorType {
 	 */
 	ALREADY_EXIST_USER_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 유저 이름입니다"),
 	ALREADY_EXIST_PRODUCTLIKED_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 좋아요한 상품입니다"),
+	ALREADY_COMPLETED_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.CONFLICT, "이미 처리된 포인트 충전 요청입니다."),
+	ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION(HttpStatus.CONFLICT, "이미 취소 처리된 결제 내역입니다."),
+	AMOUNT_MATCHED_EXCEPTION(HttpStatus.CONFLICT, "송금 금액과 충전 금액이 일치합니다. 충전 요청을 취소할 수 없습니다."),
 
 	/**
 	 * 500 INTERNAL SERVER ERROR

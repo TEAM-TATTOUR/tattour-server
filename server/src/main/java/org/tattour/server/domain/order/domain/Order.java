@@ -2,6 +2,8 @@ package org.tattour.server.domain.order.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,16 +40,23 @@ public class Order {
     private String mailingAddress;
     private String baseAddress;
     private String detailAddress;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
+
     @Column(columnDefinition = "Timestamp")
     private String lastUpdatedAt;
+
     @Column(columnDefinition = "tinyint")
     private Boolean state;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sticker_id")
     private Sticker sticker;
@@ -79,5 +88,9 @@ public class Order {
         return new Order(productName, productSize, productImageUrl, productCount, productAmount,
                 shippingFee, totalAmount, recipientName, contact, mailingAddress, baseAddress,
                 detailAddress, user, sticker);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus){
+        this.orderStatus = orderStatus;
     }
 }

@@ -21,6 +21,7 @@ public class UserPointLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String title;
     private String content;
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
@@ -32,14 +33,15 @@ public class UserPointLog {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private UserPointLog(String content, Integer amount, Integer resultPointAmount, User user) {
+    private UserPointLog(String title, String content, Integer amount, Integer resultPointAmount, User user) {
+        this.title = title;
         this.content = content;
         this.amount = amount;
         this.resultPointAmount = resultPointAmount;
         this.user = user;
     }
 
-    public static UserPointLog of(String content, Integer amount, Integer resultPointAmount, User user) {
-        return new UserPointLog(content, amount, resultPointAmount, user);
+    public static UserPointLog of(String title, String content, Integer amount, Integer resultPointAmount, User user) {
+        return new UserPointLog(title, content, amount, resultPointAmount, user);
     }
 }
