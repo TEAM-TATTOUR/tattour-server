@@ -26,6 +26,8 @@ import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
 
 @Service
@@ -75,40 +77,47 @@ public class PointServiceImpl implements PointService {
     public ConfirmPointChargeResponseDto confirmPointChargeRequest(ConfirmPointChargeRequestDto req) {
         PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
 
-        if(req.getTransferredAmount() == pointChargeRequest.getChargeAmount()) {
-            // 송금된 값이 일치하면
-            // PointChargeRequest의 상태를 변경하기
-            updatePointChargeRequest(
-                    PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),true, true, true, true));
-            return null;
+        if(!pointChargeRequest.getIsCompleted()){
+            // 처리된 요청이 아니면
+            if(req.getTransferredAmount() == pointChargeRequest.getChargeAmount()) {
+                // 송금된 값이 일치하면
+                // PointChargeRequest의 상태를 변경하기
+                updatePointChargeRequest(
+                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),true, true, true, true));
+                return null;
+            } else {
+                // 일치하지 않으면
+                String baseDate = pointChargeRequest.getCreatedAt();
+
+                // 유저 정보
+                User user = userProvider.getUserById(req.getUserId());
+                GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
+
+                // 포인트 충전 내역
+                GetPointChargeRequestListRes getPointChargeRequestListRes =
+                        pointProvider.getPointChargeRequestAfterDate(
+                                GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
+                getPointChargeRequestListRes
+                        .getGetPointChargeRequestResList()
+                        .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(pointChargeRequest));
+
+                // 구매 내역
+                GetUserOrderHistoryListRes getUserOrderHistoryListRes =
+                        orderProvider.getOrderHistoryAfterDate(
+                                GetOrderHistoryAfterDateReq.of(req.getUserId(), baseDate));
+
+                // 커스텀 신청내역
+                CustomApplySummaryInfoList customApplySummaryInfoList =
+                        customService.getCustomApplySummaryInfoList(
+                                GetCustomSummaryInfo.of(req.getUserId(), baseDate));
+
+                return ConfirmPointChargeResponseDto.of(getUserInfoDto,  getPointChargeRequestListRes, getUserOrderHistoryListRes, customApplySummaryInfoList);
+            }
         } else {
-            // 일치하지 않으면
-            String baseDate = pointChargeRequest.getCreatedAt();
-
-            // 유저 정보
-            User user = userProvider.getUserById(req.getUserId());
-            GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
-
-            // 포인트 충전 내역
-            GetPointChargeRequestListRes getPointChargeRequestListRes =
-                    pointProvider.getPointChargeRequestAfterDate(
-                            GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
-            getPointChargeRequestListRes
-                    .getGetPointChargeRequestResList()
-                    .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(pointChargeRequest));
-
-            // 구매 내역
-            GetUserOrderHistoryListRes getUserOrderHistoryListRes =
-                    orderProvider.getOrderHistoryAfterDate(
-                            GetOrderHistoryAfterDateReq.of(req.getUserId(), baseDate));
-
-            // 커스텀 신청내역
-            CustomApplySummaryInfoList customApplySummaryInfoList =
-                    customService.getCustomApplySummaryInfoList(
-                            GetCustomSummaryInfo.of(req.getUserId(), baseDate));
-
-            return ConfirmPointChargeResponseDto.of(getUserInfoDto,  getPointChargeRequestListRes, getUserOrderHistoryListRes, customApplySummaryInfoList);
+            // 이미 처리된 요청이면
+            throw new BusinessException(ErrorType.ALREADY_COMPLETED_POINT_CHARGE_REQUEST_EXCEPTION);
         }
+
     }
 }
 
