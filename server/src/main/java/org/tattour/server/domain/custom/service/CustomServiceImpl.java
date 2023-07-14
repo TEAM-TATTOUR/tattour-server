@@ -16,7 +16,9 @@ import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
+import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
+import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
 import org.tattour.server.domain.style.service.StyleService;
@@ -24,6 +26,7 @@ import org.tattour.server.domain.theme.service.ThemeService;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.global.exception.UnauthorizedException;
+import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.infra.s3.S3Service;
 
 @Service
@@ -145,5 +148,11 @@ public class CustomServiceImpl implements CustomService {
 	public CustomSummaryList getCustomSummaryInCompleteListByUserId(Integer userId) {
 		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
 		return CustomSummaryList.of(customs);
+	}
+
+	@Override
+	public CustomApplySummaryInfoList getCustomApplySummaryInfoList(GetCustomSummaryInfo req) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(req.getUserId());
+		return CustomApplySummaryInfoList.of(EntityDtoMapper.INSTANCE.toCustomApplySummaryInfoList(customs));
 	}
 }

@@ -36,6 +36,9 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
 
         // 유저 아이디 반환
         final String tokenContents = jwtService.getJwtContents(token);
+
+        System.out.println(tokenContents);
+
         try {
             return Integer.parseInt(tokenContents);
         } catch (NumberFormatException e) {

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,32 +37,35 @@ public class User {
     private String phoneNumber;
     private String accessToken;
     private String refreshToken;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
     @Enumerated(EnumType.STRING)
     private SocialPlatform socialPlatform;
+
     @Column(columnDefinition = "Timestamp")
     private String created_at;
+
     @Column(columnDefinition = "Timestamp")
     private String last_updated_at;
+
     @Column(columnDefinition = "tinyint")
     private Boolean state;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProductLiked> productLikeds;
-    @Builder
-    public User(String email, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
+    public User(UserRole userRole, String email, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
+        this.userRole = userRole;
         this.email = email;
         this.socialPlatform = socialPlatform;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    //TODO : mapper로 할지 생각해보기
     public static User of(SaveUserReq req){
-        return User.builder()
-                .email(req.getEmail())
-                .socialPlatform(req.getSocialPlatform())
-                .accessToken(req.getAccessToken())
-                .refreshToken(req.getRefreshToken())
-                .build();
+        return new User(UserRole.USER, req.getEmail(), req.getSocialPlatform(), req.getAccessToken(), req.getRefreshToken());
     }
 
     public void setUserInfo(UpdateUserInfoReq req){

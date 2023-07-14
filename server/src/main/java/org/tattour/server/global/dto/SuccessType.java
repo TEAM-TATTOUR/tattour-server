@@ -27,9 +27,11 @@ public enum SuccessType {
 	READ_ONE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 정보 조회에 성공했습니다."),
 	READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "임시저장 커스텀 요약 정보 조회에 성공했습니다."),
 	READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "신청 완료된 커스텀 요약 정보 조회에 성공했습니다."),
+	READ_POINT_LOG_SUCCESS(HttpStatus.OK, "포인트 로그 조회에 성공했습니다."),
 	UPDATE_SUCCESS(HttpStatus.OK, "갱신에 성공했습니다."),
 	UPDATE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 업데이트에 성공했습니다"),
 	DELETE_SUCCESS(HttpStatus.OK, "삭제에 성공했습니다."),
+	UPDATE_ORDER_STATUS_SUCCESS(HttpStatus.OK, "주문상태 변경에 성공했습니다."),
 
 	/**
 	 * 201 CREATED
@@ -46,6 +48,7 @@ public enum SuccessType {
 	 * 202 ACCEPTED
 	 */
 	CODE_VALIDATION_FAIL(HttpStatus.ACCEPTED, "인증번호 검증에 실패했습니다."),
+	POINT_CHARGE_CONFIRM_FAIL(HttpStatus.ACCEPTED, "금액이 일치하지 않습니다."),
 
 	;
 

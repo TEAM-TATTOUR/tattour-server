@@ -5,6 +5,8 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
+import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfo;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
@@ -13,7 +15,8 @@ import org.tattour.server.domain.point.provider.dto.response.GetPointChargeReque
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
+import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {
@@ -21,6 +24,8 @@ public interface EntityDtoMapper {
 
     // User
     GetUserProfileRes toGetUserProfileRes(User user);
+
+    GetUserInfoDto toGetUserInfoDto(User user);
 
     // StickerLikedInfo
     @Mapping(target = "discountPrice",
@@ -50,4 +55,7 @@ public interface EntityDtoMapper {
     GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
     List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList);
 
+    // Custom
+    CustomApplySummaryInfo toCustomApplySummaryInfo(Custom custom);
+    List<CustomApplySummaryInfo> toCustomApplySummaryInfoList(List<Custom> customList);
 }

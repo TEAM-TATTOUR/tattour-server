@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Integer updateUserPoint(UpdateUserPointReq req) {
         User user = userProvider.getUserById(req.getUserId());
         int resultPoint = user.getPoint() + req.getAmount();

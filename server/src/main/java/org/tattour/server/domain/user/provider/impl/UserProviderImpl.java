@@ -3,7 +3,7 @@ package org.tattour.server.domain.user.provider.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
-import org.tattour.server.domain.user.service.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.exception.NotFoundUserException;
