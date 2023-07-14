@@ -10,13 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "sticker_image")
+@Getter
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StickerImage {
 
 	@Id
@@ -29,4 +33,11 @@ public class StickerImage {
 
 	@Column(name = "image_url", columnDefinition = "text")
 	private String imageUrl;
+
+	public static StickerImage from(Sticker sticker, String imageUrl) {
+		return StickerImage.builder()
+			.sticker(sticker)
+			.imageUrl(imageUrl)
+			.build();
+	}
 }
