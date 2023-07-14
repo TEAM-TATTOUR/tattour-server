@@ -1,11 +1,14 @@
 package org.tattour.server.domain.point.service.impl;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.custom.service.CustomServiceImpl;
 import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
+import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
@@ -25,6 +28,7 @@ import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeRe
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -119,18 +123,37 @@ public class PointServiceImpl implements PointService {
         }
 
     }
+
+    @Override
+    @Transactional
+    public void cancelPointChargeRequest(CancelPointChargeRequestReq req) {
+        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
+
+        if(pointChargeRequest.getIsCompleted()){
+            // 이미 처리된 요청이면 반려
+            throw new BusinessException(ErrorType.ALREADY_COMPLETED_POINT_CHARGE_REQUEST_EXCEPTION);
+        } else {
+            if(Objects.equals(req.getTransferredAmount(), pointChargeRequest.getChargeAmount())){
+                // 송금 금액이 충전 금액이 같으면 반려
+                throw new BusinessException(ErrorType.AMOUNT_MATCHED_EXCEPTION);
+            } else {
+                // PointChargeRequest의 상태를 변경하기
+                updatePointChargeRequest(
+                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),false, false, false, true));
+
+                // 포인트 로그 남기기
+                User user = userProvider.getUserById(req.getUserId());
+                int amount = pointChargeRequest.getChargeAmount();
+                int resultPoint = user.getPoint() - amount;
+
+                savePointLog(SaveUserPointLogReq.of("충전 취소", req.getReason(), -pointChargeRequest.getChargeAmount(), resultPoint, user.getId()));
+
+                // 유저 포인트 처리
+                userService.updateUserPoint(UpdateUserPointReq.of(user.getId(), -amount));
+            }
+        }
+    }
 }
 
-//            // PointChargeRequest의 상태를 변경하기
-//            updatePointChargeRequest(
-//                    PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),false, false, false, true));
-//
-//            // 포인트 로그 남기기
-//            User user = userProvider.getUserById(pointChargeRequest.getUser().getId());
-//            int amount = pointChargeRequest.getChargeAmount();
-//            int resultPoint = user.getPoint() - amount;
-//
-//            savePointLog(SaveUserPointLogReq.of("충전 취소", req.getReason(), -pointChargeRequest.getChargeAmount(), resultPoint, user.getId()));
-//
-//            // 유저 포인트 처리
-//            userService.updateUserPoint(UpdateUserPointReq.of(user.getId(), -amount));
+
+

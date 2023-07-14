@@ -10,9 +10,8 @@ public class ConfirmPointChargeRequestDto {
     private int id;
     private int userId;
     private int transferredAmount;
-    private String reason;
 
-    public static ConfirmPointChargeRequestDto of(int id, int userId, int transferredAmount, String reason) {
-        return new ConfirmPointChargeRequestDto(id, userId, transferredAmount,reason);
+    public static ConfirmPointChargeRequestDto of(int id, int userId, int transferredAmount) {
+        return new ConfirmPointChargeRequestDto(id, userId, transferredAmount);
     }
 }

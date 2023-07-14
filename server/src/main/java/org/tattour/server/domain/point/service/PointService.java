@@ -1,5 +1,6 @@
 package org.tattour.server.domain.point.service;
 
+import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
@@ -18,4 +19,7 @@ public interface PointService {
 
     // 포인트 충전 요청 상태 검증
     ConfirmPointChargeResponseDto confirmPointChargeRequest(ConfirmPointChargeRequestDto req);
+
+    // 포인트 충전 요청 취소
+    void cancelPointChargeRequest(CancelPointChargeRequestReq req);
 }

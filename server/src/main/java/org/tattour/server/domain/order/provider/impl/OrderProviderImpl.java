@@ -22,6 +22,8 @@ import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
 
 @Service
@@ -31,6 +33,12 @@ public class OrderProviderImpl implements OrderProvider {
     private final OrderRepositoryImpl orderRepository;
     private final StickerProviderImpl stickerProvider;
     private final UserProviderImpl userProvider;
+
+    @Override
+    public Order getOrderById(int id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_ORDER_HISTORY));
+    }
 
     @Override
     public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReq req) {

@@ -80,7 +80,6 @@ public class UserController {
 
 		// 로그인
 		Integer userId = socialService.login(SocialLoginRequest.of(code));
-		System.out.println(userId);
 
 		// jwt 토큰 발급
 		return ApiResponse.success(SuccessType.LOGIN_SUCCESS,

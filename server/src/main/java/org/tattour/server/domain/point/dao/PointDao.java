@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
+import org.tattour.server.domain.point.provider.dto.response.GetPointLogRes;
 
 @Repository
 public class PointDao {
@@ -14,7 +15,8 @@ public class PointDao {
     public PointDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-
+    
+    // 조건에 따라 유저 포인트 충전 요청 내역 가져오기
     public List<GetPointChargeRequestRes> getPointChargeRequestResList(Integer userId, Boolean isCompleted){
         String query =
                 "SELECT * "
@@ -43,6 +45,37 @@ public class PointDao {
                         .isCompleted(rs.getBoolean("is_completed"))
                         .createdAt(rs.getString("created_at"))
                         .lastUpdatedAt(rs.getString("last_updated_at"))
+                        .state(rs.getBoolean("state"))
+                        .build(),
+                params.toArray());
+    }
+
+    // 조건에 따라 포인트 로그 불러오기
+    public List<GetPointLogRes> getPointLogResList(Integer userId, String title){
+        String query =
+                "SELECT * FROM user_point_log "
+                        + "WHERE 1=1 ";
+        List<Object> params = new ArrayList<>();
+
+        if(userId != null){
+            params.add(userId);
+            query += "AND user_id = ? ";
+        }
+
+        if(title != null){
+            params.add(title);
+            query += "AND title = ? ";
+        }
+
+        return jdbcTemplate.query(query,
+                (rs, rownum) ->  GetPointLogRes.builder()
+                        .id(rs.getInt("id"))
+                        .userId(rs.getInt("user_id"))
+                        .title(rs.getString("title"))
+                        .content(rs.getString("content"))
+                        .amount(rs.getInt("amount"))
+                        .resultPointAmount(rs.getInt("result_point_amount"))
+                        .createdAt(rs.getString("created_at"))
                         .state(rs.getBoolean("state"))
                         .build(),
                 params.toArray());

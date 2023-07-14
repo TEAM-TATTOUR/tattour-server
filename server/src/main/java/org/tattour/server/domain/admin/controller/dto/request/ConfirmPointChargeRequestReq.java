@@ -9,5 +9,4 @@ public class ConfirmPointChargeRequestReq {
     private int id;
     private int userId;
     private int transferredAmount;
-    private String reason;
 }
