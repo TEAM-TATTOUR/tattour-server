@@ -125,8 +125,8 @@ public class AdminController {
 	public ResponseEntity<?> getSimilarStickerList(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@Parameter(description = "content-type을 application/json 타입으로 보내기")
-		@RequestPart("stickerInfo") @Valid CreateStickerReq stickerInfo,
-		@RequestPart("stickerMainImage") MultipartFile stickerMainImage,
+		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
+		@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
 		@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
