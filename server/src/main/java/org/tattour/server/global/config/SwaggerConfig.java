@@ -22,7 +22,7 @@ public class SwaggerConfig {
 		Info info = new Info()
 			.title("API Document")
 			.description("Tattour API Document")
-			.version("v1");
+			.version("v1.0.0");
 		return new OpenAPI()
 			.components(new Components())
 			.info(info);
