@@ -17,6 +17,7 @@ public enum ErrorType {
 	INVALID_IMAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 이미지 파일입니다."),
 	INVALID_MULTIPART_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 파일 확장자입니다."),
 	INVALID_CUSTOM_PRICE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 커스텀 가격 입니다."),
+	INVALID_JWT_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "지원하지 않는 JWT 토큰입니다."),
 
 	/**
 	 * 401 UNAUTHORIZED

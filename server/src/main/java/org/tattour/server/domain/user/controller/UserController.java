@@ -2,6 +2,7 @@ package org.tattour.server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,7 @@ import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User API Document")
+@SecurityRequirement(name = "JWT Auth")
 public class UserController {
 
 	private final SocialServiceProvider socialServiceProvider;
@@ -229,7 +231,7 @@ public class UserController {
 		@PathVariable(value = "userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(1);
+		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(jwtUserId);
 		return ApiResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
@@ -240,7 +242,7 @@ public class UserController {
 		@PathVariable(value = "userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(1);
+		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(jwtUserId);
 		return ApiResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
@@ -252,7 +254,7 @@ public class UserController {
 		@PathVariable(value = "customId") Integer customId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		Custom custom = customService.getCustomById(customId, userId);
+		Custom custom = customService.getCustomById(customId, jwtUserId);
 		CustomInfo response = CustomInfo.of(custom);
 		return ApiResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
 	}
