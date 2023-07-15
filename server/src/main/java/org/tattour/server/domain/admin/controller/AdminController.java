@@ -53,69 +53,65 @@ public class AdminController {
 	private final JwtService jwtService;
 	private final StickerService stickerService;
 
-	// TODO : ADMIN jwt 확인
-	@Operation(summary = "모든 결제 내역 불러오기")
-	@GetMapping("/order")
-	public ResponseEntity<?> getOrderHistory(
-		@RequestParam("page") int page
-	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS,
-			orderProvider.getOrderHistoryByPage(page));
-	}
+    // TODO : ADMIN jwt 확인
+    @Operation(summary = "모든 결제 내역 불러오기")
+    @GetMapping("/order")
+    public ResponseEntity<?> getOrderHistory(
+            @RequestParam("page") int page
+    ){
+        return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderHistoryByPage(page));
+    }
 
-	@Operation(summary = "포인트 충전 신청 내역 불러오기")
-	@GetMapping("/point/request")
-	public ResponseEntity<?> getPointChargeRequest(
-		@RequestParam(required = false) Integer userId,
-		@RequestParam(required = false) Boolean isCompleted
-	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS,
-			pointProvider.getAllPointChargeRequest(userId, isCompleted));
-	}
+    @Operation(summary = "포인트 충전 신청 내역 불러오기")
+    @GetMapping("/point/request")
+    public ResponseEntity<?> getPointChargeRequest(
+            @RequestParam(required = false) Integer userId,
+            @RequestParam(required = false) Boolean isCompleted
+    ){
+        return ApiResponse.success(SuccessType.GET_SUCCESS, pointProvider.getAllPointChargeRequest(userId, isCompleted));
+    }
 
-	@Operation(summary = "포인트 충전 요청 검증")
-	@PostMapping("/point/request/confirm")
-	public ResponseEntity<?> confirmPointChargeRequest(
-		@RequestBody ConfirmPointChargeRequestReq req
-	) {
-		ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
-			ConfirmPointChargeRequestDto.of(req.getId(), req.getUserId(),
-				req.getTransferredAmount()));
-		if (Objects.isNull(response)) {
-			return ApiResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
-		} else {
-			return ApiResponse.success(SuccessType.POINT_CHARGE_CONFIRM_FAIL, response);
-		}
-	}
+    @Operation(summary = "포인트 충전 요청 확인")
+    @PostMapping("/point/request/confirm")
+    public ResponseEntity<?> confirmPointChargeRequest(
+            @RequestBody ConfirmPointChargeRequestReq req
+    ){
+        ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
+                ConfirmPointChargeRequestDto.of(req.getId(), req.getUserId(), req.getTransferredAmount()));
+        if(Objects.isNull(response))
+            return ApiResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
+        else
+            return ApiResponse.success(SuccessType.POINT_CHARGE_CONFIRM_FAIL, response);
+    }
 
-	@Operation(summary = "포인트 충전 요청 취소")
-	@PostMapping("/point/request/cancel")
-	public ResponseEntity<?> cancelPointChargeRequest(
-		@RequestBody CancelPointChargeRequestReq req
-	) {
-		pointService.cancelPointChargeRequest(req);
+    @Operation(summary = "포인트 충전 요청 취소")
+    @PostMapping("/point/request/cancel")
+    public ResponseEntity<?> cancelPointChargeRequest(
+            @RequestBody CancelPointChargeRequestReq req
+    ){
+        pointService.cancelPointChargeRequest(req);
 //                CancelPointChargeRequestReq.of(req.getId(), req.getUserId(), req.getTransferredAmount(), req.getReason()));
-		return ApiResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
-	}
+        return ApiResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
+    }
 
-	@Operation(summary = "포인트 로그 불러오기")
-	@GetMapping("/pointLog")
-	public ResponseEntity<?> getPointLog(
-		@RequestParam(required = false) Integer userId,
-		@RequestParam(required = false) String title
-	) {
-		return ApiResponse.success(
-			SuccessType.READ_POINT_LOG_SUCCESS,
-			pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
-	}
+    @Operation(summary = "포인트 로그 불러오기")
+    @GetMapping("/pointLog")
+    public ResponseEntity<?> getPointLog(
+            @RequestParam(required = false) Integer userId,
+            @RequestParam(required = false) String title
+    ){
+        return ApiResponse.success(
+                SuccessType.READ_POINT_LOG_SUCCESS,
+                pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
+    }
 
-	@Operation(summary = "결제 내역 주문상태 변경")
-	@PatchMapping("/order/{orderId}/status")
-	public ResponseEntity<?> patchOrderStatus(
-		@PathVariable int orderId,
-		@RequestBody PatchOrderStatusReq req
-	) {
-		orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
+    @Operation(summary = "결제 내역 주문상태 변경")
+    @PatchMapping("/order/{orderId}/status")
+    public ResponseEntity<?> patchOrderStatus(
+            @PathVariable int orderId,
+            @RequestBody PatchOrderStatusReq req
+    ){
+        orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
 		return ApiResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
 	}

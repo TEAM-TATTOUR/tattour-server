@@ -20,12 +20,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User saveUser(SaveUserReq req) {
+    public User saveSocialUser(SaveUserReq req) {
         return userRepository.save(User.of(req));
     }
 
     @Override
-    @Transactional(readOnly = true)
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public User getUserByUserId(Integer userId) {
         return userRepository.findById(userId)
             .orElseThrow(NotFoundUserException::new);

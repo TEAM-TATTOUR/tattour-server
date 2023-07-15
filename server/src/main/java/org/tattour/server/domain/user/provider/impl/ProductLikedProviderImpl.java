@@ -25,8 +25,8 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
     }
 
     @Override
-    public ProductLiked getProductLikedByIdAndUserId(Integer id, Integer userId) {
-        return productLikedRepository.findByIdAndUser_Id(id, userId)
+    public ProductLiked getProductLikedByIdAndUserId(Integer Stickerid, Integer userId) {
+        return productLikedRepository.findBySticker_IdAndUser_Id(Stickerid, userId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
     }
 
