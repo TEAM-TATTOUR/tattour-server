@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.infra.sms.controller.dto.request.PostSendCodeReq;
@@ -27,8 +28,10 @@ public class SmsController {
     private final SmsServiceImpl smsService;
     @Operation(summary = "전화번호 인증번호 보내기")
     @PostMapping("/send/verificationCode")
-    public ResponseEntity<?> sendVerificationCode(@RequestBody PostSendCodeReq request)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+    public ResponseEntity<?> sendVerificationCode(
+            @UserId Integer userId,
+            @RequestBody PostSendCodeReq request
+    ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(request.getUserId(), request.getPhoneNumber()));
 
         return ApiResponse.success(SuccessType.CREATE_SUCCESS);

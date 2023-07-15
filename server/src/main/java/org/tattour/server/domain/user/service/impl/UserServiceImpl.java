@@ -20,8 +20,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User saveUser(SaveUserReq req) {
+    public User saveSocialUser(SaveUserReq req) {
         return userRepository.save(User.of(req));
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     @Override
