@@ -33,9 +33,9 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer modelAndViewContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         final String bearerHeader = request.getHeader("Authorization");
-        System.out.println("bearerHeader = " + bearerHeader);
         if (!StringUtils.hasText(bearerHeader) || !bearerHeader.startsWith(HEADER_PREFIX)) {
-            throw new RuntimeException(String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod()));
+            throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
+                (String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod())));
         }
         String token = bearerHeader.substring(HEADER_PREFIX.length());
         // 토큰 검증
