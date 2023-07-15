@@ -165,8 +165,9 @@ public class UserController {
 		@RequestBody DeleteProductLikedReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		productLikedService.deleteProductLiked(DeleteProductLikedInfo.of(userId,
-			req.getStickerId()));
+
+		productLikedService.deleteProductLiked(
+				DeleteProductLikedInfo.of(userId, req.getStickerId()));
 
 		return ApiResponse.success(SuccessType.DELETE_SUCCESS);
 	}

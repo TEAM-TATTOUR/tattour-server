@@ -44,13 +44,18 @@ public class KakaoSocialService extends SocialService{
 
         // 존재하지 않으면 유저 생성
         if(Objects.isNull(userId)){
-            User user = userService.saveUser(
+            User user = userService.saveSocialUser(
                     SaveUserReq.of(
                             userResponse.getKakaoAccount().getEmail(),
                             SocialPlatform.KAKAO,
                             tokenResponse.getAccessToken(),
                             tokenResponse.getRefreshToken()));
             userId = user.getId();
+        } else {
+            User user = userProvider.getUserById(userId);
+
+            user.setSocialToken(tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
+            userService.saveUser(user);
         }
 
         return userId;

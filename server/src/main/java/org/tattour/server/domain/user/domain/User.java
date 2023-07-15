@@ -73,6 +73,11 @@ public class User {
         this.phoneNumber = req.getPhoneNumber();
     }
 
+    public void setSocialToken(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
     public void setUserPoint(int amount){
         this.point = amount;
     }

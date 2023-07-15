@@ -55,7 +55,7 @@ public class AdminController {
         return ApiResponse.success(SuccessType.GET_SUCCESS, pointProvider.getAllPointChargeRequest(userId, isCompleted));
     }
 
-    @Operation(summary = "포인트 충전 요청 검증")
+    @Operation(summary = "포인트 충전 요청 확인")
     @PostMapping("/point/request/confirm")
     public ResponseEntity<?> confirmPointChargeRequest(
             @RequestBody ConfirmPointChargeRequestReq req
