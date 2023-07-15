@@ -38,15 +38,14 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
                 (String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod())));
         }
         String token = bearerHeader.substring(HEADER_PREFIX.length());
+
         // 토큰 검증
-        System.out.println("token = " + token);
         if (!jwtService.verifyToken(token)) {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
                 String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod()));
         }
         // 유저 아이디 반환
         final String tokenContents = jwtService.getJwtContents(token);
-
         System.out.println("tokenContents = " + tokenContents);
 
         try {
