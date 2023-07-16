@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.service.dto.response;
 
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,14 +19,19 @@ public class StickerSummary {
 	private Boolean isCustom;
 
 	public static StickerSummary of(Sticker sticker) {
-		Integer discountRate = sticker.getDiscount().getDiscountRate();
+		Integer discountRate = null;
+		Integer discountPrice = null;
+		if  (!Objects.isNull(sticker.getDiscount())) {
+			discountRate = sticker.getDiscount().getDiscountRate();
+			discountPrice = sticker.getDiscountPrice();
+		}
 		return StickerSummary.builder()
 			.id(sticker.getId())
 			.name(sticker.getName())
 			.imageUrl(sticker.getMainImageUrl())
 			.price(sticker.getPrice())
 			.discountRate(discountRate)
-			.discountPrice(sticker.getPrice()*(100-discountRate)/100)
+			.discountPrice(discountPrice)
 			.isCustom(sticker.getIsCustom())
 			.build();
 	}

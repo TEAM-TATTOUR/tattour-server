@@ -3,6 +3,7 @@ package org.tattour.server.domain.sticker.service.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,7 +35,12 @@ public class StickerInfo {
 		List<String> stickerThemes = new ArrayList<>();
 		List<String> stickerStyles = new ArrayList<>();
 		stickerImages.add(sticker.getMainImageUrl());
-		Integer discountRate = sticker.getDiscount().getDiscountRate();
+		Integer discountRate = null;
+		Integer discountPrice = null;
+		if  (!Objects.isNull(sticker.getDiscount())) {
+			discountRate = sticker.getDiscount().getDiscountRate();
+			discountPrice = sticker.getDiscountPrice();
+		}
 		images.stream()
 			.map(image -> stickerImages.add(image.getImageUrl()))
 			.collect(Collectors.toList());
@@ -52,7 +58,7 @@ public class StickerInfo {
 			.description(sticker.getDescription())
 			.price(sticker.getPrice())
 			.discountRate(discountRate)
-			.discountPrice(sticker.getPrice()*(100-discountRate)/100)
+			.discountPrice(discountPrice)
 			.composition(sticker.getComposition())
 			.size(sticker.getSize())
 			.isCustom(sticker.getIsCustom())

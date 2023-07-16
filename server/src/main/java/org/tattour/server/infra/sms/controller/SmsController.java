@@ -2,6 +2,7 @@ package org.tattour.server.infra.sms.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -29,7 +30,7 @@ public class SmsController {
     @Operation(summary = "전화번호 인증번호 보내기")
     @PostMapping("/send/verificationCode")
     public ResponseEntity<?> sendVerificationCode(
-            @UserId Integer userId,
+        @Parameter(hidden = true) @UserId Integer userId,
             @RequestBody PostSendCodeReq request
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(request.getUserId(), request.getPhoneNumber()));
