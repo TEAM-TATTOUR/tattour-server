@@ -20,16 +20,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Getter
 @Table(name = "custom")
 @Entity
 @Builder
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class Custom {
+@DynamicInsert
+@DynamicUpdate
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Custom  extends AuditingTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.custom.domain.Custom;
@@ -37,8 +38,10 @@ public class CustomServiceImpl implements CustomService {
 	private final ThemeService themeService;
 	private final StyleService styleService;
 	private final UserService userService;
-
 	private final String directoryPath = "custom";
+
+	@Value("${image.default.custom}")
+	private String defaultImageUrl;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -56,7 +59,7 @@ public class CustomServiceImpl implements CustomService {
 	@Transactional
 	public Integer createCustom(Boolean haveDesign, Integer userId) {
 		User user = userService.getUserByUserId(userId);
-		Custom custom = Custom.from(user, haveDesign, "임시 저장", "기본 이미지 url",false, 0);
+		Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl,false, 0);
 		customRepository.save(custom);
 		return custom.getId();
 	}
@@ -134,12 +137,14 @@ public class CustomServiceImpl implements CustomService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public CustomSummaryList getCustomSummaryCompleteListByUserId(Integer userId) {
 		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedTrue(userId);
 		return CustomSummaryList.of(customs);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public CustomSummaryList getCustomSummaryInCompleteListByUserId(Integer userId) {
 		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
 		return CustomSummaryList.of(customs);

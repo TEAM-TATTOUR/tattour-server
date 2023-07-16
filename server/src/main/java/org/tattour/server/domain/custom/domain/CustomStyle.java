@@ -41,14 +41,4 @@ public class CustomStyle {
 			.style(style)
 			.build();
 	}
-
-	public static CustomStyle of(Style style) {
-		return CustomStyle.builder()
-			.style(style)
-			.build();
-	}
-
-	public void setCustom(Custom custom) {
-		this.custom = custom;
-	}
 }

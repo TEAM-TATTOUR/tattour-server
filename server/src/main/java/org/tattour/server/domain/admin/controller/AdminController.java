@@ -1,9 +1,14 @@
 package org.tattour.server.domain.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import java.util.Objects;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,9 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
+import org.tattour.server.domain.admin.controller.dto.request.CreateStickerReq;
+import org.tattour.server.domain.admin.controller.dto.response.CreateStickerRes;
 import org.tattour.server.domain.order.controller.dto.request.PatchOrderStatusReq;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
@@ -24,18 +33,25 @@ import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeReq
 import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
+import org.tattour.server.domain.sticker.service.StickerService;
+import org.tattour.server.global.config.jwt.JwtService;
+import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "JWT Auth")
 @Tag(name = "Admin", description = "Admin API Document")
 public class AdminController {
-    private final OrderProviderImpl orderProvider;
-    private final PointProviderImpl pointProvider;
-    private final PointServiceImpl pointService;
-    private final OrderServiceImpl orderService;
+
+	private final OrderProviderImpl orderProvider;
+	private final PointProviderImpl pointProvider;
+	private final PointServiceImpl pointService;
+	private final OrderServiceImpl orderService;
+	private final JwtService jwtService;
+	private final StickerService stickerService;
 
     // TODO : ADMIN jwt 확인
     @Operation(summary = "모든 결제 내역 불러오기")
@@ -97,6 +113,21 @@ public class AdminController {
     ){
         orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
-        return ApiResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
-    }
+		return ApiResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
+	}
+
+	@PostMapping(value = "/stickers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "스티커 등록")
+	public ResponseEntity<?> getSimilarStickerList(
+		@Parameter(hidden = true) @UserId Integer userId,
+		@Parameter(description = "content-type을 application/json 타입으로 보내기")
+		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
+		@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
+		@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
+	) {
+		jwtService.compareJwtWithPathVar(userId, 1);
+		CreateStickerRes response = new CreateStickerRes(stickerService.createSticker(
+			stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
+		return ApiResponse.success(SuccessType.CREATE_SUCCESS, response);
+	}
 }

@@ -1,6 +1,8 @@
 package org.tattour.server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +59,7 @@ import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "User", description = "User API Document")
+@SecurityRequirement(name = "JWT Auth")
 public class UserController {
 
 	private final SocialServiceProvider socialServiceProvider;
@@ -89,7 +92,7 @@ public class UserController {
 	@Operation(summary = "user 이름, 전화번호 추가")
 	@PatchMapping("/{userId}/profile")
 	public ResponseEntity<?> updateUserProfile(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
 		@RequestBody PatchUserInfoReq req
 	) {
@@ -112,7 +115,7 @@ public class UserController {
 	@Operation(summary = "user 로그아웃")
 	@PatchMapping("/{userId}/logout")
 	public ResponseEntity<?> userLogout(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
@@ -124,7 +127,7 @@ public class UserController {
 	@Operation(summary = "인증번호 검증")
 	@GetMapping("/phoneNum/verification")
 	public ResponseEntity<?> verififyCode(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@RequestBody GetVerifyCodeReq req) {
 		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
 
@@ -141,7 +144,7 @@ public class UserController {
 	@Operation(summary = "좋아요 누른 타투 저장")
 	@PostMapping("/{userId}/productLiked/save")
 	public ResponseEntity<?> saveProductLiked(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
 		@RequestBody PostProductLikedReq req
 	) {
@@ -160,7 +163,7 @@ public class UserController {
 	@Operation(summary = "좋아요 누른 타투 삭제")
 	@DeleteMapping("/{userId}/productLiked/delete")
 	public ResponseEntity<?> deleteProductLiked(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
 		@RequestBody DeleteProductLikedReq req
 	) {
@@ -175,7 +178,7 @@ public class UserController {
 	@Operation(summary = "좋아요 누른 타투 불러오기")
 	@GetMapping("/{userId}/productLiked/saved")
 	public ResponseEntity<?> getProductLiked(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
@@ -187,7 +190,7 @@ public class UserController {
 	@Operation(summary = "배송지 등록")
 	@PostMapping("/{userId}/address")
 	public ResponseEntity<?> createShippingAddr(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
 		@RequestBody PostUserShippingAddrReq req
 	) {
@@ -207,7 +210,7 @@ public class UserController {
 	@Operation(summary = "포인트 충전 신청")
 	@PostMapping("/{userId}/point/charge")
 	public ResponseEntity<?> createPointChargeRequest(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
 		@RequestBody @Valid PostPointChargeRequest req
 	) {
@@ -225,31 +228,34 @@ public class UserController {
 	@GetMapping("/{userId}/custom/complete")
 	@Operation(summary = "신청한 커스텀 도안 조회")
 	public ResponseEntity<?> getUserCustomCompleteList(
-//        @UserId Integer jwtUserId,
-		@PathVariable(value = "userId") Integer pathUserId
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
+		@PathVariable(value = "userId") Integer userId
 	) {
-		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(1);
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
+		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(jwtUserId);
 		return ApiResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
 	@GetMapping("/{userId}/custom/incomplete")
 	@Operation(summary = "커스텀 도안 임시저장 조회")
 	public ResponseEntity<?> getUserCustomIncompleteList(
-//        @UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable(value = "userId") Integer userId
 	) {
-		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(1);
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
+		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(jwtUserId);
 		return ApiResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
 	@GetMapping("/{userId}/custom/{customId}")
 	@Operation(summary = "내 도안 상세정보 조회")
 	public ResponseEntity<?> getOneUserCustomInfo(
-//		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable(value = "userId") Integer userId,
 		@PathVariable(value = "customId") Integer customId
-		) {
-		Custom custom = customService.getCustomById(customId, userId);
+	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
+		Custom custom = customService.getCustomById(customId, jwtUserId);
 		CustomInfo response = CustomInfo.of(custom);
 		return ApiResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
 	}

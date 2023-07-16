@@ -31,49 +31,54 @@ import org.tattour.server.global.exception.ErrorType;
 @RequiredArgsConstructor
 @Tag(name = "Order", description = "Order API Document")
 public class OrderController {
-    private final OrderProviderImpl orderProvider;
-    private final OrderServiceImpl orderService;
-    private final PointServiceImpl pointService;
-    private final UserProviderImpl userProvider;
-    private final UserServiceImpl userService;
-    private final JwtService jwtService;
 
-    @Operation(summary = "결제 페이지 불러오기")
-    @GetMapping("/ordersheet")
-    public ResponseEntity<?> getOrderSheet(
-            @RequestBody GetOrderSheetReq req
-    ){
-        return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(req));
-    }
+	private final OrderProviderImpl orderProvider;
+	private final OrderServiceImpl orderService;
+	private final PointServiceImpl pointService;
+	private final UserProviderImpl userProvider;
+	private final UserServiceImpl userService;
+	private final JwtService jwtService;
 
-    @Operation(summary = "결제하기")
-    @PostMapping
-    public ResponseEntity<?> order (
-            @UserId Integer jwtUserId,
-            @RequestBody PostOrderReq req
-    ){
-        jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
+	@Operation(summary = "결제 페이지 불러오기")
+	@GetMapping("/ordersheet")
+	public ResponseEntity<?> getOrderSheet(
+		@RequestBody GetOrderSheetReq req
+	) {
+		return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(req));
+	}
 
-        if(userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount()))
-            throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
+	@Operation(summary = "결제하기")
+	@PostMapping
+	public ResponseEntity<?> order(
+		@UserId Integer jwtUserId,
+		@RequestBody PostOrderReq req
+	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
 
-        orderService.saveOrder(req);
-        int resultPoint = userService.updateUserPoint(UpdateUserPointReq.of(req.getUserId(), -Math.abs(req.getTotalAmount())));
-        pointService.savePointLog(
-                SaveUserPointLogReq.of("상품 구매", null, -Math.abs(req.getTotalAmount()), resultPoint, req.getUserId()));
+		if (userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount())) {
+			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
+		}
 
-        return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
-    }
+		orderService.saveOrder(req);
+		int resultPoint = userService.updateUserPoint(
+			UpdateUserPointReq.of(req.getUserId(), -Math.abs(req.getTotalAmount())));
+		pointService.savePointLog(
+			SaveUserPointLogReq.of("상품 구매", null, -Math.abs(req.getTotalAmount()), resultPoint,
+				req.getUserId()));
 
-    // TODO : pageable로 리팩토링하기
-    @Operation(summary = "결제 내역 불러오기")
-    @GetMapping
-    public ResponseEntity<?> getUserOrderList (
-            @UserId Integer jwtUserId,
-            @RequestParam("userId") Integer userId
-    ){
-        jwtService.compareJwtWithPathVar(jwtUserId, userId);
+		return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
+	}
 
-        return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderHistoryByUserId(userId));
-    }
+	// TODO : pageable로 리팩토링하기
+	@Operation(summary = "결제 내역 불러오기")
+	@GetMapping
+	public ResponseEntity<?> getUserOrderList(
+		@UserId Integer jwtUserId,
+		@RequestParam("userId") Integer userId
+	) {
+		jwtService.compareJwtWithPathVar(jwtUserId, userId);
+
+		return ApiResponse.success(SuccessType.GET_SUCCESS,
+			orderProvider.getOrderHistoryByUserId(userId));
+	}
 }

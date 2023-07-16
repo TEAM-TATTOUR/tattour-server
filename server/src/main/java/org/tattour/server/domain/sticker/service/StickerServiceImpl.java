@@ -5,25 +5,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.domain.StickerImage;
 import org.tattour.server.domain.sticker.domain.StickerSort;
+import org.tattour.server.domain.sticker.domain.StickerStyle;
+import org.tattour.server.domain.sticker.domain.StickerTheme;
 import org.tattour.server.domain.sticker.repository.impl.StickerImageRepositoryImpl;
 import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
+import org.tattour.server.domain.sticker.service.dto.request.CreateStickerInfo;
 import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
 import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.exception.NotFoundStyleException;
 import org.tattour.server.domain.style.repository.impl.StyleRepositoryImpl;
+import org.tattour.server.domain.style.service.StyleService;
 import org.tattour.server.domain.theme.domain.Theme;
 import org.tattour.server.domain.theme.exception.NotFoundThemeException;
 import org.tattour.server.domain.theme.repository.impl.ThemeRepositoryImpl;
+import org.tattour.server.domain.theme.service.ThemeService;
+import org.tattour.server.infra.s3.S3Service;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +40,17 @@ public class StickerServiceImpl implements StickerService {
 
 	private final StickerRepositoryImpl stickerRepository;
 	private final StickerImageRepositoryImpl stickerImageRepository;
+	private final ThemeService themeService;
 	private final ThemeRepositoryImpl themeRepository;
+	private final StyleService styleService;
 	private final StyleRepositoryImpl styleRepository;
+	private final S3Service s3Service;
+	private final String directoryPath = "sticker";
 
 	@Override
 	@Transactional(readOnly = true)
 	public Sticker getStickerByStickerId(Integer stickerId) {
-		 Sticker sticker = stickerRepository.findById(stickerId)
+		Sticker sticker = stickerRepository.findById(stickerId)
 			.orElseThrow(NotFoundStickerException::new);
 		return sticker;
 	}
@@ -57,6 +70,32 @@ public class StickerServiceImpl implements StickerService {
 	public StickerSummaryList getAllStickerList() {
 		List<Sticker> stickers = stickerRepository.findAllByStateTrue();
 		return StickerSummaryList.of(stickers);
+	}
+
+	@Override
+	@Transactional
+	public Integer createSticker(CreateStickerInfo request) {
+		String mainImageUrl = s3Service.uploadImage(request.getMainImage(), directoryPath);
+		Sticker sticker = Sticker.from(request.getName(), request.getDescription(), mainImageUrl,
+			request.getIsCustom(), request.getPrice(),
+			request.getComposition(), request.getSize(), request.getShippingFee(), true);
+		if (!Objects.isNull(request.getImages())) {
+			List<String> imageUrls = s3Service.uploadImageList(request.getImages(), directoryPath);
+			List<StickerImage> stickerImages = imageUrls.stream()
+				.map(imageUrl -> StickerImage.from(sticker, imageUrl))
+				.collect(Collectors.toList());
+			sticker.setImages(stickerImages);
+		}
+		List<StickerTheme> stickerThemes = request.getThemes().stream()
+			.map(themeId -> StickerTheme.from(sticker, themeService.getThemeById(themeId)))
+			.collect(Collectors.toList());
+		sticker.setStickerThemes(stickerThemes);
+		List<StickerStyle> stickerStyles = request.getStyles().stream()
+			.map(styleId -> StickerStyle.from(sticker, styleService.getStyleById(styleId)))
+			.collect(Collectors.toList());
+		sticker.setStickerStyles(stickerStyles);
+		stickerRepository.save(sticker);
+		return sticker.getId();
 	}
 
 	@Override
@@ -165,9 +204,9 @@ public class StickerServiceImpl implements StickerService {
 			case POPULARITY:
 				break;
 			case PRICE_HIGH:
-				Collections.sort( stickers, (o1,o2) -> o2.getPrice() - o1.getPrice() );
+				Collections.sort(stickers, (o1, o2) -> o2.getPrice() - o1.getPrice());
 			case PRICE_LOW:
-				Collections.sort( stickers, (o1,o2) -> o1.getPrice() - o2.getPrice() );
+				Collections.sort(stickers, (o1, o2) -> o1.getPrice() - o2.getPrice());
 		}
 	}
 }

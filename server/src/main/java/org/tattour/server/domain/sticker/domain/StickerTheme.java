@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.domain.theme.domain.Theme;
@@ -17,6 +19,8 @@ import org.tattour.server.domain.theme.domain.Theme;
 @Table(name = "sticker_theme")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StickerTheme {
 
 	@Id
@@ -30,4 +34,11 @@ public class StickerTheme {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "theme_id")
 	private Theme theme;
+
+	public static StickerTheme from(Sticker sticker, Theme theme) {
+		return StickerTheme.builder()
+			.sticker(sticker)
+			.theme(theme)
+			.build();
+	}
 }

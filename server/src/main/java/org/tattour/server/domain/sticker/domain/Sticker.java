@@ -13,15 +13,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.tattour.server.domain.discount.domain.Discount;
+import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "sticker")
 @Entity
+@Builder
+@DynamicInsert
+@DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sticker extends AuditingTimeEntity {
 
 	@Id
@@ -30,6 +39,10 @@ public class Sticker extends AuditingTimeEntity {
 	private String name;
 	private String description;
 	private Integer price;
+	@Column(name = "discount_price")
+	private Integer discountPrice;
+	@Column(name = "shipping_fee")
+	private Integer shippingFee;
 	private String composition;
 	private String size;
 	@Column(columnDefinition = "tinyint")
@@ -52,6 +65,46 @@ public class Sticker extends AuditingTimeEntity {
 	private List<StickerStyle> stickerStyles;
 
 	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-	private List<StickerImage> images;
+	private List<StickerImage> stickerImages;
 
+	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+	private List<Order> orderItems;
+
+	public void setStickerThemes(
+		List<StickerTheme> stickerThemes) {
+		this.stickerThemes = stickerThemes;
+	}
+
+	public void setStickerStyles(
+		List<StickerStyle> stickerStyles) {
+		this.stickerStyles = stickerStyles;
+	}
+
+	public void setImages(List<StickerImage> stickerImages) {
+		this.stickerImages = stickerImages;
+	}
+
+	public static Sticker from(
+		String name,
+		String description,
+		String mainImageUrl,
+		Boolean isCustom,
+		Integer price,
+		String composition,
+		String size,
+		Integer shippingFee,
+		Boolean state
+	) {
+		return Sticker.builder()
+			.name(name)
+			.description(description)
+			.mainImageUrl(mainImageUrl)
+			.isCustom(isCustom)
+			.price(price)
+			.composition(composition)
+			.size(size)
+			.shippingFee(shippingFee)
+			.state(state)
+			.build();
+	}
 }
