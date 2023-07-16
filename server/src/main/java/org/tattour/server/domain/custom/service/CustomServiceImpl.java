@@ -27,6 +27,7 @@ import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.global.exception.UnauthorizedException;
 import org.tattour.server.global.util.EntityDtoMapper;
+import org.tattour.server.infra.discord.service.DiscordMessageService;
 import org.tattour.server.infra.s3.S3Service;
 
 @Service
@@ -38,6 +39,8 @@ public class CustomServiceImpl implements CustomService {
 	private final ThemeService themeService;
 	private final StyleService styleService;
 	private final UserService userService;
+	private final DiscordMessageService discordMessageService;
+
 	private final String directoryPath = "custom";
 
 	@Value("${image.default.custom}")
@@ -120,6 +123,7 @@ public class CustomServiceImpl implements CustomService {
 			if (updateCustomInfo.getIsCompleted()) {
 				custom.setCompleted(updateCustomInfo.getIsCompleted());
 				custom.setCustomProcess(CustomProcess.RECEIVING);
+				discordMessageService.sendCustomApplyMessage(custom);
 			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getCount())) {
