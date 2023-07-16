@@ -1,6 +1,7 @@
 package org.tattour.server.domain.order.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class OrderController {
 	@Operation(summary = "결제하기")
 	@PostMapping
 	public ResponseEntity<?> order(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@RequestBody PostOrderReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
@@ -75,7 +76,7 @@ public class OrderController {
 	@Operation(summary = "결제 내역 불러오기")
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
-		@UserId Integer jwtUserId,
+		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@RequestParam("userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
