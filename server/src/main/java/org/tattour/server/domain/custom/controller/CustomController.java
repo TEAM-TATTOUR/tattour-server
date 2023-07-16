@@ -2,6 +2,7 @@ package org.tattour.server.domain.custom.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ import org.tattour.server.global.dto.SuccessType;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/custom")
+@SecurityRequirement(name = "JWT Auth")
 @Tag(name = "Custom", description = "Custom API Document")
 public class CustomController {
 

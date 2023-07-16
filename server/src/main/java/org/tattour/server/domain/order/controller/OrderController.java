@@ -1,6 +1,7 @@
 package org.tattour.server.domain.order.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import org.tattour.server.global.exception.ErrorType;
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "JWT Auth")
 @Tag(name = "Order", description = "Order API Document")
 public class OrderController {
 
