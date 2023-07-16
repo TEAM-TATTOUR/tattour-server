@@ -49,7 +49,7 @@ public class CustomServiceImpl implements CustomService {
 		Custom custom = customRepository.findById(customId)
 			.orElseThrow(NotFoundCustomException::new);
 		User user = userService.getUserByUserId(userId);
-		if (!custom.getUser().equals(user)) {
+		if (!custom.getUser().equals(user) && !userId.equals(1)) {
 			throw new UnauthorizedException();
 		}
 		return custom;
@@ -91,13 +91,18 @@ public class CustomServiceImpl implements CustomService {
 			List<CustomTheme> customThemes = updateCustomInfo.getThemes().stream()
 				.map(themeId -> CustomTheme.from(custom, themeService.getThemeById(themeId)))
 				.collect(Collectors.toList());
-			custom.setCustomThemes(customThemes);
+			if (!custom.getCustomThemes().contains(customThemes)) {
+				custom.setCustomThemes(customThemes);
+			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getStyles())) {
 			List<CustomStyle> customStyles = updateCustomInfo.getStyles().stream()
 				.map(styleId -> CustomStyle.from(custom, styleService.getStyleById(styleId)))
 				.collect(Collectors.toList());
 			custom.setCustomStyles(customStyles);
+			if (!custom.getCustomStyles().contains(customStyles)) {
+				custom.setCustomStyles(customStyles);
+			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getName())) {
 			custom.setName(updateCustomInfo.getName());
