@@ -76,8 +76,9 @@ public class UserController {
 	@Operation(summary = "소셜 회원가입/로그인")
 	@PostMapping("/signup")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> login(@RequestHeader("code") String code,
-		@RequestBody LoginReq request) {
+	public ResponseEntity<?> login(
+			@RequestHeader("code") String code,
+			@RequestBody @Valid LoginReq request) {
 		SocialService socialService = socialServiceProvider.getSocialService(
 			request.getSocialPlatform());
 
@@ -94,7 +95,7 @@ public class UserController {
 	public ResponseEntity<?> updateUserProfile(
 		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
-		@RequestBody PatchUserInfoReq req
+		@RequestBody @Valid PatchUserInfoReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
@@ -128,7 +129,7 @@ public class UserController {
 	@GetMapping("/phoneNum/verification")
 	public ResponseEntity<?> verififyCode(
 		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@RequestBody GetVerifyCodeReq req) {
+		@RequestBody @Valid GetVerifyCodeReq req) {
 		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
 
 		if (phoneNumberVerificationCodeProvider.compareVerficationCode(req.getUserId(),
@@ -146,7 +147,7 @@ public class UserController {
 	public ResponseEntity<?> saveProductLiked(
 		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
-		@RequestBody PostProductLikedReq req
+		@RequestBody @Valid PostProductLikedReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
@@ -165,7 +166,7 @@ public class UserController {
 	public ResponseEntity<?> deleteProductLiked(
 		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
-		@RequestBody DeleteProductLikedReq req
+		@RequestBody @Valid DeleteProductLikedReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
@@ -192,7 +193,7 @@ public class UserController {
 	public ResponseEntity<?> createShippingAddr(
 		@Parameter(hidden = true) @UserId Integer jwtUserId,
 		@PathVariable("userId") Integer userId,
-		@RequestBody PostUserShippingAddrReq req
+		@RequestBody @Valid PostUserShippingAddrReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 		userShippingAddressService.saveUserShippingAddr(

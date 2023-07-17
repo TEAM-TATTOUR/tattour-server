@@ -1,7 +1,9 @@
 package org.tattour.server.domain.order.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,7 @@ public class OrderController {
 	@Operation(summary = "결제 페이지 불러오기")
 	@GetMapping("/ordersheet")
 	public ResponseEntity<?> getOrderSheet(
-		@RequestBody GetOrderSheetReq req
+		@RequestBody @Valid GetOrderSheetReq req
 	) {
 		return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(req));
 	}
@@ -50,8 +52,8 @@ public class OrderController {
 	@Operation(summary = "결제하기")
 	@PostMapping
 	public ResponseEntity<?> order(
-		@UserId Integer jwtUserId,
-		@RequestBody PostOrderReq req
+			@Parameter(hidden = true) @UserId Integer jwtUserId,
+		@RequestBody @Valid PostOrderReq req
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
 
@@ -73,8 +75,8 @@ public class OrderController {
 	@Operation(summary = "결제 내역 불러오기")
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
-		@UserId Integer jwtUserId,
-		@RequestParam("userId") Integer userId
+			@Parameter(hidden = true) @UserId Integer jwtUserId,
+			@RequestParam("userId") Integer userId
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 

@@ -74,7 +74,7 @@ public class AdminController {
     @Operation(summary = "포인트 충전 요청 확인")
     @PostMapping("/point/request/confirm")
     public ResponseEntity<?> confirmPointChargeRequest(
-            @RequestBody ConfirmPointChargeRequestReq req
+            @RequestBody @Valid ConfirmPointChargeRequestReq req
     ){
         ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
                 ConfirmPointChargeRequestDto.of(req.getId(), req.getUserId(), req.getTransferredAmount()));
@@ -87,7 +87,7 @@ public class AdminController {
     @Operation(summary = "포인트 충전 요청 취소")
     @PostMapping("/point/request/cancel")
     public ResponseEntity<?> cancelPointChargeRequest(
-            @RequestBody CancelPointChargeRequestReq req
+            @RequestBody @Valid CancelPointChargeRequestReq req
     ){
         pointService.cancelPointChargeRequest(req);
 //                CancelPointChargeRequestReq.of(req.getId(), req.getUserId(), req.getTransferredAmount(), req.getReason()));
@@ -109,7 +109,7 @@ public class AdminController {
     @PatchMapping("/order/{orderId}/status")
     public ResponseEntity<?> patchOrderStatus(
             @PathVariable int orderId,
-            @RequestBody PatchOrderStatusReq req
+            @RequestBody @Valid PatchOrderStatusReq req
     ){
         orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
