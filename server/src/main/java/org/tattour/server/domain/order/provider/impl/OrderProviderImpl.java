@@ -11,6 +11,7 @@ import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.OrderProvider;
 import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
+import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderAmountRes;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
@@ -41,7 +42,7 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReq req) {
+    public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req) {
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
         GetOrderSheetStickerInfo getOrderSheetStickerInfo = stickerProvider.getOrderSheetStickerInfo(
                 req.getStickerId());

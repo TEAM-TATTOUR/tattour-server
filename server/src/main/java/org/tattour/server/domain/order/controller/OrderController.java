@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
+import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
+import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
+import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
@@ -44,29 +47,43 @@ public class OrderController {
 	@Operation(summary = "결제 페이지 불러오기")
 	@GetMapping("/ordersheet")
 	public ResponseEntity<?> getOrderSheet(
-		@RequestBody @Valid GetOrderSheetReq req
+			@UserId Integer userId,
+			@RequestBody @Valid GetOrderSheetReq req
 	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(req));
+		return ApiResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderSheetRes(
+				GetOrderSheetReqDto.of(userId, req.getStickerId(), req.getCount(), req.getShippingFee())));
 	}
 
 	@Operation(summary = "결제하기")
 	@PostMapping
 	public ResponseEntity<?> order(
-			@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@RequestBody @Valid PostOrderReq req
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid PostOrderReq req
 	) {
-		jwtService.compareJwtWithPathVar(jwtUserId, req.getUserId());
-
-		if (userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount())) {
+		if (userProvider.isUserPointLack(CheckUserPointLackReqDto.of(userId, req.getTotalAmount()))) {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
 
-		orderService.saveOrder(req);
+		orderService.saveOrder(PostOrderReqDto.of(
+				userId,
+				req.getStickerId(),
+				req.getProductCount(),
+				req.getShippingFee(),
+				req.getTotalAmount(),
+				req.getRecipientName(),
+				req.getContact(),
+				req.getMailingAddress(),
+				req.getBaseAddress(),
+				req.getDetailAddress()));
 		int resultPoint = userService.updateUserPoint(
-			UpdateUserPointReq.of(req.getUserId(), -Math.abs(req.getTotalAmount())));
+			UpdateUserPointReq.of(userId, -Math.abs(req.getTotalAmount())));
 		pointService.savePointLog(
-			SaveUserPointLogReq.of("상품 구매", null, -Math.abs(req.getTotalAmount()), resultPoint,
-				req.getUserId()));
+			SaveUserPointLogReq.of(
+					"상품 구매",
+					null,
+					-Math.abs(req.getTotalAmount()),
+					resultPoint,
+					userId));
 
 		return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
 	}
