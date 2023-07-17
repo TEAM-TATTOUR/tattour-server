@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class GetOrderSheetReq {
-    @NotNull(message = "userId is null")
-    private Integer userId;
 
     @NotNull(message = "stickerId is null")
     private Integer stickerId;

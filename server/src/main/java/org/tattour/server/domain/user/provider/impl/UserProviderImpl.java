@@ -2,6 +2,7 @@ package org.tattour.server.domain.user.provider.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -33,7 +34,7 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public boolean isUserPointLack(Integer userId, Integer totalAmount) {
-        return totalAmount > getUserById(userId).getPoint();
+    public boolean isUserPointLack(CheckUserPointLackReqDto req) {
+        return req.getTotalAmount() > getUserById(req.getUserId()).getPoint();
     }
 }

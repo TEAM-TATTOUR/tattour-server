@@ -8,6 +8,7 @@ import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.order.service.OrderService;
+import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
 import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
@@ -33,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order saveOrder(PostOrderReq req) {
+    public Order saveOrder(PostOrderReqDto req) {
         User user = userProvider.getUserById(req.getUserId());
         Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
         Order order = Order.of(sticker.getName(), sticker.getSize(), sticker.getMainImageUrl(),

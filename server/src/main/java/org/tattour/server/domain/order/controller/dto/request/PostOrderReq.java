@@ -9,9 +9,6 @@ import lombok.Getter;
 
 @Getter
 public class PostOrderReq {
-    @NotNull(message = "userId is null")
-    private Integer userId;
-
     @NotNull(message = "stickerId is null")
     private Integer stickerId;
 

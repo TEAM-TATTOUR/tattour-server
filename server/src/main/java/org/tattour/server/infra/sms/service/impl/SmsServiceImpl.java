@@ -65,7 +65,7 @@ public class SmsServiceImpl {
                 .type("SMS")
                 .contentType("COMM")
                 .countryCode("82")
-                .from("01062416836")
+                .from("01040566111")
                 .content(content)
                 .messages(messages)
                 .build();
