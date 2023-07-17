@@ -1,6 +1,7 @@
 package org.tattour.server.domain.custom.service.dto.response;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,6 +41,10 @@ public class CustomInfo {
 		List<String> images = custom.getImages().stream()
 			.map(customImage -> customImage.getImageUrl())
 			.collect(Collectors.toList());
+		String process = null;
+		if (!Objects.isNull(custom.getProcess())) {
+			process = custom.getProcess().getValue();
+		}
 		return CustomInfo.builder()
 			.id(custom.getId())
 			.userId(custom.getUser().getId())
@@ -56,7 +61,7 @@ public class CustomInfo {
 			.isColored(custom.getIsColored())
 			.isPublic(custom.getIsPublic())
 			.isCompleted(custom.getIsCompleted())
-			.process(custom.getProcess().getValue())
+			.process(process)
 			.viewCount(custom.getViewCount())
 			.build();
 	}
