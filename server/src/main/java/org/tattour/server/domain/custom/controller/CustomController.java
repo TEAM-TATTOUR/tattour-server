@@ -49,7 +49,6 @@ public class CustomController {
 	})
 	public ResponseEntity<?> createCustom(
 		@Parameter(hidden = true) @UserId Integer userId,
-		@Parameter(name = "customInfo",  description = "haveDesign 만 넘겨주기")
 		@RequestBody @Valid ApplyCustomReq request
 	) {
 
@@ -60,8 +59,8 @@ public class CustomController {
 
 	@PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "커스텀 도안 수정", description = "customInfo ContentType: application/json"
-		+ "\ncustomId 를 제외한 모든 컬럼 null 값 가능"
-		+ "\n테마, 스타일 타입은  Integer")
+		+ "customId 를 제외한 모든 컬럼 null 값 가능"
+		+ "테마, 스타일 타입은  Integer")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "success",
 			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
