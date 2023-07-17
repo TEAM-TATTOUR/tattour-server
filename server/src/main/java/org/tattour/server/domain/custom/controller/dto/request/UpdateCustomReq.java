@@ -2,6 +2,7 @@ package org.tattour.server.domain.custom.controller.dto.request;
 
 import java.util.List;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ public class UpdateCustomReq {
 
 	@NotNull
 	private Integer customId;
+
 	private String size;
 	private Boolean isColored;
 	private List<Integer> themes;
