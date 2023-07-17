@@ -1,4 +1,4 @@
-HELP.md
+    HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -38,3 +38,7 @@ out/
 
 ### log file ###
 logs/*
+
+### config ###
+.yaml
+.yml
