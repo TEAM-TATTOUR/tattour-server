@@ -12,7 +12,6 @@ import org.tattour.server.domain.custom.domain.CustomImage;
 import org.tattour.server.domain.custom.domain.CustomSize;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
-import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
@@ -122,7 +121,7 @@ public class CustomServiceImpl implements CustomService {
 		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
 			if (updateCustomInfo.getIsCompleted()) {
 				custom.setCompleted(updateCustomInfo.getIsCompleted());
-				custom.setCustomProcess(CustomProcess.RECEIVING);
+				custom.setCustomProcess(updateCustomInfo.getCustomProcess());
 				discordMessageService.sendCustomApplyMessage(custom);
 			}
 		}
@@ -143,6 +142,18 @@ public class CustomServiceImpl implements CustomService {
 		customRepository.save(custom);
 		return CustomInfo.of(custom);
 	}
+
+	@Override
+	@Transactional
+	public CustomInfo updateCustomProcess(UpdateCustomInfo updateCustomInfo) {
+		Custom custom = getCustomById(updateCustomInfo.getCustomId(), updateCustomInfo.getUserId());
+		if(!custom.getIsCompleted()) {
+			throw new InvalidCustomPriceException();
+		}
+		custom.setCustomProcess(updateCustomInfo.getCustomProcess());
+		return CustomInfo.of(custom);
+	}
+
 
 	@Override
 	@Transactional(readOnly = true)
