@@ -23,6 +23,7 @@ package org.tattour.server.domain.custom.controller;
 	import org.tattour.server.domain.custom.controller.dto.request.ApplyCustomReq;
 	import org.tattour.server.domain.custom.controller.dto.request.UpdateCustomReq;
 	import org.tattour.server.domain.custom.controller.dto.response.ApplyCustomRes;
+	import org.tattour.server.domain.custom.domain.CustomProcess;
 	import org.tattour.server.domain.custom.service.CustomService;
 	import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 	import org.tattour.server.global.config.resolver.UserId;
@@ -59,8 +60,9 @@ public class CustomController {
 
 	@PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "커스텀 도안 수정", description = "customInfo ContentType: application/json"
-		+ "customId 를 제외한 모든 컬럼 null 값 가능"
-		+ "테마, 스타일 타입은  Integer")
+		+ " / customId 를 제외한 모든 컬럼 null 값 가능"
+		+ " / size :  <receiving, receiptComplete, receiptFailed, shipping, shipped> "
+		+ " / 테마, 스타일 타입은  Integer")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "success",
 			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
@@ -74,7 +76,7 @@ public class CustomController {
 		@RequestPart(required = false) List<MultipartFile> customImages
 	) {
 		CustomInfo response = customService.updateCustom(
-			customInfo.newUpdateCustomInfo(userId, customMainImage, customImages));
+			customInfo.newUpdateCustomInfo(userId, customMainImage, customImages, CustomProcess.RECEIVING));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

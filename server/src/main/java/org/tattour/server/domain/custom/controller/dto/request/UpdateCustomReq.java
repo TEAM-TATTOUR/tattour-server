@@ -6,6 +6,7 @@ import javax.validation.constraints.Null;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 
 @Getter
@@ -28,8 +29,8 @@ public class UpdateCustomReq {
 	private Integer price;
 	private Integer viewCount;
 
-	public UpdateCustomInfo newUpdateCustomInfo(Integer userId, MultipartFile mainImage, List<MultipartFile> images) {
+	public UpdateCustomInfo newUpdateCustomInfo(Integer userId, MultipartFile mainImage, List<MultipartFile> images, CustomProcess customProcess) {
 		return UpdateCustomInfo.from(userId, customId, size, mainImage, images, isColored,
-			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price);
+			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price, customProcess);
 	}
 }
