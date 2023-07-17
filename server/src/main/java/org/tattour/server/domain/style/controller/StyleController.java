@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.style.service.StyleService;
 import org.tattour.server.domain.style.service.dto.response.StyleInfoList;
 import org.tattour.server.domain.style.service.dto.response.StyleSummaryList;
-import org.tattour.server.global.dto.JsonResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
@@ -25,13 +25,13 @@ public class StyleController {
 	@Operation(summary = "스타일 리스트 조회")
 	public ResponseEntity<?> getStyleList() {
 		StyleInfoList response = styleService.getAllStyle();
-		return JsonResponse.success(SuccessType.READ_ALL_STYLE_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUCCESS, response);
 	}
 
 	@GetMapping("/summary")
 	@Operation(summary = "스타일 요약 정보 리스트 조회")
 	public ResponseEntity<?> getStyleSummaryList() {
 		StyleSummaryList response = styleService.getAllStyleSummary();
-		return JsonResponse.success(SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS, response);
 	}
 }

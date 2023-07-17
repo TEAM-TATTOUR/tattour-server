@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.JsonResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.infra.sms.controller.dto.request.PostSendCodeReq;
 import org.tattour.server.infra.sms.service.impl.SmsServiceImpl;
@@ -36,6 +36,6 @@ public class SmsController {
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(userId, req.getPhoneNumber()));
 
-        return JsonResponse.success(SuccessType.CREATE_SUCCESS);
+        return BaseResponse.success(SuccessType.CREATE_SUCCESS);
     }
 }

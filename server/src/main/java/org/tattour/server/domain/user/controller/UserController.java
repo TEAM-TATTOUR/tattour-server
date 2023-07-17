@@ -41,7 +41,7 @@ import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.JsonResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -87,7 +87,7 @@ public class UserController {
 		Integer userId = socialService.login(SocialLoginRequest.of(code));
 
 		// jwt 토큰 발급
-		return JsonResponse.success(SuccessType.LOGIN_SUCCESS,
+		return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
 			LoginRes.of(userId, jwtService.issuedToken(userId)));
 	}
 
@@ -100,7 +100,7 @@ public class UserController {
 		userService.updateUserInfo(UpdateUserInfoReq.of(jwtUserId, req.getName(),
 			req.getPhoneNumber()));
 
-		return JsonResponse.success(SuccessType.UPDATE_SUCCESS);
+		return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
 	}
 
 	@Operation(summary = "user profile 가져오기")
@@ -108,7 +108,7 @@ public class UserController {
 	public ResponseEntity<?> getUserProfile(
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
-		return JsonResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
+		return BaseResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
 	}
 
 	@Operation(summary = "user 로그아웃")
@@ -117,7 +117,7 @@ public class UserController {
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		userService.userLogout(userId);
-		return JsonResponse.success(SuccessType.LOGOUT_SUCCESS);
+		return BaseResponse.success(SuccessType.LOGOUT_SUCCESS);
 	}
 
 	@Operation(summary = "인증번호 검증")
@@ -128,11 +128,11 @@ public class UserController {
 
 		if (phoneNumberVerificationCodeProvider
 				.compareVerficationCode(userId, req.getVerificationCode())) {
-			return JsonResponse.success(
+			return BaseResponse.success(
 					SuccessType.CODE_VERIFICATION_SUCCESS,
 					GetVerifyCodeRes.of(true));
 		} else {
-			return JsonResponse.success(SuccessType.CODE_VALIDATION_FAIL,
+			return BaseResponse.success(SuccessType.CODE_VALIDATION_FAIL,
 				GetVerifyCodeRes.of(false));
 		}
 	}
@@ -149,7 +149,7 @@ public class UserController {
 
 		productLikedService.saveProductLiked(SaveProductLikedReq.of(userId, req.getStickerId()));
 
-		return JsonResponse.success(SuccessType.CREATE_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
 	@Operation(summary = "좋아요 누른 타투 삭제")
@@ -161,7 +161,7 @@ public class UserController {
 		productLikedService.deleteProductLiked(
 				DeleteProductLikedInfo.of(userId, req.getStickerId()));
 
-		return JsonResponse.success(SuccessType.DELETE_SUCCESS);
+		return BaseResponse.success(SuccessType.DELETE_SUCCESS);
 	}
 
 	@Operation(summary = "좋아요 누른 타투 불러오기")
@@ -169,7 +169,7 @@ public class UserController {
 	public ResponseEntity<?> getProductLiked(
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
-		return JsonResponse.success(SuccessType.GET_SUCCESS,
+		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			productLikedProvider.getLikedProductsByUserId(userId));
 	}
 
@@ -188,7 +188,7 @@ public class UserController {
 				req.getBaseAddress(),
 				req.getDetailAddress()));
 
-		return JsonResponse.success(SuccessType.CREATE_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
 	@Operation(summary = "포인트 충전 신청")
@@ -203,7 +203,7 @@ public class UserController {
         pointService.savePointLog(
                 SaveUserPointLogReq.of("포인트 충전 요청", null, req.getChargeAmount(), resultPoint, userId));
 
-		return JsonResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
 	}
 
 	@GetMapping("/custom/complete")
@@ -212,7 +212,7 @@ public class UserController {
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
-		return JsonResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
 	@GetMapping("/custom/incomplete")
@@ -221,7 +221,7 @@ public class UserController {
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
-		return JsonResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
 	@GetMapping("/custom/{customId}")
@@ -232,6 +232,6 @@ public class UserController {
 	) {
 		Custom custom = customService.getCustomById(customId, userId);
 		CustomInfo response = CustomInfo.of(custom);
-		return JsonResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
 	}
 }

@@ -36,7 +36,7 @@ import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.JsonResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
@@ -59,7 +59,7 @@ public class AdminController {
     public ResponseEntity<?> getOrderHistory(
             @RequestParam("page") int page
     ){
-        return JsonResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderHistoryByPage(page));
+        return BaseResponse.success(SuccessType.GET_SUCCESS, orderProvider.getOrderHistoryByPage(page));
     }
 
     @Operation(summary = "포인트 충전 신청 내역 불러오기")
@@ -68,7 +68,7 @@ public class AdminController {
             @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) Boolean isCompleted
     ){
-        return JsonResponse.success(SuccessType.GET_SUCCESS, pointProvider.getAllPointChargeRequest(userId, isCompleted));
+        return BaseResponse.success(SuccessType.GET_SUCCESS, pointProvider.getAllPointChargeRequest(userId, isCompleted));
     }
 
     @Operation(summary = "포인트 충전 요청 확인")
@@ -79,9 +79,9 @@ public class AdminController {
         ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
                 ConfirmPointChargeRequestDto.of(req.getId(), req.getUserId(), req.getTransferredAmount()));
         if(Objects.isNull(response))
-            return JsonResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
+            return BaseResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
         else
-            return JsonResponse.success(SuccessType.POINT_CHARGE_CONFIRM_FAIL, response);
+            return BaseResponse.success(SuccessType.POINT_CHARGE_CONFIRM_FAIL, response);
     }
 
     @Operation(summary = "포인트 충전 요청 취소")
@@ -91,7 +91,7 @@ public class AdminController {
     ){
         pointService.cancelPointChargeRequest(req);
 //                CancelPointChargeRequestReq.of(req.getId(), req.getUserId(), req.getTransferredAmount(), req.getReason()));
-        return JsonResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
+        return BaseResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
     }
 
     @Operation(summary = "포인트 로그 불러오기")
@@ -100,7 +100,7 @@ public class AdminController {
             @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) String title
     ){
-        return JsonResponse.success(
+        return BaseResponse.success(
                 SuccessType.READ_POINT_LOG_SUCCESS,
                 pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
     }
@@ -113,7 +113,7 @@ public class AdminController {
     ){
         orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
-		return JsonResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
+		return BaseResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
 	}
 
 	@PostMapping(value = "/stickers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -128,6 +128,6 @@ public class AdminController {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		CreateStickerRes response = new CreateStickerRes(stickerService.createSticker(
 			stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
-		return JsonResponse.success(SuccessType.CREATE_SUCCESS, response);
+		return BaseResponse.success(SuccessType.CREATE_SUCCESS, response);
 	}
 }

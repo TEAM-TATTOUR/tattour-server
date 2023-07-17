@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.theme.service.ThemeService;
 import org.tattour.server.domain.theme.service.dto.response.ThemeInfoList;
 import org.tattour.server.domain.theme.service.dto.response.ThemeSummaryList;
-import org.tattour.server.global.dto.JsonResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
@@ -25,13 +25,13 @@ public class ThemeController {
 	@Operation(summary = "테마 리스트 조회")
 	public ResponseEntity<?> getThemeList() {
 		ThemeInfoList response = themeService.getAllTheme();
-		return JsonResponse.success(SuccessType.READ_ALL_THEME_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ALL_THEME_SUCCESS, response);
 	}
 
 	@GetMapping("/summary")
 	@Operation(summary = "테마 요약 정보 리스트 조회")
 	public ResponseEntity<?> getThemeSummaryList() {
 		ThemeSummaryList response = themeService.getAllThemeSummary();
-		return JsonResponse.success(SuccessType.READ_ALL_THEME_SUMMARY_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ALL_THEME_SUMMARY_SUCCESS, response);
 	}
 }
