@@ -27,7 +27,7 @@ import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.ApiResponse;
+import org.tattour.server.global.dto.JsonResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -53,7 +53,7 @@ public class OrderController {
 		@UserId Integer userId,
 		@RequestBody @Valid GetOrderSheetReq req
 	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS,
+		return JsonResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderSheetRes(GetOrderSheetReqDto.of(
 				userId,
 				req.getStickerId(),
@@ -94,7 +94,7 @@ public class OrderController {
 				resultPoint,
 				userId));
 		discordMessageService.sendOrderStickerMessage(order);
-		return ApiResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
+		return JsonResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
 	}
 
 	// TODO : pageable로 리팩토링하기
@@ -106,7 +106,7 @@ public class OrderController {
 	) {
 		jwtService.compareJwtWithPathVar(jwtUserId, userId);
 
-		return ApiResponse.success(SuccessType.GET_SUCCESS,
+		return JsonResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderHistoryByUserId(userId));
 	}
 }

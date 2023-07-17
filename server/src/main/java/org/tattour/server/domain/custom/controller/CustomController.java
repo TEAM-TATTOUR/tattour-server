@@ -22,7 +22,7 @@ import org.tattour.server.domain.custom.controller.dto.response.ApplyCustomRes;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.ApiResponse;
+import org.tattour.server.global.dto.JsonResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
@@ -42,7 +42,7 @@ public class CustomController {
 	) {
 		ApplyCustomRes response = ApplyCustomRes.of(
 			(customService.createCustom(request.getHaveDesign(), userId)));
-		return ApiResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
+		return JsonResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
 	}
 
 	@PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,6 +56,6 @@ public class CustomController {
 	) {
 		CustomInfo response = customService.updateCustom(
 			customInfo.newUpdateCustomInfo(userId, customMainImage, customImages));
-		return ApiResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
+		return JsonResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

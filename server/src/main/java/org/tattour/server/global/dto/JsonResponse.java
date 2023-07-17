@@ -3,7 +3,7 @@ package org.tattour.server.global.dto;
 import org.springframework.http.ResponseEntity;
 import org.tattour.server.global.exception.ErrorType;
 
-public class ApiResponse {
+public class JsonResponse {
 
 	public static ResponseEntity<?> success(SuccessType successType){
 		SuccessResponse<Object> response = new SuccessResponse<>(successType.getHttpStatusCode(), successType.getMessage());
