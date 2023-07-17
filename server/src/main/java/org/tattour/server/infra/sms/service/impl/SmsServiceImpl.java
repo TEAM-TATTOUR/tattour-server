@@ -39,6 +39,8 @@ public class SmsServiceImpl {
     private String accessKey;
     @Value("${sms.secretKey}")
     private String secretKey;
+    @Value(("${sms.phoneNumber}"))
+    private String phoneNumber;
 
     private final RandomNumberGenerator randomNumberGenerator;
     private final PhoneNumberVerificationCodeServiceImpl phoneNumberVerificationCodeService;
@@ -65,7 +67,7 @@ public class SmsServiceImpl {
                 .type("SMS")
                 .contentType("COMM")
                 .countryCode("82")
-                .from("01040566111")
+                .from(phoneNumber)
                 .content(content)
                 .messages(messages)
                 .build();
