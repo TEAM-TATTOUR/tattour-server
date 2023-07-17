@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class SmsController {
     @PostMapping("/send/verificationCode")
     public ResponseEntity<?> sendVerificationCode(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody PostSendCodeReq request
+            @RequestBody @Valid PostSendCodeReq request
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(request.getUserId(), request.getPhoneNumber()));
 
