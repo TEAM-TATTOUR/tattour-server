@@ -31,7 +31,7 @@ import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.discord.service.DiscordMessageService;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("api/v1/order")
 @RequiredArgsConstructor
 @Tag(name = "Order", description = "Order API Document")
 public class OrderController {
