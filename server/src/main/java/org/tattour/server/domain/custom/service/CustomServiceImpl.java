@@ -137,7 +137,6 @@ public class CustomServiceImpl implements CustomService {
 				throw new InvalidCustomPriceException();
 			}
 		}
-
 		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
 			custom.setViewCount(updateCustomInfo.getViewCount());
 		}
