@@ -13,6 +13,9 @@ public class PointChargeDiscordMessage {
 	String description;
 
 	public static PointChargeDiscordMessage from(User user, Integer amount) {
+		String description = amount + "원 송금 확인해주세요"
+			+ "전화번호 : " + user.getPhoneNumber()
+			+ "이메일 : " + user.getEmail();
 		return new PointChargeDiscordMessage("User Id : " + user.getId(), amount + "원 송금 확인해주세요");
 	}
 
