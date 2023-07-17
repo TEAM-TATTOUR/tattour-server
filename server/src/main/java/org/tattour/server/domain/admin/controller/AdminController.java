@@ -40,7 +40,7 @@ import org.tattour.server.global.dto.ApiResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "JWT Auth")
 @Tag(name = "Admin", description = "Admin API Document")

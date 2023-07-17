@@ -59,8 +59,8 @@ import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-@Tag(name = "User", description = "User API Document")
 @SecurityRequirement(name = "JWT Auth")
+@Tag(name = "User", description = "User API Document")
 public class UserController {
 
 	private final SocialServiceProvider socialServiceProvider;

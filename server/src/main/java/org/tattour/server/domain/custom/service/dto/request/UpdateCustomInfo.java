@@ -32,6 +32,7 @@ public class UpdateCustomInfo {
 		List<Integer> themes, List<Integer> styles, String name, String description, String demand,
 		Integer count, Boolean isPublic, Boolean isCompleted, Integer viewCount, Integer price) {
 		return UpdateCustomInfo.builder()
+			.userId(userId)
 			.customId(customId)
 			.size(size)
 			.mainImage(mainImage)

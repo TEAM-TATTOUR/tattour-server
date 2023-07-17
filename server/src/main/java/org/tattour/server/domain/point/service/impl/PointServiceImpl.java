@@ -8,7 +8,6 @@ import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeR
 import org.tattour.server.domain.custom.service.CustomServiceImpl;
 import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
-import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
@@ -33,6 +32,7 @@ import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
+import org.tattour.server.infra.discord.service.DiscordMessageService;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +44,7 @@ public class PointServiceImpl implements PointService {
     private final PointProviderImpl pointProvider;
     private final CustomServiceImpl customService;
     private final OrderProviderImpl orderProvider;
+    private final DiscordMessageService discordMessageService;
 
     @Override
     @Transactional
@@ -65,7 +66,7 @@ public class PointServiceImpl implements PointService {
                         req.getAmount(),
                         req.getResultPoint(),
                         user);
-
+        discordMessageService.sendPointChargeLogMessage(user, req.getAmount());
         userPointLogRepository.save(userPointLog);
     }
 
