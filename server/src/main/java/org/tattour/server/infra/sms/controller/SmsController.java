@@ -32,9 +32,9 @@ public class SmsController {
     @PostMapping("/send/verificationCode")
     public ResponseEntity<?> sendVerificationCode(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid PostSendCodeReq request
+            @RequestBody @Valid PostSendCodeReq req
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        smsService.sendVerificationCode(new SendVerificationCodeReq(request.getUserId(), request.getPhoneNumber()));
+        smsService.sendVerificationCode(new SendVerificationCodeReq(userId, req.getPhoneNumber()));
 
         return ApiResponse.success(SuccessType.CREATE_SUCCESS);
     }

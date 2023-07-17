@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
+import org.tattour.server.domain.user.provider.dto.request.CheckDuplicationReqDto;
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
@@ -42,7 +43,7 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
     }
 
     @Override
-    public boolean checkDuplicationByStickerId(Integer stickerId) {
-        return productLikedRepository.findProductLikedBySticker_Id(stickerId).isPresent();
+    public boolean checkDuplicationByStickerId(CheckDuplicationReqDto req) {
+        return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(), req.getStickerId()).isPresent();
     }
 }

@@ -7,9 +7,6 @@ import lombok.Getter;
 
 @Getter
 public class GetVerifyCodeReq {
-    @NotNull(message = "userId is null")
-    private Integer userId;
-
     @NotNull(message = "verificationCode is null")
     @Min(100000)
     @Max(999999)
