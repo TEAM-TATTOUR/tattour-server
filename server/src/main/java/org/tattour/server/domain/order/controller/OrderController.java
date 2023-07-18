@@ -22,6 +22,7 @@ import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
 import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
+import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
@@ -162,7 +163,7 @@ public class OrderController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+					content = @Content(schema = @Schema(implementation = GetUserOrderHistoryListRes.class))),
 			@ApiResponse(
 					responseCode = "400",
 					description = "잘못된 요청입니다.",
