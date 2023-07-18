@@ -32,7 +32,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String email;
+    private Long kakaoId;
     private Integer point;
     private String phoneNumber;
     private String accessToken;
@@ -56,16 +56,16 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProductLiked> productLikeds;
-    public User(UserRole userRole, String email, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
+    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
         this.userRole = userRole;
-        this.email = email;
+        this.kakaoId = kakaoId;
         this.socialPlatform = socialPlatform;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
     public static User of(SaveUserReq req){
-        return new User(UserRole.USER, req.getEmail(), req.getSocialPlatform(), req.getAccessToken(), req.getRefreshToken());
+        return new User(UserRole.USER, req.getKakaoId(), req.getSocialPlatform(), req.getAccessToken(), req.getRefreshToken());
     }
 
     public void setUserInfo(UpdateUserInfoReq req){

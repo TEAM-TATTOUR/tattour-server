@@ -29,8 +29,8 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public Integer checkDuplicationByEmail(String email) {
-        return userRepository.findByEmail(email).map(User::getId).orElse(null);
+    public Integer checkDuplicationByKakaoId(Long kakaoId) {
+        return userRepository.findByKakaoId(kakaoId).map(User::getId).orElse(null);
     }
 
     @Override

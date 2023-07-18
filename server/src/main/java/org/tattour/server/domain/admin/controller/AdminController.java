@@ -71,7 +71,7 @@ public class AdminController {
 	@ApiResponses(value = {
 			@ApiResponse(
 					responseCode = "200",
-					description = "로그인에 성공했습니다.",
+					description = "조회에 성공했습니다.",
 					content = @Content(schema = @Schema(implementation = LoginRes.class))),
 			@ApiResponse(
 					responseCode = "400",
@@ -90,17 +90,25 @@ public class AdminController {
 			orderProvider.getOrderHistoryByPage(page));
 	}
 
-	@Operation(summary = "포인트 충전 신청 내역 불러오기")
-	@GetMapping("/point/request")
+	@Operation(summary = "포인트 충전 신청 내역 불러오기", description = "userId, 완료 여부를 기준으로 포인트 신청 내역 조회")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = GetPointChargeRequestListRes.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "조회에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = GetPointChargeRequestListRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@GetMapping("/point/request")
 	public ResponseEntity<?> getPointChargeRequest(
-		@RequestParam(required = false) Integer userId,
-		@RequestParam(required = false) Boolean isCompleted
+			@Parameter(description = "user Id") @RequestParam(required = false) Integer userId,
+			@Parameter(description = "처리 완료 여부") @RequestParam(required = false) Boolean isCompleted
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			pointProvider.getAllPointChargeRequest(userId, isCompleted));

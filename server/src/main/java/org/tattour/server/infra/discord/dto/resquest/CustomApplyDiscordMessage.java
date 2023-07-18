@@ -19,7 +19,6 @@ public class CustomApplyDiscordMessage {
 		String description;
 		if (custom.getHaveDesign()) {
 			description = "유저 전화번호 : " + user.getPhoneNumber()
-				+ "\n유저 이메일 : " + user.getEmail()
 				+ "\n이름 : " + custom.getName()
 				+ "\n사이즈 : " + custom.getSize().getSize()
 				+ "\n추가 요청 사항 : " + custom.getDemand()
@@ -27,7 +26,6 @@ public class CustomApplyDiscordMessage {
 				+ "\n그려둔 도안 있음";
 		} else {
 			description = "유저 전화번호 : " + user.getPhoneNumber()
-				+ "유저 이메일 : " + user.getEmail()
 				+ "이름 : " + custom.getName()
 				+ "\n사이즈 : " + custom.getSize().getSize()
 				+ "\n추가 요청 사항 : " + custom.getDemand()
