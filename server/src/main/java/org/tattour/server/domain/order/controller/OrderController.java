@@ -155,8 +155,31 @@ public class OrderController {
 		return BaseResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
 	}
 
+
 	// TODO : pageable로 리팩토링하기
-	@Operation(summary = "유저 결제 내역 불러오기")
+	@Operation(summary = "유저 결제 내역 불러오기", description = "유저 id로 결제 내역 불러오기")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "조회에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 스티커입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
 		@Parameter(hidden = true) @UserId Integer userId
