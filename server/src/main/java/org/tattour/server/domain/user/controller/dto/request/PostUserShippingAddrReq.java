@@ -8,7 +8,7 @@ import lombok.Getter;
 @Schema(description = "user 배송지 등록 Request")
 @Getter
 public class PostUserShippingAddrReq {
-    @Schema(description = "수신인 이름")
+    @Schema(description = "수신인 이름", example = "recipientName")
     @NotBlank(message = "recipientName is required")
     @Size(max = 20, message = "recipientName is max 20")
     private String recipientName;
