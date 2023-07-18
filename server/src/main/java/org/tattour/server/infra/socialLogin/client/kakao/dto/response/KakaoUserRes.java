@@ -14,5 +14,6 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KakaoUserRes {
-    private KakaoAccount kakaoAccount;
+    private Long id;
+//    private KakaoAccount kakaoAccount;
 }

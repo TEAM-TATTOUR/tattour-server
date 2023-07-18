@@ -11,5 +11,5 @@ public interface UserRepositoryImpl extends JpaRepository<User, Integer> {
     <S extends User> S save(S entity);
     @Override
     Optional<User> findById(Integer integer);
-    Optional<User> findByEmail(String email);
+    Optional<User> findByKakaoId(Long kakaoId);
 }
