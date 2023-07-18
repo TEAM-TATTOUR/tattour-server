@@ -412,11 +412,18 @@ public class UserController {
 		return BaseResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
 	}
 
-
 	@GetMapping("/custom/complete")
 	@Operation(summary = "신청한 커스텀 도안 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200",
+			description = "success",
+			content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+		@ApiResponse(responseCode = "400, 500",
+			description = "error",
+			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	public ResponseEntity<?> getUserCustomCompleteList(
-			@Parameter(hidden = true) @UserId Integer userId
+		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
@@ -424,8 +431,16 @@ public class UserController {
 
 	@GetMapping("/custom/incomplete")
 	@Operation(summary = "커스텀 도안 임시저장 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200",
+			description = "success",
+			content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+		@ApiResponse(responseCode = "400, 500",
+			description = "error",
+			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	public ResponseEntity<?> getUserCustomIncompleteList(
-			@Parameter(hidden = true) @UserId Integer userId
+		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
@@ -433,6 +448,14 @@ public class UserController {
 
 	@GetMapping("/custom/{customId}")
 	@Operation(summary = "내 도안 상세정보 조회")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200",
+			description = "success",
+			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+		@ApiResponse(responseCode = "400, 500",
+			description = "error",
+			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	public ResponseEntity<?> getOneUserCustomInfo(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@PathVariable(value = "customId") Integer customId
