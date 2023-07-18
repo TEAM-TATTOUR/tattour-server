@@ -2,10 +2,15 @@ package org.tattour.server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -74,11 +79,17 @@ public class UserController {
 	private final PointServiceImpl pointService;
 	private final JwtService jwtService;
 
-	@Operation(summary = "소셜 회원가입/로그인")
+	@Operation(summary = "소셜 회원가입 / 로그인", description = "소셜 회원가입 / 로그인 api")
+	@ApiResponses(value = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+					responseCode = "201",
+					description = "로그인에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = LoginRes.class)))
+	})
 	@PostMapping("/signup")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> login(
-			@RequestHeader("code") String code,
+			@Parameter(description = "Authentification Code", required = true) @RequestHeader("code") String code,
 			@RequestBody @Valid LoginReq request) {
 		SocialService socialService = socialServiceProvider.getSocialService(
 			request.getSocialPlatform());
