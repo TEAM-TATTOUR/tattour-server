@@ -140,7 +140,7 @@ public class PointServiceImpl implements PointService {
             } else {
                 // PointChargeRequest의 상태를 변경하기
                 updatePointChargeRequest(
-                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),false, false, false, true));
+                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(), !Objects.isNull(req.getTransferredAmount()), false, false, true));
 
                 // 포인트 로그 남기기
                 User user = userProvider.getUserById(req.getUserId());
