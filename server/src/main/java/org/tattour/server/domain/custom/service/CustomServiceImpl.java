@@ -12,7 +12,6 @@ import org.tattour.server.domain.custom.domain.CustomImage;
 import org.tattour.server.domain.custom.domain.CustomSize;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
-import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
@@ -27,6 +26,7 @@ import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.global.exception.UnauthorizedException;
 import org.tattour.server.global.util.EntityDtoMapper;
+import org.tattour.server.infra.discord.service.DiscordMessageService;
 import org.tattour.server.infra.s3.S3Service;
 
 @Service
@@ -38,6 +38,8 @@ public class CustomServiceImpl implements CustomService {
 	private final ThemeService themeService;
 	private final StyleService styleService;
 	private final UserService userService;
+	private final DiscordMessageService discordMessageService;
+
 	private final String directoryPath = "custom";
 
 	@Value("${image.default.custom}")
@@ -49,7 +51,7 @@ public class CustomServiceImpl implements CustomService {
 		Custom custom = customRepository.findById(customId)
 			.orElseThrow(NotFoundCustomException::new);
 		User user = userService.getUserByUserId(userId);
-		if (!custom.getUser().equals(user)) {
+		if (!custom.getUser().equals(user) && !userId.equals(1)) {
 			throw new UnauthorizedException();
 		}
 		return custom;
@@ -91,13 +93,18 @@ public class CustomServiceImpl implements CustomService {
 			List<CustomTheme> customThemes = updateCustomInfo.getThemes().stream()
 				.map(themeId -> CustomTheme.from(custom, themeService.getThemeById(themeId)))
 				.collect(Collectors.toList());
-			custom.setCustomThemes(customThemes);
+			if (!custom.getCustomThemes().contains(customThemes)) {
+				custom.setCustomThemes(customThemes);
+			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getStyles())) {
 			List<CustomStyle> customStyles = updateCustomInfo.getStyles().stream()
 				.map(styleId -> CustomStyle.from(custom, styleService.getStyleById(styleId)))
 				.collect(Collectors.toList());
 			custom.setCustomStyles(customStyles);
+			if (!custom.getCustomStyles().contains(customStyles)) {
+				custom.setCustomStyles(customStyles);
+			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getName())) {
 			custom.setName(updateCustomInfo.getName());
@@ -114,7 +121,8 @@ public class CustomServiceImpl implements CustomService {
 		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
 			if (updateCustomInfo.getIsCompleted()) {
 				custom.setCompleted(updateCustomInfo.getIsCompleted());
-				custom.setCustomProcess(CustomProcess.RECEIVING);
+				custom.setCustomProcess(updateCustomInfo.getCustomProcess());
+				discordMessageService.sendCustomApplyMessage(custom);
 			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getCount())) {
@@ -128,13 +136,24 @@ public class CustomServiceImpl implements CustomService {
 				throw new InvalidCustomPriceException();
 			}
 		}
-
 		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
 			custom.setViewCount(updateCustomInfo.getViewCount());
 		}
 		customRepository.save(custom);
 		return CustomInfo.of(custom);
 	}
+
+	@Override
+	@Transactional
+	public CustomInfo updateCustomProcess(UpdateCustomInfo updateCustomInfo) {
+		Custom custom = getCustomById(updateCustomInfo.getCustomId(), updateCustomInfo.getUserId());
+		if(!custom.getIsCompleted()) {
+			throw new InvalidCustomPriceException();
+		}
+		custom.setCustomProcess(updateCustomInfo.getCustomProcess());
+		return CustomInfo.of(custom);
+	}
+
 
 	@Override
 	@Transactional(readOnly = true)

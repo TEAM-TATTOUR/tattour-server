@@ -46,7 +46,7 @@ import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
-import org.tattour.server.global.dto.ApiResponse;
+import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -64,8 +64,8 @@ import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-@Tag(name = "User", description = "User API Document")
 @SecurityRequirement(name = "JWT Auth")
+@Tag(name = "User", description = "User API Document")
 public class UserController {
 
 	private final SocialServiceProvider socialServiceProvider;
@@ -98,7 +98,7 @@ public class UserController {
 		Integer userId = socialService.login(SocialLoginRequest.of(code));
 
 		// jwt 토큰 발급
-		return ApiResponse.success(SuccessType.LOGIN_SUCCESS,
+		return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
 			LoginRes.of(userId, jwtService.issuedToken(userId)));
 	}
 
@@ -111,7 +111,7 @@ public class UserController {
 		userService.updateUserInfo(UpdateUserInfoReq.of(jwtUserId, req.getName(),
 			req.getPhoneNumber()));
 
-		return ApiResponse.success(SuccessType.UPDATE_SUCCESS);
+		return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
 	}
 
 	@Operation(summary = "user profile 가져오기")
@@ -119,7 +119,7 @@ public class UserController {
 	public ResponseEntity<?> getUserProfile(
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
+		return BaseResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
 	}
 
 	@Operation(summary = "user 로그아웃")
@@ -128,7 +128,7 @@ public class UserController {
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
 		userService.userLogout(userId);
-		return ApiResponse.success(SuccessType.LOGOUT_SUCCESS);
+		return BaseResponse.success(SuccessType.LOGOUT_SUCCESS);
 	}
 
 	@Operation(summary = "인증번호 검증")
@@ -139,11 +139,11 @@ public class UserController {
 
 		if (phoneNumberVerificationCodeProvider
 				.compareVerficationCode(userId, req.getVerificationCode())) {
-			return ApiResponse.success(
+			return BaseResponse.success(
 					SuccessType.CODE_VERIFICATION_SUCCESS,
 					GetVerifyCodeRes.of(true));
 		} else {
-			return ApiResponse.success(SuccessType.CODE_VALIDATION_FAIL,
+			return BaseResponse.success(SuccessType.CODE_VALIDATION_FAIL,
 				GetVerifyCodeRes.of(false));
 		}
 	}
@@ -160,7 +160,7 @@ public class UserController {
 
 		productLikedService.saveProductLiked(SaveProductLikedReq.of(userId, req.getStickerId()));
 
-		return ApiResponse.success(SuccessType.CREATE_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
 	@Operation(summary = "좋아요 누른 타투 삭제")
@@ -172,7 +172,7 @@ public class UserController {
 		productLikedService.deleteProductLiked(
 				DeleteProductLikedInfo.of(userId, req.getStickerId()));
 
-		return ApiResponse.success(SuccessType.DELETE_SUCCESS);
+		return BaseResponse.success(SuccessType.DELETE_SUCCESS);
 	}
 
 	@Operation(summary = "좋아요 누른 타투 불러오기")
@@ -180,7 +180,7 @@ public class UserController {
 	public ResponseEntity<?> getProductLiked(
 		@Parameter(hidden = true) @UserId Integer userId
 	) {
-		return ApiResponse.success(SuccessType.GET_SUCCESS,
+		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			productLikedProvider.getLikedProductsByUserId(userId));
 	}
 
@@ -199,7 +199,7 @@ public class UserController {
 				req.getBaseAddress(),
 				req.getDetailAddress()));
 
-		return ApiResponse.success(SuccessType.CREATE_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
 	@Operation(summary = "포인트 충전 신청")
@@ -214,41 +214,35 @@ public class UserController {
         pointService.savePointLog(
                 SaveUserPointLogReq.of("포인트 충전 요청", null, req.getChargeAmount(), resultPoint, userId));
 
-		return ApiResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
+		return BaseResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
 	}
 
-	@GetMapping("/{userId}/custom/complete")
+	@GetMapping("/custom/complete")
 	@Operation(summary = "신청한 커스텀 도안 조회")
 	public ResponseEntity<?> getUserCustomCompleteList(
-		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@PathVariable(value = "userId") Integer userId
+		@Parameter(hidden = true) @UserId Integer userId
 	) {
-		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(jwtUserId);
-		return ApiResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
+		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
+		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
-	@GetMapping("/{userId}/custom/incomplete")
+	@GetMapping("/custom/incomplete")
 	@Operation(summary = "커스텀 도안 임시저장 조회")
 	public ResponseEntity<?> getUserCustomIncompleteList(
-		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@PathVariable(value = "userId") Integer userId
+		@Parameter(hidden = true) @UserId Integer userId
 	) {
-		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(jwtUserId);
-		return ApiResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
+		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
+		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
-	@GetMapping("/{userId}/custom/{customId}")
+	@GetMapping("/custom/{customId}")
 	@Operation(summary = "내 도안 상세정보 조회")
 	public ResponseEntity<?> getOneUserCustomInfo(
-		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@PathVariable(value = "userId") Integer userId,
+		@Parameter(hidden = true) @UserId Integer userId,
 		@PathVariable(value = "customId") Integer customId
 	) {
-		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-		Custom custom = customService.getCustomById(customId, jwtUserId);
+		Custom custom = customService.getCustomById(customId, userId);
 		CustomInfo response = CustomInfo.of(custom);
-		return ApiResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
+		return BaseResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
 	}
 }

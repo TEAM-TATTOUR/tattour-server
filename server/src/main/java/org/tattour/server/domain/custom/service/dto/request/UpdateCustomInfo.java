@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
+import org.tattour.server.domain.custom.domain.CustomProcess;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
@@ -26,12 +27,14 @@ public class UpdateCustomInfo {
 	private Boolean isCompleted;
 	private Integer viewCount;
 	private Integer price;
+	private CustomProcess customProcess;
 
 	public static UpdateCustomInfo from(Integer userId, Integer customId, String size,
 		MultipartFile mainImage, List<MultipartFile> images, Boolean isColored,
 		List<Integer> themes, List<Integer> styles, String name, String description, String demand,
-		Integer count, Boolean isPublic, Boolean isCompleted, Integer viewCount, Integer price) {
+		Integer count, Boolean isPublic, Boolean isCompleted, Integer viewCount, Integer price, CustomProcess customProcess) {
 		return UpdateCustomInfo.builder()
+			.userId(userId)
 			.customId(customId)
 			.size(size)
 			.mainImage(mainImage)
@@ -47,6 +50,15 @@ public class UpdateCustomInfo {
 			.isCompleted(isCompleted)
 			.viewCount(viewCount)
 			.price(price)
+			.customProcess(customProcess)
+			.build();
+	}
+
+	public static UpdateCustomInfo from(Integer userId, Integer customId, CustomProcess customProcess) {
+		return UpdateCustomInfo.builder()
+			.userId(userId)
+			.customId(customId)
+			.customProcess(customProcess)
 			.build();
 	}
 }

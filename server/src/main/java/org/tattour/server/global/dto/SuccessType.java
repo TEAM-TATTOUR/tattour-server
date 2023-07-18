@@ -25,6 +25,7 @@ public enum SuccessType {
 	READ_ALL_STYLE_SUCCESS(HttpStatus.OK, "스타일 조회에 성공했습니다."),
 	READ_ALL_STYLE_SUMMARY_SUCCESS(HttpStatus.OK, "스타일 요약 정보 조회에 성공했습니다."),
 	READ_ONE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 정보 조회에 성공했습니다."),
+	UPDATE_CUSTOM_PROCESS_SUCCESS(HttpStatus.OK, "커스텀 배송 상태 수정에 성공했습니다."),
 	READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "임시저장 커스텀 요약 정보 조회에 성공했습니다."),
 	READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "신청 완료된 커스텀 요약 정보 조회에 성공했습니다."),
 	READ_POINT_LOG_SUCCESS(HttpStatus.OK, "포인트 로그 조회에 성공했습니다."),
@@ -41,8 +42,8 @@ public enum SuccessType {
 	CREATE_CUSTOM_SUCCESS(HttpStatus.CREATED, "커스텀 도안 신청이 완료됐습니다."),
 	CREATE_ORDER_SUCCESS(HttpStatus.CREATED, "주문에 성공했습니다."),
 	CREATE_POINT_CHARGE_REQUEST_SUCCESS(HttpStatus.CREATED, "포인트 충전 요청에 성공했습니다."),
-	POINT_CHARGE_CONFIRM_SUCCESS(HttpStatus.OK, "포인트 충전 확정에 성공했습니다."),
-	POINT_CHARGE_CANCEL_SUCCESS(HttpStatus.OK, "포인트 충전 취소에 성공했습니다."),
+	POINT_CHARGE_CONFIRM_SUCCESS(HttpStatus.CREATED, "포인트 충전 확정에 성공했습니다."),
+	POINT_CHARGE_CANCEL_SUCCESS(HttpStatus.CREATED, "포인트 충전 취소에 성공했습니다."),
 
 	/**
 	 * 202 ACCEPTED

@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.sticker.service.dto.request.CreateStickerInfo;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class CreateStickerReq {
 

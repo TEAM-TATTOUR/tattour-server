@@ -14,7 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.tattour.server.global.dto.ApiResponse;
+import org.tattour.server.global.dto.BaseResponse;
 
 @Slf4j
 @ControllerAdvice
@@ -29,7 +29,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		FieldError fieldError = Objects.requireNonNull(e.getFieldError());
-		return ApiResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION,
+		return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION,
 			String.format("%s. (%s)", fieldError.getDefaultMessage(), fieldError.getField()));
 	}
 
@@ -40,7 +40,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(BindException.class)
 	public ResponseEntity<?> handleBadRequest(BindException e) {
 		FieldError fieldError = Objects.requireNonNull(e.getFieldError());
-		return ApiResponse.error(ErrorType.VALIDATION_WRONG_TYPE_EXCEPTION,
+		return BaseResponse.error(ErrorType.VALIDATION_WRONG_TYPE_EXCEPTION,
 			String.format("%s (%s)", fieldError.getDefaultMessage(), fieldError.getField()));
 	}
 
@@ -50,7 +50,7 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleDateTimeFormatException1(HttpMessageNotReadableException e) {
-		return ApiResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
+		return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e) {
-		return ApiResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
+		return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
 	}
 
 	/**
@@ -68,13 +68,13 @@ public class ControllerExceptionHandler {
 	 */
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<?> handleDateTimeFormatException2(HttpRequestMethodNotSupportedException e) {
-		return ApiResponse.error(ErrorType.VALIDATION_WRONG_HTTP_METHOD_EXCEPTION);
+		return BaseResponse.error(ErrorType.VALIDATION_WRONG_HTTP_METHOD_EXCEPTION);
 	}
 
 	// 나중에 수정하기
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<?> illegalArgumentExceptionAdvice(IllegalArgumentException e) {
-		return ApiResponse.error(ErrorType.INVALID_ARGUMENT_EXCEPTION);
+		return BaseResponse.error(ErrorType.INVALID_ARGUMENT_EXCEPTION);
 	}
 	/**
 	 * 500 Error
@@ -88,7 +88,7 @@ public class ControllerExceptionHandler {
 
 		logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
 
-		return ApiResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
+		return BaseResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
 	}
 
 	/**
@@ -102,6 +102,6 @@ public class ControllerExceptionHandler {
 
 		logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
 
-		return ApiResponse.error(e.getErrorType());
+		return BaseResponse.error(e.getErrorType());
 	}
 }

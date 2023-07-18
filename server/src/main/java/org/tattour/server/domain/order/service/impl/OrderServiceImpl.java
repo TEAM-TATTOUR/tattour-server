@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void saveOrder(PostOrderReqDto req) {
+    public Order saveOrder(PostOrderReqDto req) {
         User user = userProvider.getUserById(req.getUserId());
         Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
         Order order = Order.of(sticker.getName(), sticker.getSize(), sticker.getMainImageUrl(),
@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
                 req.getRecipientName(), req.getContact(), req.getMailingAddress(), req.getBaseAddress(),
                 req.getDetailAddress(), user, sticker);
 
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     @Override
