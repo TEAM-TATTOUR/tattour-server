@@ -27,7 +27,12 @@ public class WebConfig implements WebMvcConfigurer {
         // 모든 경로에 앞으로 만들 모든 CORS 정보를 적용한다
         registry.addMapping("/**")
                 // Header의 Origin에 들어있는 주소가 아래 주소인 경우를 허용한다
-                .allowedOrigins("https://api.tattour.kr", "https://tattour.kr", "http://localhost:8080", "http://localhost:5173")
+                .allowedOrigins(
+                        "https://api.tattour.kr",
+                        "https://tattour.kr",
+                        "http://localhost:8080",
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5173")
                 .allowedHeaders()
                 // 모든 HTTP Method를 허용한다.
                 .allowedMethods("*")

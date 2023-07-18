@@ -2,16 +2,14 @@ package org.tattour.server.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.RouterOperation;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
@@ -36,6 +33,8 @@ import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
 import org.tattour.server.domain.user.provider.dto.request.CheckDuplicationReqDto;
 import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
+import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
@@ -47,19 +46,22 @@ import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImp
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
+import org.tattour.server.global.dto.FailResponse;
+import org.tattour.server.global.dto.SuccessResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.sms.provider.impl.PhoneNumberVerificationCodeProviderImpl;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.SocialLoginRequest;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.SocialLoginRequest;
 import org.tattour.server.domain.user.controller.dto.request.GetVerifyCodeReq;
 import org.tattour.server.domain.user.controller.dto.request.LoginReq;
 import org.tattour.server.domain.user.controller.dto.request.PatchUserInfoReq;
 import org.tattour.server.domain.user.controller.dto.response.GetVerifyCodeRes;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.SocialLoginResponse;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -79,42 +81,98 @@ public class UserController {
 	private final PointServiceImpl pointService;
 	private final JwtService jwtService;
 
+
 	@Operation(summary = "소셜 회원가입 / 로그인", description = "소셜 회원가입 / 로그인 api")
 	@ApiResponses(value = {
-			@io.swagger.v3.oas.annotations.responses.ApiResponse(
+			@ApiResponse(
 					responseCode = "201",
 					description = "로그인에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = LoginRes.class)))
+					content = @Content(schema = @Schema(implementation = LoginRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	@PostMapping("/signup")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> login(
-			@Parameter(description = "Authentification Code", required = true) @RequestHeader("code") String code,
-			@RequestBody @Valid LoginReq request) {
-		SocialService socialService = socialServiceProvider.getSocialService(
-			request.getSocialPlatform());
+			@Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
+			@RequestBody @Valid LoginReq req) {
+		SocialService socialService = socialServiceProvider.getSocialService(req.getSocialPlatform());
 
 		// 로그인
-		Integer userId = socialService.login(SocialLoginRequest.of(code));
+		SocialLoginResponse response = socialService.login(SocialLoginRequest.of(code));
 
 		// jwt 토큰 발급
 		return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
-			LoginRes.of(userId, jwtService.issuedToken(userId)));
+			LoginRes.of(
+					response.getUserId(),
+					jwtService.issuedToken(response.getUserId()),
+					response.isUserExist()));
 	}
 
-	@Operation(summary = "user 이름, 전화번호 추가")
+
+	@Operation(summary = "user 이름, 전화번호 추가", description = "회원가입 시 user 이름, 전화번호 추가")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "갱신에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@PatchMapping("/profile")
 	public ResponseEntity<?> updateUserProfile(
-		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@RequestBody @Valid PatchUserInfoReq req
+//			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) String token,
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid PatchUserInfoReq req
 	) {
-		userService.updateUserInfo(UpdateUserInfoReq.of(jwtUserId, req.getName(),
-			req.getPhoneNumber()));
+		userService.updateUserInfo(
+				UpdateUserInfoReq.of(
+						userId,
+						req.getName(),
+						req.getPhoneNumber()));
 
 		return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
 	}
 
-	@Operation(summary = "user profile 가져오기")
+
+	@Operation(summary = "user profile 정보 가져오기", description = "user 이름, 포인트")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "조회에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = GetUserProfileRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@GetMapping("/profile")
 	public ResponseEntity<?> getUserProfile(
 			@Parameter(hidden = true) @UserId Integer userId
@@ -122,20 +180,62 @@ public class UserController {
 		return BaseResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
 	}
 
-	@Operation(summary = "user 로그아웃")
+
+	@Operation(summary = "user 로그아웃", description = "user 로그아웃")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "로그아웃에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@PatchMapping("/logout")
 	public ResponseEntity<?> userLogout(
-		@Parameter(hidden = true) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		userService.userLogout(userId);
 		return BaseResponse.success(SuccessType.LOGOUT_SUCCESS);
 	}
 
-	@Operation(summary = "인증번호 검증")
+
+	@Operation(summary = "인증번호 검증", description = "user 전화번호 인증번호 검증")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "인증코드 검증에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = GetVerifyCodeRes.class))),
+			@ApiResponse(
+					responseCode = "202",
+					description = "인증번호 검증에 실패했습니다.",
+					content = @Content(schema = @Schema(implementation = GetVerifyCodeRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "유효한 인증번호가 존재하지 않습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@GetMapping("/phoneNum/verification")
 	public ResponseEntity<?> verififyCode(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid GetVerifyCodeReq req) {
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid GetVerifyCodeReq req) {
 
 		if (phoneNumberVerificationCodeProvider
 				.compareVerficationCode(userId, req.getVerificationCode())) {
@@ -148,11 +248,38 @@ public class UserController {
 		}
 	}
 
-	@Operation(summary = "좋아요 누른 타투 저장")
+
+	@Operation(summary = "좋아요 누른 타투 저장", description = "user 좋아요 누른 타투 저장")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "201",
+					description = "생성에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 스티커입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "409",
+					description = "이미 존재하는 좋아요한 상품입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@PostMapping("/productLiked/save")
 	public ResponseEntity<?> saveProductLiked(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid PostProductLikedReq req
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid PostProductLikedReq req
 	) {
 		// 중복 검사
 		if (productLikedProvider.checkDuplicationByStickerId(CheckDuplicationReqDto.of(userId, req.getStickerId())))
@@ -163,11 +290,30 @@ public class UserController {
 		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
-	@Operation(summary = "좋아요 누른 타투 삭제")
+
+	@Operation(summary = "좋아요 누른 타투 삭제", description = "user 좋아요 누른 타투 삭제")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "삭제에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 데이터입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@DeleteMapping("/productLiked/delete")
 	public ResponseEntity<?> deleteProductLiked(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid DeleteProductLikedReq req
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid DeleteProductLikedReq req
 	) {
 		productLikedService.deleteProductLiked(
 				DeleteProductLikedInfo.of(userId, req.getStickerId()));
@@ -175,20 +321,50 @@ public class UserController {
 		return BaseResponse.success(SuccessType.DELETE_SUCCESS);
 	}
 
-	@Operation(summary = "좋아요 누른 타투 불러오기")
+
+	@Operation(summary = "좋아요 누른 타투 불러오기", description = "user 좋아요 누른 타투 스티커 불러오기")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "조회에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = ProductLikedListRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@GetMapping("/productLiked/saved")
 	public ResponseEntity<?> getProductLiked(
-		@Parameter(hidden = true) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			productLikedProvider.getLikedProductsByUserId(userId));
 	}
 
-	@Operation(summary = "배송지 등록")
+
+	@Operation(summary = "배송지 등록", description = "user 배송지 등록")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "201",
+					description = "생성에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@PostMapping("/address")
 	public ResponseEntity<?> createShippingAddr(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid PostUserShippingAddrReq req
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid PostUserShippingAddrReq req
 	) {
 		userShippingAddressService.saveUserShippingAddr(
 			SaveUserShippingAddrReq.of(
@@ -202,11 +378,30 @@ public class UserController {
 		return BaseResponse.success(SuccessType.CREATE_SUCCESS);
 	}
 
-	@Operation(summary = "포인트 충전 신청")
+
+	@Operation(summary = "포인트 충전 신청", description = "user 포인트 충전 신청")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "201",
+					description = "생성에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
 	@PostMapping("/point/charge")
 	public ResponseEntity<?> createPointChargeRequest(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid PostPointChargeRequest req
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid PostPointChargeRequest req
 	) {
         pointService.savePointChargeRequest(
                 SavePointChargeRequestReq.of(userId, req.getChargeAmount()));
@@ -217,10 +412,11 @@ public class UserController {
 		return BaseResponse.success(SuccessType.CREATE_POINT_CHARGE_REQUEST_SUCCESS);
 	}
 
+
 	@GetMapping("/custom/complete")
 	@Operation(summary = "신청한 커스텀 도안 조회")
 	public ResponseEntity<?> getUserCustomCompleteList(
-		@Parameter(hidden = true) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
@@ -229,7 +425,7 @@ public class UserController {
 	@GetMapping("/custom/incomplete")
 	@Operation(summary = "커스텀 도안 임시저장 조회")
 	public ResponseEntity<?> getUserCustomIncompleteList(
-		@Parameter(hidden = true) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);

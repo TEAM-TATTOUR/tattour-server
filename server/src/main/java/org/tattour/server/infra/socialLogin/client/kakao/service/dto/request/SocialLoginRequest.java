@@ -1,4 +1,4 @@
-package org.tattour.server.infra.socialLogin.client.kakao.service.dto;
+package org.tattour.server.infra.socialLogin.client.kakao.service.dto.request;
 import lombok.*;
 
 @ToString

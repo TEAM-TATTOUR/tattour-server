@@ -44,6 +44,7 @@ import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
+import org.tattour.server.domain.user.controller.dto.response.LoginRes;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
@@ -65,17 +66,25 @@ public class AdminController {
 	private final StickerService stickerService;
 	private final CustomService customService;
 
-	// TODO : ADMIN jwt 확인
-	@Operation(summary = "모든 결제 내역 불러오기")
-	@GetMapping("/order")
+	// TODO : ADMIN role 확인
+	@Operation(summary = "모든 결제내역 불러오기", description = "모든 결제내역 불러오기")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = GetOrderHistoryListRes.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "로그인에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = LoginRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@GetMapping("/order")
 	public ResponseEntity<?> getOrderHistory(
-		@RequestParam("page") int page
+		@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderHistoryByPage(page));

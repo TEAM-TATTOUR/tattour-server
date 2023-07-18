@@ -98,14 +98,11 @@ public class OrderController {
 	}
 
 	// TODO : pageable로 리팩토링하기
-	@Operation(summary = "결제 내역 불러오기")
+	@Operation(summary = "유저 결제 내역 불러오기")
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
-		@Parameter(hidden = true) @UserId Integer jwtUserId,
-		@RequestParam("userId") Integer userId
+		@Parameter(hidden = true) @UserId Integer userId
 	) {
-		jwtService.compareJwtWithPathVar(jwtUserId, userId);
-
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderHistoryByUserId(userId));
 	}

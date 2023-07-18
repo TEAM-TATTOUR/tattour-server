@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 import lombok.*;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
-@Schema(description = "소셜 회원가입 / 로그인 request")
+
+@Schema(description = "로그인 Request")
 @ToString
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginReq {
 

@@ -17,8 +17,6 @@ public class PhoneNumberVerificationCodeProviderImpl implements
     private final PhoneNumberVerificationCodeRepositoryImpl phoneNumberVerificationCodeRepository;
     @Override
     public int getLatestValidVerificationCode(Integer userId) {
-        System.out.println(Timestamp.valueOf(LocalDateTime.now()).toString());
-
         return phoneNumberVerificationCodeRepository
                 .findAllVerificationCode(userId, Timestamp.valueOf(LocalDateTime.now()).toString())
                 .stream()
