@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
+import org.tattour.server.infra.socialLogin.client.kakao.service.impl.KakaoSocialService;
 
 @Component
 @RequiredArgsConstructor
