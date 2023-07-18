@@ -44,8 +44,8 @@ public class OrderProviderImpl implements OrderProvider {
     @Override
     public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req) {
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        GetOrderSheetStickerInfo getOrderSheetStickerInfo = stickerProvider.getOrderSheetStickerInfo(
-                req.getStickerId());
+        GetOrderSheetStickerInfo getOrderSheetStickerInfo =
+                stickerProvider.getOrderSheetStickerInfo(req.getStickerId());
         getOrderSheetStickerInfo.setCount(req.getCount());
 
         // 결제 금액 정보
@@ -53,10 +53,11 @@ public class OrderProviderImpl implements OrderProvider {
         int totalAmount =
                 getOrderSheetStickerInfo.getPrice() * req.getCount() + req.getShippingFee();
         int productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
-        GetOrderAmountRes getOrderAmountRes = GetOrderAmountRes.of(
-                totalAmount,
-                productAmount,
-                req.getShippingFee());
+        GetOrderAmountRes getOrderAmountRes =
+                GetOrderAmountRes.of(
+                        totalAmount,
+                        productAmount,
+                        req.getShippingFee());
 
         // 포인트
         // 보유 포인트, 남는 포인트
@@ -69,13 +70,11 @@ public class OrderProviderImpl implements OrderProvider {
             resultPoint = restPoint;
         } else {
             isLacked = true;
-            resultPoint = Math.abs(restPoint);
+            resultPoint = restPoint;
         }
-        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
-                isLacked);
+        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint, isLacked);
 
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
-                getUserOrderPointRes);
+        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes, getUserOrderPointRes);
     }
 
     @Override

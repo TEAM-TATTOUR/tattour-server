@@ -8,6 +8,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 @Schema(description = "로그인 Request")
 @ToString
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginReq {
 

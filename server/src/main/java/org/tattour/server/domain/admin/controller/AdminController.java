@@ -144,7 +144,7 @@ public class AdminController {
 	}
 
 	@Operation(summary = "포인트 로그 불러오기")
-	@GetMapping("/pointLog")
+	@GetMapping("/point-log")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "success",
 			content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),

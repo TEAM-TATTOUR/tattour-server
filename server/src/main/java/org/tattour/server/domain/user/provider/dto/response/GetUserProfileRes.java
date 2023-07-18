@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetUserProfileRes {
-    @Schema(description = "이름")
+    @Schema(description = "이름", example = "userName")
     private String name;
 
     @Schema(description = "포인트", example = "3000")

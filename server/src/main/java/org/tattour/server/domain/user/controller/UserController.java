@@ -154,7 +154,7 @@ public class UserController {
 	}
 
 
-	@Operation(summary = "user profile 정보 가져오기", description = "user 이름, 포인트")
+	@Operation(summary = "user profile 정보 가져오기", description = "user 이름, 포인트 불러오기")
 	@ApiResponses(value = {
 			@ApiResponse(
 					responseCode = "200",
@@ -232,7 +232,7 @@ public class UserController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@GetMapping("/phoneNum/verification")
+	@GetMapping("/phone-number/verification")
 	public ResponseEntity<?> verififyCode(
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid GetVerifyCodeReq req) {
@@ -276,7 +276,7 @@ public class UserController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@PostMapping("/productLiked/save")
+	@PostMapping("/product-liked/save")
 	public ResponseEntity<?> saveProductLiked(
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostProductLikedReq req
@@ -310,7 +310,7 @@ public class UserController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@DeleteMapping("/productLiked/delete")
+	@DeleteMapping("/product-liked/delete")
 	public ResponseEntity<?> deleteProductLiked(
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid DeleteProductLikedReq req
@@ -337,7 +337,7 @@ public class UserController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@GetMapping("/productLiked/saved")
+	@GetMapping("/product-liked/saved")
 	public ResponseEntity<?> getProductLiked(
 			@Parameter(hidden = true) @UserId Integer userId
 	) {

@@ -29,7 +29,7 @@ import org.tattour.server.infra.sms.service.dto.request.SendVerificationCodeReq;
 public class SmsController {
     private final SmsServiceImpl smsService;
     @Operation(summary = "전화번호 인증번호 보내기")
-    @PostMapping("/send/verificationCode")
+    @PostMapping("/send/verification-code")
     public ResponseEntity<?> sendVerificationCode(
             @Parameter(hidden = true) @UserId Integer userId,
             @RequestBody @Valid PostSendCodeReq req

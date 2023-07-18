@@ -8,7 +8,7 @@ import org.tattour.server.global.config.resolver.DivisibleBy;
 @Schema(description = "포인트 신청 요청 Request")
 @Getter
 public class PostPointChargeRequest {
-    @Schema(description = "충전 금액")
+    @Schema(description = "충전 금액", example = "5000")
     @DivisibleBy()
     @NotNull(message = "chargeAmount is null")
     @Min(value = 1000)
