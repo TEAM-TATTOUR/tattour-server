@@ -218,6 +218,7 @@ public class AdminController {
 		@Parameter(hidden = true) @UserId Integer userId,
 		@RequestBody UpdateCustomProcessReq request
 	) {
+		jwtService.compareJwtWithPathVar(userId, 1);
 		CustomInfo response = customService.updateCustomProcess(request.newUpdateCustomInfo(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
 	}
