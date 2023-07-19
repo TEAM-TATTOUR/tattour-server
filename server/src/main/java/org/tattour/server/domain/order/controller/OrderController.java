@@ -82,7 +82,7 @@ public class OrderController {
 	})
 	@GetMapping("/ordersheet")
 	public ResponseEntity<?> getOrderSheet(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid GetOrderSheetReq req
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
@@ -124,7 +124,7 @@ public class OrderController {
 	})
 	@PostMapping
 	public ResponseEntity<?> order(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostOrderReq req
 	) {
 		if (userProvider.isUserPointLack(
@@ -184,7 +184,7 @@ public class OrderController {
 	})
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderHistoryByUserId(userId));
