@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SmsRes {
+
     private String requestId;
     private LocalDateTime requestTime;
     private String statusCode;

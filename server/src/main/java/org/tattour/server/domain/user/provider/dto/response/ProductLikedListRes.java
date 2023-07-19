@@ -14,6 +14,7 @@ import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 @Setter
 @AllArgsConstructor
 public class ProductLikedListRes {
+
     @Schema(description = "좋아요한 타투 스티커 리스트")
     List<StickerLikedInfo> stickersliked;
 }

@@ -10,14 +10,14 @@ import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 @NoArgsConstructor
 public class UpdateCustomProcessReq {
 
-	@NotNull
-	Integer customId;
+    @NotNull
+    Integer customId;
 
-	@NotNull
-	String process;
+    @NotNull
+    String process;
 
-	public UpdateCustomInfo newUpdateCustomInfo(Integer userId) {
-		CustomProcess customProcess = CustomProcess.getProcess(process);
-		return UpdateCustomInfo.from(userId, customId, customProcess);
-	}
+    public UpdateCustomInfo newUpdateCustomInfo(Integer userId) {
+        CustomProcess customProcess = CustomProcess.getProcess(process);
+        return UpdateCustomInfo.from(userId, customId, customProcess);
+    }
 }

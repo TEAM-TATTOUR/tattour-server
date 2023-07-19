@@ -17,6 +17,7 @@ import org.tattour.server.global.util.EntityDtoMapper;
 @Service
 @RequiredArgsConstructor
 public class ProductLikedProviderImpl implements ProductLikedProvider {
+
     private final ProductLikedRepositoryImpl productLikedRepository;
 
     @Override
@@ -39,11 +40,13 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
                 .map(ProductLiked::getSticker)
                 .collect(Collectors.toList());
 
-        return new ProductLikedListRes(EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
+        return new ProductLikedListRes(
+                EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
     }
 
     @Override
     public boolean checkDuplicationByStickerId(CheckDuplicationReqDto req) {
-        return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(), req.getStickerId()).isPresent();
+        return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(),
+                req.getStickerId()).isPresent();
     }
 }

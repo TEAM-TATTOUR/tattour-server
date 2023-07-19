@@ -14,7 +14,9 @@ import org.tattour.server.infra.sms.repository.PhoneNumberVerificationCodeReposi
 @RequiredArgsConstructor
 public class PhoneNumberVerificationCodeProviderImpl implements
         PhoneNumberVerificationCodeProvider {
+
     private final PhoneNumberVerificationCodeRepositoryImpl phoneNumberVerificationCodeRepository;
+
     @Override
     public int getLatestValidVerificationCode(Integer userId) {
         return phoneNumberVerificationCodeRepository
@@ -22,7 +24,8 @@ public class PhoneNumberVerificationCodeProviderImpl implements
                 .stream()
                 .findFirst()
                 .map(PhoneNumberVerificationCode::getVerificationCode)
-                .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_VERIFICATION_CODE_EXCEPTION));
+                .orElseThrow(() -> new BusinessException(
+                        ErrorType.NOT_FOUND_VERIFICATION_CODE_EXCEPTION));
     }
 
     @Override

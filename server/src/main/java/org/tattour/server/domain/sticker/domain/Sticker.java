@@ -33,83 +33,83 @@ import org.tattour.server.global.util.AuditingTimeEntity;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sticker extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
-	private String description;
-	private Integer price;
-	@Column(name = "discount_price")
-	private Integer discountPrice;
-	@Column(name = "shipping_fee")
-	private Integer shippingFee;
-	private String composition;
-	private String size;
-	@Column(columnDefinition = "tinyint")
-	private Boolean state;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private String description;
+    private Integer price;
+    @Column(name = "discount_price")
+    private Integer discountPrice;
+    @Column(name = "shipping_fee")
+    private Integer shippingFee;
+    private String composition;
+    private String size;
+    @Column(columnDefinition = "tinyint")
+    private Boolean state;
 
-	@Column(name = "is_custom", columnDefinition = "tinyint")
-	private Boolean isCustom;
+    @Column(name = "is_custom", columnDefinition = "tinyint")
+    private Boolean isCustom;
 
-	@Column(name = "main_image_url", columnDefinition = "text")
-	private String mainImageUrl;
+    @Column(name = "main_image_url", columnDefinition = "text")
+    private String mainImageUrl;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "discount_id")
-	private Discount discount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
 
-	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-	private List<StickerTheme> stickerThemes;
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<StickerTheme> stickerThemes;
 
-	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-	private List<StickerStyle> stickerStyles;
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<StickerStyle> stickerStyles;
 
-	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-	private List<StickerImage> stickerImages;
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<StickerImage> stickerImages;
 
-	@OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-	private List<Order> orderItems;
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<Order> orderItems;
 
-	public void setStickerThemes(
-		List<StickerTheme> stickerThemes) {
-		this.stickerThemes = stickerThemes;
-	}
+    public void setStickerThemes(
+            List<StickerTheme> stickerThemes) {
+        this.stickerThemes = stickerThemes;
+    }
 
-	public void setStickerStyles(
-		List<StickerStyle> stickerStyles) {
-		this.stickerStyles = stickerStyles;
-	}
+    public void setStickerStyles(
+            List<StickerStyle> stickerStyles) {
+        this.stickerStyles = stickerStyles;
+    }
 
-	public void setImages(List<StickerImage> stickerImages) {
-		this.stickerImages = stickerImages;
-	}
+    public void setImages(List<StickerImage> stickerImages) {
+        this.stickerImages = stickerImages;
+    }
 
-	public void applyDiscount(Discount discount) {
-		this.discount = discount;
-		this.discountPrice = this.price * (100 - discount.getDiscountRate()) / 100;
-	}
+    public void applyDiscount(Discount discount) {
+        this.discount = discount;
+        this.discountPrice = this.price * (100 - discount.getDiscountRate()) / 100;
+    }
 
-	public static Sticker from(
-		String name,
-		String description,
-		String mainImageUrl,
-		Boolean isCustom,
-		Integer price,
-		String composition,
-		String size,
-		Integer shippingFee,
-		Boolean state
-	) {
-		return Sticker.builder()
-			.name(name)
-			.description(description)
-			.mainImageUrl(mainImageUrl)
-			.isCustom(isCustom)
-			.price(price)
-			.composition(composition)
-			.size(size)
-			.shippingFee(shippingFee)
-			.state(state)
-			.build();
-	}
+    public static Sticker from(
+            String name,
+            String description,
+            String mainImageUrl,
+            Boolean isCustom,
+            Integer price,
+            String composition,
+            String size,
+            Integer shippingFee,
+            Boolean state
+    ) {
+        return Sticker.builder()
+                .name(name)
+                .description(description)
+                .mainImageUrl(mainImageUrl)
+                .isCustom(isCustom)
+                .price(price)
+                .composition(composition)
+                .size(size)
+                .shippingFee(shippingFee)
+                .state(state)
+                .build();
+    }
 }

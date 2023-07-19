@@ -1,6 +1,7 @@
 package org.tattour.server.infra.sms.provider;
 
 public interface PhoneNumberVerificationCodeProvider {
+
     // userId로 최신 인증번호 불러오기
     int getLatestValidVerificationCode(Integer userId);
 

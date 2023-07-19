@@ -23,22 +23,22 @@ import org.tattour.server.domain.style.domain.Style;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomStyle {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "custom_id")
-	private Custom custom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "custom_id")
+    private Custom custom;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "style_id")
-	private Style style;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "style_id")
+    private Style style;
 
-	public static CustomStyle from(Custom custom, Style style) {
-		return CustomStyle.builder()
-			.custom(custom)
-			.style(style)
-			.build();
-	}
+    public static CustomStyle from(Custom custom, Style style) {
+        return CustomStyle.builder()
+                .custom(custom)
+                .style(style)
+                .build();
+    }
 }

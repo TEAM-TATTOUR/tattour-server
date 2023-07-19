@@ -9,8 +9,10 @@ import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryList
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 
 public interface OrderProvider {
+
     // 결제 내역 1개 가져오기
     Order getOrderById(int id);
+
     // 결제 페이지 불러오기
     GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req);
 

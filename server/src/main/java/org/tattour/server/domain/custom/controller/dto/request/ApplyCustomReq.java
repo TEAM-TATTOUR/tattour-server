@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplyCustomReq {
 
-	@NotNull
-	private Boolean haveDesign;
+    @NotNull
+    private Boolean haveDesign;
 }

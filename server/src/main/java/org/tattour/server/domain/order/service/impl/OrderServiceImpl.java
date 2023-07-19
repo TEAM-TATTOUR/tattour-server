@@ -25,6 +25,7 @@ import org.tattour.server.global.exception.ErrorType;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
     private final OrderRepositoryImpl orderRepository;
     private final OrderProviderImpl orderProvider;
     private final StickerProviderImpl stickerProvider;
@@ -38,8 +39,10 @@ public class OrderServiceImpl implements OrderService {
         User user = userProvider.getUserById(req.getUserId());
         Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
         Order order = Order.of(sticker.getName(), sticker.getSize(), sticker.getMainImageUrl(),
-                sticker.getPrice(), req.getProductCount(), req.getShippingFee(), req.getTotalAmount(),
-                req.getRecipientName(), req.getContact(), req.getMailingAddress(), req.getBaseAddress(),
+                sticker.getPrice(), req.getProductCount(), req.getShippingFee(),
+                req.getTotalAmount(),
+                req.getRecipientName(), req.getContact(), req.getMailingAddress(),
+                req.getBaseAddress(),
                 req.getDetailAddress(), user, sticker);
 
         return orderRepository.save(order);
@@ -51,13 +54,14 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderProvider.getOrderById(req.getId());
 
         // 주문취소일 경우
-        if(req.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            if(!order.getOrderStatus().equals(OrderStatus.CANCEL)){
+        if (req.getOrderStatus().equals(OrderStatus.CANCEL)) {
+            if (!order.getOrderStatus().equals(OrderStatus.CANCEL)) {
                 // 상태 변경
                 order.setOrderStatus(req.getOrderStatus());
                 orderRepository.save(order);
                 // 유저 포인트 변경
-                userService.updateUserPoint(UpdateUserPointReq.of(order.getUser().getId(), order.getTotalAmount()));
+                userService.updateUserPoint(
+                        UpdateUserPointReq.of(order.getUser().getId(), order.getTotalAmount()));
                 // 포인트 로그 남기기
                 pointService.savePointLog(
                         SaveUserPointLogReq

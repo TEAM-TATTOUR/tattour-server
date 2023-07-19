@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CheckUserPointLackReqDto {
+
     private Integer userId;
     private Integer totalAmount;
 

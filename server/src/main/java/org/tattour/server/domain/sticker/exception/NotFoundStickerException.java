@@ -5,7 +5,7 @@ import org.tattour.server.global.exception.ErrorType;
 
 public class NotFoundStickerException extends BusinessException {
 
-	public NotFoundStickerException() {
-		super(ErrorType.NOT_FOUND_STICKER_EXCEPTION);
-	}
+    public NotFoundStickerException() {
+        super(ErrorType.NOT_FOUND_STICKER_EXCEPTION);
+    }
 }

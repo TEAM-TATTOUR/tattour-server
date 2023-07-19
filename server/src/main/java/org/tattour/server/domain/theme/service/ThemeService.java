@@ -6,8 +6,9 @@ import org.tattour.server.domain.theme.service.dto.response.ThemeSummaryList;
 
 public interface ThemeService {
 
-	Theme getThemeById(Integer themeId);
-	ThemeInfoList getAllTheme();
+    Theme getThemeById(Integer themeId);
 
-	ThemeSummaryList getAllThemeSummary();
+    ThemeInfoList getAllTheme();
+
+    ThemeSummaryList getAllThemeSummary();
 }

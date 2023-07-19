@@ -20,14 +20,14 @@ public class CreateDiscountReq {
 	@Schema(description = "할인률 : 0~100")
 	private Integer discountRate;
 
-	@NotNull
-	private LocalDateTime startAt;
+    @NotNull
+    private LocalDateTime startAt;
 
-	@NotNull
-	private LocalDateTime endedAt;
+    @NotNull
+    private LocalDateTime endedAt;
 
-	public DiscountInfo newDiscountInfo() {
-		return DiscountInfo.from(name, discountRate, startAt, endedAt);
-	}
+    public DiscountInfo newDiscountInfo() {
+        return DiscountInfo.from(name, discountRate, startAt, endedAt);
+    }
 
 }

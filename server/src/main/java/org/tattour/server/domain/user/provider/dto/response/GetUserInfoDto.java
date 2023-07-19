@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetUserInfoDto {
+
     @Schema(description = "user id")
     private Integer id;
 

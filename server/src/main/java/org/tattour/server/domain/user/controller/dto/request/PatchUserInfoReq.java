@@ -8,6 +8,7 @@ import lombok.Getter;
 @Schema(description = "user 정보 수정 Request")
 @Getter
 public class PatchUserInfoReq {
+
     @Schema(description = "이름", example = "userName")
     @NotBlank(message = "name is required")
     private String name;

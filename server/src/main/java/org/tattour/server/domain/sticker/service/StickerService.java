@@ -10,27 +10,27 @@ import org.tattour.server.domain.theme.domain.Theme;
 
 public interface StickerService {
 
-	Sticker getStickerByStickerId(Integer stickerId);
+    Sticker getStickerByStickerId(Integer stickerId);
 
-	StickerSummaryList getAllStickerList();
+    StickerSummaryList getAllStickerList();
 
-	Integer createSticker(CreateStickerInfo request);
+    Integer createSticker(CreateStickerInfo request);
 
-	StickerSummaryList getHotCustomStickerList();
+    StickerSummaryList getHotCustomStickerList();
 
-	StickerInfo getOneStickerInfo(Integer stickerId);
+    StickerInfo getOneStickerInfo(Integer stickerId);
 
-	StickerSummaryList getSimilarStickerList(Integer stickerId);
+    StickerSummaryList getSimilarStickerList(Integer stickerId);
 
-	StickerSummaryList getSearchStickerList(String word);
+    StickerSummaryList getSearchStickerList(String word);
 
-	StickerSummaryList getFilterStickerList(String sort, String theme, String style);
+    StickerSummaryList getFilterStickerList(String sort, String theme, String style);
 
-	void addStickerListByThemeList(List<Sticker> stickers, List<Theme> themes);
+    void addStickerListByThemeList(List<Sticker> stickers, List<Theme> themes);
 
-	void addStickerListByStyleList(List<Sticker> stickers, List<Style> styles);
+    void addStickerListByStyleList(List<Sticker> stickers, List<Style> styles);
 
-	void addStickerListByTheme(List<Sticker> stickers, Theme theme);
+    void addStickerListByTheme(List<Sticker> stickers, Theme theme);
 
-	void addStickerListByStyle(List<Sticker> stickers, Style style);
+    void addStickerListByStyle(List<Sticker> stickers, Style style);
 }

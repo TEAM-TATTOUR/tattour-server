@@ -18,6 +18,7 @@ import org.tattour.server.domain.user.domain.User;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPointLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,7 +34,8 @@ public class UserPointLog {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private UserPointLog(String title, String content, Integer amount, Integer resultPointAmount, User user) {
+    private UserPointLog(String title, String content, Integer amount, Integer resultPointAmount,
+            User user) {
         this.title = title;
         this.content = content;
         this.amount = amount;
@@ -41,7 +43,8 @@ public class UserPointLog {
         this.user = user;
     }
 
-    public static UserPointLog of(String title, String content, Integer amount, Integer resultPointAmount, User user) {
+    public static UserPointLog of(String title, String content, Integer amount,
+            Integer resultPointAmount, User user) {
         return new UserPointLog(title, content, amount, resultPointAmount, user);
     }
 }

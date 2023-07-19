@@ -5,7 +5,7 @@ import org.tattour.server.global.exception.ErrorType;
 
 public class NotFoundCustomException extends BusinessException {
 
-	public NotFoundCustomException() {
-		super(ErrorType.NOT_FOUND_CUSTOM_EXCEPTION);
-	}
+    public NotFoundCustomException() {
+        super(ErrorType.NOT_FOUND_CUSTOM_EXCEPTION);
+    }
 }

@@ -19,38 +19,39 @@ import org.tattour.server.infra.discord.property.PointWebhookProperty;
 @RequiredArgsConstructor
 public class DiscordMessageService {
 
-	private final DiscordApiClient discordApiClient;
-	private final OrderWebhookProperty orderWebhookProperty;
-	private final CustomWebhookProperty customWebhookProperty;
-	private final PointWebhookProperty pointWebhookProperty;
+    private final DiscordApiClient discordApiClient;
+    private final OrderWebhookProperty orderWebhookProperty;
+    private final CustomWebhookProperty customWebhookProperty;
+    private final PointWebhookProperty pointWebhookProperty;
 
-	@Transactional
-	public boolean sendPointChargeLogMessage(User user, Integer amount) {
-		PointChargeDiscordMessage payload = PointChargeDiscordMessage.from(user, amount);
-		sendDiscordMessage(pointWebhookProperty.getClientId(), pointWebhookProperty.getToken(),
-			user, "님이 포인트 충전을 요구했습니다", payload);
-		return true;
-	}
+    @Transactional
+    public boolean sendPointChargeLogMessage(User user, Integer amount) {
+        PointChargeDiscordMessage payload = PointChargeDiscordMessage.from(user, amount);
+        sendDiscordMessage(pointWebhookProperty.getClientId(), pointWebhookProperty.getToken(),
+                user, "님이 포인트 충전을 요구했습니다", payload);
+        return true;
+    }
 
-	@Transactional
-	public boolean sendCustomApplyMessage(Custom custom) {
-		CustomApplyDiscordMessage payload = CustomApplyDiscordMessage.from(custom.getUser(), custom);
-		sendDiscordMessage(customWebhookProperty.getClientId(), customWebhookProperty.getToken(),
-			custom.getUser(), "님이 커스텀 도안을 신청했습니다.", payload);
-		return true;
-	}
+    @Transactional
+    public boolean sendCustomApplyMessage(Custom custom) {
+        CustomApplyDiscordMessage payload = CustomApplyDiscordMessage.from(custom.getUser(),
+                custom);
+        sendDiscordMessage(customWebhookProperty.getClientId(), customWebhookProperty.getToken(),
+                custom.getUser(), "님이 커스텀 도안을 신청했습니다.", payload);
+        return true;
+    }
 
-	@Transactional
-	public boolean sendOrderStickerMessage(Order order) {
-		OrderStickerDiscordMessage payload = OrderStickerDiscordMessage.from(order);
-		sendDiscordMessage(orderWebhookProperty.getClientId(), orderWebhookProperty.getToken(),
-			order.getUser(), "님이 스티커를 주문했습니다.", payload);
-		return true;
-	}
+    @Transactional
+    public boolean sendOrderStickerMessage(Order order) {
+        OrderStickerDiscordMessage payload = OrderStickerDiscordMessage.from(order);
+        sendDiscordMessage(orderWebhookProperty.getClientId(), orderWebhookProperty.getToken(),
+                order.getUser(), "님이 스티커를 주문했습니다.", payload);
+        return true;
+    }
 
-	public void sendDiscordMessage(String clientId, String token, User user, String content,
-		Object payload) {
-		DiscordMessageReq request = DiscordMessageReq.from(user, content, payload);
-		discordApiClient.sendMessage(clientId, token, request);
-	}
+    public void sendDiscordMessage(String clientId, String token, User user, String content,
+            Object payload) {
+        DiscordMessageReq request = DiscordMessageReq.from(user, content, payload);
+        discordApiClient.sendMessage(clientId, token, request);
+    }
 }

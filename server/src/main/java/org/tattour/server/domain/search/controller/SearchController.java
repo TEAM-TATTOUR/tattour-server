@@ -24,18 +24,18 @@ import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList
 @Tag(name = "Search", description = "Search API Document")
 public class SearchController {
 
-	private final SearchService searchService;
+    private final SearchService searchService;
 
-	@GetMapping("/stickers")
-	@Operation(summary = "스티커 검색하기 ", description = "스티커 이름, 테마 이름, 스타일 이름 관련 스티커 리스트 조회")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = StickerSummaryList.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
-	})
-	public ResponseEntity<?> getSearchStickerList(@RequestParam(name = "word") String word) {
-		StickerSummaryList response = searchService.searchSticker(word);
-		return BaseResponse.success(SuccessType.READ_SEARCH_ALL_STICKER_SUCCESS, response);
-	}
+    @GetMapping("/stickers")
+    @Operation(summary = "스티커 검색하기 ", description = "스티커 이름, 테마 이름, 스타일 이름 관련 스티커 리스트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(schema = @Schema(implementation = StickerSummaryList.class))),
+            @ApiResponse(responseCode = "400, 500", description = "error",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    public ResponseEntity<?> getSearchStickerList(@RequestParam(name = "word") String word) {
+        StickerSummaryList response = searchService.searchSticker(word);
+        return BaseResponse.success(SuccessType.READ_SEARCH_ALL_STICKER_SUCCESS, response);
+    }
 }

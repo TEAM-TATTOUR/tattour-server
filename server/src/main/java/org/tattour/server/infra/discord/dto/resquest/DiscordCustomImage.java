@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class DiscordCustomImage {
 
-	String url;
+    String url;
 }

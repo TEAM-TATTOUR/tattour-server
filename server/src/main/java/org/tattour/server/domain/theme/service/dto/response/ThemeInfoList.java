@@ -11,12 +11,12 @@ import org.tattour.server.domain.theme.domain.Theme;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ThemeInfoList {
 
-	List<ThemeInfo> themeInfos;
+    List<ThemeInfo> themeInfos;
 
-	public static ThemeInfoList of(List<Theme> themes) {
-		List<ThemeInfo> themeInfos = themes.stream()
-			.map(ThemeInfo::of)
-			.collect(Collectors.toList());
-		return new ThemeInfoList(themeInfos);
-	}
+    public static ThemeInfoList of(List<Theme> themes) {
+        List<ThemeInfo> themeInfos = themes.stream()
+                .map(ThemeInfo::of)
+                .collect(Collectors.toList());
+        return new ThemeInfoList(themeInfos);
+    }
 }

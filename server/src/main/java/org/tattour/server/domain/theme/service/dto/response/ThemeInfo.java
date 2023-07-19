@@ -9,18 +9,18 @@ import org.tattour.server.domain.theme.domain.Theme;
 @Builder(access = AccessLevel.PRIVATE)
 public class ThemeInfo {
 
-	private Integer id;
-	private String imageUrl;
-	private String name;
-	private String description;
+    private Integer id;
+    private String imageUrl;
+    private String name;
+    private String description;
 
-	public static ThemeInfo of(Theme theme) {
-		return ThemeInfo.builder()
-			.id(theme.getId())
-			.imageUrl(theme.getImageUrl())
-			.name(theme.getName())
-			.description(theme.getDescription())
-			.build();
-	}
+    public static ThemeInfo of(Theme theme) {
+        return ThemeInfo.builder()
+                .id(theme.getId())
+                .imageUrl(theme.getImageUrl())
+                .name(theme.getName())
+                .description(theme.getDescription())
+                .build();
+    }
 
 }

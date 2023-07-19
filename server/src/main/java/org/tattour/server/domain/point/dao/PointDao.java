@@ -10,32 +10,34 @@ import org.tattour.server.domain.point.provider.dto.response.GetPointLogRes;
 
 @Repository
 public class PointDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     public PointDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    
+
     // 조건에 따라 유저 포인트 충전 요청 내역 가져오기
-    public List<GetPointChargeRequestRes> getPointChargeRequestResList(Integer userId, Boolean isCompleted){
+    public List<GetPointChargeRequestRes> getPointChargeRequestResList(Integer userId,
+            Boolean isCompleted) {
         String query =
                 "SELECT * "
-                + "FROM point_charge_request "
-                + "WHERE 1=1 ";
+                        + "FROM point_charge_request "
+                        + "WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
 
-        if(userId != null){
+        if (userId != null) {
             params.add(userId);
             query += "AND user_id = ? ";
         }
 
-        if(isCompleted != null){
+        if (isCompleted != null) {
             params.add(isCompleted);
             query += "AND is_completed = ? ";
         }
 
         return jdbcTemplate.query(query,
-                (rs, rownum) ->  GetPointChargeRequestRes.builder()
+                (rs, rownum) -> GetPointChargeRequestRes.builder()
                         .id(rs.getInt("id"))
                         .userId(rs.getInt("user_id"))
                         .chargeAmount(rs.getInt("charge_amount"))
@@ -51,24 +53,24 @@ public class PointDao {
     }
 
     // 조건에 따라 포인트 로그 불러오기
-    public List<GetPointLogRes> getPointLogResList(Integer userId, String title){
+    public List<GetPointLogRes> getPointLogResList(Integer userId, String title) {
         String query =
                 "SELECT * FROM user_point_log "
                         + "WHERE 1=1 ";
         List<Object> params = new ArrayList<>();
 
-        if(userId != null){
+        if (userId != null) {
             params.add(userId);
             query += "AND user_id = ? ";
         }
 
-        if(title != null){
+        if (title != null) {
             params.add(title);
             query += "AND title = ? ";
         }
 
         return jdbcTemplate.query(query,
-                (rs, rownum) ->  GetPointLogRes.builder()
+                (rs, rownum) -> GetPointLogRes.builder()
                         .id(rs.getInt("id"))
                         .userId(rs.getInt("user_id"))
                         .title(rs.getString("title"))

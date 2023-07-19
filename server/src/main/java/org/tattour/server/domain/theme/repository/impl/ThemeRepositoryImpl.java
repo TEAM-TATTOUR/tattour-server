@@ -7,6 +7,7 @@ import org.tattour.server.domain.theme.domain.Theme;
 
 public interface ThemeRepositoryImpl extends JpaRepository<Theme, Integer> {
 
-	Optional<Theme> findByName(String name);
-	List<Theme> findByNameLike(String name);
+    Optional<Theme> findByName(String name);
+
+    List<Theme> findByNameLike(String name);
 }

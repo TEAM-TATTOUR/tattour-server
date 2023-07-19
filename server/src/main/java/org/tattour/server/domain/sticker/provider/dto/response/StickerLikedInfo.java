@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class StickerLikedInfo {
+
     @Schema(description = "타투 스티커 id")
     private Integer id;
 

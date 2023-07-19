@@ -6,7 +6,9 @@ import org.tattour.server.domain.style.service.dto.response.StyleSummaryList;
 
 public interface StyleService {
 
-	Style getStyleById(Integer styleId);
-	StyleInfoList getAllStyle();
-	StyleSummaryList getAllStyleSummary();
+    Style getStyleById(Integer styleId);
+
+    StyleInfoList getAllStyle();
+
+    StyleSummaryList getAllStyleSummary();
 }

@@ -13,24 +13,26 @@ import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 @NoArgsConstructor
 public class UpdateCustomReq {
 
-	@NotNull
-	private Integer customId;
+    @NotNull
+    private Integer customId;
 
-	private String size;
-	private Boolean isColored;
-	private List<Integer> themes;
-	private List<Integer> styles;
-	private String name;
-	private String description;
-	private String demand;
-	private Integer count;
-	private Boolean isPublic;
-	private Boolean isCompleted;
-	private Integer price;
-	private Integer viewCount;
+    private String size;
+    private Boolean isColored;
+    private List<Integer> themes;
+    private List<Integer> styles;
+    private String name;
+    private String description;
+    private String demand;
+    private Integer count;
+    private Boolean isPublic;
+    private Boolean isCompleted;
+    private Integer price;
+    private Integer viewCount;
 
-	public UpdateCustomInfo newUpdateCustomInfo(Integer userId, MultipartFile mainImage, List<MultipartFile> images, CustomProcess customProcess) {
-		return UpdateCustomInfo.from(userId, customId, size, mainImage, images, isColored,
-			themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount, price, customProcess);
-	}
+    public UpdateCustomInfo newUpdateCustomInfo(Integer userId, MultipartFile mainImage,
+            List<MultipartFile> images, CustomProcess customProcess) {
+        return UpdateCustomInfo.from(userId, customId, size, mainImage, images, isColored,
+                themes, styles, name, description, demand, count, isPublic, isCompleted, viewCount,
+                price, customProcess);
+    }
 }

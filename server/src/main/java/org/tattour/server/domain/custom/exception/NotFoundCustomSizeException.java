@@ -5,7 +5,7 @@ import org.tattour.server.global.exception.ErrorType;
 
 public class NotFoundCustomSizeException extends BusinessException {
 
-	public NotFoundCustomSizeException() {
-		super(ErrorType.NOT_FOUND_CUSTOM_SIZE_EXCEPTION);
-	}
+    public NotFoundCustomSizeException() {
+        super(ErrorType.NOT_FOUND_CUSTOM_SIZE_EXCEPTION);
+    }
 }

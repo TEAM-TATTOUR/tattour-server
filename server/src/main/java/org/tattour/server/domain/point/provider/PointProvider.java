@@ -7,6 +7,7 @@ import org.tattour.server.domain.point.provider.dto.response.GetPointChargeReque
 import org.tattour.server.domain.point.provider.dto.response.GetPointLogListRes;
 
 public interface PointProvider {
+
     // id로 포인트 충전 요청 가져오기
     PointChargeRequest getPointChargeRequestById(Integer id);
 

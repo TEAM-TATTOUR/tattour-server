@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateStickerRes {
 
-	private Integer stickerId;
+    private Integer stickerId;
 }
