@@ -11,6 +11,7 @@ import lombok.Getter;
 @Schema(description = "결제하기 Request")
 @Getter
 public class PostOrderReq {
+
     @Schema(description = "타투 스티커 Id")
     @NotNull(message = "stickerId is null")
     private Integer stickerId;

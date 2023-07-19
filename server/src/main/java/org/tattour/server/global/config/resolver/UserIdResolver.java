@@ -26,26 +26,32 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserId.class) && Integer.class.equals(parameter.getParameterType());
+        return parameter.hasParameterAnnotation(UserId.class) && Integer.class.equals(
+                parameter.getParameterType());
     }
 
     @Override
-    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer modelAndViewContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(@NotNull MethodParameter parameter,
+            ModelAndViewContainer modelAndViewContainer, @NotNull NativeWebRequest webRequest,
+            WebDataBinderFactory binderFactory) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         final String bearerHeader = request.getHeader("Authorization");
 
         System.out.println("bearerHeader = " + bearerHeader);
         if (!StringUtils.hasText(bearerHeader) || !bearerHeader.startsWith(HEADER_PREFIX)) {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
-                (String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod())));
+                    (String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
+                            parameter.getMethod())));
         }
 
         String token = bearerHeader.substring(HEADER_PREFIX.length());
 
         // 토큰 검증
-        if (!jwtService.verifyToken(token))
+        if (!jwtService.verifyToken(token)) {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
-                String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod()));
+                    String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
+                            parameter.getMethod()));
+        }
 
         // 유저 아이디 반환
         final String tokenContents = jwtService.getJwtContents(token);
@@ -54,7 +60,9 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         try {
             return Integer.parseInt(tokenContents);
         } catch (NumberFormatException e) {
-            throw new RuntimeException(String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(), parameter.getMethod()));
+            throw new RuntimeException(
+                    String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
+                            parameter.getMethod()));
         }
     }
 }

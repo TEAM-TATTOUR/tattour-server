@@ -10,6 +10,7 @@ import org.tattour.server.global.config.resolver.DivisibleBy;
 @Getter
 @NoArgsConstructor
 public class ConfirmPointChargeRequestReq {
+
     @Schema(description = "포인트 충전 요청 id")
     @NotNull(message = "id is null")
     private Integer id;

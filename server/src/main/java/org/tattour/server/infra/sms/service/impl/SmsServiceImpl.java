@@ -61,7 +61,8 @@ public class SmsServiceImpl {
         System.out.println(content);
 
         // 저장
-        phoneNumberVerificationCodeService.saveVerificationCode(verificationCode, request.getUserId());
+        phoneNumberVerificationCodeService.saveVerificationCode(verificationCode,
+                request.getUserId());
 
         SmsReq smsReq = SmsReq.builder()
                 .type("SMS")

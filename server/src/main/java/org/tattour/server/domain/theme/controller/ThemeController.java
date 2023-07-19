@@ -25,31 +25,31 @@ import org.tattour.server.global.dto.SuccessType;
 @Tag(name = "Theme", description = "Theme API Document")
 public class ThemeController {
 
-	private final ThemeService themeService;
+    private final ThemeService themeService;
 
-	@GetMapping
-	@Operation(summary = "테마 리스트 조회")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = ThemeInfoList.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
-	})
-	public ResponseEntity<?> getThemeList() {
-		ThemeInfoList response = themeService.getAllTheme();
-		return BaseResponse.success(SuccessType.READ_ALL_THEME_SUCCESS, response);
-	}
+    @GetMapping
+    @Operation(summary = "테마 리스트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(schema = @Schema(implementation = ThemeInfoList.class))),
+            @ApiResponse(responseCode = "400, 500", description = "error",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    public ResponseEntity<?> getThemeList() {
+        ThemeInfoList response = themeService.getAllTheme();
+        return BaseResponse.success(SuccessType.READ_ALL_THEME_SUCCESS, response);
+    }
 
-	@GetMapping("/summary")
-	@Operation(summary = "테마 요약 정보 리스트 조회")
-	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = ThemeSummaryList.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
-	})
-	public ResponseEntity<?> getThemeSummaryList() {
-		ThemeSummaryList response = themeService.getAllThemeSummary();
-		return BaseResponse.success(SuccessType.READ_ALL_THEME_SUMMARY_SUCCESS, response);
-	}
+    @GetMapping("/summary")
+    @Operation(summary = "테마 요약 정보 리스트 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success",
+                    content = @Content(schema = @Schema(implementation = ThemeSummaryList.class))),
+            @ApiResponse(responseCode = "400, 500", description = "error",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    public ResponseEntity<?> getThemeSummaryList() {
+        ThemeSummaryList response = themeService.getAllThemeSummary();
+        return BaseResponse.success(SuccessType.READ_ALL_THEME_SUMMARY_SUCCESS, response);
+    }
 }

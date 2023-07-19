@@ -17,10 +17,10 @@ import org.tattour.server.global.util.AuditingTimeEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Banner extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "image_url",columnDefinition = "text")
-	private String imageUrl;
+    @Column(name = "image_url", columnDefinition = "text")
+    private String imageUrl;
 }

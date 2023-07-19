@@ -5,6 +5,7 @@ import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.domain.User;
 
 public interface UserProvider {
+
     // 유저 가져오기
     User getUserById(Integer id);
 

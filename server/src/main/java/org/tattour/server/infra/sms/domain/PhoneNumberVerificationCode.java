@@ -19,6 +19,7 @@ import org.tattour.server.domain.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PhoneNumberVerificationCode {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -38,7 +39,7 @@ public class PhoneNumberVerificationCode {
         this.user = user;
     }
 
-    public static PhoneNumberVerificationCode of(Integer verificationCode, User user){
+    public static PhoneNumberVerificationCode of(Integer verificationCode, User user) {
         return new PhoneNumberVerificationCode(verificationCode, user);
     }
 }

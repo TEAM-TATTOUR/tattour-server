@@ -5,6 +5,7 @@ import org.tattour.server.domain.user.provider.dto.request.CheckDuplicationReqDt
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
 
 public interface ProductLikedProvider {
+
     // productLiked 가져오기
     ProductLiked getProductLikedById(Integer id);
 

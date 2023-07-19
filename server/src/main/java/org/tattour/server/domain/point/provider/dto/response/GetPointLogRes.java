@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetPointLogRes {
+
     private int id;
     private int userId;
     private String title;

@@ -34,147 +34,147 @@ import org.tattour.server.global.util.AuditingTimeEntity;
 @DynamicUpdate
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Custom  extends AuditingTimeEntity {
+public class Custom extends AuditingTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sticker_id")
-	private Sticker sticker;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sticker_id")
+    private Sticker sticker;
 
-	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-	private List<CustomTheme> customThemes;
+    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
+    private List<CustomTheme> customThemes;
 
-	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-	private List<CustomStyle> customStyles;
+    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
+    private List<CustomStyle> customStyles;
 
-	@Column(name = "main_image_url", columnDefinition = "text")
-	private String mainImageUrl;
+    @Column(name = "main_image_url", columnDefinition = "text")
+    private String mainImageUrl;
 
-	@OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-	private List<CustomImage> images;
+    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
+    private List<CustomImage> images;
 
-	@Column(name = "have_design", columnDefinition = "tinyint")
-	private Boolean haveDesign;
+    @Column(name = "have_design", columnDefinition = "tinyint")
+    private Boolean haveDesign;
 
-	@Enumerated(value = EnumType.STRING)
-	private CustomSize size;
+    @Enumerated(value = EnumType.STRING)
+    private CustomSize size;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private String demand;
+    private String demand;
 
-	private Integer count;
+    private Integer count;
 
-	@Column(name = "is_colored", columnDefinition = "tinyint")
-	private Boolean isColored;
+    @Column(name = "is_colored", columnDefinition = "tinyint")
+    private Boolean isColored;
 
-	@Column(name = "is_public", columnDefinition = "tinyint")
-	private Boolean isPublic;
+    @Column(name = "is_public", columnDefinition = "tinyint")
+    private Boolean isPublic;
 
-	@Column(name = "is_completed", columnDefinition = "tinyint")
-	private Boolean isCompleted;
+    @Column(name = "is_completed", columnDefinition = "tinyint")
+    private Boolean isCompleted;
 
-	@Enumerated(value = EnumType.STRING)
-	private CustomProcess process;
+    @Enumerated(value = EnumType.STRING)
+    private CustomProcess process;
 
-	@Column(name = "view_count")
-	private Integer viewCount;
+    @Column(name = "view_count")
+    private Integer viewCount;
 
-	private Integer price;
+    private Integer price;
 
-	public void setSticker(Sticker sticker) {
-		this.sticker = sticker;
-	}
+    public void setSticker(Sticker sticker) {
+        this.sticker = sticker;
+    }
 
-	public void setCustomThemes(
-		List<CustomTheme> customThemes) {
-		this.customThemes = customThemes;
-	}
+    public void setCustomThemes(
+            List<CustomTheme> customThemes) {
+        this.customThemes = customThemes;
+    }
 
-	public void setCustomStyles(
-		List<CustomStyle> customStyles) {
-		this.customStyles = customStyles;
-	}
+    public void setCustomStyles(
+            List<CustomStyle> customStyles) {
+        this.customStyles = customStyles;
+    }
 
-	public void setMainImageUrl(String mainImageUrl) {
-		this.mainImageUrl = mainImageUrl;
-	}
+    public void setMainImageUrl(String mainImageUrl) {
+        this.mainImageUrl = mainImageUrl;
+    }
 
-	public void setImages(List<CustomImage> images) {
-		this.images = images;
-	}
+    public void setImages(List<CustomImage> images) {
+        this.images = images;
+    }
 
-	public void setSize(CustomSize size) {
-		this.size = size;
-	}
+    public void setSize(CustomSize size) {
+        this.size = size;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDemand(String demand) {
-		this.demand = demand;
-	}
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
 
-	public void setCount(Integer count) {
-		this.count = count;
-	}
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
-	public void setColored(Boolean colored) {
-		isColored = colored;
-	}
+    public void setColored(Boolean colored) {
+        isColored = colored;
+    }
 
-	public void setPublic(Boolean aPublic) {
-		isPublic = aPublic;
-	}
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
 
-	public void setCompleted(Boolean completed) {
-		isCompleted = completed;
-	}
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
+    }
 
-	public void setCustomProcess(CustomProcess process) {
-		this.process = process;
-	}
+    public void setCustomProcess(CustomProcess process) {
+        this.process = process;
+    }
 
-	public void setViewCount(Integer viewCount) {
-		this.viewCount = viewCount;
-	}
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
 
-	public void calPrice() {
-		price = size.getPrice() * count;
-		if (isPublic) {
-			price -= size.getDiscountPrice();
-		}
-	}
+    public void calPrice() {
+        price = size.getPrice() * count;
+        if (isPublic) {
+            price -= size.getDiscountPrice();
+        }
+    }
 
-	public static Custom from(
-		User user,
-		Boolean haveDesign,
-		String name,
-		String mainImageUrl,
-		Boolean isCompleted,
-		Integer viewCount) {
-		return Custom.builder()
-			.user(user)
-			.haveDesign(haveDesign)
-			.name(name)
-			.mainImageUrl(mainImageUrl)
-			.isCompleted(isCompleted)
-			.viewCount(viewCount)
-			.build();
-	}
+    public static Custom from(
+            User user,
+            Boolean haveDesign,
+            String name,
+            String mainImageUrl,
+            Boolean isCompleted,
+            Integer viewCount) {
+        return Custom.builder()
+                .user(user)
+                .haveDesign(haveDesign)
+                .name(name)
+                .mainImageUrl(mainImageUrl)
+                .isCompleted(isCompleted)
+                .viewCount(viewCount)
+                .build();
+    }
 
 }

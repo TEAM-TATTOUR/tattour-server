@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class PostVerifyCodeReq {
+
     @Schema(description = "인증번호", example = "123456")
     @NotNull(message = "verificationCode is null")
     @Min(100000)

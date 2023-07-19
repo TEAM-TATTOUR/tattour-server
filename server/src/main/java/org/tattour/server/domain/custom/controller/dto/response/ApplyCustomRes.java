@@ -9,10 +9,10 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplyCustomRes {
 
-	@NotNull
-	private Integer customId;
+    @NotNull
+    private Integer customId;
 
-	public static ApplyCustomRes of(Integer customId) {
-		return new ApplyCustomRes(customId);
-	}
+    public static ApplyCustomRes of(Integer customId) {
+        return new ApplyCustomRes(customId);
+    }
 }

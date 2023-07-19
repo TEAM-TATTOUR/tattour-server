@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class UpdateUserInfoReq {
+
     private Integer userId;
     private String name;
     private String phoneNumber;
@@ -13,7 +14,8 @@ public class UpdateUserInfoReq {
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
-    public static UpdateUserInfoReq of(Integer userId, String name, String phoneNumber){
+
+    public static UpdateUserInfoReq of(Integer userId, String name, String phoneNumber) {
         return new UpdateUserInfoReq(userId, name, phoneNumber);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SaveUserPointLogReq {
+
     private String title;
     private String content;
     private Integer amount;
@@ -14,7 +15,8 @@ public class SaveUserPointLogReq {
     private Integer userId;
 
 
-    public static SaveUserPointLogReq of(String title, String content, Integer amount, Integer resultPoint, Integer userId) {
+    public static SaveUserPointLogReq of(String title, String content, Integer amount,
+            Integer resultPoint, Integer userId) {
         return new SaveUserPointLogReq(title, content, amount, resultPoint, userId);
     }
 }

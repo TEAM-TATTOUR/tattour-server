@@ -14,6 +14,7 @@ public class PhoneNumberVerificationCodeServiceImpl implements PhoneNumberVerifi
 
     private final PhoneNumberVerificationCodeRepositoryImpl phoneNumberVerificationCodeRepository;
     private final UserProviderImpl userProvider;
+
     @Override
     @Transactional
     public void saveVerificationCode(int code, Integer userId) {

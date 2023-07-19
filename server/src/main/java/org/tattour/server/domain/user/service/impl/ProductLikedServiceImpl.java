@@ -16,6 +16,7 @@ import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo
 @Service
 @RequiredArgsConstructor
 public class ProductLikedServiceImpl implements ProductLikedService {
+
     private final ProductLikedRepositoryImpl productLikedRepository;
     private final ProductLikedProviderImpl productLikedProvider;
     private final UserServiceImpl userService;

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetOrderSheetStickerInfo {
+
     @Schema(description = "메인 배너 이미지", example = "https://tattoo170829.wisacdn.com/data/file/tattoo_posting/833046566_5d1d5fc1db100.jpg")
     private String mainImageUrl;
 
@@ -31,11 +32,12 @@ public class GetOrderSheetStickerInfo {
         this.discountedPrice = discountedPrice;
     }
 
-    public static GetOrderSheetStickerInfo of(String mainImageUrl, String name, Integer price, Integer discountedPrice){
+    public static GetOrderSheetStickerInfo of(String mainImageUrl, String name, Integer price,
+            Integer discountedPrice) {
         return new GetOrderSheetStickerInfo(mainImageUrl, name, price, discountedPrice);
     }
 
-    public void setCount(int count){
+    public void setCount(int count) {
         this.count = count;
     }
 }

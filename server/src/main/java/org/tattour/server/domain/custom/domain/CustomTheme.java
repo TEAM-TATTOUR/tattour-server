@@ -23,22 +23,22 @@ import org.tattour.server.domain.theme.domain.Theme;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomTheme {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "custom_id")
-	private Custom custom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "custom_id")
+    private Custom custom;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "theme_id")
-	private Theme theme;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
-	public static CustomTheme from(Custom custom, Theme theme) {
-		return CustomTheme.builder()
-			.custom(custom)
-			.theme(theme)
-			.build();
-	}
+    public static CustomTheme from(Custom custom, Theme theme) {
+        return CustomTheme.builder()
+                .custom(custom)
+                .theme(theme)
+                .build();
+    }
 }

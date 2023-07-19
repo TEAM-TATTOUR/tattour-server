@@ -11,13 +11,13 @@ import org.tattour.server.domain.user.domain.User;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class DiscordMessageReq {
 
-	String username;
-	String content;
-	List<Object> embeds;
+    String username;
+    String content;
+    List<Object> embeds;
 
-	public static DiscordMessageReq from(User user, String content, Object payload) {
-		List<Object> embeds = new ArrayList<>();
-		embeds.add(payload);
-		return new DiscordMessageReq(user.getName(), content, embeds);
-	}
+    public static DiscordMessageReq from(User user, String content, Object payload) {
+        List<Object> embeds = new ArrayList<>();
+        embeds.add(payload);
+        return new DiscordMessageReq(user.getName(), content, embeds);
+    }
 }

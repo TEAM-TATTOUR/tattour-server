@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplyStickerDiscountReq {
 
-	@NotNull
-	private Integer stickerId;
+    @NotNull
+    private Integer stickerId;
 
-	@NotNull
-	private Integer discountId;
+    @NotNull
+    private Integer discountId;
 }

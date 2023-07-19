@@ -8,6 +8,7 @@ import org.tattour.server.domain.sticker.domain.StickerTheme;
 @Repository
 public interface StickerThemeRepositoryImpl extends JpaRepository<StickerTheme, Integer> {
 
-	List<StickerTheme> findAllBySticker_Id(Integer stickerId);
-	List<StickerTheme> findAllByTheme_Id(Integer themeId);
+    List<StickerTheme> findAllBySticker_Id(Integer stickerId);
+
+    List<StickerTheme> findAllByTheme_Id(Integer themeId);
 }

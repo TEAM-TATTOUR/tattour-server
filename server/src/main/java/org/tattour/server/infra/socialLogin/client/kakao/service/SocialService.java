@@ -4,5 +4,6 @@ import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.Soc
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.SocialLoginResponse;
 
 public abstract class SocialService {
+
     public abstract SocialLoginResponse login(SocialLoginRequest request);
 }

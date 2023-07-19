@@ -23,21 +23,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StickerImage {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sticker_id")
-	private Sticker sticker;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sticker_id")
+    private Sticker sticker;
 
-	@Column(name = "image_url", columnDefinition = "text")
-	private String imageUrl;
+    @Column(name = "image_url", columnDefinition = "text")
+    private String imageUrl;
 
-	public static StickerImage from(Sticker sticker, String imageUrl) {
-		return StickerImage.builder()
-			.sticker(sticker)
-			.imageUrl(imageUrl)
-			.build();
-	}
+    public static StickerImage from(Sticker sticker, String imageUrl) {
+        return StickerImage.builder()
+                .sticker(sticker)
+                .imageUrl(imageUrl)
+                .build();
+    }
 }

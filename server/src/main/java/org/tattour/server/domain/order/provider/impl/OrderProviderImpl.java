@@ -72,9 +72,11 @@ public class OrderProviderImpl implements OrderProvider {
             isLacked = true;
             resultPoint = restPoint;
         }
-        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint, isLacked);
+        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
+                isLacked);
 
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes, getUserOrderPointRes);
+        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
+                getUserOrderPointRes);
     }
 
     @Override
@@ -109,7 +111,8 @@ public class OrderProviderImpl implements OrderProvider {
         List<GetUserOrderHistoryRes> getUserOrderHistoryResList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(
-                                orderRepository.findAllByUser_IdAndCreatedAtAfter(req.getUserId(), req.getDate()));
+                                orderRepository.findAllByUser_IdAndCreatedAtAfter(req.getUserId(),
+                                        req.getDate()));
 
         return GetUserOrderHistoryListRes.of(getUserOrderHistoryResList);
     }

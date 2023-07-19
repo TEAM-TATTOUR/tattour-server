@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetOrderHistoryListRes {
+
     List<GetOrderHistoryRes> getOrderHistoryResList;
     private PageInfoRes pageInfoRes;
 
-    public static GetOrderHistoryListRes of(List<GetOrderHistoryRes> getOrderHistoryResList, PageInfoRes pageInfoRes){
+    public static GetOrderHistoryListRes of(List<GetOrderHistoryRes> getOrderHistoryResList,
+            PageInfoRes pageInfoRes) {
         return new GetOrderHistoryListRes(getOrderHistoryResList, pageInfoRes);
     }
 }

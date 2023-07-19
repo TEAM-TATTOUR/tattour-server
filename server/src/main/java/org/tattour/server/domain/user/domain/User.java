@@ -28,6 +28,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -56,7 +57,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProductLiked> productLikeds;
-    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
+
+    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform, String accessToken,
+            String refreshToken) {
         this.userRole = userRole;
         this.kakaoId = kakaoId;
         this.socialPlatform = socialPlatform;
@@ -64,11 +67,12 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public static User of(SaveUserReq req){
-        return new User(UserRole.USER, req.getKakaoId(), req.getSocialPlatform(), req.getAccessToken(), req.getRefreshToken());
+    public static User of(SaveUserReq req) {
+        return new User(UserRole.USER, req.getKakaoId(), req.getSocialPlatform(),
+                req.getAccessToken(), req.getRefreshToken());
     }
 
-    public void setUserInfo(UpdateUserInfoReq req){
+    public void setUserInfo(UpdateUserInfoReq req) {
         this.name = req.getName();
         this.phoneNumber = req.getPhoneNumber();
     }
@@ -78,11 +82,11 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public void setUserPoint(int amount){
+    public void setUserPoint(int amount) {
         this.point = amount;
     }
 
-    public void deleteToken(){
+    public void deleteToken() {
         this.accessToken = null;
         this.refreshToken = null;
     }

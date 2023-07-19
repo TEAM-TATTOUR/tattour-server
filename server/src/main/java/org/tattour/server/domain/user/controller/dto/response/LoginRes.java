@@ -19,7 +19,7 @@ public class LoginRes {
     @Schema(description = "user 회원가입 완료 여부")
     private boolean isUserExist;
 
-    public static LoginRes of(Integer userId, String accessToken, boolean isUserExist){
+    public static LoginRes of(Integer userId, String accessToken, boolean isUserExist) {
         return new LoginRes(userId, accessToken, isUserExist);
     }
 }

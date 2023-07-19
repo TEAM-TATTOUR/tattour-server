@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class GetUserOrderHistoryRes {
+
     @Schema(description = "결제 내역 id")
     private int id;
 

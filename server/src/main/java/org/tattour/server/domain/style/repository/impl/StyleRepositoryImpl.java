@@ -7,6 +7,7 @@ import org.tattour.server.domain.style.domain.Style;
 
 public interface StyleRepositoryImpl extends JpaRepository<Style, Integer> {
 
-	Optional<Style> findByName(String name);
-	List<Style> findByNameLike(String name);
+    Optional<Style> findByName(String name);
+
+    List<Style> findByNameLike(String name);
 }

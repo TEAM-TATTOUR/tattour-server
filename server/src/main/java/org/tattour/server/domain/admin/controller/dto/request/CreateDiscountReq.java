@@ -11,20 +11,20 @@ import org.tattour.server.domain.discount.service.dto.request.DiscountInfo;
 @NoArgsConstructor
 public class CreateDiscountReq {
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	@Range(min = 0, max = 100)
-	private Integer discountRate;
+    @Range(min = 0, max = 100)
+    private Integer discountRate;
 
-	@NotNull
-	private LocalDateTime startAt;
+    @NotNull
+    private LocalDateTime startAt;
 
-	@NotNull
-	private LocalDateTime endedAt;
+    @NotNull
+    private LocalDateTime endedAt;
 
-	public DiscountInfo newDiscountInfo() {
-		return DiscountInfo.from(name, discountRate, startAt, endedAt);
-	}
+    public DiscountInfo newDiscountInfo() {
+        return DiscountInfo.from(name, discountRate, startAt, endedAt);
+    }
 
 }

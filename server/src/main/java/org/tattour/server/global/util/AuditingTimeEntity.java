@@ -8,9 +8,9 @@ import lombok.Getter;
 @MappedSuperclass
 public class AuditingTimeEntity {
 
-	@Column(columnDefinition = "Timestamp")
-	private String createdAt;
+    @Column(columnDefinition = "Timestamp")
+    private String createdAt;
 
-	@Column(columnDefinition = "Timestamp")
-	private String lastUpdatedAt;
+    @Column(columnDefinition = "Timestamp")
+    private String lastUpdatedAt;
 }

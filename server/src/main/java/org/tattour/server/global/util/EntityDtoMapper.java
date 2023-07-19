@@ -20,6 +20,7 @@ import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {
+
     EntityDtoMapper INSTANCE = Mappers.getMapper(EntityDtoMapper.class);
 
     // User
@@ -36,26 +37,32 @@ public interface EntityDtoMapper {
             expression = "java(sticker.getDiscount() != null ? "
                     + "sticker.getDiscount().getDiscountRate() : null)")
     StickerLikedInfo toStickerLikedInfo(Sticker sticker);
+
     List<StickerLikedInfo> toStickerLikedInfoList(List<Sticker> stickerList);
 
     // Order
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "stickerId", source = "sticker.id")
     GetUserOrderHistoryRes toGetUserOrderHistoryRes(Order order);
+
     List<GetUserOrderHistoryRes> toGetUserOrderHistoryListRes(List<Order> orderList);
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "stickerId", source = "sticker.id")
     GetOrderHistoryRes toGetOrderHistoryRes(Order order);
+
     @IterableMapping(elementTargetType = GetOrderHistoryRes.class)
     List<GetOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList);
 
     // Point
     @Mapping(target = "userId", source = "user.id")
     GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
-    List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList);
+
+    List<GetPointChargeRequestRes> toGetPointChargeRequestResList(
+            List<PointChargeRequest> pointChargeRequestList);
 
     // Custom
     CustomApplySummaryInfo toCustomApplySummaryInfo(Custom custom);
+
     List<CustomApplySummaryInfo> toCustomApplySummaryInfoList(List<Custom> customList);
 }

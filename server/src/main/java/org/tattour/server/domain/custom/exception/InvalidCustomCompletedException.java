@@ -5,7 +5,7 @@ import org.tattour.server.global.exception.ErrorType;
 
 public class InvalidCustomCompletedException extends BusinessException {
 
-	public InvalidCustomCompletedException() {
-		super(ErrorType.INVALID_PASSWORD_EXCEPTION);
-	}
+    public InvalidCustomCompletedException() {
+        super(ErrorType.INVALID_PASSWORD_EXCEPTION);
+    }
 }

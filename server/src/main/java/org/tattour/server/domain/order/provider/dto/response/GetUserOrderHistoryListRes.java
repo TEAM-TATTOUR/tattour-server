@@ -13,9 +13,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetUserOrderHistoryListRes {
+
     List<GetUserOrderHistoryRes> getUserOrderHistoryResList;
 
-    public static GetUserOrderHistoryListRes of(List<GetUserOrderHistoryRes> getUserOrderHistoryResList){
+    public static GetUserOrderHistoryListRes of(
+            List<GetUserOrderHistoryRes> getUserOrderHistoryResList) {
         return new GetUserOrderHistoryListRes(getUserOrderHistoryResList);
     }
 }

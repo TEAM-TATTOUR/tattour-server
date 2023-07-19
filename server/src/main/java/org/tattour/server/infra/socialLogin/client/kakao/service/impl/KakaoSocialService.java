@@ -20,6 +20,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.So
 @Service
 @RequiredArgsConstructor
 public class KakaoSocialService extends SocialService {
+
     @Value("${OAuth.kakao.clientId}")
     private String clientId;
 
@@ -42,14 +43,15 @@ public class KakaoSocialService extends SocialService {
         );
 
         // Access Token으로 유저 정보 불러오기
-        KakaoUserRes userResponse = kakaoApiClient.getUserInformation("Bearer " + tokenResponse.getAccessToken());
+        KakaoUserRes userResponse = kakaoApiClient.getUserInformation(
+                "Bearer " + tokenResponse.getAccessToken());
 
         // 중복 확인
         Integer userId = userProvider.checkDuplicationByKakaoId(userResponse.getId());
         boolean isUserExist = false;
 
         // 존재하지 않으면 유저 생성
-        if(Objects.isNull(userId)){
+        if (Objects.isNull(userId)) {
             User user = userService.saveSocialUser(
                     SaveUserReq.of(
                             userResponse.getId(),
@@ -63,8 +65,9 @@ public class KakaoSocialService extends SocialService {
             user.setSocialToken(tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
             userService.saveUser(user);
 
-            if(!Objects.isNull(user.getName()))
+            if (!Objects.isNull(user.getName())) {
                 isUserExist = true;
+            }
         }
 
         return SocialLoginResponse.of(userId, isUserExist);

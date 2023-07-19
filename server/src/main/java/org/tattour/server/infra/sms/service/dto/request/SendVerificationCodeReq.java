@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendVerificationCodeReq {
+
     private Integer userId;
     private String recipientPhoneNumber;
 }

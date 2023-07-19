@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "서버 Profile 확인")
 public class ServerProfileController {
 
-	private final Environment env;
+    private final Environment env;
 
-	@GetMapping("/profile")
-	@Operation(summary = "Server application 파일 profile")
-	public String getProfile() {
-		return Arrays.stream(env.getActiveProfiles())
-			.findFirst()
-			.orElse("");
-	}
+    @GetMapping("/profile")
+    @Operation(summary = "Server application 파일 profile")
+    public String getProfile() {
+        return Arrays.stream(env.getActiveProfiles())
+                .findFirst()
+                .orElse("");
+    }
 }

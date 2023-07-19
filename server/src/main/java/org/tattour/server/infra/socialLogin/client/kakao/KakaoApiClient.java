@@ -8,6 +8,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserR
 
 @FeignClient(name = "kakaoApiClient", url = "https://kapi.kakao.com")
 public interface KakaoApiClient {
+
     @GetMapping(value = "/v2/user/me")
     KakaoUserRes getUserInformation(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken);
 }

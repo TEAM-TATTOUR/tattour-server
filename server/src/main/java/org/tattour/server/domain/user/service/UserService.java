@@ -6,6 +6,7 @@ import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
 
 public interface UserService {
+
     // 소셜 유저 생성
     User saveSocialUser(SaveUserReq req);
 
@@ -13,6 +14,7 @@ public interface UserService {
     void saveUser(User user);
 
     User getUserByUserId(Integer userId);
+
     // 회원가입 시 이름, 전화번호 추가
     void updateUserInfo(UpdateUserInfoReq req);
 

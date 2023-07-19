@@ -13,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class SmsReq {
+
     private String type;
     private String contentType;
     private String countryCode;
