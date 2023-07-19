@@ -35,6 +35,7 @@ import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedR
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
+import org.tattour.server.domain.user.controller.dto.request.PostVerifyCodeReq;
 import org.tattour.server.domain.user.provider.dto.request.CheckDuplicationReqDto;
 import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
@@ -235,16 +236,12 @@ public class UserController {
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	@PostMapping("/phone-number/verification")
-	public ResponseEntity<?> verififyCode(
+	public ResponseEntity<?> verifyCode(
 			@Parameter(hidden = true) @UserId Integer userId,
-			@Parameter(description = "인증번호")
-			@RequestParam
-				@NotNull(message = "verificationCode is null")
-				@Min(100000)
-				@Max(999999) Integer verificationCode) {
+			@RequestBody PostVerifyCodeReq req) {
 
 		if (phoneNumberVerificationCodeProvider
-				.compareVerficationCode(userId, verificationCode)) {
+				.compareVerficationCode(userId, req.getVerificationCode())) {
 			return BaseResponse.success(
 					SuccessType.CODE_VERIFICATION_SUCCESS,
 					GetVerifyCodeRes.of(true));
