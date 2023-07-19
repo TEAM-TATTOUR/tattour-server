@@ -72,7 +72,7 @@ public class CustomController {
 	public ResponseEntity<?> updateCustom(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@RequestPart @Valid UpdateCustomReq customInfo,
-		@RequestPart MultipartFile customMainImage,
+		@RequestPart(required = false) MultipartFile customMainImage,
 		@RequestPart(required = false) List<MultipartFile> customImages
 	) {
 		CustomInfo response = customService.updateCustom(
