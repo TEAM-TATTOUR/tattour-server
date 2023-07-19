@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,8 +82,8 @@ public class OrderController {
 	})
 	@GetMapping("/ordersheet")
 	public ResponseEntity<?> getOrderSheet(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid GetOrderSheetReq req
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@RequestBody @Valid GetOrderSheetReq req
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderSheetRes(
@@ -123,8 +124,8 @@ public class OrderController {
 	})
 	@PostMapping
 	public ResponseEntity<?> order(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid PostOrderReq req
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@RequestBody @Valid PostOrderReq req
 	) {
 		if (userProvider.isUserPointLack(
 			CheckUserPointLackReqDto.of(userId, req.getTotalAmount()))) {
@@ -183,7 +184,7 @@ public class OrderController {
 	})
 	@GetMapping
 	public ResponseEntity<?> getUserOrderList(
-		@Parameter(hidden = true) @UserId Integer userId
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			orderProvider.getOrderHistoryByUserId(userId));

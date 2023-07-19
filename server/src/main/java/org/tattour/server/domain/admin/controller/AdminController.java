@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -278,11 +279,11 @@ public class AdminController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> getSimilarStickerList(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@Parameter(description = "content-type을 application/json 타입으로 보내기")
-		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
-		@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
-		@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(description = "content-type을 application/json 타입으로 보내기")
+			@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
+			@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
+			@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		CreateStickerRes response = new CreateStickerRes(stickerService.createSticker(
@@ -301,8 +302,8 @@ public class AdminController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> getSimilarStickerList(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody UpdateCustomProcessReq request
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@RequestBody UpdateCustomProcessReq request
 	) {
 		CustomInfo response = customService.updateCustomProcess(request.newUpdateCustomInfo(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
