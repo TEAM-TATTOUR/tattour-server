@@ -35,6 +35,7 @@ import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedR
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
+import org.tattour.server.domain.user.controller.dto.request.PostVerifyCodeReq;
 import org.tattour.server.domain.user.provider.dto.request.CheckDuplicationReqDto;
 import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
@@ -143,7 +144,7 @@ public class UserController {
 	})
 	@PatchMapping("/profile")
 	public ResponseEntity<?> updateUserProfile(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PatchUserInfoReq req
 	) {
 		userService.updateUserInfo(
@@ -177,7 +178,7 @@ public class UserController {
 	})
 	@GetMapping("/profile")
 	public ResponseEntity<?> getUserProfile(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS, userProvider.getUserProfile(userId));
 	}
@@ -204,7 +205,7 @@ public class UserController {
 	})
 	@PatchMapping("/logout")
 	public ResponseEntity<?> userLogout(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		userService.userLogout(userId);
 		return BaseResponse.success(SuccessType.LOGOUT_SUCCESS);
@@ -235,16 +236,12 @@ public class UserController {
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	@PostMapping("/phone-number/verification")
-	public ResponseEntity<?> verififyCode(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
-			@Parameter(description = "인증번호")
-			@RequestParam
-				@NotNull(message = "verificationCode is null")
-				@Min(100000)
-				@Max(999999) Integer verificationCode) {
+	public ResponseEntity<?> verifyCode(
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody PostVerifyCodeReq req) {
 
 		if (phoneNumberVerificationCodeProvider
-				.compareVerficationCode(userId, verificationCode)) {
+				.compareVerficationCode(userId, req.getVerificationCode())) {
 			return BaseResponse.success(
 					SuccessType.CODE_VERIFICATION_SUCCESS,
 					GetVerifyCodeRes.of(true));
@@ -284,7 +281,7 @@ public class UserController {
 	})
 	@PostMapping("/product-liked/save")
 	public ResponseEntity<?> saveProductLiked(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostProductLikedReq req
 	) {
 		// 중복 검사
@@ -318,7 +315,7 @@ public class UserController {
 	})
 	@DeleteMapping("/product-liked/delete")
 	public ResponseEntity<?> deleteProductLiked(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid DeleteProductLikedReq req
 	) {
 		productLikedService.deleteProductLiked(
@@ -345,7 +342,7 @@ public class UserController {
 	})
 	@GetMapping("/product-liked/saved")
 	public ResponseEntity<?> getProductLiked(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
 			productLikedProvider.getLikedProductsByUserId(userId));
@@ -369,7 +366,7 @@ public class UserController {
 	})
 	@PostMapping("/address")
 	public ResponseEntity<?> createShippingAddr(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostUserShippingAddrReq req
 	) {
 		userShippingAddressService.saveUserShippingAddr(
@@ -406,7 +403,7 @@ public class UserController {
 	})
 	@PostMapping("/point/charge")
 	public ResponseEntity<?> createPointChargeRequest(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostPointChargeRequest req
 	) {
         pointService.savePointChargeRequest(
@@ -429,7 +426,7 @@ public class UserController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> getUserCustomCompleteList(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
@@ -446,7 +443,7 @@ public class UserController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> getUserCustomIncompleteList(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId
+			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
@@ -463,7 +460,7 @@ public class UserController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> getOneUserCustomInfo(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@PathVariable(value = "customId") Integer customId
 	) {
 		Custom custom = customService.getCustomById(customId, userId);
