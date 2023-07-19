@@ -50,7 +50,7 @@ public class CustomController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createCustom(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid ApplyCustomReq request
 	) {
 
@@ -71,7 +71,7 @@ public class CustomController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> updateCustom(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestPart @Valid UpdateCustomReq customInfo,
 			@RequestPart(required = false) MultipartFile customMainImage,
 			@RequestPart(required = false) List<MultipartFile> customImages

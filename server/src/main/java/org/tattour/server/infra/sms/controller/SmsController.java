@@ -32,7 +32,7 @@ public class SmsController {
     @Operation(summary = "전화번호 인증번호 보내기")
     @PostMapping("/send/verification-code")
     public ResponseEntity<?> sendVerificationCode(
-            @Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+            @Parameter(hidden = true) @UserId Integer userId,
             @RequestBody @Valid PostSendCodeReq req
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(userId, req.getPhoneNumber()));
