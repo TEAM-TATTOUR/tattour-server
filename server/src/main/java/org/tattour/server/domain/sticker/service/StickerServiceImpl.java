@@ -58,11 +58,8 @@ public class StickerServiceImpl implements StickerService {
 	@Override
 	@Transactional(readOnly = true)
 	public StickerInfo getOneStickerInfo(Integer stickerId) {
-		Sticker sticker = stickerRepository.findById(stickerId)
-			.orElseThrow(NotFoundStickerException::new);
-		List<StickerImage> images = stickerImageRepository.findAllByStickerId(stickerId);
-
-		return StickerInfo.from(sticker, images);
+		Sticker sticker = getStickerByStickerId(stickerId);
+		return StickerInfo.from(sticker);
 	}
 
 	@Override

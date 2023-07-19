@@ -33,6 +33,7 @@ public enum SuccessType {
 	UPDATE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 업데이트에 성공했습니다"),
 	DELETE_SUCCESS(HttpStatus.OK, "삭제에 성공했습니다."),
 	UPDATE_ORDER_STATUS_SUCCESS(HttpStatus.OK, "주문상태 변경에 성공했습니다."),
+	APPLY_STICKER_DISCOUNT_SUCCESS(HttpStatus.CREATED, "스티커 할인 적용에 성공했습니다."),
 
 	/**
 	 * 201 CREATED
@@ -44,6 +45,7 @@ public enum SuccessType {
 	CREATE_POINT_CHARGE_REQUEST_SUCCESS(HttpStatus.CREATED, "포인트 충전 요청에 성공했습니다."),
 	POINT_CHARGE_CONFIRM_SUCCESS(HttpStatus.CREATED, "포인트 충전 확정에 성공했습니다."),
 	POINT_CHARGE_CANCEL_SUCCESS(HttpStatus.CREATED, "포인트 충전 취소에 성공했습니다."),
+	CREATE_DISCOUNT_SUCCESS(HttpStatus.CREATED, "할인 정책 생성에 성공했습니다."),
 
 	/**
 	 * 202 ACCEPTED

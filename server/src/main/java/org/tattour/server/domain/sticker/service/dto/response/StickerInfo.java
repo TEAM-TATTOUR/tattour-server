@@ -30,18 +30,19 @@ public class StickerInfo {
 	private List<String> images;
 
 
-	public static StickerInfo from(Sticker sticker, List<StickerImage> images) {
+	public static StickerInfo from(Sticker sticker) {
 		List<String> stickerImages = new ArrayList<>();
 		List<String> stickerThemes = new ArrayList<>();
 		List<String> stickerStyles = new ArrayList<>();
-		stickerImages.add(sticker.getMainImageUrl());
 		Integer discountRate = null;
 		Integer discountPrice = null;
+
 		if  (!Objects.isNull(sticker.getDiscount())) {
 			discountRate = sticker.getDiscount().getDiscountRate();
 			discountPrice = sticker.getDiscountPrice();
 		}
-		images.stream()
+		stickerImages.add(sticker.getMainImageUrl());
+		sticker.getStickerImages().stream()
 			.map(image -> stickerImages.add(image.getImageUrl()))
 			.collect(Collectors.toList());
 		sticker.getStickerThemes()
