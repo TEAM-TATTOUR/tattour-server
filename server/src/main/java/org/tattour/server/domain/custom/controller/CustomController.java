@@ -39,46 +39,46 @@ import org.tattour.server.global.dto.SuccessType;
 @Tag(name = "Custom", description = "Custom API Document")
 public class CustomController {
 
-    private final CustomService customService;
+	private final CustomService customService;
 
-    @PostMapping(value = "/apply")
-    @Operation(summary = "커스텀 도안 신청")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "success",
-                    content = @Content(schema = @Schema(implementation = ApplyCustomRes.class))),
-            @ApiResponse(responseCode = "400, 500", description = "error",
-                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
-    })
-    public ResponseEntity<?> createCustom(
-            @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid ApplyCustomReq request
-    ) {
+	@PostMapping(value = "/apply")
+	@Operation(summary = "커스텀 도안 신청")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "success",
+					content = @Content(schema = @Schema(implementation = ApplyCustomRes.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> createCustom(
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid ApplyCustomReq request
+	) {
 
-        ApplyCustomRes response = ApplyCustomRes.of(
-                (customService.createCustom(request.getHaveDesign(), userId)));
-        return BaseResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
-    }
+		ApplyCustomRes response = ApplyCustomRes.of(
+				(customService.createCustom(request.getHaveDesign(), userId)));
+		return BaseResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
+	}
 
-    @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "커스텀 도안 수정", description = "customInfo ContentType: application/json"
-            + " / customId 를 제외한 모든 컬럼 null 값 가능"
-            + " / size :  <receiving, receiptComplete, receiptFailed, shipping, shipped> "
-            + " / 테마, 스타일 타입은  Integer")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomInfo.class))),
-            @ApiResponse(responseCode = "400, 500", description = "error",
-                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
-    })
-    public ResponseEntity<?> updateCustom(
-            @Parameter(hidden = true) @UserId Integer userId,
-            @RequestPart @Valid UpdateCustomReq customInfo,
-            @RequestPart(required = false) MultipartFile customMainImage,
-            @RequestPart(required = false) List<MultipartFile> customImages
-    ) {
-        CustomInfo response = customService.updateCustom(
-                customInfo.newUpdateCustomInfo(userId, customMainImage, customImages,
-                        CustomProcess.RECEIVING));
-        return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
-    }
+	@PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(summary = "커스텀 도안 수정", description = "customInfo ContentType: application/json"
+			+ " / customId 를 제외한 모든 컬럼 null 값 가능"
+			+ " / size :  <receiving, receiptComplete, receiptFailed, shipping, shipped> "
+			+ " / 테마, 스타일 타입은  Integer")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "success",
+					content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> updateCustom(
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestPart @Valid UpdateCustomReq customInfo,
+			@RequestPart(required = false) MultipartFile customMainImage,
+			@RequestPart(required = false) List<MultipartFile> customImages
+	) {
+		CustomInfo response = customService.updateCustom(
+				customInfo.newUpdateCustomInfo(userId, customMainImage, customImages,
+						CustomProcess.RECEIVING));
+		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
+	}
 }
