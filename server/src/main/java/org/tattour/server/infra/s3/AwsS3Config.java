@@ -12,15 +12,15 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class AwsS3Config {
 
-	private final AwsS3Property awsS3Property;
+    private final AwsS3Property awsS3Property;
 
-	@Bean
-	public AmazonS3 amazonS3Client() {
-		BasicAWSCredentials awsCredentials = new BasicAWSCredentials(
-			awsS3Property.getAccessKey(), awsS3Property.getSecretKey());
-		return AmazonS3ClientBuilder.standard()
-			.withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-			.withRegion(awsS3Property.getRegion())
-			.build();
-	}
+    @Bean
+    public AmazonS3 amazonS3Client() {
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(
+                awsS3Property.getAccessKey(), awsS3Property.getSecretKey());
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withRegion(awsS3Property.getRegion())
+                .build();
+    }
 }

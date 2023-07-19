@@ -8,6 +8,7 @@ import org.tattour.server.domain.order.domain.OrderStatus;
 @Schema(description = "주문상태 갱신 Request (PREPARATION / CANCEL / ACCEPT / DELIVERING / DELIVERED)")
 @Getter
 public class PatchOrderStatusReq {
+
     @Schema(description = "주문상태", example = "ACCEPT")
     @NotNull(message = "orderStatus is null")
     private OrderStatus orderStatus;

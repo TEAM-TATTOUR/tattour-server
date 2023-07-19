@@ -10,7 +10,8 @@ public class GetPointChargeRequestAfterDate {
 
     private int userId;
     private String date;
-    public static GetPointChargeRequestAfterDate of(int userId, String date){
+
+    public static GetPointChargeRequestAfterDate of(int userId, String date) {
         return new GetPointChargeRequestAfterDate(userId, date);
     }
 }

@@ -8,7 +8,7 @@ import org.tattour.server.domain.sticker.domain.StickerStyle;
 @Repository
 public interface StickerStyleRepositoryImpl extends JpaRepository<StickerStyle, Integer> {
 
-	List<StickerStyle> findAllBySticker_Id(Integer stickerId);
+    List<StickerStyle> findAllBySticker_Id(Integer stickerId);
 
-	List<StickerStyle> findAllByStyle_Id(Integer styleId);
+    List<StickerStyle> findAllByStyle_Id(Integer styleId);
 }

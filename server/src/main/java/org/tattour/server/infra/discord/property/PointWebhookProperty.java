@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("discord.webhook.point")
 public class PointWebhookProperty {
 
-	private String clientId;
-	private String token;
+    private String clientId;
+    private String token;
 }

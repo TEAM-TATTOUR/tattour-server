@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.tattour.server.infra.sms.domain.PhoneNumberVerificationCode;
 
 @Repository
-public interface PhoneNumberVerificationCodeRepositoryImpl extends JpaRepository<PhoneNumberVerificationCode, Integer> {
+public interface PhoneNumberVerificationCodeRepositoryImpl extends
+        JpaRepository<PhoneNumberVerificationCode, Integer> {
+
     @Query("SELECT p "
             + "FROM PhoneNumberVerificationCode p "
             + "WHERE p.user.id = :userId "

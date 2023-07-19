@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class GetOrderHistoryRes {
+
     private int id;
     private String productName;
     private String productSize;

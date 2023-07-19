@@ -21,17 +21,17 @@ public class DiscountServiceImpl implements DiscountService {
 	@Override
 	public Discount getDiscountByDiscountId(Integer discountId) {
 		return discountRepository.findById(discountId)
-			.orElseThrow(NotFoundDiscountException::new);
+				.orElseThrow(NotFoundDiscountException::new);
 	}
 
 	@Override
 	@Transactional
 	public DiscountInfo createDiscount(DiscountInfo discountInfo) {
 		Discount discount = Discount.from(discountInfo.getName(),
-			discountInfo.getDiscountRate(),
-			discountInfo.getStartAt(),
-			discountInfo.getEndedAt(),
-			false);
+				discountInfo.getDiscountRate(),
+				discountInfo.getStartAt(),
+				discountInfo.getEndedAt(),
+				false);
 		discountRepository.save(discount);
 		return DiscountInfo.of(discount);
 	}

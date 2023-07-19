@@ -23,6 +23,7 @@ public class StickerInfo {
 
 	@Schema(nullable = true)
 	private Integer discountRate;
+	@Schema(nullable = true)
 	private Integer discountPrice;
 	private String composition;
 	private String size;
@@ -40,36 +41,36 @@ public class StickerInfo {
 		Integer discountRate = null;
 		Integer discountPrice = null;
 
-		if  (!Objects.isNull(sticker.getDiscount())) {
+		if (!Objects.isNull(sticker.getDiscount())) {
 			discountRate = sticker.getDiscount().getDiscountRate();
 			discountPrice = sticker.getDiscountPrice();
 		}
 		stickerImages.add(sticker.getMainImageUrl());
 		sticker.getStickerImages().stream()
-			.map(image -> stickerImages.add(image.getImageUrl()))
-			.collect(Collectors.toList());
+		.map(image -> stickerImages.add(image.getImageUrl()))
+		.collect(Collectors.toList());
 		sticker.getStickerThemes()
-			.stream()
-			.map(theme -> stickerThemes.add(theme.getTheme().getName()))
-			.collect(Collectors.toList());
+		.stream()
+		.map(theme -> stickerThemes.add(theme.getTheme().getName()))
+		.collect(Collectors.toList());
 		sticker.getStickerStyles()
-			.stream()
-			.map(style -> stickerStyles.add(style.getStyle().getName()))
-			.collect(Collectors.toList());
+		.stream()
+		.map(style -> stickerStyles.add(style.getStyle().getName()))
+		.collect(Collectors.toList());
 		return StickerInfo.builder()
-			.id(sticker.getId())
-			.name(sticker.getName())
-			.description(sticker.getDescription())
-			.price(sticker.getPrice())
-			.discountRate(discountRate)
-			.discountPrice(discountPrice)
-			.composition(sticker.getComposition())
-			.size(sticker.getSize())
-			.isCustom(sticker.getIsCustom())
-			.shippingCost(3000)
-			.stickerThemes(stickerThemes)
-			.stickerStyles(stickerStyles)
-			.images(stickerImages)
-			.build();
+		.id(sticker.getId())
+		.name(sticker.getName())
+		.description(sticker.getDescription())
+		.price(sticker.getPrice())
+		.discountRate(discountRate)
+		.discountPrice(discountPrice)
+		.composition(sticker.getComposition())
+		.size(sticker.getSize())
+		.isCustom(sticker.getIsCustom())
+		.shippingCost(3000)
+		.stickerThemes(stickerThemes)
+		.stickerStyles(stickerStyles)
+		.images(stickerImages)
+		.build();
 	}
 }

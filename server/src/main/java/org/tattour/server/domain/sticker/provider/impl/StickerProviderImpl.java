@@ -13,6 +13,7 @@ import org.tattour.server.global.exception.ErrorType;
 @Service
 @RequiredArgsConstructor
 public class StickerProviderImpl implements StickerProvider {
+
     private final StickerRepositoryImpl stickerRepository;
 
     @Override
@@ -27,8 +28,10 @@ public class StickerProviderImpl implements StickerProvider {
         Integer discountedPrice = null;
 
         // 할인률이 null이 아닐 때
-        if(!Objects.isNull(sticker.getDiscount()))
-            discountedPrice = (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate()))/100;
+        if (!Objects.isNull(sticker.getDiscount())) {
+            discountedPrice =
+                    (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate())) / 100;
+        }
 
         return GetOrderSheetStickerInfo.of(
                 sticker.getMainImageUrl(),

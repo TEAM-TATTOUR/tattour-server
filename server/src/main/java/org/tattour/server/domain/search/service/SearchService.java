@@ -4,5 +4,5 @@ import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList
 
 public interface SearchService {
 
-	StickerSummaryList searchSticker(String word);
+    StickerSummaryList searchSticker(String word);
 }

@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("discord.webhook.order")
 public class OrderWebhookProperty {
 
-	private String clientId;
-	private String token;
+    private String clientId;
+    private String token;
 }

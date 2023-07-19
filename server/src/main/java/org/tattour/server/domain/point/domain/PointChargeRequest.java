@@ -19,6 +19,7 @@ import org.tattour.server.domain.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PointChargeRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -47,11 +48,12 @@ public class PointChargeRequest {
         this.user = user;
     }
 
-    public static PointChargeRequest of(Integer chargeAmount, User user){
+    public static PointChargeRequest of(Integer chargeAmount, User user) {
         return new PointChargeRequest(chargeAmount, user);
     }
 
-    public void setProperties(Integer transferredAmount, boolean isDeposited, boolean isAmountMatched,boolean isApproved, boolean isCompleted){
+    public void setProperties(Integer transferredAmount, boolean isDeposited,
+            boolean isAmountMatched, boolean isApproved, boolean isCompleted) {
         this.transferredAmount = transferredAmount;
         this.isDeposited = isDeposited;
         this.isAmountMatched = isAmountMatched;

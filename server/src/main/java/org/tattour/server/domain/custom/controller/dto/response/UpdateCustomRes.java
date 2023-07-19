@@ -1,5 +1,6 @@
 package org.tattour.server.domain.custom.controller.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,17 +24,17 @@ public class UpdateCustomRes {
 
 	public static UpdateCustomRes of(CustomInfo customInfo) {
 		return UpdateCustomRes.builder()
-			.mainImageUrl(customInfo.getMainImageUrl())
-			.imageUrls(customInfo.getImages())
-			.themes(customInfo.getThemes())
-			.styles(customInfo.getStyles())
-			.isColored(customInfo.getIsColored())
-			.size(customInfo.getSize())
-			.count(customInfo.getCount())
-			.name(customInfo.getName())
-			.demand(customInfo.getDemand())
-			.demand(customInfo.getDemand())
-			.build();
+				.mainImageUrl(customInfo.getMainImageUrl())
+				.imageUrls(customInfo.getImages())
+				.themes(customInfo.getThemes())
+				.styles(customInfo.getStyles())
+				.isColored(customInfo.getIsColored())
+				.size(customInfo.getSize())
+				.count(customInfo.getCount())
+				.name(customInfo.getName())
+				.demand(customInfo.getDemand())
+				.demand(customInfo.getDemand())
+				.build();
 	}
 
 }

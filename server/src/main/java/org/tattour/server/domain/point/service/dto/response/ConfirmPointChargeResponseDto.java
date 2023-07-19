@@ -13,6 +13,7 @@ import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfirmPointChargeResponseDto {
+
     // 유저 정보
     GetUserInfoDto getUserInfoDto;
     // 포인트 충전 내역

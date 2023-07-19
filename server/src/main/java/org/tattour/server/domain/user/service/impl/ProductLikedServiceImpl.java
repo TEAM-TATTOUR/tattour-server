@@ -16,6 +16,7 @@ import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo
 @Service
 @RequiredArgsConstructor
 public class ProductLikedServiceImpl implements ProductLikedService {
+
     private final ProductLikedRepositoryImpl productLikedRepository;
     private final ProductLikedProviderImpl productLikedProvider;
     private final UserServiceImpl userService;
@@ -31,9 +32,8 @@ public class ProductLikedServiceImpl implements ProductLikedService {
     }
 
     @Override
-    public void deleteProductLiked(DeleteProductLikedInfo req) {
-        ProductLiked productLiked = productLikedProvider.getProductLikedByIdAndUserId(
-                req.getStickerId(), req.getUserId());
+    public void deleteProductLiked(Integer id) {
+        ProductLiked productLiked = productLikedProvider.getProductLikedById(id);
 
         productLikedRepository.delete(productLiked);
     }

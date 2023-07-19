@@ -8,6 +8,7 @@ import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoAcces
 
 @FeignClient(name = "kakaoAuthApiClient", url = "https://kauth.kakao.com")
 public interface KakaoAuthApiClient {
+
     @PostMapping(value = "/oauth/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     KakaoAccessTokenResponse getOAuth2AccessToken(
             @RequestParam("grant_type") String grantType,

@@ -8,16 +8,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
@@ -29,7 +29,6 @@ import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
@@ -83,15 +82,17 @@ public class OrderController {
 	@GetMapping("/ordersheet")
 	public ResponseEntity<?> getOrderSheet(
 			@Parameter(hidden = true) @UserId Integer userId,
-			@RequestBody @Valid GetOrderSheetReq req
+			@Parameter(description = "타투 스티커 id") @RequestParam @NotNull(message = "stickerId is null") Integer stickerId,
+			@Parameter(description = "상품 개수", example = "3") @RequestParam @NotNull(message = "count is null") Integer count,
+			@Parameter(description = "배송비", example = "3000") @RequestParam @NotNull(message = "shippingFee is null") Integer shippingFee
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-			orderProvider.getOrderSheetRes(
-					GetOrderSheetReqDto.of(
-							userId,
-							req.getStickerId(),
-							req.getCount(),
-							req.getShippingFee())));
+				orderProvider.getOrderSheetRes(
+						GetOrderSheetReqDto.of(
+								userId,
+								stickerId,
+								count,
+								shippingFee)));
 	}
 
 
@@ -128,30 +129,30 @@ public class OrderController {
 			@RequestBody @Valid PostOrderReq req
 	) {
 		if (userProvider.isUserPointLack(
-			CheckUserPointLackReqDto.of(userId, req.getTotalAmount()))) {
+				CheckUserPointLackReqDto.of(userId, req.getTotalAmount()))) {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
 
 		Order order = orderService.saveOrder(PostOrderReqDto.of(
-			userId,
-			req.getStickerId(),
-			req.getProductCount(),
-			req.getShippingFee(),
-			req.getTotalAmount(),
-			req.getRecipientName(),
-			req.getContact(),
-			req.getMailingAddress(),
-			req.getBaseAddress(),
-			req.getDetailAddress()));
+				userId,
+				req.getStickerId(),
+				req.getProductCount(),
+				req.getShippingFee(),
+				req.getTotalAmount(),
+				req.getRecipientName(),
+				req.getContact(),
+				req.getMailingAddress(),
+				req.getBaseAddress(),
+				req.getDetailAddress()));
 		int resultPoint = userService.updateUserPoint(
-			UpdateUserPointReq.of(userId, -req.getTotalAmount()));
+				UpdateUserPointReq.of(userId, -req.getTotalAmount()));
 		pointService.savePointLog(
-			SaveUserPointLogReq.of(
-				"상품 구매",
-				null,
-				-req.getTotalAmount(),
-				resultPoint,
-				userId));
+				SaveUserPointLogReq.of(
+						"상품 구매",
+						null,
+						-req.getTotalAmount(),
+						resultPoint,
+						userId));
 		discordMessageService.sendOrderStickerMessage(order);
 
 		return BaseResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
@@ -187,6 +188,6 @@ public class OrderController {
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-			orderProvider.getOrderHistoryByUserId(userId));
+				orderProvider.getOrderHistoryByUserId(userId));
 	}
 }

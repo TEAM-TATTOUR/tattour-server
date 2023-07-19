@@ -20,6 +20,7 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductLiked {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,7 +40,7 @@ public class ProductLiked {
         this.sticker = sticker;
     }
 
-    public static ProductLiked of(User user, Sticker sticker){
+    public static ProductLiked of(User user, Sticker sticker) {
         return ProductLiked.builder()
                 .user(user)
                 .sticker(sticker)

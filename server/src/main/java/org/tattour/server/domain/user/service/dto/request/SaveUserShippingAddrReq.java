@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class SaveUserShippingAddrReq {
+
     private Integer userId;
     private String recipientName;
     private String contact;
@@ -15,7 +16,8 @@ public class SaveUserShippingAddrReq {
     private String detailAddress;
 
     public static SaveUserShippingAddrReq of(Integer userId, String recipientName, String contact,
-            String mailingAddress, String baseAddress, String detailAddress){
-        return new SaveUserShippingAddrReq(userId, recipientName, contact, mailingAddress, baseAddress, detailAddress);
+            String mailingAddress, String baseAddress, String detailAddress) {
+        return new SaveUserShippingAddrReq(userId, recipientName, contact, mailingAddress,
+                baseAddress, detailAddress);
     }
 }

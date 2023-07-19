@@ -17,19 +17,19 @@ import org.tattour.server.domain.theme.repository.impl.ThemeRepositoryImpl;
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 
-	private final StickerService stickerService;
-	private final StickerRepositoryImpl stickerRepository;
-	private final ThemeRepositoryImpl themeRepository;
-	private final StyleRepositoryImpl styleRepository;
+    private final StickerService stickerService;
+    private final StickerRepositoryImpl stickerRepository;
+    private final ThemeRepositoryImpl themeRepository;
+    private final StyleRepositoryImpl styleRepository;
 
-	@Override
-	@Transactional(readOnly = true)
-	public StickerSummaryList searchSticker(String word) {
-		List<Sticker> result = stickerRepository.findByNameContaining(word);
-		List<Theme> themes = themeRepository.findByNameLike(word);
-		List<Style> styles = styleRepository.findByNameLike(word);
-		stickerService.addStickerListByThemeList(result, themes);
-		stickerService.addStickerListByStyleList(result, styles);
-		return StickerSummaryList.of(result);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public StickerSummaryList searchSticker(String word) {
+        List<Sticker> result = stickerRepository.findByNameContaining(word);
+        List<Theme> themes = themeRepository.findByNameLike(word);
+        List<Style> styles = styleRepository.findByNameLike(word);
+        stickerService.addStickerListByThemeList(result, themes);
+        stickerService.addStickerListByStyleList(result, styles);
+        return StickerSummaryList.of(result);
+    }
 }

@@ -23,21 +23,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomImage {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "custom_id")
-	private Custom custom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "custom_id")
+    private Custom custom;
 
-	@Column(name = "image_url", columnDefinition = "text")
-	private String imageUrl;
+    @Column(name = "image_url", columnDefinition = "text")
+    private String imageUrl;
 
-	public static CustomImage from(String imageUrl, Custom custom) {
-		return CustomImage.builder()
-			.imageUrl(imageUrl)
-			.custom(custom)
-			.build();
-	}
+    public static CustomImage from(String imageUrl, Custom custom) {
+        return CustomImage.builder()
+                .imageUrl(imageUrl)
+                .custom(custom)
+                .build();
+    }
 }

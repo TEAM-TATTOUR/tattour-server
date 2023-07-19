@@ -12,6 +12,7 @@ import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrRe
 @Service
 @RequiredArgsConstructor
 public class UserShippingAddressServiceImpl implements UserShippingAddressService {
+
     private final UserShippingAddressRepositoryImpl userShippingAddressRepository;
     private final UserProviderImpl userProvider;
 

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.sticker.service.dto.request.CreateStickerInfo;
 
@@ -46,8 +45,9 @@ public class CreateStickerReq {
 	@Size(max = 255, message = "description is max 50")
 	private String description;
 
-	public CreateStickerInfo newCreateStickerInfo(MultipartFile mainImage, List<MultipartFile> images) {
-		return CreateStickerInfo.from(name, mainImage, images, isCustom, price, composition,
-			size, shippingFee, themes, styles, description);
-	}
+    public CreateStickerInfo newCreateStickerInfo(MultipartFile mainImage,
+            List<MultipartFile> images) {
+        return CreateStickerInfo.from(name, mainImage, images, isCustom, price, composition,
+                size, shippingFee, themes, styles, description);
+    }
 }

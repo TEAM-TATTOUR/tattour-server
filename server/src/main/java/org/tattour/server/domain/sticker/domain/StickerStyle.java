@@ -23,22 +23,22 @@ import org.tattour.server.domain.style.domain.Style;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StickerStyle {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sticker_id")
-	private Sticker sticker;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sticker_id")
+    private Sticker sticker;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "style_id")
-	private Style style;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "style_id")
+    private Style style;
 
-	public static StickerStyle from(Sticker sticker, Style style) {
-		return StickerStyle.builder()
-			.sticker(sticker)
-			.style(style)
-			.build();
-	}
+    public static StickerStyle from(Sticker sticker, Style style) {
+        return StickerStyle.builder()
+                .sticker(sticker)
+                .style(style)
+                .build();
+    }
 }

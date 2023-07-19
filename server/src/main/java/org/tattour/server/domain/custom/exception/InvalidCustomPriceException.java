@@ -5,7 +5,7 @@ import org.tattour.server.global.exception.ErrorType;
 
 public class InvalidCustomPriceException extends BusinessException {
 
-	public InvalidCustomPriceException() {
-		super(ErrorType.INVALID_CUSTOM_COMPLETED_EXCEPTION);
-	}
+    public InvalidCustomPriceException() {
+        super(ErrorType.INVALID_CUSTOM_COMPLETED_EXCEPTION);
+    }
 }

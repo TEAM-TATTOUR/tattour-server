@@ -17,17 +17,12 @@ import org.tattour.server.global.util.EntityDtoMapper;
 @Service
 @RequiredArgsConstructor
 public class ProductLikedProviderImpl implements ProductLikedProvider {
+
     private final ProductLikedRepositoryImpl productLikedRepository;
 
     @Override
     public ProductLiked getProductLikedById(Integer id) {
         return productLikedRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
-    }
-
-    @Override
-    public ProductLiked getProductLikedByIdAndUserId(Integer Stickerid, Integer userId) {
-        return productLikedRepository.findBySticker_IdAndUser_Id(Stickerid, userId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
     }
 
@@ -39,11 +34,13 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
                 .map(ProductLiked::getSticker)
                 .collect(Collectors.toList());
 
-        return new ProductLikedListRes(EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
+        return new ProductLikedListRes(
+                EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
     }
 
     @Override
     public boolean checkDuplicationByStickerId(CheckDuplicationReqDto req) {
-        return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(), req.getStickerId()).isPresent();
+        return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(),
+                req.getStickerId()).isPresent();
     }
 }

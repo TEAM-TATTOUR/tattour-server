@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PageInfoRes {
+
     private int page;
     private final int size = 10;
     private Long totalElements;
@@ -18,7 +19,7 @@ public class PageInfoRes {
         this.totalPages = totalPages;
     }
 
-    public static PageInfoRes of(int page, Long totalElements, int totalPages){
+    public static PageInfoRes of(int page, Long totalElements, int totalPages) {
         return new PageInfoRes(page, totalElements, totalPages);
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class SaveProductLikedReq {
+
     private Integer userId;
     private Integer StickerId;
 
@@ -12,7 +13,7 @@ public class SaveProductLikedReq {
         StickerId = stickerId;
     }
 
-    public static SaveProductLikedReq of(Integer userId, Integer stickerId){
+    public static SaveProductLikedReq of(Integer userId, Integer stickerId) {
         return new SaveProductLikedReq(userId, stickerId);
     }
 }

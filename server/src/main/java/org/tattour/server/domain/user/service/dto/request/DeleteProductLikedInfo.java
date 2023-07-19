@@ -5,6 +5,7 @@ import lombok.Getter;
 //TODO : 이름 생각해보기
 @Getter
 public class DeleteProductLikedInfo {
+
     private Integer userId;
     private Integer stickerId;
 
@@ -13,7 +14,7 @@ public class DeleteProductLikedInfo {
         this.stickerId = stickerId;
     }
 
-    public static DeleteProductLikedInfo of(Integer userId, Integer stickerId){
+    public static DeleteProductLikedInfo of(Integer userId, Integer stickerId) {
         return new DeleteProductLikedInfo(userId, stickerId);
     }
 }

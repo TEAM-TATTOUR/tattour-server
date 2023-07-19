@@ -6,9 +6,9 @@ import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
 
 public interface DiscountService {
 
-	Discount getDiscountByDiscountId(Integer discountId);
+    Discount getDiscountByDiscountId(Integer discountId);
 
-	DiscountInfo createDiscount(DiscountInfo discountInfo);
+    DiscountInfo createDiscount(DiscountInfo discountInfo);
 
-	StickerInfo applyStickerDiscount(Integer stickerId, Integer discountId);
+    StickerInfo applyStickerDiscount(Integer stickerId, Integer discountId);
 }

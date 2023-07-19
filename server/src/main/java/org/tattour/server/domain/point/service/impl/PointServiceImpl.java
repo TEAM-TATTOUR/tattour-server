@@ -37,6 +37,7 @@ import org.tattour.server.infra.discord.service.DiscordMessageService;
 @Service
 @RequiredArgsConstructor
 public class PointServiceImpl implements PointService {
+
     private final PointChargeRequestRepositoryImpl pointChargeRequestRepository;
     private final UserPointLogRepositoryImpl userPointLogRepository;
     private final UserProviderImpl userProvider;
@@ -73,24 +74,29 @@ public class PointServiceImpl implements PointService {
     @Override
     @Transactional
     public void updatePointChargeRequest(PatchPointChangeRequestReq req) {
-        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
-        pointChargeRequest.setProperties(req.getTransferredAmount(), req.getIsDeposited(), req.getIsAmountMatched(), req.getIsApproved(), req.getIsCompleted());
+        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(
+                req.getId());
+        pointChargeRequest.setProperties(req.getTransferredAmount(), req.getIsDeposited(),
+                req.getIsAmountMatched(), req.getIsApproved(), req.getIsCompleted());
 
         pointChargeRequestRepository.save(pointChargeRequest);
     }
 
     @Override
     @Transactional
-    public ConfirmPointChargeResponseDto confirmPointChargeRequest(ConfirmPointChargeRequestDto req) {
-        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
+    public ConfirmPointChargeResponseDto confirmPointChargeRequest(
+            ConfirmPointChargeRequestDto req) {
+        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(
+                req.getId());
 
-        if(!pointChargeRequest.getIsCompleted()){
+        if (!pointChargeRequest.getIsCompleted()) {
             // 처리된 요청이 아니면
-            if(req.getTransferredAmount() == pointChargeRequest.getChargeAmount()) {
+            if (req.getTransferredAmount() == pointChargeRequest.getChargeAmount()) {
                 // 송금된 값이 일치하면
                 // PointChargeRequest의 상태를 변경하기
                 updatePointChargeRequest(
-                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),true, true, true, true));
+                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(), true,
+                                true, true, true));
                 return null;
             } else {
                 // 일치하지 않으면
@@ -106,7 +112,8 @@ public class PointServiceImpl implements PointService {
                                 GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
                 getPointChargeRequestListRes
                         .getGetPointChargeRequestResList()
-                        .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(pointChargeRequest));
+                        .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(
+                                pointChargeRequest));
 
                 // 구매 내역
                 GetUserOrderHistoryListRes getUserOrderHistoryListRes =
@@ -118,7 +125,9 @@ public class PointServiceImpl implements PointService {
                         customService.getCustomApplySummaryInfoList(
                                 GetCustomSummaryInfo.of(req.getUserId(), baseDate));
 
-                return ConfirmPointChargeResponseDto.of(getUserInfoDto,  getPointChargeRequestListRes, getUserOrderHistoryListRes, customApplySummaryInfoList);
+                return ConfirmPointChargeResponseDto.of(getUserInfoDto,
+                        getPointChargeRequestListRes, getUserOrderHistoryListRes,
+                        customApplySummaryInfoList);
             }
         } else {
             // 이미 처리된 요청이면
@@ -130,26 +139,29 @@ public class PointServiceImpl implements PointService {
     @Override
     @Transactional
     public void cancelPointChargeRequest(CancelPointChargeRequestReq req) {
-        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
+        PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(
+                req.getId());
 
-        if(pointChargeRequest.getIsCompleted()){
+        if (pointChargeRequest.getIsCompleted()) {
             // 이미 처리된 요청이면 반려
             throw new BusinessException(ErrorType.ALREADY_COMPLETED_POINT_CHARGE_REQUEST_EXCEPTION);
         } else {
-            if(Objects.equals(req.getTransferredAmount(), pointChargeRequest.getChargeAmount())){
+            if (Objects.equals(req.getTransferredAmount(), pointChargeRequest.getChargeAmount())) {
                 // 송금 금액이 충전 금액이 같으면 반려
                 throw new BusinessException(ErrorType.AMOUNT_MATCHED_EXCEPTION);
             } else {
                 // PointChargeRequest의 상태를 변경하기
                 updatePointChargeRequest(
-                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(), !Objects.isNull(req.getTransferredAmount()), false, false, true));
+                        PatchPointChangeRequestReq.of(req.getId(), req.getTransferredAmount(),
+                                !Objects.isNull(req.getTransferredAmount()), false, false, true));
 
                 // 포인트 로그 남기기
                 User user = userProvider.getUserById(req.getUserId());
                 int amount = pointChargeRequest.getChargeAmount();
                 int resultPoint = user.getPoint() - amount;
 
-                savePointLog(SaveUserPointLogReq.of("충전 취소", req.getReason(), -pointChargeRequest.getChargeAmount(), resultPoint, user.getId()));
+                savePointLog(SaveUserPointLogReq.of("충전 취소", req.getReason(),
+                        -pointChargeRequest.getChargeAmount(), resultPoint, user.getId()));
 
                 // 유저 포인트 처리
                 userService.updateUserPoint(UpdateUserPointReq.of(user.getId(), -amount));

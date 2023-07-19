@@ -8,5 +8,5 @@ import org.tattour.server.domain.sticker.domain.StickerImage;
 @Repository
 public interface StickerImageRepositoryImpl extends JpaRepository<StickerImage, Integer> {
 
-	List<StickerImage> findAllByStickerId(Integer stickerId);
+    List<StickerImage> findAllByStickerId(Integer stickerId);
 }

@@ -11,13 +11,13 @@ import org.tattour.server.domain.style.domain.Style;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StyleInfoList {
 
-	List<StyleInfo> styleInfos;
+    List<StyleInfo> styleInfos;
 
-	public static StyleInfoList of(List<Style> styles) {
-		List<StyleInfo> styleInfos = styles.stream()
-			.map(StyleInfo::of)
-			.collect(Collectors.toList());
-		return new StyleInfoList(styleInfos);
-	}
+    public static StyleInfoList of(List<Style> styles) {
+        List<StyleInfo> styleInfos = styles.stream()
+                .map(StyleInfo::of)
+                .collect(Collectors.toList());
+        return new StyleInfoList(styleInfos);
+    }
 
 }

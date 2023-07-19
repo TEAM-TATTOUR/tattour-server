@@ -15,6 +15,7 @@ import org.tattour.server.domain.user.domain.User;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepositoryImpl userRepository;
     private final UserProviderImpl userProvider;
 
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(Integer userId) {
         return userRepository.findById(userId)
-            .orElseThrow(NotFoundUserException::new);
+                .orElseThrow(NotFoundUserException::new);
     }
 
     @Override

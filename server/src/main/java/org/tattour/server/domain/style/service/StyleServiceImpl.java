@@ -15,26 +15,26 @@ import org.tattour.server.global.exception.NotFoundException;
 @RequiredArgsConstructor
 public class StyleServiceImpl implements StyleService {
 
-	private final StyleRepositoryImpl styleRepository;
+    private final StyleRepositoryImpl styleRepository;
 
-	@Override
-	@Transactional(readOnly = true)
-	public Style getStyleById(Integer styleId) {
-		return styleRepository.findById(styleId)
-			.orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_STYLE_EXCEPTION));
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public Style getStyleById(Integer styleId) {
+        return styleRepository.findById(styleId)
+                .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_STYLE_EXCEPTION));
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public StyleInfoList getAllStyle() {
-		List<Style> styles = styleRepository.findAll();
-		return StyleInfoList.of(styles);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public StyleInfoList getAllStyle() {
+        List<Style> styles = styleRepository.findAll();
+        return StyleInfoList.of(styles);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public StyleSummaryList getAllStyleSummary() {
-		List<Style> styles = styleRepository.findAll();
-		return StyleSummaryList.of(styles);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public StyleSummaryList getAllStyleSummary() {
+        List<Style> styles = styleRepository.findAll();
+        return StyleSummaryList.of(styles);
+    }
 }

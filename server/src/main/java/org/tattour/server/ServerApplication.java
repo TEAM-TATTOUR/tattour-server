@@ -10,9 +10,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableFeignClients
-@OpenAPIDefinition(servers = {@Server(url = "https://api.tattour.shop", description = "Default Server URL")})
+@OpenAPIDefinition(servers = {
+        @Server(url = "https://api.tattour.shop", description = "Default Server URL")})
 public class ServerApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ServerApplication.class, args);
-	}
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServerApplication.class, args);
+    }
 }

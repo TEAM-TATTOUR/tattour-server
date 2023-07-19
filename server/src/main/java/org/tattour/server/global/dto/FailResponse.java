@@ -9,9 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FailResponse {
 
-	@Schema(description = "HTTP 상태코드")
-	private int code;
+    @Schema(description = "HTTP 상태코드")
+    private int code;
 
-	@Schema(description = "에러 메시지")
-	private String message;
+    @Schema(description = "에러 메시지")
+    private String message;
 }

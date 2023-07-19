@@ -49,7 +49,7 @@ public class CustomServiceImpl implements CustomService {
 	@Transactional(readOnly = true)
 	public Custom getCustomById(Integer customId, Integer userId) {
 		Custom custom = customRepository.findById(customId)
-			.orElseThrow(NotFoundCustomException::new);
+				.orElseThrow(NotFoundCustomException::new);
 		User user = userService.getUserByUserId(userId);
 		if (!custom.getUser().equals(user) && !userId.equals(1)) {
 			throw new UnauthorizedException();
@@ -61,7 +61,7 @@ public class CustomServiceImpl implements CustomService {
 	@Transactional
 	public Integer createCustom(Boolean haveDesign, Integer userId) {
 		User user = userService.getUserByUserId(userId);
-		Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl,false, 0);
+		Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl, false, 0);
 		customRepository.save(custom);
 		return custom.getId();
 	}
@@ -75,15 +75,15 @@ public class CustomServiceImpl implements CustomService {
 		}
 		if (!Objects.isNull(updateCustomInfo.getMainImage())) {
 			String mainImageUrl = s3Service.uploadImage(updateCustomInfo.getMainImage(),
-				directoryPath);
+					directoryPath);
 			custom.setMainImageUrl(mainImageUrl);
 		}
 		if (!Objects.isNull(updateCustomInfo.getImages())) {
 			List<CustomImage> customImages = s3Service.uploadImageList(updateCustomInfo.getImages(),
-					directoryPath)
-				.stream()
-				.map(image -> CustomImage.from(image, custom))
-				.collect(Collectors.toList());
+							directoryPath)
+					.stream()
+					.map(image -> CustomImage.from(image, custom))
+					.collect(Collectors.toList());
 			custom.setImages(customImages);
 		}
 		if (!Objects.isNull(updateCustomInfo.getIsColored())) {
@@ -91,16 +91,16 @@ public class CustomServiceImpl implements CustomService {
 		}
 		if (!Objects.isNull(updateCustomInfo.getThemes())) {
 			List<CustomTheme> customThemes = updateCustomInfo.getThemes().stream()
-				.map(themeId -> CustomTheme.from(custom, themeService.getThemeById(themeId)))
-				.collect(Collectors.toList());
+					.map(themeId -> CustomTheme.from(custom, themeService.getThemeById(themeId)))
+					.collect(Collectors.toList());
 			if (!custom.getCustomThemes().contains(customThemes)) {
 				custom.setCustomThemes(customThemes);
 			}
 		}
 		if (!Objects.isNull(updateCustomInfo.getStyles())) {
 			List<CustomStyle> customStyles = updateCustomInfo.getStyles().stream()
-				.map(styleId -> CustomStyle.from(custom, styleService.getStyleById(styleId)))
-				.collect(Collectors.toList());
+					.map(styleId -> CustomStyle.from(custom, styleService.getStyleById(styleId)))
+					.collect(Collectors.toList());
 			custom.setCustomStyles(customStyles);
 			if (!custom.getCustomStyles().contains(customStyles)) {
 				custom.setCustomStyles(customStyles);
@@ -129,7 +129,8 @@ public class CustomServiceImpl implements CustomService {
 			custom.setCount(updateCustomInfo.getCount());
 		}
 		if (!Objects.isNull(custom.getCount()) && !Objects.isNull(custom.getSize())
-			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(updateCustomInfo.getPrice())) {
+				&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(
+				updateCustomInfo.getPrice())) {
 			custom.calPrice();
 			if (updateCustomInfo.getPrice().equals(custom.getPrice())) {
 				throw new InvalidCustomPriceException();
@@ -146,7 +147,7 @@ public class CustomServiceImpl implements CustomService {
 	@Transactional
 	public CustomInfo updateCustomProcess(UpdateCustomInfo updateCustomInfo) {
 		Custom custom = getCustomById(updateCustomInfo.getCustomId(), updateCustomInfo.getUserId());
-		if(!custom.getIsCompleted()) {
+		if (!custom.getIsCompleted()) {
 			throw new InvalidCustomPriceException();
 		}
 		custom.setCustomProcess(updateCustomInfo.getCustomProcess());
@@ -170,7 +171,9 @@ public class CustomServiceImpl implements CustomService {
 
 	@Override
 	public CustomApplySummaryInfoList getCustomApplySummaryInfoList(GetCustomSummaryInfo req) {
-		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(req.getUserId());
-		return CustomApplySummaryInfoList.of(EntityDtoMapper.INSTANCE.toCustomApplySummaryInfoList(customs));
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(
+				req.getUserId());
+		return CustomApplySummaryInfoList.of(
+				EntityDtoMapper.INSTANCE.toCustomApplySummaryInfoList(customs));
 	}
 }

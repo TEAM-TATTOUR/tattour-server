@@ -13,6 +13,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetPointChargeRequestRes {
+
     @Schema(description = "포인트 충전 요청 id")
     private int id;
 

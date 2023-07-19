@@ -21,11 +21,7 @@ public class UpdateCustomProcessReq {
 	String process;
 
 	public UpdateCustomInfo newUpdateCustomInfo(Integer userId) {
-
 		CustomProcess customProcess = CustomProcess.getProcess(process);
-
 		return UpdateCustomInfo.from(userId, customId, customProcess);
-
 	}
-
 }

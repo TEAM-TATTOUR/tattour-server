@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetOrderSheetReqDto {
+
     @NotNull(message = "userId is null")
     private Integer userId;
     @NotNull(message = "stickerId is null")
@@ -19,7 +20,8 @@ public class GetOrderSheetReqDto {
     @NotNull(message = "shippingFee is null")
     private Integer shippingFee;
 
-    public static GetOrderSheetReqDto of(Integer userId, Integer stickerId, Integer count, Integer shippingFee) {
+    public static GetOrderSheetReqDto of(Integer userId, Integer stickerId, Integer count,
+            Integer shippingFee) {
         return new GetOrderSheetReqDto(userId, stickerId, count, shippingFee);
     }
 }

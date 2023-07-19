@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetUserProfileRes {
+
     @Schema(description = "이름", example = "userName")
     private String name;
 

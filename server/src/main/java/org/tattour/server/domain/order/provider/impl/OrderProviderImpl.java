@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.OrderProvider;
@@ -72,9 +71,11 @@ public class OrderProviderImpl implements OrderProvider {
             isLacked = true;
             resultPoint = restPoint;
         }
-        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint, isLacked);
+        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
+                isLacked);
 
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes, getUserOrderPointRes);
+        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
+                getUserOrderPointRes);
     }
 
     @Override
@@ -109,7 +110,8 @@ public class OrderProviderImpl implements OrderProvider {
         List<GetUserOrderHistoryRes> getUserOrderHistoryResList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(
-                                orderRepository.findAllByUser_IdAndCreatedAtAfter(req.getUserId(), req.getDate()));
+                                orderRepository.findAllByUser_IdAndCreatedAtAfter(req.getUserId(),
+                                        req.getDate()));
 
         return GetUserOrderHistoryListRes.of(getUserOrderHistoryResList);
     }

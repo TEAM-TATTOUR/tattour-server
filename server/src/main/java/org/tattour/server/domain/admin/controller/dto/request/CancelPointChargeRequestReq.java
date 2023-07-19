@@ -30,7 +30,8 @@ public class CancelPointChargeRequestReq {
     @NotBlank(message = "reason is required")
     private String reason;
 
-    public static CancelPointChargeRequestReq of(int id, int userId, Integer transferredAmount, String reason) {
+    public static CancelPointChargeRequestReq of(int id, int userId, Integer transferredAmount,
+            String reason) {
         return new CancelPointChargeRequestReq(id, userId, transferredAmount, reason);
     }
 }

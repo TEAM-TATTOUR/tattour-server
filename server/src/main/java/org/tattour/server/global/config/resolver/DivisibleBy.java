@@ -8,7 +8,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import org.tattour.server.global.util.validator.DivisibleByValidator;
 
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DivisibleByValidator.class)
 public @interface DivisibleBy {

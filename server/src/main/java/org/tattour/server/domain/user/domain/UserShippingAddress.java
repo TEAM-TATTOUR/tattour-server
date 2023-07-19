@@ -18,6 +18,7 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserShippingAddress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -42,8 +43,10 @@ public class UserShippingAddress {
         this.user = user;
     }
 
-    public static UserShippingAddress of(String recipientName, String contact, String mailingAddress,
-            String baseAddress, String detailAddress, User user){
-        return new UserShippingAddress(recipientName, contact, mailingAddress, baseAddress, detailAddress, user);
+    public static UserShippingAddress of(String recipientName, String contact,
+            String mailingAddress,
+            String baseAddress, String detailAddress, User user) {
+        return new UserShippingAddress(recipientName, contact, mailingAddress, baseAddress,
+                detailAddress, user);
     }
 }

@@ -23,22 +23,22 @@ import org.tattour.server.domain.theme.domain.Theme;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class StickerTheme {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sticker_id")
-	private Sticker sticker;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sticker_id")
+    private Sticker sticker;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "theme_id")
-	private Theme theme;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
-	public static StickerTheme from(Sticker sticker, Theme theme) {
-		return StickerTheme.builder()
-			.sticker(sticker)
-			.theme(theme)
-			.build();
-	}
+    public static StickerTheme from(Sticker sticker, Theme theme) {
+        return StickerTheme.builder()
+                .sticker(sticker)
+                .theme(theme)
+                .build();
+    }
 }
