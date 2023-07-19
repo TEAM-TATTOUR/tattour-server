@@ -325,7 +325,7 @@ public class AdminController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createDiscount(
-			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid CreateDiscountReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
