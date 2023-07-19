@@ -1,5 +1,6 @@
 package org.tattour.server.domain.custom.controller.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -16,9 +17,13 @@ public class UpdateCustomReq {
 	@NotNull
 	private Integer customId;
 
+	@Schema(example = "quarter, half, regular, double")
 	private String size;
+
 	private Boolean isColored;
+
 	private List<Integer> themes;
+
 	private List<Integer> styles;
 	private String name;
 	private String description;
@@ -26,6 +31,7 @@ public class UpdateCustomReq {
 	private Integer count;
 	private Boolean isPublic;
 	private Boolean isCompleted;
+
 	private Integer price;
 	private Integer viewCount;
 

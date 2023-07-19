@@ -1,5 +1,6 @@
 package org.tattour.server.domain.admin.controller.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class CreateStickerReq {
 	private String name;
 
 	@NotNull(message = "isCustom is required")
+	@Schema(description = "커스텀 신청 스티커인지")
 	private Boolean isCustom;
 
 	@NotNull(message = "price is null")
@@ -34,12 +36,14 @@ public class CreateStickerReq {
 	private Integer shippingFee;
 
 	@NotNull(message = "themes is null")
+	@Schema(description = "테마 id 리스트")
 	private List<Integer> themes;
 
 	@NotNull(message = "styles is null")
+	@Schema(description = "스타일 id 리스트")
 	private List<Integer> styles;
 
-	@Size(max = 50, message = "description is max 50")
+	@Size(max = 255, message = "description is max 50")
 	private String description;
 
 	public CreateStickerInfo newCreateStickerInfo(MultipartFile mainImage, List<MultipartFile> images) {

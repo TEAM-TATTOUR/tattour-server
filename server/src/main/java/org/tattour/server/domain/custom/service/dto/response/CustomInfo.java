@@ -1,5 +1,6 @@
 package org.tattour.server.domain.custom.service.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -14,12 +15,17 @@ public class CustomInfo {
 
 	private Integer id;
 	private Integer userId;
+	@Schema(description = " null 값 가능 ")
 	private Integer stickerId;
+	@Schema(description = "테마 이름 리스트")
 	private List<String> themes;
+	@Schema(description = "스타일 이름 리스트")
 	private List<String> styles;
 	private String mainImageUrl;
+	@Schema(description = "null 값 가능")
 	private List<String> images;
 	private Boolean haveDesign;
+	@Schema(example = "quarter, half, regular, double")
 	private String size;
 	private String name;
 	private String description;
@@ -28,7 +34,10 @@ public class CustomInfo {
 	private Boolean isColored;
 	private Boolean isPublic;
 	private Boolean isCompleted;
+
+	@Schema(example = "receiving, receiptComplete, receiptFailed, shipping, shipped")
 	private String process;
+
 	private Integer viewCount;
 
 	public static CustomInfo of(Custom custom) {

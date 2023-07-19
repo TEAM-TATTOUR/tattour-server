@@ -92,10 +92,10 @@ public class AdminController {
 	})
 	@GetMapping("/order")
 	public ResponseEntity<?> getOrderHistory(
-		@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
+			@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-			orderProvider.getOrderHistoryByPage(page));
+				orderProvider.getOrderHistoryByPage(page));
 	}
 
 	@Operation(summary = "포인트 충전 신청 내역 불러오기", description = "userId, 완료 여부를 기준으로 포인트 신청 내역 조회")
@@ -119,7 +119,7 @@ public class AdminController {
 			@Parameter(description = "처리 완료 여부") @RequestParam(required = false) Boolean isCompleted
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-			pointProvider.getAllPointChargeRequest(userId, isCompleted));
+				pointProvider.getAllPointChargeRequest(userId, isCompleted));
 	}
 
 
@@ -156,13 +156,13 @@ public class AdminController {
 	})
 	@PostMapping("/point/request/confirm")
 	public ResponseEntity<?> confirmPointChargeRequest(
-		@RequestBody @Valid ConfirmPointChargeRequestReq req
+			@RequestBody @Valid ConfirmPointChargeRequestReq req
 	) {
 		ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
-			ConfirmPointChargeRequestDto.of(
-					req.getId(),
-					req.getUserId(),
-					req.getTransferredAmount()));
+				ConfirmPointChargeRequestDto.of(
+						req.getId(),
+						req.getUserId(),
+						req.getTransferredAmount()));
 
 		if (Objects.isNull(response)) {
 			return BaseResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
@@ -205,7 +205,7 @@ public class AdminController {
 	})
 	@PostMapping("/point/request/cancel")
 	public ResponseEntity<?> cancelPointChargeRequest(
-		@RequestBody @Valid CancelPointChargeRequestReq req
+			@RequestBody @Valid CancelPointChargeRequestReq req
 	) {
 		pointService.cancelPointChargeRequest(req);
 		return BaseResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
@@ -229,12 +229,12 @@ public class AdminController {
 	})
 	@GetMapping("/point-log")
 	public ResponseEntity<?> getPointLog(
-		@Parameter(description = "user id") @RequestParam(required = false) Integer userId,
-		@Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
+			@Parameter(description = "user id") @RequestParam(required = false) Integer userId,
+			@Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
 	) {
 		return BaseResponse.success(
-			SuccessType.READ_POINT_LOG_SUCCESS,
-			pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
+				SuccessType.READ_POINT_LOG_SUCCESS,
+				pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
 	}
 
 
@@ -267,8 +267,8 @@ public class AdminController {
 	})
 	@PatchMapping("/order/{orderId}/status")
 	public ResponseEntity<?> patchOrderStatus(
-		@Parameter(description = "주문내역 id", required = true) @PathVariable int orderId,
-		@RequestBody @Valid PatchOrderStatusReq req
+			@Parameter(description = "주문내역 id", required = true) @PathVariable int orderId,
+			@RequestBody @Valid PatchOrderStatusReq req
 	) {
 		orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
@@ -279,50 +279,51 @@ public class AdminController {
 	@PostMapping(value = "/stickers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "스티커 등록")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "201", description = "success",
-			content = @Content(schema = @Schema(implementation = CreateStickerRes.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(responseCode = "201", description = "success",
+					content = @Content(schema = @Schema(implementation = CreateStickerRes.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createSticker(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@Parameter(description = "content-type을 application/json 타입으로 보내기")
-		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
-		@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
-		@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
+			@Parameter(hidden = true) @UserId Integer userId,
+			@Parameter(description = "content-type을 application/json 타입으로 보내기")
+			@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
+			@RequestPart(value = "stickerMainImage") MultipartFile stickerMainImage,
+			@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		CreateStickerRes response = new CreateStickerRes(stickerService.createSticker(
-			stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
+				stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
 		return BaseResponse.success(SuccessType.CREATE_SUCCESS, response);
 	}
 
 
 	@PostMapping(value = "/custom/recieve/{customId}")
 	@Operation(summary = "커스텀 도안 상태 변경하기",
-		description = "process : <receiving, receiptComplete, receiptFailed, shipping, shipped>")
+			description = "process : <receiving, receiptComplete, receiptFailed, shipping, shipped>")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(responseCode = "200", description = "success",
+					content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> updateCustomProcess(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid UpdateCustomProcessReq request
+			@Parameter(hidden = true) @UserId Integer userId,
+			@RequestBody @Valid UpdateCustomProcessReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		CustomInfo response = customService.updateCustomProcess(request.newUpdateCustomInfo(userId));
+		CustomInfo response = customService.updateCustomProcess(
+				request.newUpdateCustomInfo(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
 	}
 
 	@PostMapping(value = "/discounts")
 	@Operation(summary = "할인 정책 추가하기")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(responseCode = "200", description = "success",
+					content = @Content(schema = @Schema(implementation = DiscountInfo.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createDiscount(
 			@Parameter(hidden = true) @UserId Integer userId,
@@ -336,10 +337,10 @@ public class AdminController {
 	@PostMapping(value = "/stickers/discounts")
 	@Operation(summary = "일반 스티커 할인 적용하기")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = StickerInfo.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(responseCode = "200", description = "success",
+					content = @Content(schema = @Schema(implementation = StickerInfo.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> applyStickerDiscount(
 			@Parameter(hidden = true) @UserId Integer userId,
@@ -347,7 +348,7 @@ public class AdminController {
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),
-			request.getDiscountId());
+				request.getDiscountId());
 		return BaseResponse.success(SuccessType.APPLY_STICKER_DISCOUNT_SUCCESS, response);
 	}
 }

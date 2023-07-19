@@ -129,8 +129,7 @@ public class CustomServiceImpl implements CustomService {
 			custom.setCount(updateCustomInfo.getCount());
 		}
 		if (!Objects.isNull(custom.getCount()) && !Objects.isNull(custom.getSize())
-			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(
-			updateCustomInfo.getPrice())) {
+			&& !Objects.isNull(custom.getIsPublic()) && !Objects.isNull(updateCustomInfo.getPrice())) {
 			custom.calPrice();
 			if (updateCustomInfo.getPrice().equals(custom.getPrice())) {
 				throw new InvalidCustomPriceException();

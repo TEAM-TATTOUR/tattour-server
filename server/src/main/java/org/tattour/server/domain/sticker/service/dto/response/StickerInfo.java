@@ -1,6 +1,7 @@
 package org.tattour.server.domain.sticker.service.dto.response;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,8 @@ public class StickerInfo {
 	private String name;
 	private String description;
 	private Integer price;
+
+	@Schema(nullable = true)
 	private Integer discountRate;
 	private Integer discountPrice;
 	private String composition;
