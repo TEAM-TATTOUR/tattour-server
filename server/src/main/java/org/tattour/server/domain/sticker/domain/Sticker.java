@@ -84,6 +84,11 @@ public class Sticker extends AuditingTimeEntity {
 		this.stickerImages = stickerImages;
 	}
 
+	public void applyDiscount(Discount discount) {
+		this.discount = discount;
+		this.discountPrice = this.price * (100 - discount.getDiscountRate()) / 100;
+	}
+
 	public static Sticker from(
 		String name,
 		String description,
