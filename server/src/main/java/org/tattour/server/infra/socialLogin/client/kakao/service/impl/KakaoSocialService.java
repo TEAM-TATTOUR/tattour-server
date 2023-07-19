@@ -44,12 +44,8 @@ public class KakaoSocialService extends SocialService {
         // Access Token으로 유저 정보 불러오기
         KakaoUserRes userResponse = kakaoApiClient.getUserInformation("Bearer " + tokenResponse.getAccessToken());
 
-        System.out.println("userResponse.getId() = " + userResponse.getId());
-
-
+        // 중복 확인
         Integer userId = userProvider.checkDuplicationByKakaoId(userResponse.getId());
-
-
         boolean isUserExist = false;
 
         // 존재하지 않으면 유저 생성

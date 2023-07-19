@@ -1,13 +1,19 @@
 package org.tattour.server.domain.user.provider.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+@Schema(description = "user 정보")
 @Getter
 @Setter
 public class GetUserInfoDto {
+    @Schema(description = "user id")
     private Integer id;
+
+    @Schema(description = "이름", example = "userName")
     private String name;
-    private String email;
+
+    @Schema(description = "전화번호", example = "01012345678")
     private String phoneNumber;
 }

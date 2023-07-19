@@ -1,5 +1,6 @@
 package org.tattour.server.domain.point.service.dto.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistory
 import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 
+@Schema(description = "송금 금액이 다를 경우 user 정보 Response")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfirmPointChargeResponseDto {
@@ -20,7 +22,8 @@ public class ConfirmPointChargeResponseDto {
     // 커스텀 신청내역
     CustomApplySummaryInfoList customApplySummaryInfoList;
 
-    public static ConfirmPointChargeResponseDto of(GetUserInfoDto getUserInfoDto,
+    public static ConfirmPointChargeResponseDto of(
+            GetUserInfoDto getUserInfoDto,
             GetPointChargeRequestListRes getPointChargeRequestListRes,
             GetUserOrderHistoryListRes getUserOrderHistoryListRes,
             CustomApplySummaryInfoList customApplySummaryInfoList) {

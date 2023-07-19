@@ -75,6 +75,8 @@ public class PointServiceImpl implements PointService {
     public void updatePointChargeRequest(PatchPointChangeRequestReq req) {
         PointChargeRequest pointChargeRequest = pointProvider.getPointChargeRequestById(req.getId());
         pointChargeRequest.setProperties(req.getTransferredAmount(), req.getIsDeposited(), req.getIsAmountMatched(), req.getIsApproved(), req.getIsCompleted());
+
+        pointChargeRequestRepository.save(pointChargeRequest);
     }
 
     @Override

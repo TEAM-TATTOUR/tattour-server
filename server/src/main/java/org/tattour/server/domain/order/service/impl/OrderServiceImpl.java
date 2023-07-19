@@ -55,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
             if(!order.getOrderStatus().equals(OrderStatus.CANCEL)){
                 // 상태 변경
                 order.setOrderStatus(req.getOrderStatus());
+                orderRepository.save(order);
                 // 유저 포인트 변경
                 userService.updateUserPoint(UpdateUserPointReq.of(order.getUser().getId(), order.getTotalAmount()));
                 // 포인트 로그 남기기
