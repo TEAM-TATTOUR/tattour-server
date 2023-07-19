@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.tattour.server.domain.order.domain.OrderStatus;
 
-@Schema(description = "주문상태 갱신 Request")
+@Schema(description = "주문상태 갱신 Request (PREPARATION / CANCEL / ACCEPT / DELIVERING / DELIVERED)")
 @Getter
 public class PatchOrderStatusReq {
-    @Schema(description = "주문상태", example = "상품준비중/주문취소/주문접수/배송중/배송완료")
+    @Schema(description = "주문상태", example = "ACCEPT")
     @NotNull(message = "orderStatus is null")
     private OrderStatus orderStatus;
 }
