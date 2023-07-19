@@ -235,7 +235,7 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @PostMapping("/phone-number/verification")
+    @GetMapping("/phone-number/verification")
     public ResponseEntity<?> verifyCode(
             @Parameter(hidden = true) @UserId Integer userId,
             @Parameter(description = "인증번호", example = "123456")
