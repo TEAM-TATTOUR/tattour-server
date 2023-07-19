@@ -24,15 +24,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.tattour.server.domain.admin.controller.dto.request.ApplyStickerDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
+import org.tattour.server.domain.admin.controller.dto.request.CreateDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CreateStickerReq;
 import org.tattour.server.domain.admin.controller.dto.request.UpdateCustomProcessReq;
 import org.tattour.server.domain.admin.controller.dto.response.CreateStickerRes;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
+import org.tattour.server.domain.discount.service.DiscountService;
+import org.tattour.server.domain.discount.service.dto.request.DiscountInfo;
 import org.tattour.server.domain.order.controller.dto.request.PatchOrderStatusReq;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.provider.dto.request.GetPointLogListReq;
@@ -44,6 +47,7 @@ import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
+import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
@@ -62,6 +66,7 @@ public class AdminController {
 	private final PointProviderImpl pointProvider;
 	private final PointServiceImpl pointService;
 	private final OrderServiceImpl orderService;
+	private final DiscountService discountService;
 	private final JwtService jwtService;
 	private final StickerService stickerService;
 	private final CustomService customService;
@@ -192,7 +197,7 @@ public class AdminController {
 		@ApiResponse(responseCode = "400, 500", description = "error",
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	public ResponseEntity<?> getSimilarStickerList(
+	public ResponseEntity<?> createSticker(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@Parameter(description = "content-type을 application/json 타입으로 보내기")
 		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
@@ -214,12 +219,47 @@ public class AdminController {
 		@ApiResponse(responseCode = "400, 500", description = "error",
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	public ResponseEntity<?> getSimilarStickerList(
+	public ResponseEntity<?> updateCustomProcess(
 		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody UpdateCustomProcessReq request
+		@RequestBody @Valid UpdateCustomProcessReq request
 	) {
+		jwtService.compareJwtWithPathVar(userId, 1);
 		CustomInfo response = customService.updateCustomProcess(request.newUpdateCustomInfo(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
 	}
 
+	@PostMapping(value = "/discounts")
+	@Operation(summary = "할인 정책 추가하기")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "success",
+			content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+		@ApiResponse(responseCode = "400, 500", description = "error",
+			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> createDiscount(
+		@Parameter(hidden = true) @UserId Integer userId,
+		@RequestBody @Valid CreateDiscountReq request
+	) {
+		jwtService.compareJwtWithPathVar(userId, 1);
+		DiscountInfo response = discountService.createDiscount(request.newDiscountInfo());
+		return BaseResponse.success(SuccessType.CREATE_DISCOUNT_SUCCESS, response);
+	}
+
+	@PostMapping(value = "/stickers/discounts")
+	@Operation(summary = "일반 스티커 할인 적용하기")
+	@ApiResponses(value = {
+		@ApiResponse(responseCode = "200", description = "success",
+			content = @Content(schema = @Schema(implementation = StickerInfo.class))),
+		@ApiResponse(responseCode = "400, 500", description = "error",
+			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> applyStickerDiscount(
+		@Parameter(hidden = true) @UserId Integer userId,
+		@RequestBody @Valid ApplyStickerDiscountReq request
+	) {
+		jwtService.compareJwtWithPathVar(userId, 1);
+		StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),
+			request.getDiscountId());
+		return BaseResponse.success(SuccessType.APPLY_STICKER_DISCOUNT_SUCCESS, response);
+	}
 }
