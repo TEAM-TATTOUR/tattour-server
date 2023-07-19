@@ -11,11 +11,10 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
@@ -29,7 +28,6 @@ import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
@@ -83,7 +81,7 @@ public class OrderController {
     @GetMapping("/ordersheet")
     public ResponseEntity<?> getOrderSheet(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid GetOrderSheetReq req
+            @ModelAttribute @Valid GetOrderSheetReq req
     ) {
         return BaseResponse.success(SuccessType.GET_SUCCESS,
                 orderProvider.getOrderSheetRes(

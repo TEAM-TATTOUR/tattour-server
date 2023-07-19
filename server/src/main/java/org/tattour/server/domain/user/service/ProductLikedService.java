@@ -9,5 +9,5 @@ public interface ProductLikedService {
     void saveProductLiked(SaveProductLikedReq req);
 
     // 좋아요 누른 타투 삭제
-    void deleteProductLiked(DeleteProductLikedInfo req);
+    void deleteProductLiked(Integer id);
 }
