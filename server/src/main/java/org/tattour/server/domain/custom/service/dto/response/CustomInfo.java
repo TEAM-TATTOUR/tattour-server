@@ -42,8 +42,12 @@ public class CustomInfo {
 			.map(customImage -> customImage.getImageUrl())
 			.collect(Collectors.toList());
 		String process = null;
+		String size = null;
 		if (!Objects.isNull(custom.getProcess())) {
 			process = custom.getProcess().getValue();
+		}
+		if (!Objects.isNull(custom.getSize())) {
+			size = custom.getSize().getSize();
 		}
 		return CustomInfo.builder()
 			.id(custom.getId())
@@ -53,7 +57,7 @@ public class CustomInfo {
 			.mainImageUrl(custom.getMainImageUrl())
 			.images(images)
 			.haveDesign(custom.getHaveDesign())
-			.size(custom.getSize().getSize())
+			.size(size)
 			.name(custom.getName())
 			.description(custom.getDescription())
 			.demand(custom.getDemand())
