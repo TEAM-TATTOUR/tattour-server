@@ -192,7 +192,7 @@ public class AdminController {
 		@ApiResponse(responseCode = "400, 500", description = "error",
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	public ResponseEntity<?> getSimilarStickerList(
+	public ResponseEntity<?> createSticker(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@Parameter(description = "content-type을 application/json 타입으로 보내기")
 		@RequestPart(value = "stickerInfo") @Valid CreateStickerReq stickerInfo,
@@ -214,7 +214,7 @@ public class AdminController {
 		@ApiResponse(responseCode = "400, 500", description = "error",
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	public ResponseEntity<?> getSimilarStickerList(
+	public ResponseEntity<?> updateCustomProcess(
 		@Parameter(hidden = true) @UserId Integer userId,
 		@RequestBody UpdateCustomProcessReq request
 	) {
