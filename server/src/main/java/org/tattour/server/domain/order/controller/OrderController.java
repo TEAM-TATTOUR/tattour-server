@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.order.controller.dto.request.GetOrderSheetReq;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
@@ -81,15 +82,17 @@ public class OrderController {
     @GetMapping("/ordersheet")
     public ResponseEntity<?> getOrderSheet(
             @Parameter(hidden = true) @UserId Integer userId,
-            @ModelAttribute @Valid GetOrderSheetReq req
-    ) {
+            @Parameter(description = "타투 스티커 id") @RequestParam @NotNull(message = "stickerId is null") Integer stickerId,
+            @Parameter(description = "상품 개수", example = "3") @RequestParam @NotNull(message = "count is null") Integer count,
+            @Parameter(description = "배송비", example = "3000") @RequestParam @NotNull(message = "shippingFee is null") Integer shippingFee
+            ) {
         return BaseResponse.success(SuccessType.GET_SUCCESS,
                 orderProvider.getOrderSheetRes(
                         GetOrderSheetReqDto.of(
                                 userId,
-                                req.getStickerId(),
-                                req.getCount(),
-                                req.getShippingFee())));
+                                stickerId,
+                                count,
+                                shippingFee)));
     }
 
 
