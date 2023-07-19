@@ -32,9 +32,8 @@ public class ProductLikedServiceImpl implements ProductLikedService {
     }
 
     @Override
-    public void deleteProductLiked(DeleteProductLikedInfo req) {
-        ProductLiked productLiked = productLikedProvider.getProductLikedByIdAndUserId(
-                req.getStickerId(), req.getUserId());
+    public void deleteProductLiked(Integer id) {
+        ProductLiked productLiked = productLikedProvider.getProductLikedById(id);
 
         productLikedRepository.delete(productLiked);
     }

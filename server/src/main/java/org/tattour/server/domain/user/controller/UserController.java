@@ -31,7 +31,6 @@ import org.tattour.server.domain.point.service.dto.request.SavePointChargeReques
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.custom.service.CustomService;
-import org.tattour.server.domain.user.controller.dto.request.DeleteProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
@@ -240,10 +239,10 @@ public class UserController {
             @Parameter(hidden = true) @UserId Integer userId,
             @Parameter(description = "인증번호", example = "123456")
             @RequestParam
-                @NotNull(message = "verificationCode is null")
-                @Min(100000)
-                @Max(999999)
-                Integer verificationCode) {
+            @NotNull(message = "verificationCode is null")
+            @Min(100000)
+            @Max(999999)
+            Integer verificationCode) {
 
         if (phoneNumberVerificationCodeProvider
                 .compareVerficationCode(userId, verificationCode)) {
@@ -320,13 +319,13 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @DeleteMapping("/product-liked/delete")
+    @DeleteMapping("/product-liked/{productLikedId}/delete")
     public ResponseEntity<?> deleteProductLiked(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid DeleteProductLikedReq req
+            @Parameter(description = "좋아요한 타투 스티커 id", required = true)
+                @PathVariable @NotNull(message = "productLikedId is null") Integer productLikedId
     ) {
-        productLikedService.deleteProductLiked(
-                DeleteProductLikedInfo.of(userId, req.getStickerId()));
+        productLikedService.deleteProductLiked(productLikedId);
 
         return BaseResponse.success(SuccessType.DELETE_SUCCESS);
     }
