@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -36,6 +37,7 @@ import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.domain.discount.service.DiscountService;
 import org.tattour.server.domain.discount.service.dto.request.DiscountInfo;
 import org.tattour.server.domain.order.controller.dto.request.PatchOrderStatusReq;
+import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.provider.dto.request.GetPointLogListReq;
@@ -53,6 +55,7 @@ import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
+import org.tattour.server.global.dto.SuccessResponse;
 import org.tattour.server.global.dto.SuccessType;
 
 @RestController
@@ -119,21 +122,48 @@ public class AdminController {
 			pointProvider.getAllPointChargeRequest(userId, isCompleted));
 	}
 
+
 	@Operation(summary = "포인트 충전 요청 확인")
-	@PostMapping("/point/request/confirm")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "201", description = "포인트 충전 완료"),
-		@ApiResponse(responseCode = "202", description = "포인트 충전 취소",
-			content = @Content(schema = @Schema(implementation = ConfirmPointChargeResponseDto.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "201",
+					description = "포인트 충전 확정에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "202",
+					description = "금액이 일치하지 않아 충전 확정이 불가능합니다.",
+					content = @Content(schema = @Schema(implementation = ConfirmPointChargeResponseDto.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 포인트 충전 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "409",
+					description = "이미 처리된 포인트 충전 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@PostMapping("/point/request/confirm")
 	public ResponseEntity<?> confirmPointChargeRequest(
 		@RequestBody @Valid ConfirmPointChargeRequestReq req
 	) {
 		ConfirmPointChargeResponseDto response = pointService.confirmPointChargeRequest(
-			ConfirmPointChargeRequestDto.of(req.getId(), req.getUserId(),
-				req.getTransferredAmount()));
+			ConfirmPointChargeRequestDto.of(
+					req.getId(),
+					req.getUserId(),
+					req.getTransferredAmount()));
+
 		if (Objects.isNull(response)) {
 			return BaseResponse.success(SuccessType.POINT_CHARGE_CONFIRM_SUCCESS);
 		} else {
@@ -141,53 +171,110 @@ public class AdminController {
 		}
 	}
 
+
 	@Operation(summary = "포인트 충전 요청 취소")
-	@PostMapping("/point/request/cancel")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "201", description = "success"),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "포인트 충전 취소에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 포인트 충전 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "409",
+					description = "이미 처리된 포인트 충전 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "409",
+					description = "송금 금액과 충전 금액이 일치합니다. 충전 요청을 취소할 수 없습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@PostMapping("/point/request/cancel")
 	public ResponseEntity<?> cancelPointChargeRequest(
 		@RequestBody @Valid CancelPointChargeRequestReq req
 	) {
 		pointService.cancelPointChargeRequest(req);
-//                CancelPointChargeRequestReq.of(req.getId(), req.getUserId(), req.getTransferredAmount(), req.getReason()));
 		return BaseResponse.success(SuccessType.POINT_CHARGE_CANCEL_SUCCESS);
 	}
 
+
 	@Operation(summary = "포인트 로그 불러오기")
-	@GetMapping("/point-log")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "포인트 로그 조회에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@GetMapping("/point-log")
 	public ResponseEntity<?> getPointLog(
-		@RequestParam(required = false) Integer userId,
-		@RequestParam(required = false) String title
+		@Parameter(description = "user id") @RequestParam(required = false) Integer userId,
+		@Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
 	) {
 		return BaseResponse.success(
 			SuccessType.READ_POINT_LOG_SUCCESS,
 			pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
 	}
 
-	@Operation(summary = "결제 내역 주문상태 변경")
-	@PatchMapping("/order/{orderId}/status")
+
+	@Operation(summary = "주문내역 상태 변경")
 	@ApiResponses(value = {
-		@ApiResponse(responseCode = "200", description = "success"),
-		@ApiResponse(responseCode = "400, 500", description = "error",
-			content = @Content(schema = @Schema(implementation = FailResponse.class)))
+			@ApiResponse(
+					responseCode = "200",
+					description = "주문상태 변경에 성공했습니다.",
+					content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+					responseCode = "400",
+					description = "잘못된 요청입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 결제내역입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "404",
+					description = "존재하지 않는 유저입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "409",
+					description = "이미 취소 처리된 결제 내역입니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class))),
+			@ApiResponse(
+					responseCode = "500",
+					description = "알 수 없는 서버 에러가 발생했습니다.",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
+	@PatchMapping("/order/{orderId}/status")
 	public ResponseEntity<?> patchOrderStatus(
-		@PathVariable int orderId,
+		@Parameter(description = "주문내역 id", required = true) @PathVariable int orderId,
 		@RequestBody @Valid PatchOrderStatusReq req
 	) {
 		orderService.updateOrderStatus(UpdateOrderStatusReq.of(orderId, req.getOrderStatus()));
 
 		return BaseResponse.success(SuccessType.UPDATE_ORDER_STATUS_SUCCESS);
 	}
+
 
 	@PostMapping(value = "/stickers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "스티커 등록")
@@ -209,6 +296,7 @@ public class AdminController {
 			stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
 		return BaseResponse.success(SuccessType.CREATE_SUCCESS, response);
 	}
+
 
 	@PostMapping(value = "/custom/recieve/{customId}")
 	@Operation(summary = "커스텀 도안 상태 변경하기",
@@ -237,8 +325,8 @@ public class AdminController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createDiscount(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid CreateDiscountReq request
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@RequestBody @Valid CreateDiscountReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		DiscountInfo response = discountService.createDiscount(request.newDiscountInfo());
@@ -254,8 +342,8 @@ public class AdminController {
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> applyStickerDiscount(
-		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestBody @Valid ApplyStickerDiscountReq request
+			@Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
+			@RequestBody @Valid ApplyStickerDiscountReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
 		StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),

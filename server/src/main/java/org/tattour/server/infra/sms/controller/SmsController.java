@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.global.config.resolver.UserId;
@@ -31,7 +32,7 @@ public class SmsController {
     @Operation(summary = "전화번호 인증번호 보내기")
     @PostMapping("/send/verification-code")
     public ResponseEntity<?> sendVerificationCode(
-            @Parameter(hidden = true) @UserId Integer userId,
+            @Parameter(name = "Authorization", description = "JWT access token") @RequestHeader(required = false) @UserId Integer userId,
             @RequestBody @Valid PostSendCodeReq req
     ) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         smsService.sendVerificationCode(new SendVerificationCodeReq(userId, req.getPhoneNumber()));

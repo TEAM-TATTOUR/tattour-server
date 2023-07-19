@@ -51,7 +51,7 @@ public enum SuccessType {
 	 * 202 ACCEPTED
 	 */
 	CODE_VALIDATION_FAIL(HttpStatus.ACCEPTED, "인증번호 검증에 실패했습니다."),
-	POINT_CHARGE_CONFIRM_FAIL(HttpStatus.ACCEPTED, "금액이 일치하지 않습니다."),
+	POINT_CHARGE_CONFIRM_FAIL(HttpStatus.ACCEPTED, "금액이 일치하지 않아 충전 확정이 불가능합니다."),
 
 	;
 
