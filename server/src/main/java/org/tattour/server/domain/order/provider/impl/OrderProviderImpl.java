@@ -1,6 +1,7 @@
 package org.tattour.server.domain.order.provider.impl;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,9 +50,14 @@ public class OrderProviderImpl implements OrderProvider {
 
         // 결제 금액 정보
         // 총 결제 금액, 총 상품 금액, 배송비
-        int totalAmount =
-                getOrderSheetStickerInfo.getPrice() * req.getCount() + req.getShippingFee();
-        int productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
+        int productAmount;
+        if(!Objects.isNull(getOrderSheetStickerInfo.getDiscountedPrice()))
+            productAmount = getOrderSheetStickerInfo.getDiscountedPrice() * req.getCount();
+        else
+            productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
+
+        int totalAmount = productAmount + req.getShippingFee();
+
         GetOrderAmountRes getOrderAmountRes =
                 GetOrderAmountRes.of(
                         totalAmount,
