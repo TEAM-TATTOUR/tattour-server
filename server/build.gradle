@@ -69,7 +69,7 @@ dependencies {
     implementation 'net.dv8tion:JDA:5.0.0-beta.5'
 
     // Mustache
-    implementation 'com.github.spullara.mustache.java:compiler:0.9.10'
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
 tasks.named('test') {

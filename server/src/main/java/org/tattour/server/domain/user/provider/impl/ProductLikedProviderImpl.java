@@ -30,12 +30,12 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
     @Override
     public ProductLikedListRes getLikedProductsByUserId(Integer userId) {
         List<ProductLiked> productLikedList = productLikedRepository.findAllByUser_Id(userId);
-        List<Sticker> stickerList = productLikedList.stream()
-                .map(ProductLiked::getSticker)
-                .collect(Collectors.toList());
+//        List<Sticker> stickerList = productLikedList.stream()
+//                .map(ProductLiked::getSticker)
+//                .collect(Collectors.toList());
 
         return new ProductLikedListRes(
-                EntityDtoMapper.INSTANCE.toStickerLikedInfoList(stickerList));
+                EntityDtoMapper.INSTANCE.toStickerLikedInfoList(productLikedList));
     }
 
     @Override

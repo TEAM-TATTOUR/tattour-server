@@ -40,7 +40,6 @@ import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.provider.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
 import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.ProductLikedServiceImpl;
@@ -234,7 +233,7 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @GetMapping("/phone-number/verification")
+    @GetMapping("/phonenumber/verification")
     public ResponseEntity<?> verifyCode(
             @Parameter(hidden = true) @UserId Integer userId,
             @Parameter(description = "인증번호", example = "123456")
@@ -283,7 +282,7 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @PostMapping("/product-liked/save")
+    @PostMapping("/productliked/save")
     public ResponseEntity<?> saveProductLiked(
             @Parameter(hidden = true) @UserId Integer userId,
             @RequestBody @Valid PostProductLikedReq req
@@ -319,11 +318,11 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @DeleteMapping("/product-liked/{productLikedId}/delete")
+    @DeleteMapping("/productliked/{productLikedId}/delete")
     public ResponseEntity<?> deleteProductLiked(
             @Parameter(hidden = true) @UserId Integer userId,
-            @Parameter(description = "좋아요한 타투 스티커 id", required = true)
-                @PathVariable @NotNull(message = "productLikedId is null") Integer productLikedId
+            @Parameter(description = "좋아요한 스티커 타투 id", required = true)
+            @PathVariable @NotNull(message = "productLikedId is null") Integer productLikedId
     ) {
         productLikedService.deleteProductLiked(productLikedId);
 
@@ -346,7 +345,7 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @GetMapping("/product-liked/saved")
+    @GetMapping("/productliked/saved")
     public ResponseEntity<?> getProductLiked(
             @Parameter(hidden = true) @UserId Integer userId
     ) {

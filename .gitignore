@@ -39,3 +39,6 @@ out/
 ### application.yml ###
 *.yml
 *.yaml
+
+### mustache template ###
+template

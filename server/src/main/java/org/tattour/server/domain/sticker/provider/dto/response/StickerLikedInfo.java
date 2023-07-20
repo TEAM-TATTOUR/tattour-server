@@ -10,8 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StickerLikedInfo {
 
-    @Schema(description = "타투 스티커 id")
+    @Schema(description = "좋아요 누른 타투 스티커 id")
     private Integer id;
+
+    @Schema(description = "타투 스티커 id")
+    private Integer stickerId;
 
     @Schema(description = "타투 스티커 이름", example = "포효하는 호랑이")
     private String name;

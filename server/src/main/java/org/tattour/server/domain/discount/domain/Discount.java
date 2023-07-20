@@ -19,11 +19,11 @@ import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.global.util.AuditingTimeEntity;
 import org.tattour.server.domain.sticker.domain.Sticker;
 
-@Getter
 @Table(name = "discount")
 @Entity
 @Builder
 @DynamicInsert
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Discount extends AuditingTimeEntity {
