@@ -129,7 +129,7 @@ public class StickerServiceImpl implements StickerService {
     public StickerSummaryList getFilterStickerList(String sort, String theme, String style) {
         List<Sticker> result = new ArrayList<>();
         StickerSort stickerSort = StickerSort.getStickerSort(sort);
-        if (theme.isEmpty() && theme.isEmpty()) {
+        if (theme.isEmpty() && style.isEmpty()) {
             result = stickerRepository.findAll();
             sortStickerListByStickerSort(result, stickerSort);
             return StickerSummaryList.of(result);
