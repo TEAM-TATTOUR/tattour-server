@@ -62,8 +62,8 @@ dependencies {
     // kakao oauth
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
 
-    // logback
-    implementation 'ch.qos.logback:logback-classic:1.2.9'
+//    // logback
+//    implementation 'ch.qos.logback:logback-classic:1.2.9'
 
     // Discord bot
     implementation 'net.dv8tion:JDA:5.0.0-beta.5'
