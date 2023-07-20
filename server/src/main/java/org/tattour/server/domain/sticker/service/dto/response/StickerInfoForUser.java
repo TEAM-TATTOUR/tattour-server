@@ -1,6 +1,5 @@
 package org.tattour.server.domain.sticker.service.dto.response;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class StickerInfo {
+public class StickerInfoForUser {
 
 	private Integer id;
 	private String name;
@@ -31,9 +30,10 @@ public class StickerInfo {
 	private List<String> stickerThemes;
 	private List<String> stickerStyles;
 	private List<String> images;
+	private Boolean productLiked;
 
 
-	public static StickerInfo from(Sticker sticker) {
+	public static StickerInfoForUser from(Sticker sticker, Boolean productLiked) {
 		List<String> stickerImages = new ArrayList<>();
 		List<String> stickerThemes = new ArrayList<>();
 		List<String> stickerStyles = new ArrayList<>();
@@ -56,7 +56,7 @@ public class StickerInfo {
 				.stream()
 				.map(style -> stickerStyles.add(style.getStyle().getName()))
 				.collect(Collectors.toList());
-		return StickerInfo.builder()
+		return StickerInfoForUser.builder()
 				.id(sticker.getId())
 				.name(sticker.getName())
 				.description(sticker.getDescription())
@@ -70,6 +70,7 @@ public class StickerInfo {
 				.stickerThemes(stickerThemes)
 				.stickerStyles(stickerStyles)
 				.images(stickerImages)
+				.productLiked(productLiked)
 				.build();
 	}
 }
