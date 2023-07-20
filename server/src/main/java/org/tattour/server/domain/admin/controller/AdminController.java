@@ -9,11 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.tattour.server.domain.admin.controller.dto.request.ApplyStickerDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
@@ -51,6 +56,8 @@ import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
 import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
+import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
@@ -73,6 +80,7 @@ public class AdminController {
     private final JwtService jwtService;
     private final StickerService stickerService;
     private final CustomService customService;
+    private final UserProviderImpl userProvider;
 
     // TODO : ADMIN role 확인
     @Operation(summary = "모든 결제내역 불러오기", description = "모든 결제내역 불러오기")
@@ -227,7 +235,7 @@ public class AdminController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @GetMapping("/point-log")
+    @GetMapping("/pointlog")
     public ResponseEntity<?> getPointLog(
             @Parameter(description = "user id") @RequestParam(required = false) Integer userId,
             @Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
@@ -350,5 +358,14 @@ public class AdminController {
         StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),
                 request.getDiscountId());
         return BaseResponse.success(SuccessType.APPLY_STICKER_DISCOUNT_SUCCESS, response);
+    }
+
+    @GetMapping("/user")
+    public ModelAndView displayArticle(Map<String, Object> model) {
+
+        List<User> users = userProvider.getAllUsers();
+        model.put("users", users);
+
+        return new ModelAndView("index", model);
     }
 }
