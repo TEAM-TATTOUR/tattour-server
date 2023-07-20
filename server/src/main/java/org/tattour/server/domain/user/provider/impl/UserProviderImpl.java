@@ -1,5 +1,6 @@
 package org.tattour.server.domain.user.provider.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
@@ -21,6 +22,12 @@ public class UserProviderImpl implements UserProvider {
         User user = userRepository.findById(id)
                 .orElseThrow(NotFoundUserException::new);
         return user;
+    }
+
+    // TODO : 테스트용. 지우기
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override

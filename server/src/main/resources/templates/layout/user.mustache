@@ -1,0 +1,19 @@
+<div class="starter-template">\
+  <table>
+    <tr>
+      <th>id</th>
+      <th>name</th>
+      <th>kakaoId</th>
+    </tr>
+  {{#users}}
+    <tr>
+      <td>{{id}}</td>
+      <td>
+        {{#name}}{{name}}{{/name}}
+        {{^name}}Null{{/name}}
+      </td>
+      <td>{{kakaoId}}</td>
+    </tr>
+  {{/users}}
+  </table>
+</div>

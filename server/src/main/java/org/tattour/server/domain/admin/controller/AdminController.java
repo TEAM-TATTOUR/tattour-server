@@ -9,11 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.tattour.server.domain.admin.controller.dto.request.ApplyStickerDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
@@ -49,6 +54,8 @@ import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
 import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
+import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
@@ -63,14 +70,15 @@ import org.tattour.server.global.dto.SuccessType;
 @Tag(name = "Admin", description = "Admin API Document")
 public class AdminController {
 
-	private final OrderProviderImpl orderProvider;
-	private final PointProviderImpl pointProvider;
-	private final PointServiceImpl pointService;
-	private final OrderServiceImpl orderService;
-	private final DiscountService discountService;
-	private final JwtService jwtService;
-	private final StickerService stickerService;
-	private final CustomService customService;
+    private final OrderProviderImpl orderProvider;
+    private final PointProviderImpl pointProvider;
+    private final PointServiceImpl pointService;
+    private final OrderServiceImpl orderService;
+    private final DiscountService discountService;
+    private final JwtService jwtService;
+    private final StickerService stickerService;
+    private final CustomService customService;
+    private final UserProviderImpl userProvider;
 
 	// TODO : ADMIN role 확인
 	@Operation(summary = "모든 결제내역 불러오기", description = "모든 결제내역 불러오기")
@@ -210,30 +218,30 @@ public class AdminController {
 	}
 
 
-	@Operation(summary = "포인트 로그 불러오기")
-	@ApiResponses(value = {
-			@ApiResponse(
-					responseCode = "200",
-					description = "포인트 로그 조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),
-			@ApiResponse(
-					responseCode = "400",
-					description = "잘못된 요청입니다.",
-					content = @Content(schema = @Schema(implementation = FailResponse.class))),
-			@ApiResponse(
-					responseCode = "500",
-					description = "알 수 없는 서버 에러가 발생했습니다.",
-					content = @Content(schema = @Schema(implementation = FailResponse.class)))
-	})
-	@GetMapping("/point-log")
-	public ResponseEntity<?> getPointLog(
-			@Parameter(description = "user id") @RequestParam(required = false) Integer userId,
-			@Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
-	) {
-		return BaseResponse.success(
-				SuccessType.READ_POINT_LOG_SUCCESS,
-				pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
-	}
+    @Operation(summary = "포인트 로그 불러오기")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "포인트 로그 조회에 성공했습니다.",
+                    content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청입니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "알 수 없는 서버 에러가 발생했습니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    @GetMapping("/pointlog")
+    public ResponseEntity<?> getPointLog(
+            @Parameter(description = "user id") @RequestParam(required = false) Integer userId,
+            @Parameter(description = "포인트 로그 제목", example = "충전 취소") @RequestParam(required = false) String title
+    ) {
+        return BaseResponse.success(
+                SuccessType.READ_POINT_LOG_SUCCESS,
+                pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
+    }
 
 
 	@Operation(summary = "주문내역 상태 변경")
@@ -331,6 +339,7 @@ public class AdminController {
 		DiscountInfo response = discountService.createDiscount(request.newDiscountInfo());
 		return BaseResponse.success(SuccessType.CREATE_DISCOUNT_SUCCESS, response);
 	}
+
 
 	@PostMapping(value = "/stickers/discounts")
 	@Operation(summary = "일반 스티커 할인 적용하기")

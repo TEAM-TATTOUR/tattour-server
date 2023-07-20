@@ -24,12 +24,12 @@ import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
-@Getter
 @Table(name = "sticker")
 @Entity
 @Builder
 @DynamicInsert
 @DynamicUpdate
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Sticker extends AuditingTimeEntity {
@@ -117,3 +117,6 @@ public class Sticker extends AuditingTimeEntity {
                 .build();
     }
 }
+
+
+
