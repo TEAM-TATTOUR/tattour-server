@@ -11,9 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableFeignClients
 @OpenAPIDefinition(servers = {
-        // TODO : 수정
-//        @Server(url = "https://api.tattour.shop", description = "Default Server URL")})
-        @Server(url = "http://api.tattour.shop", description = "Default Server URL")})
+        @Server(url = "https://api.tattour.shop", description = "Default Server URL")})
+//        @Server(url = "http://api.tattour.shop", description = "Default Server URL")})
 public class ServerApplication {
 
     public static void main(String[] args) {
