@@ -3,7 +3,7 @@ package org.tattour.server.domain.sticker.service;
 import java.util.List;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.service.dto.request.CreateStickerInfo;
-import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
+import org.tattour.server.domain.sticker.service.dto.response.StickerInfoForUser;
 import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.theme.domain.Theme;
@@ -18,7 +18,7 @@ public interface StickerService {
 
     StickerSummaryList getHotCustomStickerList();
 
-    StickerInfo getOneStickerInfo(Integer stickerId);
+    StickerInfoForUser getOneStickerInfo(Integer stickerId, String authorization);
 
     StickerSummaryList getSimilarStickerList(Integer stickerId);
 

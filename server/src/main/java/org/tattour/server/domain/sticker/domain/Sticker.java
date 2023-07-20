@@ -21,6 +21,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.tattour.server.domain.discount.domain.Discount;
 import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Getter
@@ -69,6 +70,9 @@ public class Sticker extends AuditingTimeEntity {
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
     private List<Order> orderItems;
+
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<ProductLiked> productLikeds;
 
     public void setStickerThemes(
             List<StickerTheme> stickerThemes) {

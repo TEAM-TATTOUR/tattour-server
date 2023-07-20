@@ -14,6 +14,5 @@ public interface ProductLikedRepositoryImpl extends JpaRepository<ProductLiked, 
 
     List<ProductLiked> findAllByUser_Id(Integer userId);
 
-    Optional<ProductLiked> findProductLikedByUser_IdAndSticker_Id(Integer userId,
-            Integer stickerId);
+    Optional<ProductLiked> findProductLikedByUser_IdAndSticker_Id(Integer userId, Integer stickerId);
 }

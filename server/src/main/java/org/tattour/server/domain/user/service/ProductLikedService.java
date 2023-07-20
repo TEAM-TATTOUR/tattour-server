@@ -10,4 +10,6 @@ public interface ProductLikedService {
 
     // 좋아요 누른 타투 삭제
     void deleteProductLiked(Integer id);
+
+    Boolean getProductLiked(Integer userId, Integer stickerId);
 }

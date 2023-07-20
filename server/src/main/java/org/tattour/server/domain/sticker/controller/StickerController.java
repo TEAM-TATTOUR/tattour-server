@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.domain.sticker.service.StickerService;
-import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
+import org.tattour.server.domain.sticker.service.dto.response.StickerInfoForUser;
 import org.tattour.server.domain.sticker.service.dto.response.StickerSummaryList;
 
 @RestController
@@ -48,12 +49,16 @@ public class StickerController {
     @Operation(summary = "커스텀 스티커 상세 정보 조회", description = "스티커 아이디 받음")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success",
-                    content = @Content(schema = @Schema(implementation = StickerInfo.class))),
+                    content = @Content(schema = @Schema(implementation = StickerInfoForUser.class))),
             @ApiResponse(responseCode = "400, 500", description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    public ResponseEntity<?> getOneStickerInfo(@PathVariable Integer stickerId) {
-        StickerInfo response = stickerService.getOneStickerInfo(stickerId);
+    public ResponseEntity<?> getOneStickerInfo(
+            @Parameter(hidden = true) @RequestHeader(required = false) String authorization,
+            @PathVariable Integer stickerId
+    ) {
+        StickerInfoForUser response = stickerService.getOneStickerInfo(stickerId, authorization);
+
         return BaseResponse.success(SuccessType.READ_STICKER_INFO_SUCCESS, response);
     }
 
