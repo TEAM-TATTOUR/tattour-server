@@ -29,6 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 // Header의 Origin에 들어있는 주소가 아래 주소인 경우를 허용한다
                 .allowedOrigins(
                         "https://api.tattour.shop",
+                        "http://api.tattour.shop",
                         "https://tattour.kr",
                         "http://localhost:8080",
                         "http://localhost:5173",
