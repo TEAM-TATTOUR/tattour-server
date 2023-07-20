@@ -19,6 +19,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+        
+    - name: Gradle clean build
+      run: ./gradlew clean build
     
     - name: make application.properties
       run: |
