@@ -63,7 +63,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.7'
 
     // logback
-    implementation 'ch.qos.logback:logback-classic:1.2.6'
+    implementation 'ch.qos.logback:logback-classic:1.2.9'
+    implementation 'ch.qos.logback:logback-core'
 
     // Discord bot
     implementation 'net.dv8tion:JDA:5.0.0-beta.5'
