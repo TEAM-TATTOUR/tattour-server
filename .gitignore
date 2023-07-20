@@ -41,4 +41,4 @@ out/
 *.yaml
 
 ### mustache template ###
-template
+src/main/resources/templates
