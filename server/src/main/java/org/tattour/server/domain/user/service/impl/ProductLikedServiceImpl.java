@@ -36,8 +36,8 @@ public class ProductLikedServiceImpl implements ProductLikedService {
 	}
 
 	@Override
-	public void deleteProductLiked(Integer id) {
-		ProductLiked productLiked = productLikedProvider.getProductLikedById(id);
+	public void deleteProductLiked(Integer userId, Integer stickerId) {
+		ProductLiked productLiked = productLikedProvider.getProductLikedByUserIdAndStickerId(userId, stickerId);
 
 		productLikedRepository.delete(productLiked);
 	}

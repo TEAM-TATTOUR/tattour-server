@@ -9,6 +9,8 @@ public interface ProductLikedProvider {
     // productLiked 가져오기
     ProductLiked getProductLikedById(Integer id);
 
+    ProductLiked getProductLikedByUserIdAndStickerId(Integer userId, Integer stickerId);
+
     // user Id로 좋아요한 타투 불러오기
     ProductLikedListRes getLikedProductsByUserId(Integer userId);
 

@@ -318,13 +318,13 @@ public class UserController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @DeleteMapping("/productliked/{productLikedId}/delete")
+    @DeleteMapping("/productliked/sticker/{stickerId}/delete")
     public ResponseEntity<?> deleteProductLiked(
             @Parameter(hidden = true) @UserId Integer userId,
-            @Parameter(description = "좋아요한 스티커 타투 id", required = true)
-            @PathVariable @NotNull(message = "productLikedId is null") Integer productLikedId
+            @Parameter(description = "스티커 id", required = true)
+            @PathVariable @NotNull(message = "stickerId is null") Integer stickerId
     ) {
-        productLikedService.deleteProductLiked(productLikedId);
+        productLikedService.deleteProductLiked(userId, stickerId);
 
         return BaseResponse.success(SuccessType.DELETE_SUCCESS);
     }
