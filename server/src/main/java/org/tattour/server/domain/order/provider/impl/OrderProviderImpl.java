@@ -56,7 +56,7 @@ public class OrderProviderImpl implements OrderProvider {
         else
             productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
 
-        int totalAmount = productAmount * req.getCount() + req.getShippingFee();
+        int totalAmount = productAmount + req.getShippingFee();
 
         GetOrderAmountRes getOrderAmountRes =
                 GetOrderAmountRes.of(
