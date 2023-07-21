@@ -39,6 +39,3 @@ out/
 ### application.yml ###
 *.yml
 *.yaml
-
-### mustache template ###
-src/main/resources/templates
