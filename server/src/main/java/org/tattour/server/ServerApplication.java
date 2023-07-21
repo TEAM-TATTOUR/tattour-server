@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication
 @EnableFeignClients
+@SpringBootApplication
 @OpenAPIDefinition(servers = {
         @Server(url = "https://api.tattour.shop", description = "Default Server URL")})
 //        @Server(url = "http://api.tattour.shop", description = "Default Server URL")})
@@ -19,3 +19,4 @@ public class ServerApplication {
         SpringApplication.run(ServerApplication.class, args);
     }
 }
+

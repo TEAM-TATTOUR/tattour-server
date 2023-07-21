@@ -96,7 +96,7 @@ public class AdminController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@GetMapping("/order")
+	@GetMapping("/order/history")
 	public ResponseEntity<?> getOrderHistory(
 			@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
 	) {

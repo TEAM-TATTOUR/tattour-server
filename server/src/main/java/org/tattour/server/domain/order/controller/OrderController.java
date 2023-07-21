@@ -53,7 +53,6 @@ public class OrderController {
 	private final UserProviderImpl userProvider;
 	private final UserServiceImpl userService;
 	private final DiscordMessageService discordMessageService;
-	private final JwtService jwtService;
 
 	@Operation(summary = "결제 페이지 불러오기", description = "제품 상세 페이지에서 받은 정보를 바탕으로 결제 시트 정보 불러오기")
 	@ApiResponses(value = {
@@ -182,7 +181,7 @@ public class OrderController {
 					description = "알 수 없는 서버 에러가 발생했습니다.",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	@GetMapping
+	@GetMapping("/history")
 	public ResponseEntity<?> getUserOrderList(
 			@Parameter(hidden = true) @UserId Integer userId
 	) {

@@ -13,6 +13,7 @@ public interface UserService {
     // 유저 저장
     void saveUser(User user);
 
+    // userId로 user 가져오기
     User getUserByUserId(Integer userId);
 
     // 회원가입 시 이름, 전화번호 추가

@@ -12,7 +12,8 @@ public interface ProductLikedRepositoryImpl extends JpaRepository<ProductLiked, 
     @Override
     <S extends ProductLiked> S save(S entity);
 
-    List<ProductLiked> findAllByUser_Id(Integer userId);
+    List<ProductLiked> findAllByUser_IdOrderByCreatedAtDesc(Integer userId);
 
-    Optional<ProductLiked> findProductLikedByUser_IdAndSticker_Id(Integer userId, Integer stickerId);
+    Optional<ProductLiked> findProductLikedByUser_IdAndSticker_Id(Integer userId,
+            Integer stickerId);
 }
