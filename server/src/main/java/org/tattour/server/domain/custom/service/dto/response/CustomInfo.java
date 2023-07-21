@@ -22,6 +22,7 @@ public class CustomInfo {
 	@Schema(description = "스타일 이름 리스트")
 	private List<String> styles;
 	private String mainImageUrl;
+	private String handDrawingImageUrl;
 	@Schema(description = "null 값 가능")
 	private List<String> images;
 	private Boolean haveDesign;
@@ -42,14 +43,14 @@ public class CustomInfo {
 
 	public static CustomInfo of(Custom custom) {
 		List<String> themes = custom.getCustomThemes().stream()
-			.map(customTheme -> customTheme.getTheme().getName())
-			.collect(Collectors.toList());
+				.map(customTheme -> customTheme.getTheme().getName())
+				.collect(Collectors.toList());
 		List<String> styles = custom.getCustomStyles().stream()
-			.map(customStyle -> customStyle.getStyle().getName())
-			.collect(Collectors.toList());
+				.map(customStyle -> customStyle.getStyle().getName())
+				.collect(Collectors.toList());
 		List<String> images = custom.getImages().stream()
-			.map(customImage -> customImage.getImageUrl())
-			.collect(Collectors.toList());
+				.map(customImage -> customImage.getImageUrl())
+				.collect(Collectors.toList());
 		String process = null;
 		String size = null;
 		if (!Objects.isNull(custom.getProcess())) {
@@ -59,23 +60,24 @@ public class CustomInfo {
 			size = custom.getSize().getSize();
 		}
 		return CustomInfo.builder()
-			.id(custom.getId())
-			.userId(custom.getUser().getId())
-			.themes(themes)
-			.styles(styles)
-			.mainImageUrl(custom.getMainImageUrl())
-			.images(images)
-			.haveDesign(custom.getHaveDesign())
-			.size(size)
-			.name(custom.getName())
-			.description(custom.getDescription())
-			.demand(custom.getDemand())
-			.count(custom.getCount())
-			.isColored(custom.getIsColored())
-			.isPublic(custom.getIsPublic())
-			.isCompleted(custom.getIsCompleted())
-			.process(process)
-			.viewCount(custom.getViewCount())
-			.build();
+				.id(custom.getId())
+				.userId(custom.getUser().getId())
+				.themes(themes)
+				.styles(styles)
+				.mainImageUrl(custom.getMainImageUrl())
+				.images(images)
+				.handDrawingImageUrl(custom.getHandDrawingImageUrl())
+				.haveDesign(custom.getHaveDesign())
+				.size(size)
+				.name(custom.getName())
+				.description(custom.getDescription())
+				.demand(custom.getDemand())
+				.count(custom.getCount())
+				.isColored(custom.getIsColored())
+				.isPublic(custom.getIsPublic())
+				.isCompleted(custom.getIsCompleted())
+				.process(process)
+				.viewCount(custom.getViewCount())
+				.build();
 	}
 }
