@@ -45,9 +45,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    // log back
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'ch.qos.logback:logback-core'
+    // // log back
+    // implementation 'ch.qos.logback:logback-classic'
+    // implementation 'ch.qos.logback:logback-core'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
