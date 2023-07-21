@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.provider.CustomProvider;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
 import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
+import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
@@ -75,6 +77,7 @@ public class UserController {
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
     private final CustomService customService;
+    private final CustomProviderImpl customProvider;
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final ProductLikedServiceImpl productLikedService;
     private final ProductLikedProviderImpl productLikedProvider;
@@ -435,7 +438,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomCompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customService.getCustomSummaryCompleteListByUserId(userId);
+        CustomSummaryList response = customProvider.getCustomSummaryCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -452,7 +455,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomIncompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customService.getCustomSummaryInCompleteListByUserId(userId);
+        CustomSummaryList response = customProvider.getCustomSummaryInCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -470,7 +473,7 @@ public class UserController {
             @Parameter(hidden = true) @UserId Integer userId,
             @PathVariable(value = "customId") Integer customId
     ) {
-        Custom custom = customService.getCustomById(customId, userId);
+        Custom custom = customProvider.getCustomById(customId, userId);
         CustomInfo response = CustomInfo.of(custom);
         return BaseResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
     }

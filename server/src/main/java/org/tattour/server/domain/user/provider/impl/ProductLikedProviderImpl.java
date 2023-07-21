@@ -35,7 +35,7 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
     //TODO : 리팩토링?
     @Override
     public ProductLikedListRes getLikedProductsByUserId(Integer userId) {
-        List<ProductLiked> productLikedList = productLikedRepository.findAllByUser_Id(userId);
+        List<ProductLiked> productLikedList = productLikedRepository.findAllByUser_IdOrderByCreatedAtDesc(userId);
 //        List<Sticker> stickerList = productLikedList.stream()
 //                .map(ProductLiked::getSticker)
 //                .collect(Collectors.toList());

@@ -43,7 +43,7 @@ public class PointServiceImpl implements PointService {
     private final UserProviderImpl userProvider;
     private final UserServiceImpl userService;
     private final PointProviderImpl pointProvider;
-    private final CustomServiceImpl customService;
+    private final CustomProviderImpl customProvider;
     private final OrderProviderImpl orderProvider;
     private final DiscordMessageService discordMessageService;
 
@@ -122,7 +122,7 @@ public class PointServiceImpl implements PointService {
 
                 // 커스텀 신청내역
                 CustomApplySummaryInfoList customApplySummaryInfoList =
-                        customService.getCustomApplySummaryInfoList(
+                        customProvider.getCustomApplySummaryInfoList(
                                 GetCustomSummaryInfo.of(req.getUserId(), baseDate));
 
                 return ConfirmPointChargeResponseDto.of(getUserInfoDto,
