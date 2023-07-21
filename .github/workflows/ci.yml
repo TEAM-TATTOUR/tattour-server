@@ -36,4 +36,4 @@ jobs:
     - name: Build with Gradle
       run: |
         cd ./server
-        ./gradlew clean build -x test
+        ./gradlew build -x test
