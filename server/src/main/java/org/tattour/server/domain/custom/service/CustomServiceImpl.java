@@ -20,11 +20,16 @@ import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
 import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
+import org.tattour.server.domain.point.service.PointService;
+import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
 import org.tattour.server.domain.style.service.StyleService;
 import org.tattour.server.domain.theme.service.ThemeService;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
+import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.exception.UnauthorizedException;
 import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.infra.discord.service.DiscordMessageService;
@@ -39,10 +44,12 @@ public class CustomServiceImpl implements CustomService {
     private final ThemeService themeService;
     private final StyleService styleService;
     private final UserService userService;
+    private final PointService pointService;
     private final DiscordMessageService discordMessageService;
     private final CustomProviderImpl customProvider;
 
     private final String directoryPath = "custom";
+    private final Integer customPoint = 990;
 
     @Value("${image.default.custom}")
     private String defaultImageUrl;
@@ -51,7 +58,18 @@ public class CustomServiceImpl implements CustomService {
     @Transactional
     public Integer createCustom(Boolean haveDesign, Integer userId) {
         User user = userService.getUserByUserId(userId);
+        if (user.getPoint() < customPoint) {
+            throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
+        }
+        Integer point = userService.updateUserPoint(UpdateUserPointReq.of(userId, -customPoint));
         Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl, false, 0);
+        pointService.savePointLog(
+				SaveUserPointLogReq.of("커스텀 신청",
+						"커스텀 스티커 신청",
+						customPoint,
+						user.getPoint(),
+						userId)
+		);
         customRepository.save(custom);
         return custom.getId();
     }
