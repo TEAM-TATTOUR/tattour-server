@@ -37,8 +37,8 @@ public class KakaoSocialService extends SocialService {
         KakaoAccessTokenResponse tokenResponse = kakaoAuthApiClient.getOAuth2AccessToken(
                 "authorization_code",
                 clientId,
-                "http://localhost:5173/login/oauth2/callback",
-//                "http://localhost:8080/kakao/callback",
+//                "http://localhost:5173/login/oauth2/callback",
+                "http://localhost:8080/kakao/callback",
                 req.getCode()
         );
 
@@ -48,7 +48,7 @@ public class KakaoSocialService extends SocialService {
 
         // 중복 확인
         Integer userId = userProvider.checkDuplicationByKakaoId(userResponse.getId());
-        boolean isUserExist = false;
+        Boolean isUserExist = false;
 
         // 존재하지 않으면 유저 생성
         if (Objects.isNull(userId)) {

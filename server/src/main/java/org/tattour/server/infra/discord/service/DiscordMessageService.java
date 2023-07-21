@@ -25,7 +25,7 @@ public class DiscordMessageService {
     private final PointWebhookProperty pointWebhookProperty;
 
     @Transactional
-    public boolean sendPointChargeLogMessage(User user, Integer amount) {
+    public Boolean sendPointChargeLogMessage(User user, Integer amount) {
         PointChargeDiscordMessage payload = PointChargeDiscordMessage.from(user, amount);
         sendDiscordMessage(pointWebhookProperty.getClientId(), pointWebhookProperty.getToken(),
                 user, "님이 포인트 충전을 요구했습니다", payload);
@@ -33,7 +33,7 @@ public class DiscordMessageService {
     }
 
     @Transactional
-    public boolean sendCustomApplyMessage(Custom custom) {
+    public Boolean sendCustomApplyMessage(Custom custom) {
         CustomApplyDiscordMessage payload = CustomApplyDiscordMessage.from(custom.getUser(),
                 custom);
         sendDiscordMessage(customWebhookProperty.getClientId(), customWebhookProperty.getToken(),
@@ -42,7 +42,7 @@ public class DiscordMessageService {
     }
 
     @Transactional
-    public boolean sendOrderStickerMessage(Order order) {
+    public Boolean sendOrderStickerMessage(Order order) {
         OrderStickerDiscordMessage payload = OrderStickerDiscordMessage.from(order);
         sendDiscordMessage(orderWebhookProperty.getClientId(), orderWebhookProperty.getToken(),
                 order.getUser(), "님이 스티커를 주문했습니다.", payload);

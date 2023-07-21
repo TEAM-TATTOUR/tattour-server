@@ -41,7 +41,7 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public boolean isUserPointLack(CheckUserPointLackReqDto req) {
+    public Boolean isUserPointLack(CheckUserPointLackReqDto req) {
         return req.getTotalAmount() > getUserById(req.getUserId()).getPoint();
     }
 }
