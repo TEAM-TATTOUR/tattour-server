@@ -73,11 +73,11 @@ public class CustomController {
 	public ResponseEntity<?> updateCustom(
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestPart @Valid UpdateCustomReq customInfo,
-			@RequestPart(required = false) MultipartFile customMainImage,
-			@RequestPart(required = false) List<MultipartFile> customImages
+			@RequestPart(required = false) MultipartFile handDrawingImage,
+			@RequestPart List<MultipartFile> customImages
 	) {
 		CustomInfo response = customService.updateCustom(
-				customInfo.newUpdateCustomInfo(userId, customMainImage, customImages,
+				customInfo.newUpdateCustomInfo(userId, customImages, handDrawingImage,
 						CustomProcess.RECEIVING));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}

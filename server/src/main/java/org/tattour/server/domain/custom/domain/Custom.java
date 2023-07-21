@@ -57,6 +57,9 @@ public class Custom extends AuditingTimeEntity {
     @Column(name = "main_image_url", columnDefinition = "text")
     private String mainImageUrl;
 
+    @Column(name = "hand_drawing_image_url", columnDefinition = "text")
+    private String handDrawingImageUrl;
+
     @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
     private List<CustomImage> images;
 
@@ -111,6 +114,10 @@ public class Custom extends AuditingTimeEntity {
 
     public void setImages(List<CustomImage> images) {
         this.images = images;
+    }
+
+    public void setHandDrawingImageUrl(String handDrawingImageUrl) {
+        this.handDrawingImageUrl = handDrawingImageUrl;
     }
 
     public void setSize(CustomSize size) {

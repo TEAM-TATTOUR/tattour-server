@@ -15,6 +15,7 @@ public enum ErrorType {
     INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다."),
     INVALID_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 인자가 입력되었습니다."),
     INVALID_IMAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 이미지 파일입니다."),
+    INVALID_CUSTOM_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "이미지 파일이 1개 이상이어야합니다."),
     INVALID_MULTIPART_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 파일 확장자입니다."),
     INVALID_CUSTOM_PRICE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 커스텀 가격 입니다."),
     INVALID_JWT_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "지원하지 않는 JWT 토큰입니다."),

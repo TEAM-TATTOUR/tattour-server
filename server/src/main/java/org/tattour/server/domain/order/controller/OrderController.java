@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -44,6 +45,7 @@ import org.tattour.server.infra.discord.service.DiscordMessageService;
 @RestController
 @RequestMapping("api/v1/order")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "JWT Auth")
 @Tag(name = "Order", description = "Order API Document")
 public class OrderController {
 
