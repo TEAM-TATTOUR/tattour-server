@@ -35,13 +35,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x ./server/gradlew
       
-    - name: clean build cache
-      run : |
-        cd ./server
-        ./gradlew cleanBuildCache
-      
     - name: Build with Gradle
       run: |
+        cd ./server
         ./gradlew clean build -x test
 
     - name: Make Directory
