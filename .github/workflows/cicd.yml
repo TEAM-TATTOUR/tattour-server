@@ -38,7 +38,7 @@ jobs:
     - name: Build with Gradle
       run: |
         cd ./server
-        ./gradlew build -x test
+        ./gradlew clean build -x test
 
     - name: Make Directory
       run: mkdir -p deploy
