@@ -29,7 +29,7 @@ public class PhoneNumberVerificationCodeProviderImpl implements
     }
 
     @Override
-    public boolean compareVerficationCode(Integer userId, Integer verificationCode) {
+    public Boolean compareVerficationCode(Integer userId, Integer verificationCode) {
         return verificationCode == getLatestValidVerificationCode(userId);
     }
 }

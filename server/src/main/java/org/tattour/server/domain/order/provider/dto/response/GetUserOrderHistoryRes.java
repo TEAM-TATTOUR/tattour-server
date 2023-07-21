@@ -33,7 +33,7 @@ public class GetUserOrderHistoryRes {
     private String status;
     private String createdAt;
     private String lastUpdatedAt;
-    private boolean state;
+    private Boolean state;
     private int userId;
     private int stickerId;
 }

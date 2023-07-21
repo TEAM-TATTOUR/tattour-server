@@ -45,7 +45,7 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
     }
 
     @Override
-    public boolean checkDuplicationByStickerId(CheckDuplicationReqDto req) {
+    public Boolean checkDuplicationByStickerId(CheckDuplicationReqDto req) {
         return productLikedRepository.findProductLikedByUser_IdAndSticker_Id(req.getUserId(),
                 req.getStickerId()).isPresent();
     }

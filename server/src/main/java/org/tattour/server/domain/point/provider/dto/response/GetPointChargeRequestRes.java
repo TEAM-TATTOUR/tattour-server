@@ -45,5 +45,5 @@ public class GetPointChargeRequestRes {
     private String lastUpdatedAt;
 
     @Schema(description = "", example = "")
-    private boolean state;
+    private Boolean state;
 }

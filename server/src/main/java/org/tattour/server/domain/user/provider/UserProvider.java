@@ -21,5 +21,5 @@ public interface UserProvider {
     Integer checkDuplicationByKakaoId(Long kakaoId);
 
     // 포인트 부족 확인
-    boolean isUserPointLack(CheckUserPointLackReqDto req);
+    Boolean isUserPointLack(CheckUserPointLackReqDto req);
 }

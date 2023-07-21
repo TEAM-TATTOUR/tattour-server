@@ -15,5 +15,5 @@ public interface ProductLikedProvider {
     ProductLikedListRes getLikedProductsByUserId(Integer userId);
 
     // 중복된 상품인지 조회
-    boolean checkDuplicationByStickerId(CheckDuplicationReqDto req);
+    Boolean checkDuplicationByStickerId(CheckDuplicationReqDto req);
 }

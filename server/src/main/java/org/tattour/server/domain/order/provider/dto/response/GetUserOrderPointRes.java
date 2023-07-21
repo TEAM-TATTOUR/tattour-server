@@ -17,9 +17,9 @@ public class GetUserOrderPointRes {
     private int resultPoint;
 
     @Schema(description = "포인트 부족한지 여부", example = "true")
-    private boolean isLacked;
+    private Boolean isLacked;
 
-    public static GetUserOrderPointRes of(int userPoint, int resultPoint, boolean isLacked) {
+    public static GetUserOrderPointRes of(int userPoint, int resultPoint, Boolean isLacked) {
         return new GetUserOrderPointRes(userPoint, resultPoint, isLacked);
     }
 }

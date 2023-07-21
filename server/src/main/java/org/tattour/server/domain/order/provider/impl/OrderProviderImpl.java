@@ -68,7 +68,7 @@ public class OrderProviderImpl implements OrderProvider {
         // 보유 포인트, 남는 포인트
         int userPoint = userProvider.getUserById(req.getUserId()).getPoint();
         int restPoint = userPoint - totalAmount;
-        boolean isLacked = false;
+        Boolean isLacked = false;
         int resultPoint;
 
         if (restPoint > 0) {

@@ -120,7 +120,7 @@ public class UserController {
                 LoginRes.of(
                         response.getUserId(),
                         jwtService.issuedToken(response.getUserId()),
-                        response.isUserExist()));
+                        response.getIsUserExist()));
     }
 
 

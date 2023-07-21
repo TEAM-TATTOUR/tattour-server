@@ -11,13 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -357,5 +354,15 @@ public class AdminController {
 		StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),
 				request.getDiscountId());
 		return BaseResponse.success(SuccessType.APPLY_STICKER_DISCOUNT_SUCCESS, response);
+	}
+
+	@GetMapping("/index")
+	public ModelAndView displayArticle(Map<String, Object> model) {
+
+		List<User> users = userProvider.getAllUsers();
+
+		model.put("users", users);
+
+		return new ModelAndView("index", model);
 	}
 }

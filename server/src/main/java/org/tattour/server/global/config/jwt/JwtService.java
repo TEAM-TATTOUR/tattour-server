@@ -61,7 +61,7 @@ public class JwtService {
     }
 
     // JWT 토큰 검증
-    public boolean verifyToken(String token) {
+    public Boolean verifyToken(String token) {
         try {
             final Claims claims = getBody(token);
             return true;

@@ -17,5 +17,5 @@ public class GetPointLogRes {
     private Integer amount;
     private int resultPointAmount;
     private String createdAt;
-    private boolean state;
+    private Boolean state;
 }

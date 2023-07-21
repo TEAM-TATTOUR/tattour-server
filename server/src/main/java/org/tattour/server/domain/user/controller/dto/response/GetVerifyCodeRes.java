@@ -14,9 +14,9 @@ import lombok.Setter;
 public class GetVerifyCodeRes {
 
     @Schema(description = "검증 여부")
-    private boolean isVerified;
+    private Boolean isVerified;
 
-    public static GetVerifyCodeRes of(boolean isVerified) {
+    public static GetVerifyCodeRes of(Boolean isVerified) {
         return new GetVerifyCodeRes(isVerified);
     }
 }
