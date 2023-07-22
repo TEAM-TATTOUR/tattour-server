@@ -37,7 +37,7 @@ public class KakaoSocialService extends SocialService {
         KakaoAccessTokenResponse tokenResponse = kakaoAuthApiClient.getOAuth2AccessToken(
                 "authorization_code",
                 clientId,
-                "https://tattour.kr/kakao/callback",
+                "https://tattour.kr/login/oauth2/callback",
                 // "http://localhost:5173/login/oauth2/callback",
                // "http://localhost:8080/kakao/callback",
                 req.getCode()
