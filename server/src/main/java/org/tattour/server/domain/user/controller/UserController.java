@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -56,6 +57,8 @@ import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.sms.provider.impl.PhoneNumberVerificationCodeProviderImpl;
+import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoAccessTokenResponse;
+import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.SocialLoginRequest;
@@ -108,12 +111,15 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> login(
             @Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
-            @RequestBody @Valid LoginReq req) {
+            @RequestBody @Valid LoginReq req,
+        	HttpServletRequest request) {
         SocialService socialService = socialServiceProvider.getSocialService(
                 req.getSocialPlatform());
 
+		String redirectUri = request.getHeader("referer");
+
         // 로그인
-        SocialLoginResponse response = socialService.login(SocialLoginRequest.of(code));
+        SocialLoginResponse response = socialService.login(SocialLoginRequest.of(code, redirectUri));
 
         // jwt 토큰 발급
         return BaseResponse.success(SuccessType.LOGIN_SUCCESS,

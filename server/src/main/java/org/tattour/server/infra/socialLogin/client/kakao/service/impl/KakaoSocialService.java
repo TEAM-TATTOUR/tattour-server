@@ -33,11 +33,14 @@ public class KakaoSocialService extends SocialService {
     public SocialLoginResponse login(SocialLoginRequest req) {
         System.out.println(clientId);
 
+        String kakaoCallBack = req.getRedirectUri() + "login/oauth2/callback";
+
         // Authorization code로 Access Token 불러오기
         KakaoAccessTokenResponse tokenResponse = kakaoAuthApiClient.getOAuth2AccessToken(
                 "authorization_code",
                 clientId,
-                "https://tattour.kr/login/oauth2/callback",
+                kakaoCallBack,
+//                "https://tattour.kr/login/oauth2/callback",
                 // "http://localhost:5173/login/oauth2/callback",
                // "http://localhost:8080/kakao/callback",
                 req.getCode()
