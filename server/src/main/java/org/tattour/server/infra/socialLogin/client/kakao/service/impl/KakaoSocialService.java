@@ -40,8 +40,9 @@ public class KakaoSocialService extends SocialService {
                 "authorization_code",
                 clientId,
                 kakaoCallBack,
-//                "http://localhost:5173/login/oauth2/callback",
-//                "http://localhost:8080/kakao/callback",
+//                "https://tattour.kr/login/oauth2/callback",
+                // "http://localhost:5173/login/oauth2/callback",
+               // "http://localhost:8080/kakao/callback",
                 req.getCode()
         );
 
