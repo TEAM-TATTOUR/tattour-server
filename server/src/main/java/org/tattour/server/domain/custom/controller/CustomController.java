@@ -74,7 +74,7 @@ public class CustomController {
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestPart @Valid UpdateCustomReq customInfo,
 			@RequestPart(required = false) MultipartFile handDrawingImage,
-			@RequestPart List<MultipartFile> customImages
+			@RequestPart(required = false) List<MultipartFile> customImages
 	) {
 		CustomInfo response = customService.updateCustom(
 				customInfo.newUpdateCustomInfo(userId, customImages, handDrawingImage,
