@@ -7,7 +7,7 @@ import lombok.Setter;
 @Schema(description = "타투 스티커 정보")
 @Getter
 @Setter
-public class GetOrderSheetStickerInfo {
+public class ReadOrderSheetStickerInfo {
 
     @Schema(description = "메인 배너 이미지", example = "https://tattoo170829.wisacdn.com/data/file/tattoo_posting/833046566_5d1d5fc1db100.jpg")
     private String mainImageUrl;
@@ -24,7 +24,7 @@ public class GetOrderSheetStickerInfo {
     @Schema(description = "상품 개수", example = "3")
     private Integer count;
 
-    private GetOrderSheetStickerInfo(String mainImageUrl, String name, Integer price,
+    private ReadOrderSheetStickerInfo(String mainImageUrl, String name, Integer price,
             Integer discountedPrice) {
         this.mainImageUrl = mainImageUrl;
         this.name = name;
@@ -32,9 +32,9 @@ public class GetOrderSheetStickerInfo {
         this.discountedPrice = discountedPrice;
     }
 
-    public static GetOrderSheetStickerInfo of(String mainImageUrl, String name, Integer price,
+    public static ReadOrderSheetStickerInfo of(String mainImageUrl, String name, Integer price,
             Integer discountedPrice) {
-        return new GetOrderSheetStickerInfo(mainImageUrl, name, price, discountedPrice);
+        return new ReadOrderSheetStickerInfo(mainImageUrl, name, price, discountedPrice);
     }
 
     public void setCount(int count) {

@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.provider.dto.response;
+package org.tattour.server.domain.order.facade.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetUserOrderHistoryRes {
+public class ReadUserOrderHistoryRes {
 
     @Schema(description = "결제 내역 id")
     private int id;

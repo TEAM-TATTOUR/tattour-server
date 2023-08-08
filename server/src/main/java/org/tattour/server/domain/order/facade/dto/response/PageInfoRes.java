@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.provider.dto.response;
+package org.tattour.server.domain.order.facade.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package org.tattour.server.domain.sticker.provider;
 
 import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerInfo;
 
 public interface StickerProvider {
 
@@ -9,5 +9,5 @@ public interface StickerProvider {
     Sticker getStickerById(Integer stickerId);
 
     // 결제 시트에서 스티커 정보 가져오기
-    GetOrderSheetStickerInfo getOrderSheetStickerInfo(Integer stickerId);
+    ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId);
 }

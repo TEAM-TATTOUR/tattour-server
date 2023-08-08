@@ -1,26 +1,20 @@
 package org.tattour.server.domain.order.provider.impl;
 
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.facade.dto.response.ReadOrderAmountRes;
 import org.tattour.server.domain.order.provider.OrderProvider;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderAmountRes;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderPointRes;
-import org.tattour.server.domain.order.provider.dto.response.PageInfoRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryRes;
+import org.tattour.server.domain.order.facade.dto.response.PageInfoRes;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
-import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.exception.BusinessException;
@@ -36,66 +30,23 @@ public class OrderProviderImpl implements OrderProvider {
     private final UserProviderImpl userProvider;
 
     @Override
-    public Order getOrderById(int id) {
+    public Order readOrderById(int id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_ORDER_HISTORY));
     }
 
     @Override
-    public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req) {
-        // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        GetOrderSheetStickerInfo getOrderSheetStickerInfo =
-                stickerProvider.getOrderSheetStickerInfo(req.getStickerId());
-        getOrderSheetStickerInfo.setCount(req.getCount());
-
-        // 결제 금액 정보
-        // 총 결제 금액, 총 상품 금액, 배송비
-        int productAmount;
-        if(!Objects.isNull(getOrderSheetStickerInfo.getDiscountedPrice()))
-            productAmount = getOrderSheetStickerInfo.getDiscountedPrice() * req.getCount();
-        else
-            productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
-
-        int totalAmount = productAmount + req.getShippingFee();
-
-        GetOrderAmountRes getOrderAmountRes =
-                GetOrderAmountRes.of(
-                        totalAmount,
-                        productAmount,
-                        req.getShippingFee());
-
-        // 포인트
-        // 보유 포인트, 남는 포인트
-        int userPoint = userProvider.getUserById(req.getUserId()).getPoint();
-        int restPoint = userPoint - totalAmount;
-        Boolean isLacked = false;
-        int resultPoint;
-
-        if (restPoint > 0) {
-            resultPoint = restPoint;
-        } else {
-            isLacked = true;
-            resultPoint = restPoint;
-        }
-        GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
-                isLacked);
-
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
-                getUserOrderPointRes);
-    }
-
-    @Override
-    public GetOrderHistoryListRes getOrderHistoryByPage(int page) {
+    public ReadOrderHistoryListRes readOrderHistoryByPage(int page) {
         Page<Order> getOrderHistoryResPage = orderRepository.findAll(
                 PageRequest.of(
                         page - 1,
                         10,
                         Sort.by("createdAt")));
-        List<GetOrderHistoryRes> getOrderHistoryResList =
+        List<ReadOrderHistoryRes> readOrderHistoryResList =
                 EntityDtoMapper.INSTANCE.toGetOrderHistoryListRes(getOrderHistoryResPage);
 
-        return GetOrderHistoryListRes.of(
-                getOrderHistoryResList,
+        return ReadOrderHistoryListRes.of(
+                readOrderHistoryResList,
                 PageInfoRes.of(
                         page,
                         getOrderHistoryResPage.getTotalElements(),
@@ -103,22 +54,42 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public GetUserOrderHistoryListRes getOrderHistoryByUserId(Integer userId) {
-        List<GetUserOrderHistoryRes> getUserOrderHistoryResList =
+    public ReadUserOrderHistoryListRes readOrderHistoryByUserId(int userId) {
+        List<ReadUserOrderHistoryRes> readUserOrderHistoryResList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(orderRepository.findAllByUser_Id(userId));
 
-        return GetUserOrderHistoryListRes.of(getUserOrderHistoryResList);
+        return ReadUserOrderHistoryListRes.of(readUserOrderHistoryResList);
     }
 
     @Override
-    public GetUserOrderHistoryListRes getOrderHistoryAfterDate(GetOrderHistoryAfterDateReq req) {
-        List<GetUserOrderHistoryRes> getUserOrderHistoryResList =
+    public ReadUserOrderHistoryListRes readOrderHistoryAfterDate(int userId, String date) {
+        List<ReadUserOrderHistoryRes> readUserOrderHistoryResList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(
-                                orderRepository.findAllByUser_IdAndCreatedAtAfter(req.getUserId(),
-                                        req.getDate()));
+                                orderRepository.findAllByUser_IdAndCreatedAtAfter(
+                                        userId,
+                                        date));
 
-        return GetUserOrderHistoryListRes.of(getUserOrderHistoryResList);
+        return ReadUserOrderHistoryListRes.of(readUserOrderHistoryResList);
     }
+
+    @Override
+    public ReadOrderAmountRes readOrderAmountRes(int price, int count, int shippingFee) {
+        int productAmount = calculateProductAmount(price, count);
+        int totalAmount = calculateTotalAmount(productAmount, shippingFee);
+
+        return ReadOrderAmountRes.of(totalAmount, productAmount, shippingFee);
+    }
+
+    @Override
+    public int calculateProductAmount(int price, int count) {
+        return price * count;
+    }
+
+    @Override
+    public int calculateTotalAmount(int productAmount, int shippingFee) {
+        return productAmount + shippingFee;
+    }
+
 }

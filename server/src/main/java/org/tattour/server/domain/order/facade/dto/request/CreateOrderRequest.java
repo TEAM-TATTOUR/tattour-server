@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.service.dto.request;
+package org.tattour.server.domain.order.facade.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostOrderReqDto {
+public class CreateOrderRequest {
 
     private Integer userId;
     private Integer stickerId;
@@ -19,7 +19,7 @@ public class PostOrderReqDto {
     private String baseAddress;
     private String detailAddress;
 
-    public static PostOrderReqDto of(
+    public static CreateOrderRequest of(
             Integer userId,
             Integer stickerId,
             Integer productCount,
@@ -30,7 +30,7 @@ public class PostOrderReqDto {
             String mailingAddress,
             String baseAddress,
             String detailAddress) {
-        return new PostOrderReqDto(
+        return new CreateOrderRequest(
                 userId,
                 stickerId,
                 productCount,

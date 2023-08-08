@@ -20,26 +20,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
-import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
-import org.tattour.server.domain.order.service.dto.request.PostOrderReqDto;
-import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
-import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
-import org.tattour.server.domain.user.service.impl.UserServiceImpl;
-import org.tattour.server.global.config.jwt.JwtService;
+import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
+import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;
+import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.point.facade.impl.PointFacadeImpl;
+import org.tattour.server.domain.user.facade.impl.UserFacadeImpl;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessResponse;
 import org.tattour.server.global.dto.SuccessType;
-import org.tattour.server.global.exception.BusinessException;
-import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.discord.service.DiscordMessageService;
 
 @RestController
@@ -49,12 +40,7 @@ import org.tattour.server.infra.discord.service.DiscordMessageService;
 @Tag(name = "Order", description = "Order API Document")
 public class OrderController {
 
-	private final OrderProviderImpl orderProvider;
-	private final OrderServiceImpl orderService;
-	private final PointServiceImpl pointService;
-	private final UserProviderImpl userProvider;
-	private final UserServiceImpl userService;
-	private final DiscordMessageService discordMessageService;
+	private final OrderFacadeImpl orderFacade;
 
 	@Operation(summary = "결제 페이지 불러오기", description = "제품 상세 페이지에서 받은 정보를 바탕으로 결제 시트 정보 불러오기")
 	@ApiResponses(value = {
@@ -87,8 +73,8 @@ public class OrderController {
 			@Parameter(description = "배송비", example = "3000") @RequestParam @NotNull(message = "shippingFee is null") Integer shippingFee
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-				orderProvider.getOrderSheetRes(
-						GetOrderSheetReqDto.of(
+				orderFacade.readOrderSheet(
+						ReadOrderSheetReq.of(
 								userId,
 								stickerId,
 								count,
@@ -128,12 +114,7 @@ public class OrderController {
 			@Parameter(hidden = true) @UserId Integer userId,
 			@RequestBody @Valid PostOrderReq req
 	) {
-		if (userProvider.isUserPointLack(
-				CheckUserPointLackReqDto.of(userId, req.getTotalAmount()))) {
-			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
-		}
-
-		Order order = orderService.saveOrder(PostOrderReqDto.of(
+		orderFacade.createOrder(CreateOrderRequest.of(
 				userId,
 				req.getStickerId(),
 				req.getProductCount(),
@@ -144,16 +125,6 @@ public class OrderController {
 				req.getMailingAddress(),
 				req.getBaseAddress(),
 				req.getDetailAddress()));
-		int resultPoint = userService.updateUserPoint(
-				UpdateUserPointReq.of(userId, -req.getTotalAmount()));
-		pointService.savePointLog(
-				SaveUserPointLogReq.of(
-						"상품 구매",
-						null,
-						-req.getTotalAmount(),
-						resultPoint,
-						userId));
-		discordMessageService.sendOrderStickerMessage(order);
 
 		return BaseResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
 	}
@@ -165,7 +136,7 @@ public class OrderController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = GetUserOrderHistoryListRes.class))),
+					content = @Content(schema = @Schema(implementation = ReadUserOrderHistoryListRes.class))),
 			@ApiResponse(
 					responseCode = "400",
 					description = "잘못된 요청입니다.",
@@ -188,6 +159,6 @@ public class OrderController {
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-				orderProvider.getOrderHistoryByUserId(userId));
+				orderFacade.readOrderHistoryByUserId(userId));
 	}
 }

@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.provider.dto.request;
+package org.tattour.server.domain.order.facade.dto.request;
 
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GetOrderSheetReqDto {
+public class ReadOrderSheetReq {
 
     @NotNull(message = "userId is null")
     private Integer userId;
@@ -20,8 +20,8 @@ public class GetOrderSheetReqDto {
     @NotNull(message = "shippingFee is null")
     private Integer shippingFee;
 
-    public static GetOrderSheetReqDto of(Integer userId, Integer stickerId, Integer count,
+    public static ReadOrderSheetReq of(Integer userId, Integer stickerId, Integer count,
             Integer shippingFee) {
-        return new GetOrderSheetReqDto(userId, stickerId, count, shippingFee);
+        return new ReadOrderSheetReq(userId, stickerId, count, shippingFee);
     }
 }

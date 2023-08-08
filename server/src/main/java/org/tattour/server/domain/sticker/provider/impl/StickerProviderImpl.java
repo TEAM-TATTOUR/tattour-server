@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
-import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -23,7 +23,7 @@ public class StickerProviderImpl implements StickerProvider {
     }
 
     @Override
-    public GetOrderSheetStickerInfo getOrderSheetStickerInfo(Integer stickerId) {
+    public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId) {
         Sticker sticker = getStickerById(stickerId);
         Integer discountedPrice = null;
 
@@ -33,7 +33,7 @@ public class StickerProviderImpl implements StickerProvider {
                     (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate())) / 100;
         }
 
-        return GetOrderSheetStickerInfo.of(
+        return ReadOrderSheetStickerInfo.of(
                 sticker.getMainImageUrl(),
                 sticker.getName(),
                 sticker.getPrice(),

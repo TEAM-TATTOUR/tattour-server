@@ -45,7 +45,7 @@ import org.tattour.server.domain.point.provider.dto.response.GetPointChargeReque
 import org.tattour.server.domain.point.provider.dto.response.GetPointLogListRes;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
-import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
+import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.service.StickerService;
@@ -98,7 +98,7 @@ public class AdminController {
 			@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-				orderProvider.getOrderHistoryByPage(page));
+				orderProvider.readOrderHistoryByPage(page));
 	}
 
 	@Operation(summary = "포인트 충전 신청 내역 불러오기", description = "userId, 완료 여부를 기준으로 포인트 신청 내역 조회")

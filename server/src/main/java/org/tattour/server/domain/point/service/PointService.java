@@ -13,7 +13,7 @@ public interface PointService {
     void savePointChargeRequest(SavePointChargeRequestReq req);
 
     // 포인트 로그 저장하기
-    void savePointLog(SaveUserPointLogReq req);
+    void savePointLog(String title, String content, int amount, int resultPoint, int userId);
 
     // 포인트 충전 요청 수정하기
     void updatePointChargeRequest(PatchPointChangeRequestReq req);

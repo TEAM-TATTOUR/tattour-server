@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.provider.dto.response;
+package org.tattour.server.domain.order.facade.dto.response;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GetOrderHistoryListRes {
+public class ReadOrderHistoryListRes {
 
-    List<GetOrderHistoryRes> getOrderHistoryResList;
+    List<ReadOrderHistoryRes> readOrderHistoryResList;
     private PageInfoRes pageInfoRes;
 
-    public static GetOrderHistoryListRes of(List<GetOrderHistoryRes> getOrderHistoryResList,
+    public static ReadOrderHistoryListRes of(List<ReadOrderHistoryRes> readOrderHistoryResList,
             PageInfoRes pageInfoRes) {
-        return new GetOrderHistoryListRes(getOrderHistoryResList, pageInfoRes);
+        return new ReadOrderHistoryListRes(readOrderHistoryResList, pageInfoRes);
     }
 }

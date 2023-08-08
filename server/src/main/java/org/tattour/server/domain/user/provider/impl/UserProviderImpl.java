@@ -3,7 +3,7 @@ package org.tattour.server.domain.user.provider.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderPointRes;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -18,7 +18,7 @@ public class UserProviderImpl implements UserProvider {
     private final UserRepositoryImpl userRepository;
 
     @Override
-    public User getUserById(Integer id) {
+    public User getUserById(int id) {
         User user = userRepository.findById(id)
                 .orElseThrow(NotFoundUserException::new);
         return user;
@@ -31,7 +31,7 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public GetUserProfileRes getUserProfile(Integer id) {
+    public GetUserProfileRes getUserProfile(int id) {
         return EntityDtoMapper.INSTANCE.toGetUserProfileRes(getUserById(id));
     }
 
@@ -41,7 +41,23 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public Boolean isUserPointLack(CheckUserPointLackReqDto req) {
-        return req.getTotalAmount() > getUserById(req.getUserId()).getPoint();
+    public Boolean isUserPointLack(int userId, int totalAmount) {
+        return totalAmount > getUserById(userId).getPoint();
+    }
+
+    @Override
+    public ReadUserOrderPointRes readUserPointAfterOrderInfo(int userId, int totalAmount) {
+        User user = getUserById(userId);
+
+        int userPoint = user.getPoint();
+        int resultPoint = calculateRestPointAfterOrder(userPoint, totalAmount);
+        boolean isLacked = resultPoint < 0;
+
+        return ReadUserOrderPointRes.of(userPoint, resultPoint, isLacked);
+    }
+
+    @Override
+    public int calculateRestPointAfterOrder(int userPoint, int totalAmount) {
+        return userPoint - totalAmount;
     }
 }

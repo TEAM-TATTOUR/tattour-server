@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.provider.dto.response;
+package org.tattour.server.domain.order.facade.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetOrderHistoryRes {
+public class ReadOrderHistoryRes {
 
     private int id;
     private String productName;

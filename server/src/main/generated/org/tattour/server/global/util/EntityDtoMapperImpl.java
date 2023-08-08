@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfo;
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryRes;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryRes;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
 import org.tattour.server.domain.sticker.domain.Sticker;
@@ -97,60 +97,60 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public GetUserOrderHistoryRes toGetUserOrderHistoryRes(Order order) {
+    public ReadUserOrderHistoryRes toGetUserOrderHistoryRes(Order order) {
         if ( order == null ) {
             return null;
         }
 
-        GetUserOrderHistoryRes getUserOrderHistoryRes = new GetUserOrderHistoryRes();
+        GetUserOrderHistoryRes readUserOrderHistoryRes = new ReadUserOrderHistoryRes();
 
         Integer id = orderUserId( order );
         if ( id != null ) {
-            getUserOrderHistoryRes.setUserId( id );
+            readUserOrderHistoryRes.setUserId( id );
         }
         Integer id1 = orderStickerId( order );
         if ( id1 != null ) {
-            getUserOrderHistoryRes.setStickerId( id1 );
+            readUserOrderHistoryRes.setStickerId( id1 );
         }
         if ( order.getId() != null ) {
-            getUserOrderHistoryRes.setId( order.getId() );
+            readUserOrderHistoryRes.setId( order.getId() );
         }
-        getUserOrderHistoryRes.setProductName( order.getProductName() );
-        getUserOrderHistoryRes.setProductSize( order.getProductSize() );
-        getUserOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
+        readUserOrderHistoryRes.setProductName( order.getProductName() );
+        readUserOrderHistoryRes.setProductSize( order.getProductSize() );
+        readUserOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
         if ( order.getProductAmount() != null ) {
-            getUserOrderHistoryRes.setProductAmount( order.getProductAmount() );
+            readUserOrderHistoryRes.setProductAmount( order.getProductAmount() );
         }
         if ( order.getProductCount() != null ) {
-            getUserOrderHistoryRes.setProductCount( order.getProductCount() );
+            readUserOrderHistoryRes.setProductCount( order.getProductCount() );
         }
         if ( order.getShippingFee() != null ) {
-            getUserOrderHistoryRes.setShippingFee( order.getShippingFee() );
+            readUserOrderHistoryRes.setShippingFee( order.getShippingFee() );
         }
         if ( order.getTotalAmount() != null ) {
-            getUserOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
+            readUserOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
         }
-        getUserOrderHistoryRes.setRecipientName( order.getRecipientName() );
-        getUserOrderHistoryRes.setContact( order.getContact() );
-        getUserOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
-        getUserOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
-        getUserOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
-        getUserOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
-        getUserOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
+        readUserOrderHistoryRes.setRecipientName( order.getRecipientName() );
+        readUserOrderHistoryRes.setContact( order.getContact() );
+        readUserOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
+        readUserOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
+        readUserOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
+        readUserOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
+        readUserOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
         if ( order.getState() != null ) {
-            getUserOrderHistoryRes.setState( order.getState() );
+            readUserOrderHistoryRes.setState( order.getState() );
         }
 
-        return getUserOrderHistoryRes;
+        return readUserOrderHistoryRes;
     }
 
     @Override
-    public List<GetUserOrderHistoryRes> toGetUserOrderHistoryListRes(List<Order> orderList) {
+    public List<ReadUserOrderHistoryRes> toGetUserOrderHistoryListRes(List<Order> orderList) {
         if ( orderList == null ) {
             return null;
         }
 
-        List<GetUserOrderHistoryRes> list = new ArrayList<GetUserOrderHistoryRes>( orderList.size() );
+        List<ReadUserOrderHistoryRes> list = new ArrayList<ReadUserOrderHistoryRes>( orderList.size() );
         for ( Order order : orderList ) {
             list.add( toGetUserOrderHistoryRes( order ) );
         }
@@ -159,60 +159,60 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public GetOrderHistoryRes toGetOrderHistoryRes(Order order) {
+    public ReadOrderHistoryRes toGetOrderHistoryRes(Order order) {
         if ( order == null ) {
             return null;
         }
 
-        GetOrderHistoryRes getOrderHistoryRes = new GetOrderHistoryRes();
+        ReadOrderHistoryRes readOrderHistoryRes = new ReadOrderHistoryRes();
 
         Integer id = orderUserId( order );
         if ( id != null ) {
-            getOrderHistoryRes.setUserId( id );
+            readOrderHistoryRes.setUserId( id );
         }
         Integer id1 = orderStickerId( order );
         if ( id1 != null ) {
-            getOrderHistoryRes.setStickerId( id1 );
+            readOrderHistoryRes.setStickerId( id1 );
         }
         if ( order.getId() != null ) {
-            getOrderHistoryRes.setId( order.getId() );
+            readOrderHistoryRes.setId( order.getId() );
         }
-        getOrderHistoryRes.setProductName( order.getProductName() );
-        getOrderHistoryRes.setProductSize( order.getProductSize() );
-        getOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
+        readOrderHistoryRes.setProductName( order.getProductName() );
+        readOrderHistoryRes.setProductSize( order.getProductSize() );
+        readOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
         if ( order.getProductAmount() != null ) {
-            getOrderHistoryRes.setProductAmount( order.getProductAmount() );
+            readOrderHistoryRes.setProductAmount( order.getProductAmount() );
         }
         if ( order.getProductCount() != null ) {
-            getOrderHistoryRes.setProductCount( order.getProductCount() );
+            readOrderHistoryRes.setProductCount( order.getProductCount() );
         }
         if ( order.getShippingFee() != null ) {
-            getOrderHistoryRes.setShippingFee( order.getShippingFee() );
+            readOrderHistoryRes.setShippingFee( order.getShippingFee() );
         }
         if ( order.getTotalAmount() != null ) {
-            getOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
+            readOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
         }
-        getOrderHistoryRes.setRecipientName( order.getRecipientName() );
-        getOrderHistoryRes.setContact( order.getContact() );
-        getOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
-        getOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
-        getOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
-        getOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
-        getOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
+        readOrderHistoryRes.setRecipientName( order.getRecipientName() );
+        readOrderHistoryRes.setContact( order.getContact() );
+        readOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
+        readOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
+        readOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
+        readOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
+        readOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
         if ( order.getState() != null ) {
-            getOrderHistoryRes.setState( order.getState() );
+            readOrderHistoryRes.setState( order.getState() );
         }
 
-        return getOrderHistoryRes;
+        return readOrderHistoryRes;
     }
 
     @Override
-    public List<GetOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList) {
+    public List<ReadOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList) {
         if ( orderList == null ) {
             return null;
         }
 
-        List<GetOrderHistoryRes> list = new ArrayList<GetOrderHistoryRes>();
+        List<ReadOrderHistoryRes> list = new ArrayList<ReadOrderHistoryRes>();
         for ( Order order : orderList ) {
             list.add( toGetOrderHistoryRes( order ) );
         }

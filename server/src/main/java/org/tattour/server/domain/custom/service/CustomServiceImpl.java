@@ -61,15 +61,15 @@ public class CustomServiceImpl implements CustomService {
 		if (user.getPoint() < customPoint) {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
-		Integer point = userService.updateUserPoint(UpdateUserPointReq.of(userId, -customPoint));
+		Integer point = userService.updateUserPoint(userId, -customPoint);
 		Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl, false, 0);
 		pointService.savePointLog(
-				SaveUserPointLogReq.of("커스텀 신청",
-						"커스텀 스티커 신청",
-						customPoint,
-						user.getPoint(),
-						userId)
-		);
+				"커스텀 신청",
+				"커스텀 스티커 신청",
+				customPoint,
+				user.getPoint(),
+				userId)
+		;
 		customRepository.save(custom);
 		return custom.getId();
 	}
