@@ -1,4 +1,4 @@
-name: Tattour-Server CI
+name: Tattour-Server-Prod CI
 on:
   pull_request:
     branches: [ "main", "production" ]
