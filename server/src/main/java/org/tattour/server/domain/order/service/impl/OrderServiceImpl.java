@@ -3,7 +3,6 @@ package org.tattour.server.domain.order.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
@@ -37,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order saveOrder(PostOrderReqDto req) {
         User user = userProvider.getUserById(req.getUserId());
-        Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
+        Sticker sticker = stickerProvider.getById(req.getStickerId());
         Order order = Order.of(sticker.getName(), sticker.getSize(), sticker.getMainImageUrl(),
                 sticker.getPrice(), req.getProductCount(), req.getShippingFee(),
                 req.getTotalAmount(),

@@ -1,14 +1,11 @@
 package org.tattour.server.domain.sticker.repository.impl;
 
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 import org.tattour.server.domain.sticker.domain.StickerStyle;
+import org.tattour.server.domain.sticker.repository.StickerStyleRepository;
 
-@Repository
-public interface StickerStyleRepositoryImpl extends JpaRepository<StickerStyle, Integer> {
+public interface StickerStyleRepositoryImpl extends
+    Repository<StickerStyle, Integer>,
+    StickerStyleRepository {
 
-    List<StickerStyle> findAllBySticker_Id(Integer stickerId);
-
-    List<StickerStyle> findAllByStyle_Id(Integer styleId);
 }

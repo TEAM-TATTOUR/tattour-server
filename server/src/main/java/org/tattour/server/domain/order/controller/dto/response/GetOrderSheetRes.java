@@ -6,21 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderAmountRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderPointRes;
-import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerRes;
 @Schema(description = "결제 페이지 불러오기")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetOrderSheetRes {
-    private GetOrderSheetStickerInfo getOrderSheetStickerInfo;
+    private ReadOrderSheetStickerRes readOrderSheetStickerRes;
     
     private GetOrderAmountRes getOrderAmountRes;
     
     private GetUserOrderPointRes getUserOrderPointRes;
 
     public static GetOrderSheetRes of(
-            GetOrderSheetStickerInfo getOrderSheetStickerInfo,
+            ReadOrderSheetStickerRes readOrderSheetStickerRes,
             GetOrderAmountRes getOrderAmountRes,
             GetUserOrderPointRes getUserOrderPointRes) {
-        return new GetOrderSheetRes(getOrderSheetStickerInfo, getOrderAmountRes, getUserOrderPointRes);
+        return new GetOrderSheetRes(readOrderSheetStickerRes, getOrderAmountRes, getUserOrderPointRes);
     }
 }

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
+import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
@@ -21,14 +21,14 @@ public class ConfirmPointChargeResponseDto {
     // 구매 내역
     GetUserOrderHistoryListRes orderHistoryListRes;
     // 커스텀 신청내역
-    CustomApplySummaryInfoList customApplySummaryInfoList;
+    CreateCustomSummaryListRes createCustomSummaryListRes;
 
     public static ConfirmPointChargeResponseDto of(
             GetUserInfoDto getUserInfoDto,
             GetPointChargeRequestListRes getPointChargeRequestListRes,
             GetUserOrderHistoryListRes getUserOrderHistoryListRes,
-            CustomApplySummaryInfoList customApplySummaryInfoList) {
+            CreateCustomSummaryListRes createCustomSummaryListRes) {
         return new ConfirmPointChargeResponseDto(getUserInfoDto, getPointChargeRequestListRes,
-                getUserOrderHistoryListRes, customApplySummaryInfoList);
+                getUserOrderHistoryListRes, createCustomSummaryListRes);
     }
 }

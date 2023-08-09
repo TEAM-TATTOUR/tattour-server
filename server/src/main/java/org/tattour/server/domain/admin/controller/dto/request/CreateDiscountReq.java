@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.tattour.server.domain.discount.service.dto.request.DiscountInfo;
 
 @Getter
 @NoArgsConstructor
@@ -26,8 +25,8 @@ public class CreateDiscountReq {
 	@NotNull
 	private LocalDateTime endedAt;
 
-	public DiscountInfo newDiscountInfo() {
-		return DiscountInfo.from(name, discountRate, startAt, endedAt);
+	public org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq newDiscountInfo() {
+		return org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq.of(name, discountRate, startAt, endedAt);
 	}
 
 }

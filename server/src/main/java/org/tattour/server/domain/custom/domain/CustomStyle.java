@@ -35,7 +35,7 @@ public class CustomStyle {
     @JoinColumn(name = "style_id")
     private Style style;
 
-    public static CustomStyle from(Custom custom, Style style) {
+    public static CustomStyle of(Custom custom, Style style) {
         return CustomStyle.builder()
                 .custom(custom)
                 .style(style)

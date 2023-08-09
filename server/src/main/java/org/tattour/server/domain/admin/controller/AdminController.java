@@ -29,14 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tattour.server.domain.admin.controller.dto.request.ApplyStickerDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
-import org.tattour.server.domain.admin.controller.dto.request.CreateDiscountReq;
 import org.tattour.server.domain.admin.controller.dto.request.CreateStickerReq;
 import org.tattour.server.domain.admin.controller.dto.request.UpdateCustomProcessReq;
 import org.tattour.server.domain.admin.controller.dto.response.CreateStickerRes;
-import org.tattour.server.domain.custom.service.CustomService;
-import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
-import org.tattour.server.domain.discount.service.DiscountService;
-import org.tattour.server.domain.discount.service.dto.request.DiscountInfo;
+import org.tattour.server.domain.custom.facade.CustomFacade;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
+import org.tattour.server.domain.discount.facade.DiscountFacade;
+import org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq;
 import org.tattour.server.domain.order.controller.dto.request.PatchOrderStatusReq;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
@@ -48,8 +47,8 @@ import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeReq
 import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.sticker.service.StickerService;
-import org.tattour.server.domain.sticker.service.dto.response.StickerInfo;
+import org.tattour.server.domain.sticker.facade.StickerFacade;
+import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerRes;
 import org.tattour.server.domain.user.controller.dto.response.LoginRes;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
@@ -71,10 +70,10 @@ public class AdminController {
     private final PointProviderImpl pointProvider;
     private final PointServiceImpl pointService;
     private final OrderServiceImpl orderService;
-    private final DiscountService discountService;
+    private final DiscountFacade discountFacade;
     private final JwtService jwtService;
-    private final StickerService stickerService;
-    private final CustomService customService;
+    private final StickerFacade stickerFacade;
+    private final CustomFacade customFacade;
     private final UserProviderImpl userProvider;
 
 	// TODO : ADMIN role 확인
@@ -295,7 +294,7 @@ public class AdminController {
 			@RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		CreateStickerRes response = new CreateStickerRes(stickerService.createSticker(
+		CreateStickerRes response = new CreateStickerRes(stickerFacade.createSticker(
 				stickerInfo.newCreateStickerInfo(stickerMainImage, stickerImages)));
 		return BaseResponse.success(SuccessType.CREATE_SUCCESS, response);
 	}
@@ -306,7 +305,7 @@ public class AdminController {
 			description = "process : <receiving, receiptComplete, receiptFailed, shipping, shipped>")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "success",
-					content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+					content = @Content(schema = @Schema(implementation = ReadCustomRes.class))),
 			@ApiResponse(responseCode = "400, 500", description = "error",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
@@ -315,7 +314,7 @@ public class AdminController {
 			@RequestBody @Valid UpdateCustomProcessReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		CustomInfo response = customService.updateCustomProcess(
+		ReadCustomRes response = customFacade.updateCustomProcess(
 				request.newUpdateCustomInfo(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
 	}
@@ -324,16 +323,16 @@ public class AdminController {
 	@Operation(summary = "할인 정책 추가하기")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "success",
-					content = @Content(schema = @Schema(implementation = DiscountInfo.class))),
+					content = @Content(schema = @Schema(implementation = CreateDiscountReq.class))),
 			@ApiResponse(responseCode = "400, 500", description = "error",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
 	public ResponseEntity<?> createDiscount(
 			@Parameter(hidden = true) @UserId Integer userId,
-			@RequestBody @Valid CreateDiscountReq request
+			@RequestBody @Valid org.tattour.server.domain.admin.controller.dto.request.CreateDiscountReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		DiscountInfo response = discountService.createDiscount(request.newDiscountInfo());
+		CreateDiscountReq response = discountFacade.createDiscount(request.newDiscountInfo());
 		return BaseResponse.success(SuccessType.CREATE_DISCOUNT_SUCCESS, response);
 	}
 
@@ -342,7 +341,7 @@ public class AdminController {
 	@Operation(summary = "일반 스티커 할인 적용하기")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "success",
-					content = @Content(schema = @Schema(implementation = StickerInfo.class))),
+					content = @Content(schema = @Schema(implementation = ReadStickerRes.class))),
 			@ApiResponse(responseCode = "400, 500", description = "error",
 					content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
@@ -351,7 +350,7 @@ public class AdminController {
 			@RequestBody @Valid ApplyStickerDiscountReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		StickerInfo response = discountService.applyStickerDiscount(request.getStickerId(),
+		ReadStickerRes response = discountFacade.applyStickerDiscount(request.getStickerId(),
 				request.getDiscountId());
 		return BaseResponse.success(SuccessType.APPLY_STICKER_DISCOUNT_SUCCESS, response);
 	}
