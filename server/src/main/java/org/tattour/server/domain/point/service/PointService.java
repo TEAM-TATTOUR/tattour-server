@@ -3,17 +3,15 @@ package org.tattour.server.domain.point.service;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 
 public interface PointService {
 
     // 포인트 충전 요청 저장하기
-    void savePointChargeRequest(SavePointChargeRequestReq req);
+    void createPointChargeRequest(int userId, int chargeAmount);
 
     // 포인트 로그 저장하기
-    void savePointLog(String title, String content, int amount, int resultPoint, int userId);
+    void createPointLog(String title, String content, int amount, int resultPoint, int userId);
 
     // 포인트 충전 요청 수정하기
     void updatePointChargeRequest(PatchPointChangeRequestReq req);

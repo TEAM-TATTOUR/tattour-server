@@ -18,7 +18,6 @@ import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImp
 import org.tattour.server.domain.point.service.PointService;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
@@ -44,18 +43,18 @@ public class PointServiceImpl implements PointService {
 
     @Override
     @Transactional
-    public void savePointChargeRequest(SavePointChargeRequestReq req) {
-        User user = userProvider.getUserById(req.getUserId());
-        PointChargeRequest pointChargeRequest = PointChargeRequest.of(req.getChargeAmount(), user);
+    public void createPointChargeRequest(int userId, int chargeAmount) {
+        User user = userProvider.readUserById(userId);
 
+        PointChargeRequest pointChargeRequest = PointChargeRequest.of(user, chargeAmount);
         pointChargeRequestRepository.save(pointChargeRequest);
     }
 
     @Override
     @Transactional
-    public void savePointLog(String title, String content, int amount, int resultPoint,
+    public void createPointLog(String title, String content, int amount, int resultPoint,
             int userId) {
-        User user = userProvider.getUserById(userId);
+        User user = userProvider.readUserById(userId);
         UserPointLog userPointLog =
                 UserPointLog.of(
                         title,
@@ -78,6 +77,7 @@ public class PointServiceImpl implements PointService {
         pointChargeRequestRepository.save(pointChargeRequest);
     }
 
+    // TODO : 리팩토링 필수!!
     @Override
     @Transactional
     public ConfirmPointChargeResponseDto confirmPointChargeRequest(
@@ -99,7 +99,7 @@ public class PointServiceImpl implements PointService {
                 String baseDate = pointChargeRequest.getCreatedAt();
 
                 // 유저 정보
-                User user = userProvider.getUserById(req.getUserId());
+                User user = userProvider.readUserById(req.getUserId());
                 GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
 
                 // 포인트 충전 내역
@@ -152,11 +152,11 @@ public class PointServiceImpl implements PointService {
                                 !Objects.isNull(req.getTransferredAmount()), false, false, true));
 
                 // 포인트 로그 남기기
-                User user = userProvider.getUserById(req.getUserId());
+                User user = userProvider.readUserById(req.getUserId());
                 int amount = pointChargeRequest.getChargeAmount();
                 int resultPoint = user.getPoint() - amount;
 
-                savePointLog("충전 취소", req.getReason(),
+                createPointLog("충전 취소", req.getReason(),
                         -pointChargeRequest.getChargeAmount(), resultPoint, user.getId());
 
                 // 유저 포인트 처리
