@@ -53,7 +53,7 @@ jobs:
       run: cp ./scripts/*.sh ./deploy
       
     - name: Make zip file
-      run: zip -r ./tattour_server.zip ./deploy
+      run: zip -r ./tattour_server_dev.zip ./deploy
       shell: bash
       
     - name: Configure AWS credentials
@@ -64,7 +64,7 @@ jobs:
         aws-region: ap-northeast-2
         
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./tattour_server.zip s3://tattour-storage\
+      run: aws s3 cp --region ap-northeast-2 ./tattour_server_dev.zip s3://tattour-storage\
       
     # Deploy
     - name: Deploy
@@ -73,8 +73,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY }}
       run:
         aws deploy create-deployment 
-        --application-name tattour-codeDepoly
-        --deployment-group-name tattour-codeDepoly-group
+        --application-name tattour-codeDepoly-test
+        --deployment-group-name tattour-codeDepoly-test-group
         --file-exists-behavior OVERWRITE 
-        --s3-location bucket=tattour-storage,bundleType=zip,key=tattour_server.zip
+        --s3-location bucket=tattour-storage,bundleType=zip,key=tattour_server_dev.zip
         --region ap-northeast-2
