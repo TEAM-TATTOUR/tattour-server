@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.tattour.server.infra.socialLogin.client.kakao.KakaoApiClient;
 import org.tattour.server.infra.socialLogin.client.kakao.KakaoAuthApiClient;
-import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoAccessTokenRes;
-import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserInfoRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.KakaoAccessTokenRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.KakaoUserInfoRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.GetSocialLoginReq;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
@@ -27,11 +27,17 @@ public class KakaoSocialService extends SocialService {
 
     @Override
     public KakaoLoginInfo getSocialLoginResponse(GetSocialLoginReq req) {
+        // TODO : prod에서는 수정해야함
+        // 요청자의 redirect url로 변경
+        String redirectUrl = req.getReferer() + "login/oauth2/callback";
+
         // Authorization code로 Access Token 불러오기
         KakaoAccessTokenRes tokenResponse = kakaoAuthApiClient.getOAuth2AccessToken(
                 "authorization_code",
                 clientId,
-                "http://localhost:5173/login/oauth2/callback",
+                redirectUrl,
+//                "https://tattour.kr/login/oauth2/callback",
+//                "http://localhost:5173/login/oauth2/callback",
                 req.getCode()
         );
 

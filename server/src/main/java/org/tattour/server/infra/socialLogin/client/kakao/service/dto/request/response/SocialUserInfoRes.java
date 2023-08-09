@@ -1,4 +1,4 @@
-package org.tattour.server.infra.socialLogin.client.kakao.dto.response;
+package org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

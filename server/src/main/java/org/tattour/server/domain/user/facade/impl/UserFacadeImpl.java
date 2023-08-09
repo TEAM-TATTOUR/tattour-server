@@ -47,13 +47,13 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public PostLoginRes signup(CreateLoginReq req) {
-        SocialService socialService = socialServiceProvider.getSocialService(
-                req.getSocialPlatform());
+        SocialService socialService = socialServiceProvider
+                .getSocialService(req.getSocialPlatform());
 
         // 로그인
         KakaoLoginInfo kakaoLoginInfo =
                 (KakaoLoginInfo) socialService.getSocialLoginResponse(
-                        GetSocialLoginReq.of(req.getCode()));
+                        GetSocialLoginReq.of(req.getCode(), req.getReferer()));
 
         // 중복 확인
         boolean isUserExist = userProvider.checkDuplicationByKakaoId(

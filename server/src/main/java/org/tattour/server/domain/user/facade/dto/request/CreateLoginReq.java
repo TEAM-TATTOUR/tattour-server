@@ -12,8 +12,10 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 public class CreateLoginReq {
     private SocialPlatform socialPlatform;
     private String code;
+    // TODO : prod에서는 수정해야함
+    private String referer;
 
-    public static CreateLoginReq of(SocialPlatform socialPlatform, String code) {
-        return new CreateLoginReq(socialPlatform, code);
+    public static CreateLoginReq of(SocialPlatform socialPlatform, String code, String referer) {
+        return new CreateLoginReq(socialPlatform, code, referer);
     }
 }

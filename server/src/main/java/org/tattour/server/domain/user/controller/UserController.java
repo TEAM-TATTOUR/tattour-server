@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -85,10 +86,11 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(
             @Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
-            @RequestBody @Valid PostLoginReq req) {
+            @RequestBody @Valid PostLoginReq req,
+            HttpServletRequest request) {
 
         return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
-                userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code)));
+                userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code, request.getHeader("referer"))));
     }
 
 

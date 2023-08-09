@@ -1,13 +1,8 @@
-package org.tattour.server.infra.socialLogin.client.kakao.dto.response;
+package org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.tattour.server.infra.socialLogin.client.kakao.service.vo.SocialLoginInfo;
 
 @ToString
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

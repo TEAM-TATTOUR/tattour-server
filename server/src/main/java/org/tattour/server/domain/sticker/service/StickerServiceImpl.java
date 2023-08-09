@@ -219,8 +219,10 @@ public class StickerServiceImpl implements StickerService {
 				break;
 			case PRICE_HIGH:
 				Collections.sort(stickers, (o1, o2) -> o2.getPrice() - o1.getPrice());
+				break;
 			case PRICE_LOW:
 				Collections.sort(stickers, (o1, o2) -> o1.getPrice() - o2.getPrice());
+				break;
 		}
 	}
 }
