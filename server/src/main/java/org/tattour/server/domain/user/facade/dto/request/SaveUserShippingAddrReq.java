@@ -1,4 +1,4 @@
-package org.tattour.server.domain.user.service.dto.request;
+package org.tattour.server.domain.user.facade.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

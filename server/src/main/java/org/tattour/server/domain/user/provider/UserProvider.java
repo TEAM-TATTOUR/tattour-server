@@ -1,23 +1,24 @@
 package org.tattour.server.domain.user.provider;
 
 import java.util.List;
+import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
 import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 public interface UserProvider {
 
     // 유저 가져오기
-    User getUserById(int id);
+    User readUserById(int id);
 
-    User getUserByKakaoId(Long KakaoId);
+    User readUserByKakaoId(Long KakaoId);
 
     //TODO : 테스트용. 지우기
     // 모든 유저 가져오기
-    List<User> getAllUsers();
+    List<User> readAllUsers();
 
     // 유저 프로필 가져오기
-    GetUserProfileRes getUserProfile(int id);
+    UserProfileInfo readUserProfile(int userId);
 
     // 이메일로 유저 중복 확인
     boolean checkDuplicationByKakaoId(Long kakaoId);

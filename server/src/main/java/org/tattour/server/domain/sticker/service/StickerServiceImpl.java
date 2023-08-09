@@ -73,7 +73,7 @@ public class StickerServiceImpl implements StickerService {
 			}
 			String tokenContents = jwtService.getJwtContents(token);
 			userId = Integer.parseInt(tokenContents);
-			productLiked = productLikedService.getProductLiked(userId, stickerId);
+			productLiked = productLikedService.checkProductLikedExists(userId, stickerId);
 		}
 		Sticker sticker = getStickerByStickerId(stickerId);
 		return StickerInfoForUser.from(sticker, productLiked);

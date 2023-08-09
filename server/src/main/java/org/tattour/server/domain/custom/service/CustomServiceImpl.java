@@ -13,25 +13,17 @@ import org.tattour.server.domain.custom.domain.CustomSize;
 import org.tattour.server.domain.custom.domain.CustomStyle;
 import org.tattour.server.domain.custom.domain.CustomTheme;
 import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
-import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.repository.impl.CustomRepositoryImpl;
-import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
 import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
 import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
 import org.tattour.server.domain.point.service.PointService;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
 import org.tattour.server.domain.style.service.StyleService;
 import org.tattour.server.domain.theme.service.ThemeService;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
-import org.tattour.server.global.exception.UnauthorizedException;
-import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.infra.discord.service.DiscordMessageService;
 import org.tattour.server.infra.s3.S3Service;
 
@@ -63,7 +55,7 @@ public class CustomServiceImpl implements CustomService {
 		}
 		Integer point = userService.updateUserPoint(userId, -customPoint);
 		Custom custom = Custom.from(user, haveDesign, "임시 저장", defaultImageUrl, false, 0);
-		pointService.savePointLog(
+		pointService.createPointLog(
 				"커스텀 신청",
 				"커스텀 스티커 신청",
 				customPoint,

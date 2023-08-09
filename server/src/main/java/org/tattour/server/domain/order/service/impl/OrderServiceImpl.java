@@ -9,7 +9,6 @@ import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.order.service.OrderService;
 import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
@@ -34,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order saveOrder(CreateOrderRequest req) {
-        User user = userProvider.getUserById(req.getUserId());
+        User user = userProvider.readUserById(req.getUserId());
         Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
         Order order = Order.of(
                 sticker.getName(),
@@ -68,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
                 userService.updateUserPoint(
                         order.getUser().getId(), order.getTotalAmount());
                 // 포인트 로그 남기기
-                pointService.savePointLog(
+                pointService.createPointLog(
                         "결제 취소",
                             order.getSticker().getName(),
                             order.getTotalAmount(),

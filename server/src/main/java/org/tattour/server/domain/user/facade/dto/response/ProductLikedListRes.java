@@ -1,4 +1,4 @@
-package org.tattour.server.domain.user.provider.dto.response;
+package org.tattour.server.domain.user.facade.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

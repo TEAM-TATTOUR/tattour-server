@@ -1,8 +1,6 @@
 package org.tattour.server.domain.user.service;
 
-import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 public interface UserService {
 
@@ -13,10 +11,10 @@ public interface UserService {
     User getUserByUserId(Integer userId);
 
     // 회원가입 시 이름, 전화번호 추가
-    void updateUserInfo(UpdateUserInfoReq req);
+    void updateUserProfile(int userId, String name, String phoneNumber);
 
     // 로그아웃
-    void userLogout(Integer userId);
+    void deleteSocialAccessToken(Integer userId);
 
     // 유저 포인트 수정
     int updateUserPoint(Integer userId, Integer totalAmount);

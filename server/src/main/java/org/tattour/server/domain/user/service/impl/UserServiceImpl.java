@@ -7,9 +7,7 @@ import org.tattour.server.domain.user.exception.NotFoundUserException;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 @Service
 @RequiredArgsConstructor
@@ -31,16 +29,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserInfo(UpdateUserInfoReq req) {
-        User user = userProvider.getUserById(req.getUserId());
-        user.setUserInfo(req);
+    public void updateUserProfile(int userId, String name, String phoneNumber) {
+        User user = userProvider.readUserById(userId);
+        user.setUserInfo(name, phoneNumber);
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void userLogout(Integer userId) {
-        User user = userProvider.getUserById(userId);
+    public void deleteSocialAccessToken(Integer userId) {
+        User user = userProvider.readUserById(userId);
         user.deleteToken();
         userRepository.save(user);
     }
@@ -48,10 +46,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int updateUserPoint(Integer userId, Integer totalAmount) {
-        User user = userProvider.getUserById(userId);
+        User user = userProvider.readUserById(userId);
         int resultPoint = user.getPoint() + totalAmount;
-
         user.setUserPoint(resultPoint);
+
         userRepository.save(user);
 
         return resultPoint;

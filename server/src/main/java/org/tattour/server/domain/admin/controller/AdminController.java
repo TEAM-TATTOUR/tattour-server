@@ -358,7 +358,7 @@ public class AdminController {
 	@GetMapping("/index")
 	public ModelAndView displayArticle(Map<String, Object> model) {
 
-		List<User> users = userProvider.getAllUsers();
+		List<User> users = userProvider.readAllUsers();
 
 		model.put("users", users);
 

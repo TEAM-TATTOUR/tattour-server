@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
+import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 @Entity
@@ -79,9 +79,9 @@ public class User {
         return new User(UserRole.USER, kakaoId, SocialPlatform.KAKAO);
     }
 
-    public void setUserInfo(UpdateUserInfoReq req) {
-        this.name = req.getName();
-        this.phoneNumber = req.getPhoneNumber();
+    public void setUserInfo(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 
     public void setSocialToken(String accessToken, String refreshToken) {

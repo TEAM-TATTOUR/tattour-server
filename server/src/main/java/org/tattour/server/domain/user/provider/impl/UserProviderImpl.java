@@ -4,8 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.exception.NotFoundUserException;
@@ -18,26 +19,26 @@ public class UserProviderImpl implements UserProvider {
     private final UserRepositoryImpl userRepository;
 
     @Override
-    public User getUserById(int id) {
+    public User readUserById(int id) {
         return userRepository.findById(id)
                 .orElseThrow(NotFoundUserException::new);
     }
 
     @Override
-    public User getUserByKakaoId(Long kakaoId) {
+    public User readUserByKakaoId(Long kakaoId) {
         return userRepository.findByKakaoId(kakaoId)
                 .orElseThrow(NotFoundUserException::new);
     }
 
     // TODO : 테스트용. 지우기
     @Override
-    public List<User> getAllUsers() {
+    public List<User> readAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public GetUserProfileRes getUserProfile(int id) {
-        return EntityDtoMapper.INSTANCE.toGetUserProfileRes(getUserById(id));
+    public UserProfileInfo readUserProfile(int userId) {
+        return EntityDtoMapper.INSTANCE.toUserProfileInfo(readUserById(userId));
     }
 
     @Override
@@ -48,12 +49,12 @@ public class UserProviderImpl implements UserProvider {
 
     @Override
     public Boolean isUserPointLack(int userId, int totalAmount) {
-        return totalAmount > getUserById(userId).getPoint();
+        return totalAmount > readUserById(userId).getPoint();
     }
 
     @Override
     public UserPointAfterOrderInfo readUserPointAfterOrderInfo(int userId, int totalAmount) {
-        User user = getUserById(userId);
+        User user = readUserById(userId);
 
         int userPoint = user.getPoint();
         int resultPoint = calculateRestPointAfterOrder(userPoint, totalAmount);

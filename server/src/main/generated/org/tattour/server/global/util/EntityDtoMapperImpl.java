@@ -17,18 +17,18 @@ import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-09T16:50:16+0900",
+    date = "2023-08-09T23:44:26+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
 )
 @Component
 public class EntityDtoMapperImpl implements EntityDtoMapper {
 
     @Override
-    public GetUserProfileRes toGetUserProfileRes(User user) {
+    public UserProfileInfo toUserProfileInfo(User user) {
         if ( user == null ) {
             return null;
         }
@@ -39,9 +39,9 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         name = user.getName();
         point = user.getPoint();
 
-        GetUserProfileRes getUserProfileRes = new GetUserProfileRes( name, point );
+        UserProfileInfo userProfileInfo = new UserProfileInfo( name, point );
 
-        return getUserProfileRes;
+        return userProfileInfo;
     }
 
     @Override
@@ -225,26 +225,26 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
             return null;
         }
 
-        PointChargeRequestInfo.ReadPointChargeRequestResBuilder readPointChargeRequestRes = PointChargeRequestInfo.builder();
+        PointChargeRequestInfo.PointChargeRequestInfoBuilder pointChargeRequestInfo = PointChargeRequestInfo.builder();
 
         Integer id = pointChargeRequestUserId( pointChargeRequest );
         if ( id != null ) {
-            readPointChargeRequestRes.userId( id );
+            pointChargeRequestInfo.userId( id );
         }
         if ( pointChargeRequest.getId() != null ) {
-            readPointChargeRequestRes.id( pointChargeRequest.getId() );
+            pointChargeRequestInfo.id( pointChargeRequest.getId() );
         }
-        readPointChargeRequestRes.chargeAmount( pointChargeRequest.getChargeAmount() );
-        readPointChargeRequestRes.transferredAmount( pointChargeRequest.getTransferredAmount() );
-        readPointChargeRequestRes.isDeposited( pointChargeRequest.getIsDeposited() );
-        readPointChargeRequestRes.isAmountMatched( pointChargeRequest.getIsAmountMatched() );
-        readPointChargeRequestRes.isApproved( pointChargeRequest.getIsApproved() );
-        readPointChargeRequestRes.isCompleted( pointChargeRequest.getIsCompleted() );
-        readPointChargeRequestRes.createdAt( pointChargeRequest.getCreatedAt() );
-        readPointChargeRequestRes.lastUpdatedAt( pointChargeRequest.getLastUpdatedAt() );
-        readPointChargeRequestRes.state( pointChargeRequest.getState() );
+        pointChargeRequestInfo.chargeAmount( pointChargeRequest.getChargeAmount() );
+        pointChargeRequestInfo.transferredAmount( pointChargeRequest.getTransferredAmount() );
+        pointChargeRequestInfo.isDeposited( pointChargeRequest.getIsDeposited() );
+        pointChargeRequestInfo.isAmountMatched( pointChargeRequest.getIsAmountMatched() );
+        pointChargeRequestInfo.isApproved( pointChargeRequest.getIsApproved() );
+        pointChargeRequestInfo.isCompleted( pointChargeRequest.getIsCompleted() );
+        pointChargeRequestInfo.createdAt( pointChargeRequest.getCreatedAt() );
+        pointChargeRequestInfo.lastUpdatedAt( pointChargeRequest.getLastUpdatedAt() );
+        pointChargeRequestInfo.state( pointChargeRequest.getState() );
 
-        return readPointChargeRequestRes.build();
+        return pointChargeRequestInfo.build();
     }
 
     @Override

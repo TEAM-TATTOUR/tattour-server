@@ -1,15 +1,13 @@
 package org.tattour.server.domain.user.service;
 
-import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
-import org.tattour.server.domain.user.service.dto.request.DeleteProductLikedInfo;
 
 public interface ProductLikedService {
 
     // 좋아요 누른 타투 저장
-    void saveProductLiked(SaveProductLikedReq req);
+    void saveProductLiked(int userId, int stickerId);
 
     // 좋아요 누른 타투 삭제
-    void deleteProductLiked(Integer userId, Integer stickerId);
+    void removeProductLiked(int userId, int stickerId);
 
-    Boolean getProductLiked(Integer userId, Integer stickerId);
+    Boolean checkProductLikedExists(Integer userId, Integer stickerId);
 }

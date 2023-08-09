@@ -8,7 +8,7 @@ import lombok.Getter;
 @Schema(description = "로그인 Response")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class LoginRes {
+public class PostLoginRes {
 
     @Schema(description = "user Id")
     private Integer userId;
@@ -19,7 +19,7 @@ public class LoginRes {
     @Schema(description = "user 회원가입 완료 여부")
     private boolean isUserExist;
 
-    public static LoginRes of(Integer userId, String accessToken, boolean isUserExist) {
-        return new LoginRes(userId, accessToken, isUserExist);
+    public static PostLoginRes of(Integer userId, String accessToken, boolean isUserExist) {
+        return new PostLoginRes(userId, accessToken, isUserExist);
     }
 }

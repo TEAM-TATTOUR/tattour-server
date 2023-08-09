@@ -16,7 +16,8 @@ import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
-import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {
@@ -24,7 +25,7 @@ public interface EntityDtoMapper {
     EntityDtoMapper INSTANCE = Mappers.getMapper(EntityDtoMapper.class);
 
     // User
-    GetUserProfileRes toGetUserProfileRes(User user);
+    UserProfileInfo toUserProfileInfo(User user);
 
     GetUserInfoDto toGetUserInfoDto(User user);
 

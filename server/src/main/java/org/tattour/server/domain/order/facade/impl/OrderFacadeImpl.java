@@ -78,7 +78,7 @@ public class OrderFacadeImpl implements OrderFacade {
         int resultPoint = userService.updateUserPoint(req.getUserId(), -req.getTotalAmount());
 
         // 포인트 로그 저장
-        pointService.savePointLog(
+        pointService.createPointLog(
                 "상품 구매",
                 null,
                 -req.getTotalAmount(),
