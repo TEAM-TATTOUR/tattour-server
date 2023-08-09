@@ -8,20 +8,21 @@ import org.springframework.stereotype.Component;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfo;
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryRes;
-import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryRes;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
+import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
+import org.tattour.server.domain.point.provider.vo.PointChargeRequestInfo;
 import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
+import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
+import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-20T23:05:33+0900",
-    comments = "version: 1.5.4.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
+    date = "2023-08-09T16:50:16+0900",
+    comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
 )
 @Component
 public class EntityDtoMapperImpl implements EntityDtoMapper {
@@ -59,98 +60,98 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public StickerLikedInfo toStickerLikedInfo(Sticker sticker) {
-        if ( sticker == null ) {
+    public StickerLikedInfo toStickerLikedInfo(ProductLiked productLiked) {
+        if ( productLiked == null ) {
             return null;
         }
 
-        Integer id = null;
+        Integer stickerId = null;
         String name = null;
         Integer price = null;
         String mainImageUrl = null;
+        Integer id = null;
 
-        id = sticker.getId();
-        name = sticker.getName();
-        price = sticker.getPrice();
-        mainImageUrl = sticker.getMainImageUrl();
+        stickerId = productLikedStickerId( productLiked );
+        name = productLikedStickerName( productLiked );
+        price = productLikedStickerPrice( productLiked );
+        mainImageUrl = productLikedStickerMainImageUrl( productLiked );
+        id = productLiked.getId();
 
-        Integer discountPrice = sticker.getDiscount() != null ? sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate()) / 100 : null;
-        Integer discountRate = sticker.getDiscount() != null ? sticker.getDiscount().getDiscountRate() : null;
+        Integer discountPrice = productLiked.getSticker().getDiscount() != null ? productLiked.getSticker().getPrice() * (100 - productLiked.getSticker().getDiscount().getDiscountRate()) / 100 : null;
+        Integer discountRate = productLiked.getSticker().getDiscount() != null ? productLiked.getSticker().getDiscount().getDiscountRate() : null;
 
-        StickerLikedInfo stickerLikedInfo = new StickerLikedInfo( id, name, price, discountRate, discountPrice, mainImageUrl );
+        StickerLikedInfo stickerLikedInfo = new StickerLikedInfo( id, stickerId, name, price, discountRate, discountPrice, mainImageUrl );
 
         return stickerLikedInfo;
     }
 
     @Override
-    public List<StickerLikedInfo> toStickerLikedInfoList(List<Sticker> stickerList) {
-        if ( stickerList == null ) {
+    public List<StickerLikedInfo> toStickerLikedInfoList(List<ProductLiked> productLiked) {
+        if ( productLiked == null ) {
             return null;
         }
 
-        List<StickerLikedInfo> list = new ArrayList<StickerLikedInfo>( stickerList.size() );
-        for ( Sticker sticker : stickerList ) {
-            list.add( toStickerLikedInfo( sticker ) );
+        List<StickerLikedInfo> list = new ArrayList<StickerLikedInfo>( productLiked.size() );
+        for ( ProductLiked productLiked1 : productLiked ) {
+            list.add( toStickerLikedInfo( productLiked1 ) );
         }
 
         return list;
     }
 
     @Override
-    public ReadUserOrderHistoryRes toGetUserOrderHistoryRes(Order order) {
+    public UserOrderHistoryInfo toGetUserOrderHistoryRes(Order order) {
         if ( order == null ) {
             return null;
         }
 
-        GetUserOrderHistoryRes readUserOrderHistoryRes = new ReadUserOrderHistoryRes();
+        UserOrderHistoryInfo userOrderHistoryInfo = new UserOrderHistoryInfo();
 
         Integer id = orderUserId( order );
         if ( id != null ) {
-            readUserOrderHistoryRes.setUserId( id );
+            userOrderHistoryInfo.setUserId( id );
         }
         Integer id1 = orderStickerId( order );
         if ( id1 != null ) {
-            readUserOrderHistoryRes.setStickerId( id1 );
+            userOrderHistoryInfo.setStickerId( id1 );
         }
         if ( order.getId() != null ) {
-            readUserOrderHistoryRes.setId( order.getId() );
+            userOrderHistoryInfo.setId( order.getId() );
         }
-        readUserOrderHistoryRes.setProductName( order.getProductName() );
-        readUserOrderHistoryRes.setProductSize( order.getProductSize() );
-        readUserOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
+        userOrderHistoryInfo.setProductName( order.getProductName() );
+        userOrderHistoryInfo.setProductSize( order.getProductSize() );
+        userOrderHistoryInfo.setProductImageUrl( order.getProductImageUrl() );
         if ( order.getProductAmount() != null ) {
-            readUserOrderHistoryRes.setProductAmount( order.getProductAmount() );
+            userOrderHistoryInfo.setProductAmount( order.getProductAmount() );
         }
         if ( order.getProductCount() != null ) {
-            readUserOrderHistoryRes.setProductCount( order.getProductCount() );
+            userOrderHistoryInfo.setProductCount( order.getProductCount() );
         }
         if ( order.getShippingFee() != null ) {
-            readUserOrderHistoryRes.setShippingFee( order.getShippingFee() );
+            userOrderHistoryInfo.setShippingFee( order.getShippingFee() );
         }
         if ( order.getTotalAmount() != null ) {
-            readUserOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
+            userOrderHistoryInfo.setTotalAmount( order.getTotalAmount() );
         }
-        readUserOrderHistoryRes.setRecipientName( order.getRecipientName() );
-        readUserOrderHistoryRes.setContact( order.getContact() );
-        readUserOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
-        readUserOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
-        readUserOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
-        readUserOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
-        readUserOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
-        if ( order.getState() != null ) {
-            readUserOrderHistoryRes.setState( order.getState() );
-        }
+        userOrderHistoryInfo.setRecipientName( order.getRecipientName() );
+        userOrderHistoryInfo.setContact( order.getContact() );
+        userOrderHistoryInfo.setMailingAddress( order.getMailingAddress() );
+        userOrderHistoryInfo.setBaseAddress( order.getBaseAddress() );
+        userOrderHistoryInfo.setDetailAddress( order.getDetailAddress() );
+        userOrderHistoryInfo.setCreatedAt( order.getCreatedAt() );
+        userOrderHistoryInfo.setLastUpdatedAt( order.getLastUpdatedAt() );
+        userOrderHistoryInfo.setState( order.getState() );
 
-        return readUserOrderHistoryRes;
+        return userOrderHistoryInfo;
     }
 
     @Override
-    public List<ReadUserOrderHistoryRes> toGetUserOrderHistoryListRes(List<Order> orderList) {
+    public List<UserOrderHistoryInfo> toGetUserOrderHistoryListRes(List<Order> orderList) {
         if ( orderList == null ) {
             return null;
         }
 
-        List<ReadUserOrderHistoryRes> list = new ArrayList<ReadUserOrderHistoryRes>( orderList.size() );
+        List<UserOrderHistoryInfo> list = new ArrayList<UserOrderHistoryInfo>( orderList.size() );
         for ( Order order : orderList ) {
             list.add( toGetUserOrderHistoryRes( order ) );
         }
@@ -159,60 +160,58 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public ReadOrderHistoryRes toGetOrderHistoryRes(Order order) {
+    public OrderHistoryInfo toGetOrderHistoryRes(Order order) {
         if ( order == null ) {
             return null;
         }
 
-        ReadOrderHistoryRes readOrderHistoryRes = new ReadOrderHistoryRes();
+        OrderHistoryInfo orderHistoryInfo = new OrderHistoryInfo();
 
         Integer id = orderUserId( order );
         if ( id != null ) {
-            readOrderHistoryRes.setUserId( id );
+            orderHistoryInfo.setUserId( id );
         }
         Integer id1 = orderStickerId( order );
         if ( id1 != null ) {
-            readOrderHistoryRes.setStickerId( id1 );
+            orderHistoryInfo.setStickerId( id1 );
         }
         if ( order.getId() != null ) {
-            readOrderHistoryRes.setId( order.getId() );
+            orderHistoryInfo.setId( order.getId() );
         }
-        readOrderHistoryRes.setProductName( order.getProductName() );
-        readOrderHistoryRes.setProductSize( order.getProductSize() );
-        readOrderHistoryRes.setProductImageUrl( order.getProductImageUrl() );
+        orderHistoryInfo.setProductName( order.getProductName() );
+        orderHistoryInfo.setProductSize( order.getProductSize() );
+        orderHistoryInfo.setProductImageUrl( order.getProductImageUrl() );
         if ( order.getProductAmount() != null ) {
-            readOrderHistoryRes.setProductAmount( order.getProductAmount() );
+            orderHistoryInfo.setProductAmount( order.getProductAmount() );
         }
         if ( order.getProductCount() != null ) {
-            readOrderHistoryRes.setProductCount( order.getProductCount() );
+            orderHistoryInfo.setProductCount( order.getProductCount() );
         }
         if ( order.getShippingFee() != null ) {
-            readOrderHistoryRes.setShippingFee( order.getShippingFee() );
+            orderHistoryInfo.setShippingFee( order.getShippingFee() );
         }
         if ( order.getTotalAmount() != null ) {
-            readOrderHistoryRes.setTotalAmount( order.getTotalAmount() );
+            orderHistoryInfo.setTotalAmount( order.getTotalAmount() );
         }
-        readOrderHistoryRes.setRecipientName( order.getRecipientName() );
-        readOrderHistoryRes.setContact( order.getContact() );
-        readOrderHistoryRes.setMailingAddress( order.getMailingAddress() );
-        readOrderHistoryRes.setBaseAddress( order.getBaseAddress() );
-        readOrderHistoryRes.setDetailAddress( order.getDetailAddress() );
-        readOrderHistoryRes.setCreatedAt( order.getCreatedAt() );
-        readOrderHistoryRes.setLastUpdatedAt( order.getLastUpdatedAt() );
-        if ( order.getState() != null ) {
-            readOrderHistoryRes.setState( order.getState() );
-        }
+        orderHistoryInfo.setRecipientName( order.getRecipientName() );
+        orderHistoryInfo.setContact( order.getContact() );
+        orderHistoryInfo.setMailingAddress( order.getMailingAddress() );
+        orderHistoryInfo.setBaseAddress( order.getBaseAddress() );
+        orderHistoryInfo.setDetailAddress( order.getDetailAddress() );
+        orderHistoryInfo.setCreatedAt( order.getCreatedAt() );
+        orderHistoryInfo.setLastUpdatedAt( order.getLastUpdatedAt() );
+        orderHistoryInfo.setState( order.getState() );
 
-        return readOrderHistoryRes;
+        return orderHistoryInfo;
     }
 
     @Override
-    public List<ReadOrderHistoryRes> toGetOrderHistoryListRes(Page<Order> orderList) {
+    public List<OrderHistoryInfo> toGetOrderHistoryListRes(Page<Order> orderList) {
         if ( orderList == null ) {
             return null;
         }
 
-        List<ReadOrderHistoryRes> list = new ArrayList<ReadOrderHistoryRes>();
+        List<OrderHistoryInfo> list = new ArrayList<OrderHistoryInfo>();
         for ( Order order : orderList ) {
             list.add( toGetOrderHistoryRes( order ) );
         }
@@ -221,42 +220,40 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public GetPointChargeRequestRes toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest) {
+    public PointChargeRequestInfo toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest) {
         if ( pointChargeRequest == null ) {
             return null;
         }
 
-        GetPointChargeRequestRes.GetPointChargeRequestResBuilder getPointChargeRequestRes = GetPointChargeRequestRes.builder();
+        PointChargeRequestInfo.ReadPointChargeRequestResBuilder readPointChargeRequestRes = PointChargeRequestInfo.builder();
 
         Integer id = pointChargeRequestUserId( pointChargeRequest );
         if ( id != null ) {
-            getPointChargeRequestRes.userId( id );
+            readPointChargeRequestRes.userId( id );
         }
         if ( pointChargeRequest.getId() != null ) {
-            getPointChargeRequestRes.id( pointChargeRequest.getId() );
+            readPointChargeRequestRes.id( pointChargeRequest.getId() );
         }
-        getPointChargeRequestRes.chargeAmount( pointChargeRequest.getChargeAmount() );
-        getPointChargeRequestRes.transferredAmount( pointChargeRequest.getTransferredAmount() );
-        getPointChargeRequestRes.isDeposited( pointChargeRequest.getIsDeposited() );
-        getPointChargeRequestRes.isAmountMatched( pointChargeRequest.getIsAmountMatched() );
-        getPointChargeRequestRes.isApproved( pointChargeRequest.getIsApproved() );
-        getPointChargeRequestRes.isCompleted( pointChargeRequest.getIsCompleted() );
-        getPointChargeRequestRes.createdAt( pointChargeRequest.getCreatedAt() );
-        getPointChargeRequestRes.lastUpdatedAt( pointChargeRequest.getLastUpdatedAt() );
-        if ( pointChargeRequest.getState() != null ) {
-            getPointChargeRequestRes.state( pointChargeRequest.getState() );
-        }
+        readPointChargeRequestRes.chargeAmount( pointChargeRequest.getChargeAmount() );
+        readPointChargeRequestRes.transferredAmount( pointChargeRequest.getTransferredAmount() );
+        readPointChargeRequestRes.isDeposited( pointChargeRequest.getIsDeposited() );
+        readPointChargeRequestRes.isAmountMatched( pointChargeRequest.getIsAmountMatched() );
+        readPointChargeRequestRes.isApproved( pointChargeRequest.getIsApproved() );
+        readPointChargeRequestRes.isCompleted( pointChargeRequest.getIsCompleted() );
+        readPointChargeRequestRes.createdAt( pointChargeRequest.getCreatedAt() );
+        readPointChargeRequestRes.lastUpdatedAt( pointChargeRequest.getLastUpdatedAt() );
+        readPointChargeRequestRes.state( pointChargeRequest.getState() );
 
-        return getPointChargeRequestRes.build();
+        return readPointChargeRequestRes.build();
     }
 
     @Override
-    public List<GetPointChargeRequestRes> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList) {
+    public List<PointChargeRequestInfo> toGetPointChargeRequestResList(List<PointChargeRequest> pointChargeRequestList) {
         if ( pointChargeRequestList == null ) {
             return null;
         }
 
-        List<GetPointChargeRequestRes> list = new ArrayList<GetPointChargeRequestRes>( pointChargeRequestList.size() );
+        List<PointChargeRequestInfo> list = new ArrayList<PointChargeRequestInfo>( pointChargeRequestList.size() );
         for ( PointChargeRequest pointChargeRequest : pointChargeRequestList ) {
             list.add( toGetPointChargeRequestRes( pointChargeRequest ) );
         }
@@ -293,6 +290,66 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         }
 
         return list;
+    }
+
+    private Integer productLikedStickerId(ProductLiked productLiked) {
+        if ( productLiked == null ) {
+            return null;
+        }
+        Sticker sticker = productLiked.getSticker();
+        if ( sticker == null ) {
+            return null;
+        }
+        Integer id = sticker.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private String productLikedStickerName(ProductLiked productLiked) {
+        if ( productLiked == null ) {
+            return null;
+        }
+        Sticker sticker = productLiked.getSticker();
+        if ( sticker == null ) {
+            return null;
+        }
+        String name = sticker.getName();
+        if ( name == null ) {
+            return null;
+        }
+        return name;
+    }
+
+    private Integer productLikedStickerPrice(ProductLiked productLiked) {
+        if ( productLiked == null ) {
+            return null;
+        }
+        Sticker sticker = productLiked.getSticker();
+        if ( sticker == null ) {
+            return null;
+        }
+        Integer price = sticker.getPrice();
+        if ( price == null ) {
+            return null;
+        }
+        return price;
+    }
+
+    private String productLikedStickerMainImageUrl(ProductLiked productLiked) {
+        if ( productLiked == null ) {
+            return null;
+        }
+        Sticker sticker = productLiked.getSticker();
+        if ( sticker == null ) {
+            return null;
+        }
+        String mainImageUrl = sticker.getMainImageUrl();
+        if ( mainImageUrl == null ) {
+            return null;
+        }
+        return mainImageUrl;
     }
 
     private Integer orderUserId(Order order) {

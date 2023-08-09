@@ -10,13 +10,13 @@ import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class LoginReq {
+public class PostLoginReq {
 
     @Schema(description = "소셜 로그인 플랫폼", example = "KAKAO")
     @NotNull(message = "socialPlatform is null")
     private SocialPlatform socialPlatform;
 
-    public static LoginReq of(SocialPlatform socialPlatform) {
-        return new LoginReq(socialPlatform);
+    public static PostLoginReq of(SocialPlatform socialPlatform) {
+        return new PostLoginReq(socialPlatform);
     }
 }

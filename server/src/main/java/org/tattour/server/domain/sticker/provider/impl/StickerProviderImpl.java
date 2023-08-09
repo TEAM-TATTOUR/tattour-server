@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
-import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;

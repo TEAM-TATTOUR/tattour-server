@@ -5,8 +5,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogRes;
+import org.tattour.server.domain.point.provider.vo.PointChargeRequestInfo;
+import org.tattour.server.domain.point.provider.vo.PointLogInfo;
 
 @Repository
 public class PointDao {
@@ -18,7 +18,7 @@ public class PointDao {
     }
 
     // 조건에 따라 유저 포인트 충전 요청 내역 가져오기
-    public List<GetPointChargeRequestRes> getPointChargeRequestResList(Integer userId,
+    public List<PointChargeRequestInfo> getPointChargeRequestResList(Integer userId,
             Boolean isCompleted) {
         String query =
                 "SELECT * "
@@ -37,7 +37,7 @@ public class PointDao {
         }
 
         return jdbcTemplate.query(query,
-                (rs, rownum) -> GetPointChargeRequestRes.builder()
+                (rs, rownum) -> PointChargeRequestInfo.builder()
                         .id(rs.getInt("id"))
                         .userId(rs.getInt("user_id"))
                         .chargeAmount(rs.getInt("charge_amount"))
@@ -53,7 +53,7 @@ public class PointDao {
     }
 
     // 조건에 따라 포인트 로그 불러오기
-    public List<GetPointLogRes> getPointLogResList(Integer userId, String title) {
+    public List<PointLogInfo> getPointLogResList(Integer userId, String title) {
         String query =
                 "SELECT * FROM user_point_log "
                         + "WHERE 1=1 ";
@@ -70,7 +70,7 @@ public class PointDao {
         }
 
         return jdbcTemplate.query(query,
-                (rs, rownum) -> GetPointLogRes.builder()
+                (rs, rownum) -> PointLogInfo.builder()
                         .id(rs.getInt("id"))
                         .userId(rs.getInt("user_id"))
                         .title(rs.getString("title"))

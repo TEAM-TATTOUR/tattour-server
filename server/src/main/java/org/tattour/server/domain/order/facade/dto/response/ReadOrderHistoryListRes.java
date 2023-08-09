@@ -5,17 +5,19 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReadOrderHistoryListRes {
 
-    List<ReadOrderHistoryRes> readOrderHistoryResList;
-    private PageInfoRes pageInfoRes;
+    List<OrderHistoryInfo> orderHistoryInfoList;
+    private OrderHistoryPageInfo orderHistoryPageInfo;
 
-    public static ReadOrderHistoryListRes of(List<ReadOrderHistoryRes> readOrderHistoryResList,
-            PageInfoRes pageInfoRes) {
-        return new ReadOrderHistoryListRes(readOrderHistoryResList, pageInfoRes);
+    public static ReadOrderHistoryListRes of(List<OrderHistoryInfo> orderHistoryInfoList,
+            OrderHistoryPageInfo orderHistoryPageInfo) {
+        return new ReadOrderHistoryListRes(orderHistoryInfoList, orderHistoryPageInfo);
     }
 }

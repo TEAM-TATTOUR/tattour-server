@@ -1,4 +1,4 @@
-package org.tattour.server.domain.order.facade.dto.response;
+package org.tattour.server.domain.order.provider.vo;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PageInfoRes {
+public class OrderHistoryPageInfo {
 
     private int page;
     private final int size = 10;
     private Long totalElements;
     private int totalPages;
 
-    public PageInfoRes(int page, Long totalElements, int totalPages) {
+    public OrderHistoryPageInfo(int page, Long totalElements, int totalPages) {
         this.page = page;
         this.totalElements = totalElements;
         this.totalPages = totalPages;
     }
 
-    public static PageInfoRes of(int page, Long totalElements, int totalPages) {
-        return new PageInfoRes(page, totalElements, totalPages);
+    public static OrderHistoryPageInfo of(int page, Long totalElements, int totalPages) {
+        return new OrderHistoryPageInfo(page, totalElements, totalPages);
     }
 }

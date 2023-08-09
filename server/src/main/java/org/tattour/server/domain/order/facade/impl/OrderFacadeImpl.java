@@ -4,18 +4,18 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
+import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.facade.OrderFacade;
 import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
 import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderAmountRes;
-import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderPointRes;
+import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
+import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
@@ -35,11 +35,9 @@ public class OrderFacadeImpl implements OrderFacade {
     private final PointServiceImpl pointService;
     private final DiscordMessageService discordMessageService;
 
-
-    // TODO : 메소드 분리하기
     @Override
     @Transactional
-    public GetOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
+    public ReadOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
         ReadOrderSheetStickerInfo readOrderSheetStickerInfo =
                 stickerProvider.readOrderSheetStickerInfo(req.getStickerId());
@@ -47,7 +45,7 @@ public class OrderFacadeImpl implements OrderFacade {
 
         // 결제 금액 정보
         // 총 결제 금액, 총 상품 금액, 배송비
-        ReadOrderAmountRes readOrderAmountRes =
+        OrderAmountInfo orderAmountInfo =
                 orderProvider.readOrderAmountRes(
                         Objects.isNull(readOrderSheetStickerInfo.getDiscountedPrice())
                                 ? readOrderSheetStickerInfo.getPrice()
@@ -57,13 +55,13 @@ public class OrderFacadeImpl implements OrderFacade {
 
         // 포인트
         // 보유 포인트, 남는 포인트
-        ReadUserOrderPointRes readUserOrderPointRes =
+        UserPointAfterOrderInfo userPointAfterOrderInfo =
                 userProvider.readUserPointAfterOrderInfo(
                         req.getUserId(),
-                        readOrderAmountRes.getTotalAmount());
+                        orderAmountInfo.getTotalAmount());
 
-        return GetOrderSheetRes.of(readOrderSheetStickerInfo, readOrderAmountRes,
-                readUserOrderPointRes);
+        return ReadOrderSheetRes.of(readOrderSheetStickerInfo, orderAmountInfo,
+                userPointAfterOrderInfo);
     }
 
     @Override
@@ -77,9 +75,7 @@ public class OrderFacadeImpl implements OrderFacade {
         Order order = orderService.saveOrder(req);
 
         // userPoint 수정
-        int resultPoint = userService.updateUserPoint(
-                req.getUserId(),
-                -req.getTotalAmount());
+        int resultPoint = userService.updateUserPoint(req.getUserId(), -req.getTotalAmount());
 
         // 포인트 로그 저장
         pointService.savePointLog(

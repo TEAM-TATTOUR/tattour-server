@@ -11,8 +11,7 @@ import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryL
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.domain.UserPointLog;
-import org.tattour.server.domain.point.provider.dto.request.GetPointChargeRequestAfterDate;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImpl;
@@ -20,7 +19,6 @@ import org.tattour.server.domain.point.service.PointService;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
@@ -105,11 +103,10 @@ public class PointServiceImpl implements PointService {
                 GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
 
                 // 포인트 충전 내역
-                GetPointChargeRequestListRes getPointChargeRequestListRes =
-                        pointProvider.getPointChargeRequestAfterDate(
-                                GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
-                getPointChargeRequestListRes
-                        .getGetPointChargeRequestResList()
+                ReadPointChargeRequestListRes readPointChargeRequestListRes =
+                        pointProvider.getPointChargeRequestAfterDate(req.getUserId(), baseDate);
+                readPointChargeRequestListRes
+                        .getPointChargeRequestInfoList()
                         .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(
                                 pointChargeRequest));
 
@@ -125,7 +122,7 @@ public class PointServiceImpl implements PointService {
                                 GetCustomSummaryInfo.of(req.getUserId(), baseDate));
 
                 return ConfirmPointChargeResponseDto.of(getUserInfoDto,
-                        getPointChargeRequestListRes, readUserOrderHistoryListRes,
+                        readPointChargeRequestListRes, readUserOrderHistoryListRes,
                         customApplySummaryInfoList);
             }
         } else {

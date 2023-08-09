@@ -7,13 +7,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderAmountRes;
+import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
+import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
 import org.tattour.server.domain.order.provider.OrderProvider;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryRes;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
-import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryRes;
-import org.tattour.server.domain.order.facade.dto.response.PageInfoRes;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
@@ -42,12 +42,12 @@ public class OrderProviderImpl implements OrderProvider {
                         page - 1,
                         10,
                         Sort.by("createdAt")));
-        List<ReadOrderHistoryRes> readOrderHistoryResList =
+        List<OrderHistoryInfo> orderHistoryInfoList =
                 EntityDtoMapper.INSTANCE.toGetOrderHistoryListRes(getOrderHistoryResPage);
 
         return ReadOrderHistoryListRes.of(
-                readOrderHistoryResList,
-                PageInfoRes.of(
+                orderHistoryInfoList,
+                OrderHistoryPageInfo.of(
                         page,
                         getOrderHistoryResPage.getTotalElements(),
                         getOrderHistoryResPage.getTotalPages()));
@@ -55,31 +55,31 @@ public class OrderProviderImpl implements OrderProvider {
 
     @Override
     public ReadUserOrderHistoryListRes readOrderHistoryByUserId(int userId) {
-        List<ReadUserOrderHistoryRes> readUserOrderHistoryResList =
+        List<UserOrderHistoryInfo> userOrderHistoryInfoList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(orderRepository.findAllByUser_Id(userId));
 
-        return ReadUserOrderHistoryListRes.of(readUserOrderHistoryResList);
+        return ReadUserOrderHistoryListRes.of(userOrderHistoryInfoList);
     }
 
     @Override
     public ReadUserOrderHistoryListRes readOrderHistoryAfterDate(int userId, String date) {
-        List<ReadUserOrderHistoryRes> readUserOrderHistoryResList =
+        List<UserOrderHistoryInfo> userOrderHistoryInfoList =
                 EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(
                                 orderRepository.findAllByUser_IdAndCreatedAtAfter(
                                         userId,
                                         date));
 
-        return ReadUserOrderHistoryListRes.of(readUserOrderHistoryResList);
+        return ReadUserOrderHistoryListRes.of(userOrderHistoryInfoList);
     }
 
     @Override
-    public ReadOrderAmountRes readOrderAmountRes(int price, int count, int shippingFee) {
+    public OrderAmountInfo readOrderAmountRes(int price, int count, int shippingFee) {
         int productAmount = calculateProductAmount(price, count);
         int totalAmount = calculateTotalAmount(productAmount, shippingFee);
 
-        return ReadOrderAmountRes.of(totalAmount, productAmount, shippingFee);
+        return OrderAmountInfo.of(totalAmount, productAmount, shippingFee);
     }
 
     @Override

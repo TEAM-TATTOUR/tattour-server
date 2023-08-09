@@ -1,7 +1,7 @@
 package org.tattour.server.domain.sticker.provider;
 
 import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 
 public interface StickerProvider {
 

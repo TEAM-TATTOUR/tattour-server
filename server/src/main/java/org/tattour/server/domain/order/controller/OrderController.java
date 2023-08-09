@@ -19,19 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
-import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
+import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
 import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
 import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;
 import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
-import org.tattour.server.domain.point.facade.impl.PointFacadeImpl;
-import org.tattour.server.domain.user.facade.impl.UserFacadeImpl;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessResponse;
 import org.tattour.server.global.dto.SuccessType;
-import org.tattour.server.infra.discord.service.DiscordMessageService;
 
 @RestController
 @RequestMapping("api/v1/order")
@@ -47,7 +44,7 @@ public class OrderController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = GetOrderSheetRes.class))),
+					content = @Content(schema = @Schema(implementation = ReadOrderSheetRes.class))),
 			@ApiResponse(
 					responseCode = "400",
 					description = "잘못된 요청입니다.",

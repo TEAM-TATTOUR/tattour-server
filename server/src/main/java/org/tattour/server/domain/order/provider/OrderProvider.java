@@ -1,7 +1,7 @@
 package org.tattour.server.domain.order.provider;
 
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderAmountRes;
+import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 
@@ -20,7 +20,7 @@ public interface OrderProvider {
     ReadUserOrderHistoryListRes readOrderHistoryAfterDate(int userId, String date);
 
     // 결제 금액정보 가져오기
-    ReadOrderAmountRes readOrderAmountRes(int price, int count, int shippingFee);
+    OrderAmountInfo readOrderAmountRes(int price, int count, int shippingFee);
 
     // 상품 금액 계산
     int calculateProductAmount(int price, int count);

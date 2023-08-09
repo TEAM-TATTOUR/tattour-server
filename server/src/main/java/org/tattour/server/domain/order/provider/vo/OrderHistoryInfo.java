@@ -1,25 +1,17 @@
-package org.tattour.server.domain.order.facade.dto.response;
+package org.tattour.server.domain.order.provider.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Schema(description = "user 결제 내역 Response")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReadUserOrderHistoryRes {
+public class OrderHistoryInfo {
 
-    @Schema(description = "결제 내역 id")
     private int id;
-
-    @Schema(description = "상품명", example = "포효하는 호랑이")
     private String productName;
-
-    @Schema(description = "상품 크기", example = "")
     private String productSize;
-
     private String productImageUrl;
     private int productAmount;
     private int productCount;

@@ -1,4 +1,4 @@
-package org.tattour.server.domain.point.provider.dto.response;
+package org.tattour.server.domain.point.provider.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class GetPointChargeRequestRes {
+public class PointChargeRequestInfo {
 
     @Schema(description = "포인트 충전 요청 id")
     private int id;

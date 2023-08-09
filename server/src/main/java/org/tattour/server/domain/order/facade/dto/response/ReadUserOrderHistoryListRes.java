@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 
 @Schema(description = "user 결제 내역 리스트 Response")
 @Getter
@@ -14,10 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReadUserOrderHistoryListRes {
 
-    List<ReadUserOrderHistoryRes> readUserOrderHistoryResList;
+    List<UserOrderHistoryInfo> userOrderHistoryInfoList;
 
     public static ReadUserOrderHistoryListRes of(
-            List<ReadUserOrderHistoryRes> readUserOrderHistoryResList) {
-        return new ReadUserOrderHistoryListRes(readUserOrderHistoryResList);
+            List<UserOrderHistoryInfo> userOrderHistoryInfoList) {
+        return new ReadUserOrderHistoryListRes(userOrderHistoryInfoList);
     }
 }
