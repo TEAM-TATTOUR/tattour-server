@@ -1,7 +1,7 @@
-name: Tattour-Server CI
+name: Tattour-Server-Dev CI
 on:
   pull_request:
-    branches: [ "main", "production" ]
+    branches: [ "dev" ]
 
 permissions:
   contents: read
@@ -25,7 +25,7 @@ jobs:
         #mkdir ./server/src/main/resources
         cd ./server/src/main/resources
         touch ./application.yaml
-        echo "${{ secrets.TATTOUR_PROD_APPLICATION }}" >> ./application.yaml
+        echo "${{ secrets.TATTOUR_DEV_APPLICATION }}" >> ./application.yaml
         cat ./application.yaml
       shell: bash
 

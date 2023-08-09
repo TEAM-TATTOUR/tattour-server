@@ -1,7 +1,7 @@
-name: Tattour-Server CD
+name: Tattour-Server-Dev CD
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 env:
   S3_BUCKET_NAME: tattour-storage
@@ -27,7 +27,7 @@ jobs:
         #mkdir ./server/src/main/resources
         cd ./server/src/main/resources
         touch ./application.yaml
-        echo "${{ secrets.TATTOUR_PROD_APPLICATION }}" >> ./application.yaml
+        echo "${{ secrets.TATTOUR_DEV_APPLICATION }}" >> ./application.yaml
         cat ./application.yaml
       shell: bash
       
