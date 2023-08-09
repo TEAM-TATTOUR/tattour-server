@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @OpenAPIDefinition(servers = {
 //        @Server(url = "https://api.tattour.shop", description = "Default Server URL")})
-        @Server(url = "http://dev.tattour.shop", description = "Default Server URL")})
+        @Server(url = "https://dev.tattour.shop", description = "Default Server URL")})
 public class ServerApplication {
 
     public static void main(String[] args) {
