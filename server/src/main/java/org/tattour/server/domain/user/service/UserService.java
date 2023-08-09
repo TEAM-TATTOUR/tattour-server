@@ -1,13 +1,10 @@
 package org.tattour.server.domain.user.service;
 
-import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 public interface UserService {
-
-    // 소셜 유저 생성
-    User saveSocialUser(SaveUserReq req);
 
     // 유저 저장
     void saveUser(User user);

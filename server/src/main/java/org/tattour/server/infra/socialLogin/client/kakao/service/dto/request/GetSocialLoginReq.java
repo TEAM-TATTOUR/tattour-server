@@ -6,11 +6,11 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SocialLoginRequest {
+public class GetSocialLoginReq {
 
     private String code;
 
-    public static SocialLoginRequest of(String code) {
-        return new SocialLoginRequest(code);
+    public static GetSocialLoginReq of(String code) {
+        return new GetSocialLoginReq(code);
     }
 }

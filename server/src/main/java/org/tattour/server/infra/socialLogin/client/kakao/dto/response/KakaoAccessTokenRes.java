@@ -9,16 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoAccessTokenResponse {
+public class KakaoAccessTokenRes extends SocialAccessTokenRes {
 
-    private String accessToken;
-    private String refreshToken;
-
-    public static KakaoAccessTokenResponse of(String accessToken, String refreshToken) {
-        return new KakaoAccessTokenResponse(accessToken, refreshToken);
+    private KakaoAccessTokenRes(String accessToken, String refreshToken) {
+        super(accessToken, refreshToken);
+    }
+    public static KakaoAccessTokenRes of(String accessToken, String refreshToken) {
+        return new KakaoAccessTokenRes(accessToken, refreshToken);
     }
 }

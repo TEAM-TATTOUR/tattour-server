@@ -7,14 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.tattour.server.infra.socialLogin.client.kakao.service.vo.SocialLoginInfo;
 
 @ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoUserRes {
-
-    private Long id;
+public class KakaoUserInfoRes extends SocialUserInfoRes {
 //    private KakaoAccount kakaoAccount;
+    private KakaoUserInfoRes(Long id) {
+        super(id);
+    }
+    public static KakaoUserInfoRes of(Long id) {
+        return new KakaoUserInfoRes(id);
+    }
 }

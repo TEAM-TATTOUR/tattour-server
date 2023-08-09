@@ -7,9 +7,9 @@ import org.tattour.server.domain.user.exception.NotFoundUserException;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
-import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +17,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepositoryImpl userRepository;
     private final UserProviderImpl userProvider;
-
-    @Override
-    @Transactional
-    public User saveSocialUser(SaveUserReq req) {
-        return userRepository.save(User.of(req));
-    }
 
     @Override
     public void saveUser(User user) {

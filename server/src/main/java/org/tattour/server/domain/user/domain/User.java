@@ -12,12 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
 import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
@@ -67,9 +65,18 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public static User of(SaveUserReq req) {
-        return new User(UserRole.USER, req.getKakaoId(), req.getSocialPlatform(),
-                req.getAccessToken(), req.getRefreshToken());
+    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform) {
+        this.userRole = userRole;
+        this.kakaoId = kakaoId;
+        this.socialPlatform = socialPlatform;
+    }
+
+    public static User of(Long kakaoId, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
+        return new User(UserRole.USER, kakaoId, SocialPlatform.KAKAO, accessToken, refreshToken);
+    }
+
+    public static User of(Long kakaoId, SocialPlatform socialPlatform) {
+        return new User(UserRole.USER, kakaoId, SocialPlatform.KAKAO);
     }
 
     public void setUserInfo(UpdateUserInfoReq req) {
