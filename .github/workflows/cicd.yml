@@ -1,4 +1,4 @@
-name: Tattour-Server CD
+name: Tattour-Server- CD
 on:
   push:
     branches: [ main ]
