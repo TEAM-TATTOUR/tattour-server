@@ -1,7 +1,7 @@
 name: Tattour-Server-Dev CD
 on:
   push:
-    branches: [ dev ]
+    branches: [ "dev" ]
 
 env:
   S3_BUCKET_NAME: tattour-storage
