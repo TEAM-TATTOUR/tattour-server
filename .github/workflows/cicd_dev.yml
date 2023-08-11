@@ -50,7 +50,7 @@ jobs:
       run: cp appspec.yml ./deploy
 
     - name: Copy script
-      run: cp ./scripts/*.sh ./deploy
+      run: cp ./scripts/deploy_dev.sh ./deploy
       
     - name: Make zip file
       run: zip -r ./tattour_server_dev.zip ./deploy
