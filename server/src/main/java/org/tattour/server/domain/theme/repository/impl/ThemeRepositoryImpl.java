@@ -1,13 +1,9 @@
 package org.tattour.server.domain.theme.repository.impl;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 import org.tattour.server.domain.theme.domain.Theme;
+import org.tattour.server.domain.theme.repository.ThemeRepository;
 
-public interface ThemeRepositoryImpl extends JpaRepository<Theme, Integer> {
+public interface ThemeRepositoryImpl extends Repository<Theme, Integer>, ThemeRepository {
 
-    Optional<Theme> findByName(String name);
-
-    List<Theme> findByNameLike(String name);
 }

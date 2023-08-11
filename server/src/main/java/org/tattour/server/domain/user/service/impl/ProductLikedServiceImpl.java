@@ -3,8 +3,7 @@ package org.tattour.server.domain.user.service.impl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
-import org.tattour.server.domain.sticker.repository.impl.StickerRepositoryImpl;
+import org.tattour.server.domain.sticker.provider.StickerProvider;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
@@ -20,13 +19,12 @@ public class ProductLikedServiceImpl implements ProductLikedService {
 	private final ProductLikedRepositoryImpl productLikedRepository;
 	private final ProductLikedProviderImpl productLikedProvider;
 	private final UserProviderImpl userProvider;
-	private final StickerRepositoryImpl stickerRepository;
+	private final StickerProvider stickerProvider;
 
 	@Override
 	public void saveProductLiked(int userId, int stickerId) {
 		User user = userProvider.readUserById(userId);
-		Sticker sticker = stickerRepository.findById(stickerId)
-				.orElseThrow(NotFoundStickerException::new);
+		Sticker sticker = stickerProvider.getById(stickerId);
 		productLikedRepository.save(ProductLiked.of(user, sticker));
 	}
 

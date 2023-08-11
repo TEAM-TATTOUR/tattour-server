@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
-import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.custom.facade.dto.request.ReadCustomSummaryRes;
+import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
+import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.domain.UserPointLog;
@@ -117,13 +118,13 @@ public class PointServiceImpl implements PointService {
                                 baseDate);
 
                 // 커스텀 신청내역
-                CustomApplySummaryInfoList customApplySummaryInfoList =
+                CreateCustomSummaryListRes createCustomSummaryListRes =
                         customProvider.getCustomApplySummaryInfoList(
-                                GetCustomSummaryInfo.of(req.getUserId(), baseDate));
+                            ReadCustomSummaryRes.of(req.getUserId(), baseDate));
 
                 return ConfirmPointChargeResponseDto.of(getUserInfoDto,
                         readPointChargeRequestListRes, readUserOrderHistoryListRes,
-                        customApplySummaryInfoList);
+                        createCustomSummaryListRes);
             }
         } else {
             // 이미 처리된 요청이면

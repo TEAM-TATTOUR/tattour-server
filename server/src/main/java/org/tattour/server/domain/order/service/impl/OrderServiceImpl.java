@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order saveOrder(CreateOrderRequest req) {
         User user = userProvider.readUserById(req.getUserId());
-        Sticker sticker = stickerProvider.getStickerById(req.getStickerId());
+        Sticker sticker = stickerProvider.getById(req.getStickerId());
         Order order = Order.of(
                 sticker.getName(),
                 sticker.getSize(),

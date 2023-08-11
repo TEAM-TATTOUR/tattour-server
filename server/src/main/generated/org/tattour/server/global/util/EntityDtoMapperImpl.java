@@ -6,7 +6,7 @@ import javax.annotation.processing.Generated;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfo;
+import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
@@ -21,7 +21,7 @@ import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-09T23:44:26+0900",
+    date = "2023-08-11T19:26:12+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
 )
 @Component
@@ -262,29 +262,29 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public CustomApplySummaryInfo toCustomApplySummaryInfo(Custom custom) {
+    public CreateCustomSummaryRes toCustomApplySummaryInfo(Custom custom) {
         if ( custom == null ) {
             return null;
         }
 
-        CustomApplySummaryInfo customApplySummaryInfo = new CustomApplySummaryInfo();
+        CreateCustomSummaryRes createCustomSummaryRes = new CreateCustomSummaryRes();
 
-        customApplySummaryInfo.setId( custom.getId() );
-        customApplySummaryInfo.setMainImageUrl( custom.getMainImageUrl() );
-        customApplySummaryInfo.setName( custom.getName() );
-        customApplySummaryInfo.setDescription( custom.getDescription() );
-        customApplySummaryInfo.setCreatedAt( custom.getCreatedAt() );
+        createCustomSummaryRes.setId( custom.getId() );
+        createCustomSummaryRes.setMainImageUrl( custom.getMainImageUrl() );
+        createCustomSummaryRes.setName( custom.getName() );
+        createCustomSummaryRes.setDescription( custom.getDescription() );
+        createCustomSummaryRes.setCreatedAt( custom.getCreatedAt() );
 
-        return customApplySummaryInfo;
+        return createCustomSummaryRes;
     }
 
     @Override
-    public List<CustomApplySummaryInfo> toCustomApplySummaryInfoList(List<Custom> customList) {
+    public List<CreateCustomSummaryRes> toCustomApplySummaryInfoList(List<Custom> customList) {
         if ( customList == null ) {
             return null;
         }
 
-        List<CustomApplySummaryInfo> list = new ArrayList<CustomApplySummaryInfo>( customList.size() );
+        List<CreateCustomSummaryRes> list = new ArrayList<CreateCustomSummaryRes>( customList.size() );
         for ( Custom custom : customList ) {
             list.add( toCustomApplySummaryInfo( custom ) );
         }

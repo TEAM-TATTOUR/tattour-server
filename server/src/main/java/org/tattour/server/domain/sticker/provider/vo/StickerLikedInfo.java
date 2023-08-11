@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+// Todo: 리펙토링 필요
 @Getter
 @Setter
 @AllArgsConstructor

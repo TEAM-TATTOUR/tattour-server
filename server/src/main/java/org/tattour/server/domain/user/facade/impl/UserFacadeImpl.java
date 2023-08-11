@@ -2,8 +2,6 @@ package org.tattour.server.domain.user.facade.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
-import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.facade.UserFacade;
@@ -38,7 +36,6 @@ public class UserFacadeImpl implements UserFacade {
     private final SocialServiceProvider socialServiceProvider;
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
-    private final CustomProviderImpl customProvider;
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final ProductLikedServiceImpl productLikedService;
     private final ProductLikedProviderImpl productLikedProvider;

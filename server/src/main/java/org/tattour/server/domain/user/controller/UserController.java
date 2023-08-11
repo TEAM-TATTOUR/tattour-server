@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
+import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
 import org.tattour.server.domain.point.facade.impl.PointFacadeImpl;
 import org.tattour.server.domain.point.facade.dto.request.CreatePointChargeRequestReq;
-import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
@@ -383,7 +383,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomSummaryListRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -391,7 +391,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomCompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customProvider.getCustomSummaryCompleteListByUserId(userId);
+        ReadCustomSummaryListRes response = customProvider.getCustomSummaryCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -400,7 +400,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomSummaryListRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -408,7 +408,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomIncompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customProvider.getCustomSummaryInCompleteListByUserId(userId);
+        ReadCustomSummaryListRes response = customProvider.getCustomSummaryInCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -417,7 +417,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -427,7 +427,7 @@ public class UserController {
             @PathVariable(value = "customId") Integer customId
     ) {
         Custom custom = customProvider.getCustomById(customId, userId);
-        CustomInfo response = CustomInfo.of(custom);
+        ReadCustomRes response = ReadCustomRes.from(custom);
         return BaseResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
     }
 }

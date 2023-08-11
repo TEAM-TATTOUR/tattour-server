@@ -91,5 +91,4 @@ public class OrderProviderImpl implements OrderProvider {
     public int calculateTotalAmount(int productAmount, int shippingFee) {
         return productAmount + shippingFee;
     }
-
 }

@@ -167,7 +167,7 @@ public class Custom extends AuditingTimeEntity {
         }
     }
 
-    public static Custom from(
+    public static Custom of(
             User user,
             Boolean haveDesign,
             String name,

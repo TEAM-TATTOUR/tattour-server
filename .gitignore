@@ -39,3 +39,9 @@ out/
 ### application.yml ###
 *.yml
 *.yaml
+
+### log ###
+logs
+
+### script file ###
+sh

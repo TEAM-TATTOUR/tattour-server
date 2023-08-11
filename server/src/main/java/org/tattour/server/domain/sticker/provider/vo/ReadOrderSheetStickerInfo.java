@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+// Todo: 리펙토링 필요
 @Schema(description = "타투 스티커 정보")
 @Getter
 @Setter

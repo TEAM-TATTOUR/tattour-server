@@ -31,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://api.tattour.shop",
                         "http://api.tattour.shop",
                         "https://tattour.kr",
+                        "https://dev.tattour.shop",
                         "http://localhost:8080",
                         "http://localhost:5173",
                         "http://127.0.0.1:5173")

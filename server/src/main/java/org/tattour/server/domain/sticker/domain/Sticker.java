@@ -93,7 +93,7 @@ public class Sticker extends AuditingTimeEntity {
         this.discountPrice = this.price * (100 - discount.getDiscountRate()) / 100;
     }
 
-    public static Sticker from(
+    public static Sticker of(
             String name,
             String description,
             String mainImageUrl,
