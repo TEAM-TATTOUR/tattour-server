@@ -2,7 +2,7 @@ package org.tattour.server.domain.sticker.provider;
 
 import java.util.List;
 import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerRes;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 
 public interface StickerProvider {
 
@@ -18,5 +18,5 @@ public interface StickerProvider {
     List<Sticker> getAllByNameLike(String name);
 
     // 결제 시트에서 스티커 정보 가져오기
-    ReadOrderSheetStickerRes getOrderSheetStickerInfo(Integer stickerId);
+    ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId);
 }

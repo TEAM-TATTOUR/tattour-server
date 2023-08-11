@@ -5,29 +5,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeRequestReq;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.custom.facade.dto.request.ReadCustomSummaryRes;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
 import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.domain.UserPointLog;
-import org.tattour.server.domain.point.provider.dto.request.GetPointChargeRequestAfterDate;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImpl;
 import org.tattour.server.domain.point.service.PointService;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
 import org.tattour.server.domain.point.service.dto.request.PatchPointChangeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -49,26 +44,27 @@ public class PointServiceImpl implements PointService {
 
     @Override
     @Transactional
-    public void savePointChargeRequest(SavePointChargeRequestReq req) {
-        User user = userProvider.getUserById(req.getUserId());
-        PointChargeRequest pointChargeRequest = PointChargeRequest.of(req.getChargeAmount(), user);
+    public void createPointChargeRequest(int userId, int chargeAmount) {
+        User user = userProvider.readUserById(userId);
 
+        PointChargeRequest pointChargeRequest = PointChargeRequest.of(user, chargeAmount);
         pointChargeRequestRepository.save(pointChargeRequest);
     }
 
     @Override
     @Transactional
-    public void savePointLog(SaveUserPointLogReq req) {
-        User user = userProvider.getUserById(req.getUserId());
+    public void createPointLog(String title, String content, int amount, int resultPoint,
+            int userId) {
+        User user = userProvider.readUserById(userId);
         UserPointLog userPointLog =
                 UserPointLog.of(
-                        req.getTitle(),
-                        req.getContent(),
-                        req.getAmount(),
-                        req.getResultPoint(),
+                        title,
+                        content,
+                        amount,
+                        resultPoint,
                         user);
-        discordMessageService.sendPointChargeLogMessage(user, req.getAmount());
         userPointLogRepository.save(userPointLog);
+        discordMessageService.sendPointChargeLogMessage(user, amount);
     }
 
     @Override
@@ -82,6 +78,7 @@ public class PointServiceImpl implements PointService {
         pointChargeRequestRepository.save(pointChargeRequest);
     }
 
+    // TODO : 리팩토링 필수!!
     @Override
     @Transactional
     public ConfirmPointChargeResponseDto confirmPointChargeRequest(
@@ -103,22 +100,22 @@ public class PointServiceImpl implements PointService {
                 String baseDate = pointChargeRequest.getCreatedAt();
 
                 // 유저 정보
-                User user = userProvider.getUserById(req.getUserId());
+                User user = userProvider.readUserById(req.getUserId());
                 GetUserInfoDto getUserInfoDto = EntityDtoMapper.INSTANCE.toGetUserInfoDto(user);
 
                 // 포인트 충전 내역
-                GetPointChargeRequestListRes getPointChargeRequestListRes =
-                        pointProvider.getPointChargeRequestAfterDate(
-                                GetPointChargeRequestAfterDate.of(req.getUserId(), baseDate));
-                getPointChargeRequestListRes
-                        .getGetPointChargeRequestResList()
+                ReadPointChargeRequestListRes readPointChargeRequestListRes =
+                        pointProvider.getPointChargeRequestAfterDate(req.getUserId(), baseDate);
+                readPointChargeRequestListRes
+                        .getPointChargeRequestInfoList()
                         .add(0, EntityDtoMapper.INSTANCE.toGetPointChargeRequestRes(
                                 pointChargeRequest));
 
                 // 구매 내역
-                GetUserOrderHistoryListRes getUserOrderHistoryListRes =
-                        orderProvider.getOrderHistoryAfterDate(
-                                GetOrderHistoryAfterDateReq.of(req.getUserId(), baseDate));
+                ReadUserOrderHistoryListRes readUserOrderHistoryListRes =
+                        orderProvider.readOrderHistoryAfterDate(
+                                req.getUserId(),
+                                baseDate);
 
                 // 커스텀 신청내역
                 CreateCustomSummaryListRes createCustomSummaryListRes =
@@ -126,7 +123,7 @@ public class PointServiceImpl implements PointService {
                             ReadCustomSummaryRes.of(req.getUserId(), baseDate));
 
                 return ConfirmPointChargeResponseDto.of(getUserInfoDto,
-                        getPointChargeRequestListRes, getUserOrderHistoryListRes,
+                        readPointChargeRequestListRes, readUserOrderHistoryListRes,
                         createCustomSummaryListRes);
             }
         } else {
@@ -156,15 +153,15 @@ public class PointServiceImpl implements PointService {
                                 !Objects.isNull(req.getTransferredAmount()), false, false, true));
 
                 // 포인트 로그 남기기
-                User user = userProvider.getUserById(req.getUserId());
+                User user = userProvider.readUserById(req.getUserId());
                 int amount = pointChargeRequest.getChargeAmount();
                 int resultPoint = user.getPoint() - amount;
 
-                savePointLog(SaveUserPointLogReq.of("충전 취소", req.getReason(),
-                        -pointChargeRequest.getChargeAmount(), resultPoint, user.getId()));
+                createPointLog("충전 취소", req.getReason(),
+                        -pointChargeRequest.getChargeAmount(), resultPoint, user.getId());
 
                 // 유저 포인트 처리
-                userService.updateUserPoint(UpdateUserPointReq.of(user.getId(), -amount));
+                userService.updateUserPoint(user.getId(), -amount);
             }
         }
     }

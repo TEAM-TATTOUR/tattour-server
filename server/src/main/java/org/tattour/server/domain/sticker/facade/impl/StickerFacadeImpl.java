@@ -29,6 +29,7 @@ import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.provider.StyleProvider;
 import org.tattour.server.domain.theme.domain.Theme;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
+import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.service.ProductLikedService;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
@@ -66,7 +67,7 @@ public class StickerFacadeImpl implements StickerFacade {
 		if (Objects.isNull(userId)) {
 			return false;
 		}
-		return productLikedService.getProductLiked(userId, stickerId);
+		return productLikedService.checkProductLikedExists(userId, stickerId);
 	}
 
 	// Todo : 위치 옮기기

@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 
 @Schema(description = "송금 금액이 다를 경우 user 정보 Response")
@@ -17,18 +17,18 @@ public class ConfirmPointChargeResponseDto {
     // 유저 정보
     GetUserInfoDto getUserInfoDto;
     // 포인트 충전 내역
-    GetPointChargeRequestListRes getPointChargeRequestListRes;
+    ReadPointChargeRequestListRes readPointChargeRequestListRes;
     // 구매 내역
-    GetUserOrderHistoryListRes orderHistoryListRes;
+    ReadUserOrderHistoryListRes orderHistoryListRes;
     // 커스텀 신청내역
     CreateCustomSummaryListRes createCustomSummaryListRes;
 
     public static ConfirmPointChargeResponseDto of(
             GetUserInfoDto getUserInfoDto,
-            GetPointChargeRequestListRes getPointChargeRequestListRes,
-            GetUserOrderHistoryListRes getUserOrderHistoryListRes,
-            CreateCustomSummaryListRes createCustomSummaryListRes) {
-        return new ConfirmPointChargeResponseDto(getUserInfoDto, getPointChargeRequestListRes,
-                getUserOrderHistoryListRes, createCustomSummaryListRes);
+            ReadPointChargeRequestListRes readPointChargeRequestListRes,
+            ReadUserOrderHistoryListRes readUserOrderHistoryListRes,
+            CreateCustomSummaryListRes customApplySummaryInfoList) {
+        return new ConfirmPointChargeResponseDto(getUserInfoDto, readPointChargeRequestListRes,
+                readUserOrderHistoryListRes, customApplySummaryInfoList);
     }
 }

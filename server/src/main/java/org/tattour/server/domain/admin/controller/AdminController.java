@@ -39,17 +39,16 @@ import org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq;
 import org.tattour.server.domain.order.controller.dto.request.PatchOrderStatusReq;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
-import org.tattour.server.domain.point.provider.dto.request.GetPointLogListReq;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointLogListRes;
 import org.tattour.server.domain.point.provider.impl.PointProviderImpl;
 import org.tattour.server.domain.point.service.dto.request.ConfirmPointChargeRequestDto;
-import org.tattour.server.domain.order.service.dto.request.UpdateOrderStatusReq;
+import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.point.service.dto.response.ConfirmPointChargeResponseDto;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.facade.StickerFacade;
 import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerRes;
-import org.tattour.server.domain.user.controller.dto.response.LoginRes;
+import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.config.jwt.JwtService;
@@ -82,7 +81,7 @@ public class AdminController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = LoginRes.class))),
+					content = @Content(schema = @Schema(implementation = PostLoginRes.class))),
 			@ApiResponse(
 					responseCode = "400",
 					description = "잘못된 요청입니다.",
@@ -97,7 +96,7 @@ public class AdminController {
 			@Parameter(description = "페이지 넘버", required = true) @RequestParam("page") int page
 	) {
 		return BaseResponse.success(SuccessType.GET_SUCCESS,
-				orderProvider.getOrderHistoryByPage(page));
+				orderProvider.readOrderHistoryByPage(page));
 	}
 
 	@Operation(summary = "포인트 충전 신청 내역 불러오기", description = "userId, 완료 여부를 기준으로 포인트 신청 내역 조회")
@@ -105,7 +104,7 @@ public class AdminController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "조회에 성공했습니다.",
-					content = @Content(schema = @Schema(implementation = GetPointChargeRequestListRes.class))),
+					content = @Content(schema = @Schema(implementation = ReadPointChargeRequestListRes.class))),
 			@ApiResponse(
 					responseCode = "400",
 					description = "잘못된 요청입니다.",
@@ -219,7 +218,7 @@ public class AdminController {
             @ApiResponse(
                     responseCode = "200",
                     description = "포인트 로그 조회에 성공했습니다.",
-                    content = @Content(schema = @Schema(implementation = GetPointLogListRes.class))),
+                    content = @Content(schema = @Schema(implementation = ReadPointLogListRes.class))),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청입니다.",
@@ -236,7 +235,7 @@ public class AdminController {
     ) {
         return BaseResponse.success(
                 SuccessType.READ_POINT_LOG_SUCCESS,
-                pointProvider.getPointLog(GetPointLogListReq.of(userId, title)));
+                pointProvider.getPointLog(userId, title));
     }
 
 
@@ -358,7 +357,7 @@ public class AdminController {
 	@GetMapping("/index")
 	public ModelAndView displayArticle(Map<String, Object> model) {
 
-		List<User> users = userProvider.getAllUsers();
+		List<User> users = userProvider.readAllUsers();
 
 		model.put("users", users);
 

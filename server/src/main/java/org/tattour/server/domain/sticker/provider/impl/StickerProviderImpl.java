@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
-import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerRes;
 import org.tattour.server.domain.sticker.repository.StickerRepository;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -42,14 +42,13 @@ public class StickerProviderImpl implements StickerProvider {
 		return stickerRepository.findByNameContaining(name);
 	}
 
-
 	// Todo : 리펙토링하기
 	@Override
-	public ReadOrderSheetStickerRes getOrderSheetStickerInfo(Integer stickerId) {
+	public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId) {
 		Sticker sticker = getById(stickerId);
 		Integer discountedPrice = getDiscountPrice(sticker);
 
-		return ReadOrderSheetStickerRes.of(
+		return ReadOrderSheetStickerInfo.of(
 			sticker.getMainImageUrl(),
 			sticker.getName(),
 			sticker.getPrice(),

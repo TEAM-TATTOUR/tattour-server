@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import org.tattour.server.domain.point.dao.PointDao;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.provider.PointProvider;
-import org.tattour.server.domain.point.provider.dto.request.GetPointChargeRequestAfterDate;
-import org.tattour.server.domain.point.provider.dto.request.GetPointLogListReq;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointLogListRes;
+import org.tattour.server.domain.point.provider.vo.PointLogInfo;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -31,27 +29,24 @@ public class PointProviderImpl implements PointProvider {
     }
 
     @Override
-    public GetPointChargeRequestListRes getPointChargeRequestAfterDate(
-            GetPointChargeRequestAfterDate req) {
-        return GetPointChargeRequestListRes.of(
+    public ReadPointChargeRequestListRes getPointChargeRequestAfterDate(int userId, String date) {
+        return ReadPointChargeRequestListRes.of(
                 EntityDtoMapper.INSTANCE.toGetPointChargeRequestResList(
                         pointChargeRequestRepository
-                                .findPointChargeRequestByUser_IdAndCreatedAtAfter(req.getUserId(),
-                                        req.getDate())));
+                                .findPointChargeRequestByUser_IdAndCreatedAtAfter(userId, date)));
     }
 
     @Override
-    public GetPointChargeRequestListRes getAllPointChargeRequest(Integer userId,
+    public ReadPointChargeRequestListRes getAllPointChargeRequest(Integer userId,
             Boolean isCompleted) {
-        return GetPointChargeRequestListRes.of(
+        return ReadPointChargeRequestListRes.of(
                 pointDao.getPointChargeRequestResList(userId, isCompleted));
     }
 
     @Override
-    public GetPointLogListRes getPointLog(GetPointLogListReq req) {
-        List<GetPointLogRes> userPointLogList = pointDao.getPointLogResList(req.getUserId(),
-                req.getTitle());
+    public ReadPointLogListRes getPointLog(Integer userId, String title) {
+        List<PointLogInfo> userPointLogList = pointDao.getPointLogResList(userId, title);
 
-        return GetPointLogListRes.of(userPointLogList);
+        return ReadPointLogListRes.of(userPointLogList);
     }
 }

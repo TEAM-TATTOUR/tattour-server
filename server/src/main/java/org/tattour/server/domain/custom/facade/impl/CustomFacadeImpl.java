@@ -24,7 +24,6 @@ import org.tattour.server.domain.style.provider.StyleProvider;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.discord.service.DiscordMessageService;
@@ -56,7 +55,7 @@ public class CustomFacadeImpl implements CustomFacade {
 		if (user.getPoint() < customPoint) {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
-		Integer point = userService.updateUserPoint(UpdateUserPointReq.of(userId, -customPoint));
+		Integer point = userService.updateUserPoint(userId, -customPoint);
 		Custom custom = Custom.of(
 				user,
 				haveDesign,
@@ -64,13 +63,12 @@ public class CustomFacadeImpl implements CustomFacade {
 				defaultImageUrl,
 				false,
 				0);
-		pointService.savePointLog(
-			SaveUserPointLogReq.of("커스텀 신청",
+		pointService.createPointLog(
+				"커스텀 신청",
 				"커스텀 스티커 신청",
 				customPoint,
 				user.getPoint(),
-				userId)
-		);
+				userId);
 		customService.save(custom);
 		return custom.getId();
 	}

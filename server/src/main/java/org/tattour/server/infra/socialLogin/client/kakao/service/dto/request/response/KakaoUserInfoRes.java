@@ -1,0 +1,17 @@
+package org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.ToString;
+
+@ToString
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class KakaoUserInfoRes extends SocialUserInfoRes {
+//    private KakaoAccount kakaoAccount;
+    private KakaoUserInfoRes(Long id) {
+        super(id);
+    }
+    public static KakaoUserInfoRes of(Long id) {
+        return new KakaoUserInfoRes(id);
+    }
+}

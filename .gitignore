@@ -40,5 +40,8 @@ out/
 *.yml
 *.yaml
 
-### dev - ServerApplication.java ###
-ServerApplication.java
+### log ###
+logs
+
+### script file ###
+sh

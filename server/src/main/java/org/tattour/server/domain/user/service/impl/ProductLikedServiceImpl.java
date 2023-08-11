@@ -7,7 +7,6 @@ import org.tattour.server.domain.sticker.provider.StickerProvider;
 import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
-import org.tattour.server.domain.user.provider.dto.request.SaveProductLikedReq;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
@@ -23,21 +22,21 @@ public class ProductLikedServiceImpl implements ProductLikedService {
 	private final StickerProvider stickerProvider;
 
 	@Override
-	public void saveProductLiked(SaveProductLikedReq req) {
-		User user = userProvider.getUserById(req.getUserId());
-		Sticker sticker = stickerProvider.getById(req.getStickerId());
+	public void saveProductLiked(int userId, int stickerId) {
+		User user = userProvider.readUserById(userId);
+		Sticker sticker = stickerProvider.getById(stickerId);
 		productLikedRepository.save(ProductLiked.of(user, sticker));
 	}
 
 	@Override
-	public void deleteProductLiked(Integer userId, Integer stickerId) {
-		ProductLiked productLiked = productLikedProvider.getProductLikedByUserIdAndStickerId(userId, stickerId);
+	public void removeProductLiked(int userId, int stickerId) {
+		ProductLiked productLiked = productLikedProvider.readProductLikedByUserIdAndStickerId(userId, stickerId);
 
 		productLikedRepository.delete(productLiked);
 	}
 
 	@Override
-	public Boolean getProductLiked(Integer userId, Integer stickerId) {
+	public Boolean checkProductLikedExists(Integer userId, Integer stickerId) {
 		Optional<ProductLiked> productLiked = productLikedRepository.findProductLikedByUser_IdAndSticker_Id(
 				userId, stickerId
 		);
