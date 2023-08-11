@@ -35,7 +35,7 @@ public class CustomTheme {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    public static CustomTheme from(Custom custom, Theme theme) {
+    public static CustomTheme of(Custom custom, Theme theme) {
         return CustomTheme.builder()
                 .custom(custom)
                 .theme(theme)

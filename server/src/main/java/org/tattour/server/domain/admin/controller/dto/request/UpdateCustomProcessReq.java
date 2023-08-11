@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.domain.custom.domain.CustomProcess;
-import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
+import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomInfo;
 
 @Getter
 @NoArgsConstructor
@@ -22,6 +22,6 @@ public class UpdateCustomProcessReq {
 
 	public UpdateCustomInfo newUpdateCustomInfo(Integer userId) {
 		CustomProcess customProcess = CustomProcess.getProcess(process);
-		return UpdateCustomInfo.from(userId, customId, customProcess);
+		return UpdateCustomInfo.of(userId, customId, customProcess);
 	}
 }

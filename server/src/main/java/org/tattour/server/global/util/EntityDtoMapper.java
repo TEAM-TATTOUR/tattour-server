@@ -6,13 +6,12 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfo;
+import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryRes;
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryRes;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
 import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestRes;
-import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.dto.response.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
@@ -67,7 +66,7 @@ public interface EntityDtoMapper {
             List<PointChargeRequest> pointChargeRequestList);
 
     // Custom
-    CustomApplySummaryInfo toCustomApplySummaryInfo(Custom custom);
+    CreateCustomSummaryRes toCustomApplySummaryInfo(Custom custom);
 
-    List<CustomApplySummaryInfo> toCustomApplySummaryInfoList(List<Custom> customList);
+    List<CreateCustomSummaryRes> toCustomApplySummaryInfoList(List<Custom> customList);
 }

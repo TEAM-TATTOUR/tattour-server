@@ -1,13 +1,11 @@
 package org.tattour.server.domain.style.repository.impl;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 import org.tattour.server.domain.style.domain.Style;
+import org.tattour.server.domain.style.repository.StyleRepository;
 
-public interface StyleRepositoryImpl extends JpaRepository<Style, Integer> {
+public interface StyleRepositoryImpl extends
+		Repository<Style, Integer>,
+		StyleRepository {
 
-    Optional<Style> findByName(String name);
-
-    List<Style> findByNameLike(String name);
 }

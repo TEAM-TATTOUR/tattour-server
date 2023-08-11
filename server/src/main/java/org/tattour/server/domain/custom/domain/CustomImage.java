@@ -34,7 +34,7 @@ public class CustomImage {
     @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
 
-    public static CustomImage from(String imageUrl, Custom custom) {
+    public static CustomImage of(String imageUrl, Custom custom) {
         return CustomImage.builder()
                 .imageUrl(imageUrl)
                 .custom(custom)

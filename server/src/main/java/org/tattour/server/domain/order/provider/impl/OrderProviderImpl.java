@@ -20,7 +20,7 @@ import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistory
 import org.tattour.server.domain.order.provider.dto.response.GetUserOrderPointRes;
 import org.tattour.server.domain.order.provider.dto.response.PageInfoRes;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
-import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.dto.response.ReadOrderSheetStickerRes;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.exception.BusinessException;
@@ -44,17 +44,17 @@ public class OrderProviderImpl implements OrderProvider {
     @Override
     public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req) {
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        GetOrderSheetStickerInfo getOrderSheetStickerInfo =
+        ReadOrderSheetStickerRes readOrderSheetStickerRes =
                 stickerProvider.getOrderSheetStickerInfo(req.getStickerId());
-        getOrderSheetStickerInfo.setCount(req.getCount());
+        readOrderSheetStickerRes.setCount(req.getCount());
 
         // 결제 금액 정보
         // 총 결제 금액, 총 상품 금액, 배송비
         int productAmount;
-        if(!Objects.isNull(getOrderSheetStickerInfo.getDiscountedPrice()))
-            productAmount = getOrderSheetStickerInfo.getDiscountedPrice() * req.getCount();
+        if(!Objects.isNull(readOrderSheetStickerRes.getDiscountedPrice()))
+            productAmount = readOrderSheetStickerRes.getDiscountedPrice() * req.getCount();
         else
-            productAmount = getOrderSheetStickerInfo.getPrice() * req.getCount();
+            productAmount = readOrderSheetStickerRes.getPrice() * req.getCount();
 
         int totalAmount = productAmount + req.getShippingFee();
 
@@ -80,7 +80,7 @@ public class OrderProviderImpl implements OrderProvider {
         GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
                 isLacked);
 
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
+        return GetOrderSheetRes.of(readOrderSheetStickerRes, getOrderAmountRes,
                 getUserOrderPointRes);
     }
 

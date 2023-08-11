@@ -26,14 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.provider.CustomProvider;
-import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
+import org.tattour.server.domain.custom.facade.CustomFacade;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
 import org.tattour.server.domain.point.service.dto.request.SavePointChargeRequestReq;
 import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
-import org.tattour.server.domain.point.service.impl.CustomProviderImpl;
+import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
 import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
@@ -57,8 +56,6 @@ import org.tattour.server.global.dto.SuccessType;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.sms.provider.impl.PhoneNumberVerificationCodeProviderImpl;
-import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoAccessTokenResponse;
-import org.tattour.server.infra.socialLogin.client.kakao.dto.response.KakaoUserRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.SocialLoginRequest;
@@ -79,7 +76,7 @@ public class UserController {
     private final SocialServiceProvider socialServiceProvider;
     private final UserServiceImpl userService;
     private final UserProviderImpl userProvider;
-    private final CustomService customService;
+    private final CustomFacade customFacade;
     private final CustomProviderImpl customProvider;
     private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
     private final ProductLikedServiceImpl productLikedService;
@@ -436,7 +433,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomSummaryListRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -444,7 +441,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomCompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customProvider.getCustomSummaryCompleteListByUserId(userId);
+        ReadCustomSummaryListRes response = customProvider.getCustomSummaryCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -453,7 +450,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomSummaryList.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomSummaryListRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -461,7 +458,7 @@ public class UserController {
     public ResponseEntity<?> getUserCustomIncompleteList(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
-        CustomSummaryList response = customProvider.getCustomSummaryInCompleteListByUserId(userId);
+        ReadCustomSummaryListRes response = customProvider.getCustomSummaryInCompleteListByUserId(userId);
         return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
     }
 
@@ -470,7 +467,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "success",
-                    content = @Content(schema = @Schema(implementation = CustomInfo.class))),
+                    content = @Content(schema = @Schema(implementation = ReadCustomRes.class))),
             @ApiResponse(responseCode = "400, 500",
                     description = "error",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
@@ -480,7 +477,7 @@ public class UserController {
             @PathVariable(value = "customId") Integer customId
     ) {
         Custom custom = customProvider.getCustomById(customId, userId);
-        CustomInfo response = CustomInfo.of(custom);
+        ReadCustomRes response = ReadCustomRes.from(custom);
         return BaseResponse.success(SuccessType.READ_ONE_CUSTOM_SUCCESS, response);
     }
 }

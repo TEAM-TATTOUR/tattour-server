@@ -1,18 +1,18 @@
 package org.tattour.server.domain.custom.provider;
 
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.service.dto.request.GetCustomSummaryInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomApplySummaryInfoList;
-import org.tattour.server.domain.custom.service.dto.response.CustomSummaryList;
+import org.tattour.server.domain.custom.facade.dto.request.ReadCustomSummaryRes;
+import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
 
 public interface CustomProvider {
 
     Custom getCustomById(Integer customId, Integer userId);
 
     // customInfo 가져오기
-    CustomApplySummaryInfoList getCustomApplySummaryInfoList(GetCustomSummaryInfo req);
+    CreateCustomSummaryListRes getCustomApplySummaryInfoList(ReadCustomSummaryRes req);
 
-    CustomSummaryList getCustomSummaryCompleteListByUserId(Integer userId);
+    ReadCustomSummaryListRes getCustomSummaryCompleteListByUserId(Integer userId);
 
-    CustomSummaryList getCustomSummaryInCompleteListByUserId(Integer userId);
+    ReadCustomSummaryListRes getCustomSummaryInCompleteListByUserId(Integer userId);
 }

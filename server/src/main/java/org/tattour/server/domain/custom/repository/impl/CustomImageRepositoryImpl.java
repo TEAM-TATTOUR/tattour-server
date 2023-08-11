@@ -1,8 +1,11 @@
 package org.tattour.server.domain.custom.repository.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 import org.tattour.server.domain.custom.domain.CustomImage;
+import org.tattour.server.domain.custom.repository.CustomImageRepository;
 
-public interface CustomImageRepositoryImpl extends JpaRepository<CustomImage, Integer> {
+public interface CustomImageRepositoryImpl extends
+		Repository<CustomImage, Integer>,
+		CustomImageRepository {
 
 }
