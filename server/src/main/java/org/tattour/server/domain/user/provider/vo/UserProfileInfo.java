@@ -1,20 +1,18 @@
 package org.tattour.server.domain.user.provider.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
-@Schema(description = "user 정보")
+@Schema(name = "유저 프로필 정보")
+@Builder
 @Getter
-@AllArgsConstructor
 public class UserProfileInfo {
-    @Schema(description = "이름", example = "userName")
+    @Schema(description = "user Id")
+    private int id;
+    @Schema(description = "user 이름", example = "김타투")
     private String name;
+    @Schema(description = "user 전화번호", example = "01012345678")
+    private String phoneNumber;
 
-    @Schema(description = "포인트", example = "3000")
-    private Integer point;
-
-    public static UserProfileInfo of(String name, Integer point) {
-        return new UserProfileInfo(name, point);
-    }
 }

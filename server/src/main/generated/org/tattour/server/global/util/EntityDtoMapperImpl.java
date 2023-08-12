@@ -18,19 +18,20 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.provider.vo.UserContactInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-13T00:21:49+0900",
+    date = "2023-08-13T01:02:36+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
 )
 @Component
 public class EntityDtoMapperImpl implements EntityDtoMapper {
 
     @Override
-    public UserProfileInfo toUserProfileInfo(User user) {
+    public HomeUserInfo toHomeUserInfo(User user) {
         if ( user == null ) {
             return null;
         }
@@ -41,9 +42,9 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         name = user.getName();
         point = user.getPoint();
 
-        UserProfileInfo userProfileInfo = new UserProfileInfo( name, point );
+        HomeUserInfo homeUserInfo = new HomeUserInfo( name, point );
 
-        return userProfileInfo;
+        return homeUserInfo;
     }
 
     @Override
@@ -59,6 +60,23 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         userContactInfo.setPhoneNumber( user.getPhoneNumber() );
 
         return userContactInfo;
+    }
+
+    @Override
+    public UserProfileInfo toUserProfileInfo(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        UserProfileInfo.UserProfileInfoBuilder userProfileInfo = UserProfileInfo.builder();
+
+        if ( user.getId() != null ) {
+            userProfileInfo.id( user.getId() );
+        }
+        userProfileInfo.name( user.getName() );
+        userProfileInfo.phoneNumber( user.getPhoneNumber() );
+
+        return userProfileInfo.build();
     }
 
     @Override

@@ -18,5 +18,5 @@ public interface StickerProvider {
     List<Sticker> getAllByNameLike(String name);
 
     // 결제 시트에서 스티커 정보 가져오기
-    ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId);
+    ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker);
 }

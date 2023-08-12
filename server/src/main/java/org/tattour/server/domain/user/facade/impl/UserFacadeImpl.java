@@ -91,7 +91,8 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public ReadUserProfileRes readUserProfile(int userId) {
-        return ReadUserProfileRes.of(userProvider.readUserProfile(userId));
+        User user = userProvider.readUserById(userId);
+        return ReadUserProfileRes.of(userProvider.readHomeUserInfo(user));
     }
 
     @Override

@@ -27,6 +27,7 @@ import org.tattour.server.domain.point.service.impl.PointServiceImpl;
 import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -48,41 +49,48 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     @Transactional
     public ReadOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
+        User user = userProvider.readUserById(req.getUserId());
+        Sticker sticker = stickerProvider.getById(req.getStickerId());
+
+        // 유저 프로필 정보
+        UserProfileInfo userProfileInfo = userProvider.readUserProfileInfo(user);
+
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
         ReadOrderSheetStickerInfo readOrderSheetStickerInfo =
-                stickerProvider.readOrderSheetStickerInfo(req.getStickerId());
+                stickerProvider.readOrderSheetStickerInfo(sticker);
         readOrderSheetStickerInfo.setCount(req.getCount());
 
         // 결제 금액 정보
         // 총 결제 금액, 총 상품 금액, 배송비
         OrderAmountInfo orderAmountInfo =
                 orderProvider.readOrderAmountRes(
-                        Objects.isNull(readOrderSheetStickerInfo.getDiscountedPrice())
-                                ? readOrderSheetStickerInfo.getPrice()
-                                : readOrderSheetStickerInfo.getDiscountedPrice(),
-                        readOrderSheetStickerInfo.getCount(),
+                        Objects.isNull(sticker.getDiscountPrice())
+                                ? sticker.getPrice()
+                                : sticker.getDiscountPrice(),
+                        req.getCount(),
                         req.getShippingFee());
 
         // 포인트
         // 보유 포인트, 남는 포인트
         UserPointAfterOrderInfo userPointAfterOrderInfo =
                 userProvider.readUserPointAfterOrderInfo(
-                        req.getUserId(),
+                        user,
                         orderAmountInfo.getTotalAmount());
 
-        return ReadOrderSheetRes.of(readOrderSheetStickerInfo, orderAmountInfo,
+        return ReadOrderSheetRes.of(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo,
                 userPointAfterOrderInfo);
     }
 
     @Override
     @Transactional
     public void createOrder(CreateOrderRequest req) {
-        if (userProvider.isUserPointLack(req.getUserId(), req.getTotalAmount())) {
+        User user = userProvider.readUserById(req.getUserId());
+
+        if (userProvider.isUserPointLack(user, req.getTotalAmount())) {
             throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
         }
 
         // 주문내역 생성
-        User user = userProvider.readUserById(req.getUserId());
         Sticker sticker = stickerProvider.getById(req.getStickerId());
         Order order = orderService.saveOrder(
                 Order.of(

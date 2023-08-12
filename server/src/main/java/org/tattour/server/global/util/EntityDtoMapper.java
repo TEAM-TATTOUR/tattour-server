@@ -7,7 +7,6 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
-import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
@@ -18,6 +17,7 @@ import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.vo.UserContactInfo;
+import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @org.mapstruct.Mapper(componentModel = "spring")
@@ -26,9 +26,13 @@ public interface EntityDtoMapper {
     EntityDtoMapper INSTANCE = Mappers.getMapper(EntityDtoMapper.class);
 
     // User
-    UserProfileInfo toUserProfileInfo(User user);
+    HomeUserInfo toHomeUserInfo(User user);
 
+    @Mapping(target = "id", source = "user.id")
     UserContactInfo toUserContactInfo(User user);
+
+    @Mapping(target = "id", source = "user.id")
+    UserProfileInfo toUserProfileInfo(User user);
 
     // StickerLikedInfo
     @Mapping(target = "stickerId", source = "productLiked.sticker.id")

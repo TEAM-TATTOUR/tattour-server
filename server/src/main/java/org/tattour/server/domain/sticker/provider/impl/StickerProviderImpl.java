@@ -44,8 +44,7 @@ public class StickerProviderImpl implements StickerProvider {
 
 	// Todo : 리펙토링하기
 	@Override
-	public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Integer stickerId) {
-		Sticker sticker = getById(stickerId);
+	public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker) {
 		Integer discountedPrice = getDiscountPrice(sticker);
 
 		return ReadOrderSheetStickerInfo.of(
