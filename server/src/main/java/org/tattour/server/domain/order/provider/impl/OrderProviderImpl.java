@@ -10,13 +10,8 @@ import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
 import org.tattour.server.domain.order.provider.OrderProvider;
-import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
-import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
-import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -26,31 +21,20 @@ import org.tattour.server.global.util.EntityDtoMapper;
 public class OrderProviderImpl implements OrderProvider {
 
     private final OrderRepositoryImpl orderRepository;
-    private final StickerProviderImpl stickerProvider;
-    private final UserProviderImpl userProvider;
 
     @Override
-    public Order readOrderById(int id) {
-        return orderRepository.findById(id)
+    public Order readOrderById(int orderId) {
+        return orderRepository.findById(orderId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_ORDER_HISTORY));
     }
 
     @Override
-    public ReadOrderHistoryListRes readOrderHistoryByPage(int page) {
-        Page<Order> getOrderHistoryResPage = orderRepository.findAll(
+    public Page<Order> readOrderHistoryByPage(int page) {
+        return orderRepository.findAll(
                 PageRequest.of(
                         page - 1,
                         10,
                         Sort.by("createdAt")));
-        List<OrderHistoryInfo> orderHistoryInfoList =
-                EntityDtoMapper.INSTANCE.toGetOrderHistoryListRes(getOrderHistoryResPage);
-
-        return ReadOrderHistoryListRes.of(
-                orderHistoryInfoList,
-                OrderHistoryPageInfo.of(
-                        page,
-                        getOrderHistoryResPage.getTotalElements(),
-                        getOrderHistoryResPage.getTotalPages()));
     }
 
     @Override
@@ -63,15 +47,12 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public ReadUserOrderHistoryListRes readOrderHistoryAfterDate(int userId, String date) {
-        List<UserOrderHistoryInfo> userOrderHistoryInfoList =
-                EntityDtoMapper.INSTANCE
+    public List<UserOrderHistoryInfo> readOrderHistoryAfterDate(int userId, String date) {
+        return EntityDtoMapper.INSTANCE
                         .toGetUserOrderHistoryListRes(
                                 orderRepository.findAllByUser_IdAndCreatedAtAfter(
                                         userId,
                                         date));
-
-        return ReadUserOrderHistoryListRes.of(userOrderHistoryInfoList);
     }
 
     @Override

@@ -17,8 +17,9 @@ import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomInfo;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 import org.tattour.server.domain.custom.service.CustomService;
+import org.tattour.server.domain.point.domain.PointLogCategory;
+import org.tattour.server.domain.point.domain.UserPointLog;
 import org.tattour.server.domain.point.service.PointService;
-import org.tattour.server.domain.point.service.dto.request.SaveUserPointLogReq;
 import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
 import org.tattour.server.domain.style.provider.StyleProvider;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
@@ -51,11 +52,11 @@ public class CustomFacadeImpl implements CustomFacade {
 	@Override
 	@Transactional
 	public Integer createCustom(Boolean haveDesign, Integer userId) {
-		User user = userService.getUserByUserId(userId);
+		User user = userService.readUserById(userId);
 		if (user.getPoint() < customPoint) {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
-		Integer point = userService.updateUserPoint(userId, -customPoint);
+		userService.updateUserPoint(user, -customPoint);
 		Custom custom = Custom.of(
 				user,
 				haveDesign,
@@ -63,13 +64,17 @@ public class CustomFacadeImpl implements CustomFacade {
 				defaultImageUrl,
 				false,
 				0);
-		pointService.createPointLog(
-				"커스텀 신청",
-				"커스텀 스티커 신청",
-				customPoint,
-				user.getPoint(),
-				userId);
+		pointService.savePointLog(
+				UserPointLog.of(
+						PointLogCategory.APPLY_CUSTOM,
+						"커스텀 스티커 신청",
+						customPoint,
+						user.getPoint(),
+						user));
 		customService.save(custom);
+
+		discordMessageService.sendCustomApplyMessage(custom);
+
 		return custom.getId();
 	}
 

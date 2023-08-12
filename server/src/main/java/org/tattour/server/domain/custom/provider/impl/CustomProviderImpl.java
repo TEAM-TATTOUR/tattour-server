@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
-import org.tattour.server.domain.custom.facade.dto.request.ReadCustomSummaryRes;
+import org.tattour.server.domain.custom.facade.dto.request.ReadCustomSummaryReq;
 import org.tattour.server.domain.custom.provider.CustomProvider;
 import org.tattour.server.domain.custom.repository.CustomRepository;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
@@ -28,7 +28,7 @@ public class CustomProviderImpl implements CustomProvider {
     public Custom getCustomById(Integer customId, Integer userId) {
         Custom custom = customRepository.findById(customId)
                 .orElseThrow(NotFoundCustomException::new);
-        User user = userService.getUserByUserId(userId);
+        User user = userService.readUserById(userId);
         if (!custom.getUser().equals(user) && !userId.equals(1)) {
             throw new UnauthorizedException();
         }
@@ -36,7 +36,7 @@ public class CustomProviderImpl implements CustomProvider {
     }
 
     @Override
-    public CreateCustomSummaryListRes getCustomApplySummaryInfoList(ReadCustomSummaryRes req) {
+    public CreateCustomSummaryListRes getCustomApplySummaryInfoList(ReadCustomSummaryReq req) {
         List<Custom> customs =
                 customRepository.findAllByUser_IdAndIsCompletedFalse(req.getUserId());
         return CreateCustomSummaryListRes.from(
@@ -54,6 +54,12 @@ public class CustomProviderImpl implements CustomProvider {
     @Transactional(readOnly = true)
     public ReadCustomSummaryListRes getCustomSummaryInCompleteListByUserId(Integer userId) {
         List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
+        return ReadCustomSummaryListRes.from(customs);
+    }
+
+    @Override
+    public ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(int userId, String date) {
+        List<Custom> customs = customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
         return ReadCustomSummaryListRes.from(customs);
     }
 }

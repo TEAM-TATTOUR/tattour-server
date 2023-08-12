@@ -85,7 +85,8 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void updateUserProfile(UpdateUserProfileReq req) {
-        userService.updateUserProfile(req.getUserId(), req.getName(), req.getPhoneNumber());
+        User user = userProvider.readUserById(req.getUserId());
+        userService.updateUserProfile(user, req.getName(), req.getPhoneNumber());
     }
 
     @Override

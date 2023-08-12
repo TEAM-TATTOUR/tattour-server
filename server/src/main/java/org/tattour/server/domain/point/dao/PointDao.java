@@ -5,6 +5,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.tattour.server.domain.order.domain.OrderStatus;
+import org.tattour.server.domain.point.domain.PointLogCategory;
 import org.tattour.server.domain.point.provider.vo.PointChargeRequestInfo;
 import org.tattour.server.domain.point.provider.vo.PointLogInfo;
 
@@ -18,7 +20,7 @@ public class PointDao {
     }
 
     // 조건에 따라 유저 포인트 충전 요청 내역 가져오기
-    public List<PointChargeRequestInfo> getPointChargeRequestResList(Integer userId,
+    public List<PointChargeRequestInfo> findPointChargeRequestResList(Integer userId,
             Boolean isCompleted) {
         String query =
                 "SELECT * "
@@ -53,7 +55,7 @@ public class PointDao {
     }
 
     // 조건에 따라 포인트 로그 불러오기
-    public List<PointLogInfo> getPointLogResList(Integer userId, String title) {
+    public List<PointLogInfo> findPointLogResList(Integer userId, String category) {
         String query =
                 "SELECT * FROM user_point_log "
                         + "WHERE 1=1 ";
@@ -64,8 +66,8 @@ public class PointDao {
             query += "AND user_id = ? ";
         }
 
-        if (title != null) {
-            params.add(title);
+        if (category != null) {
+            params.add(category);
             query += "AND title = ? ";
         }
 
@@ -73,7 +75,7 @@ public class PointDao {
                 (rs, rownum) -> PointLogInfo.builder()
                         .id(rs.getInt("id"))
                         .userId(rs.getInt("user_id"))
-                        .title(rs.getString("title"))
+                        .title(PointLogCategory.valueOf(rs.getString("title")).getValue())
                         .content(rs.getString("content"))
                         .amount(rs.getInt("amount"))
                         .resultPointAmount(rs.getInt("result_point_amount"))

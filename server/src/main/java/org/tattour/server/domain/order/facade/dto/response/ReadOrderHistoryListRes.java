@@ -13,7 +13,7 @@ import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReadOrderHistoryListRes {
 
-    List<OrderHistoryInfo> orderHistoryInfoList;
+    private List<OrderHistoryInfo> orderHistoryInfoList;
     private OrderHistoryPageInfo orderHistoryPageInfo;
 
     public static ReadOrderHistoryListRes of(List<OrderHistoryInfo> orderHistoryInfoList,

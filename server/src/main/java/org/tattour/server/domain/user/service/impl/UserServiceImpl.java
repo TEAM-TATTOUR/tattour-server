@@ -22,15 +22,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserId(Integer userId) {
+    public User readUserById(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
     }
 
     @Override
     @Transactional
-    public void updateUserProfile(int userId, String name, String phoneNumber) {
-        User user = userProvider.readUserById(userId);
+    public void updateUserProfile(User user, String name, String phoneNumber) {
         user.setUserInfo(name, phoneNumber);
         userRepository.save(user);
     }
@@ -45,13 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int updateUserPoint(Integer userId, Integer totalAmount) {
-        User user = userProvider.readUserById(userId);
+    public void updateUserPoint(User user, Integer totalAmount) {
         int resultPoint = user.getPoint() + totalAmount;
         user.setUserPoint(resultPoint);
-
         userRepository.save(user);
-
-        return resultPoint;
     }
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.TypeMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,12 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.tattour.server.global.dto.BaseResponse;
 
 @Slf4j
@@ -73,6 +78,20 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> illegalArgumentExceptionAdvice(IllegalArgumentException e) {
         return BaseResponse.error(ErrorType.INVALID_ARGUMENT_EXCEPTION);
+    }
+
+    // TODO : 수정하기
+    @ExceptionHandler({
+            MissingServletRequestParameterException.class,
+            MissingRequestHeaderException.class,
+            IllegalStateException.class,
+            MissingServletRequestParameterException.class,
+            MultipartException.class,
+            NoHandlerFoundException.class,
+            TypeMismatchException.class
+    })
+    public ResponseEntity<?> handleBadRequestException(Exception e) {
+        return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
     }
 
     /**

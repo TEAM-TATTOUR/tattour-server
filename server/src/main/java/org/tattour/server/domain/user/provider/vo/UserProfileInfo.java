@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Schema(description = "user 정보")
 @Getter
 @AllArgsConstructor
 public class UserProfileInfo {

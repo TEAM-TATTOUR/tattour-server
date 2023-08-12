@@ -2,6 +2,7 @@ package org.tattour.server.domain.user.provider;
 
 import java.util.List;
 import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
+import org.tattour.server.domain.user.provider.vo.UserContactInfo;
 import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;

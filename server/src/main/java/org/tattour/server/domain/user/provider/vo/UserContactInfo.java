@@ -1,4 +1,4 @@
-package org.tattour.server.domain.user.provider.dto.response;
+package org.tattour.server.domain.user.provider.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Schema(description = "user 정보")
 @Getter
 @Setter
-public class GetUserInfoDto {
+public class UserContactInfo {
 
     @Schema(description = "user id")
     private Integer id;

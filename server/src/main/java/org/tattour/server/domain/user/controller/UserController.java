@@ -29,15 +29,15 @@ import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
 import org.tattour.server.domain.custom.provider.impl.CustomProviderImpl;
-import org.tattour.server.domain.point.facade.impl.PointFacadeImpl;
+import org.tattour.server.domain.point.facade.PointFacade;
 import org.tattour.server.domain.point.facade.dto.request.CreatePointChargeRequestReq;
 import org.tattour.server.domain.user.controller.dto.request.PostPointChargeRequest;
 import org.tattour.server.domain.user.controller.dto.request.PostProductLikedReq;
 import org.tattour.server.domain.user.controller.dto.request.PostUserShippingAddrReq;
+import org.tattour.server.domain.user.facade.UserFacade;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
 import org.tattour.server.domain.user.facade.dto.request.RemoveProductLikedReq;
-import org.tattour.server.domain.user.facade.impl.UserFacadeImpl;
 import org.tattour.server.domain.user.facade.dto.request.SaveProductLikedReq;
 import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
 import org.tattour.server.domain.user.facade.dto.response.ProductLikedListRes;
@@ -59,8 +59,8 @@ import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 @Tag(name = "User", description = "User API Document")
 public class UserController {
 
-    private final UserFacadeImpl userFacade;
-    private final PointFacadeImpl pointFacade;
+    private final UserFacade userFacade;
+    private final PointFacade pointFacade;
 
     private final CustomProviderImpl customProvider;
 
