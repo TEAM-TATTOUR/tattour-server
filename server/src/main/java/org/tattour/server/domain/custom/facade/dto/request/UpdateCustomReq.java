@@ -1,15 +1,19 @@
 package org.tattour.server.domain.custom.facade.dto.request;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
+import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.domain.Custom.CustomBuilder;
 import org.tattour.server.domain.custom.domain.CustomProcess;
+import org.tattour.server.domain.custom.domain.CustomSize;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class UpdateCustomInfo {
+public class UpdateCustomReq {
 
 	private Integer userId;
 	private Integer customId;
@@ -29,7 +33,7 @@ public class UpdateCustomInfo {
 	private Integer price;
 	private CustomProcess customProcess;
 
-	public static UpdateCustomInfo of(
+	public static UpdateCustomReq of(
 			Integer userId,
 			Integer customId,
 			String size,
@@ -47,7 +51,7 @@ public class UpdateCustomInfo {
 			Integer viewCount,
 			Integer price,
 			CustomProcess customProcess) {
-		return UpdateCustomInfo.builder()
+		return UpdateCustomReq.builder()
 				.userId(userId)
 				.customId(customId)
 				.size(size)
@@ -68,14 +72,41 @@ public class UpdateCustomInfo {
 				.build();
 	}
 
-	public static UpdateCustomInfo of(
+	public static UpdateCustomReq of(
 			Integer userId,
 			Integer customId,
 			CustomProcess customProcess) {
-		return UpdateCustomInfo.builder()
+		return UpdateCustomReq.builder()
 				.userId(userId)
 				.customId(customId)
 				.customProcess(customProcess)
 				.build();
+	}
+
+	public Custom newCustom() {
+		Custom.CustomBuilder custom = Custom.builder();
+		custom.size(getCustomSize());
+		custom.isColored(isColored);
+		custom.name(name);
+		custom.demand(demand);
+		custom.description(description);
+		custom.isPublic(isPublic);
+		custom.count(count);
+		custom.isCompleted(isCompleted);
+		custom.process(getCustomProcess());
+		custom.viewCount(viewCount);
+		custom.price(price);
+		return custom.build();
+	}
+
+	private CustomSize getCustomSize() {
+		if (size == null) {
+			return null;
+		}
+		return CustomSize.getCustomSize(size);
+	}
+
+	public CustomProcess getCustomProcess() {
+		return isCompleted ? CustomProcess.RECEIVING : null;
 	}
 }

@@ -24,8 +24,8 @@ import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-13T01:02:36+0900",
-    comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
+    date = "2023-08-13T19:30:10+0900",
+    comments = "version: 1.5.4.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
 public class EntityDtoMapperImpl implements EntityDtoMapper {

@@ -98,16 +98,6 @@ public class Custom extends AuditingTimeEntity {
         this.sticker = sticker;
     }
 
-    public void setCustomThemes(
-            List<CustomTheme> customThemes) {
-        this.customThemes = customThemes;
-    }
-
-    public void setCustomStyles(
-            List<CustomStyle> customStyles) {
-        this.customStyles = customStyles;
-    }
-
     public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
     }
@@ -160,11 +150,12 @@ public class Custom extends AuditingTimeEntity {
         this.viewCount = viewCount;
     }
 
-    public void calPrice() {
-        price = size.getPrice() * count;
+    public Integer calPrice() {
+        Integer price = size.getPrice() * count;
         if (isPublic) {
             price -= size.getDiscountPrice();
         }
+        return price;
     }
 
     public static Custom of(

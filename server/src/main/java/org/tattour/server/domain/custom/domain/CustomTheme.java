@@ -21,7 +21,8 @@ import org.tattour.server.domain.theme.domain.Theme;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CustomTheme {
+public class
+CustomTheme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
