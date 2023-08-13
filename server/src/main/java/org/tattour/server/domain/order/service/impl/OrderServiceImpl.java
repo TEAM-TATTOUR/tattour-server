@@ -24,61 +24,10 @@ import org.tattour.server.global.exception.ErrorType;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepositoryImpl orderRepository;
-    private final OrderProviderImpl orderProvider;
-    private final StickerProviderImpl stickerProvider;
-    private final UserProviderImpl userProvider;
-    private final UserServiceImpl userService;
-    private final PointServiceImpl pointService;
 
     @Override
     @Transactional
-    public Order saveOrder(CreateOrderRequest req) {
-        User user = userProvider.readUserById(req.getUserId());
-        Sticker sticker = stickerProvider.getById(req.getStickerId());
-        Order order = Order.of(
-                sticker.getName(),
-                sticker.getSize(),
-                sticker.getMainImageUrl(),
-                sticker.getPrice(),
-                req.getProductCount(),
-                req.getShippingFee(),
-                req.getTotalAmount(),
-                req.getRecipientName(),
-                req.getContact(),
-                req.getMailingAddress(),
-                req.getBaseAddress(),
-                req.getDetailAddress(), user, sticker);
-
+    public Order saveOrder(Order order) {
         return orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
-    public void updateOrderStatus(UpdateOrderStatusReq req) {
-        Order order = orderProvider.readOrderById(req.getId());
-
-        // 주문취소일 경우
-        if (req.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            if (!order.getOrderStatus().equals(OrderStatus.CANCEL)) {
-                // 상태 변경
-                order.setOrderStatus(req.getOrderStatus());
-                orderRepository.save(order);
-                // 유저 포인트 변경
-                userService.updateUserPoint(
-                        order.getUser().getId(), order.getTotalAmount());
-                // 포인트 로그 남기기
-                pointService.createPointLog(
-                        "결제 취소",
-                            order.getSticker().getName(),
-                            order.getTotalAmount(),
-                            order.getUser().getPoint(),
-                            order.getUser().getId());
-            } else {
-                throw new BusinessException(ErrorType.ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION);
-            }
-        } else {
-            order.setOrderStatus(req.getOrderStatus());
-        }
-        orderRepository.save(order);
     }
 }

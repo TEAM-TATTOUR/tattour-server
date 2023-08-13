@@ -8,14 +8,14 @@ public interface UserService {
     void saveUser(User user);
 
     // userId로 user 가져오기
-    User getUserByUserId(Integer userId);
+    User readUserById(Integer userId);
 
     // 회원가입 시 이름, 전화번호 추가
-    void updateUserProfile(int userId, String name, String phoneNumber);
+    void updateUserProfile(User user, String name, String phoneNumber);
 
     // 로그아웃
     void deleteSocialAccessToken(Integer userId);
 
     // 유저 포인트 수정
-    int updateUserPoint(Integer userId, Integer totalAmount);
+    void updateUserPoint(User user, Integer totalAmount);
 }

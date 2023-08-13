@@ -1,8 +1,10 @@
 package org.tattour.server.domain.order.provider.vo;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.tattour.server.domain.order.domain.OrderStatus;
 
 @Getter
 @Setter
@@ -22,7 +24,7 @@ public class OrderHistoryInfo {
     private String mailingAddress;
     private String baseAddress;
     private String detailAddress;
-    private String status;
+    private String orderStatus;
     private String createdAt;
     private String lastUpdatedAt;
     private Boolean state;

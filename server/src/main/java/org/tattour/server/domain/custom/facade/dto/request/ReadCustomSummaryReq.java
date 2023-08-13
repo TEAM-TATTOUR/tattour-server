@@ -6,14 +6,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReadCustomSummaryRes {
+public class ReadCustomSummaryReq {
 
 	private Integer userId;
 	private String date;
 
-	public static ReadCustomSummaryRes of(
+	public static ReadCustomSummaryReq of(
 			Integer userId,
 			String date) {
-		return new ReadCustomSummaryRes(userId, date);
+		return new ReadCustomSummaryReq(userId, date);
 	}
 }

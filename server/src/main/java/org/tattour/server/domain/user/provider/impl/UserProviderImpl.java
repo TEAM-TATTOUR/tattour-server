@@ -3,10 +3,10 @@ package org.tattour.server.domain.user.provider.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
-import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.exception.NotFoundUserException;
@@ -37,8 +37,13 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public UserProfileInfo readUserProfile(int userId) {
-        return EntityDtoMapper.INSTANCE.toUserProfileInfo(readUserById(userId));
+    public HomeUserInfo readHomeUserInfo(User user) {
+        return EntityDtoMapper.INSTANCE.toHomeUserInfo(user);
+    }
+
+    @Override
+    public UserProfileInfo readUserProfileInfo(User user) {
+        return EntityDtoMapper.INSTANCE.toUserProfileInfo(user);
     }
 
     @Override
@@ -48,14 +53,12 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public Boolean isUserPointLack(int userId, int totalAmount) {
-        return totalAmount > readUserById(userId).getPoint();
+    public Boolean isUserPointLack(User user, int totalAmount) {
+        return totalAmount > user.getPoint();
     }
 
     @Override
-    public UserPointAfterOrderInfo readUserPointAfterOrderInfo(int userId, int totalAmount) {
-        User user = readUserById(userId);
-
+    public UserPointAfterOrderInfo readUserPointAfterOrderInfo(User user, int totalAmount) {
         int userPoint = user.getPoint();
         int resultPoint = calculateRestPointAfterOrder(userPoint, totalAmount);
         boolean isLacked = resultPoint < 0;

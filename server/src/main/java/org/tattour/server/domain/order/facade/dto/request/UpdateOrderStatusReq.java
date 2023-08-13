@@ -9,10 +9,10 @@ import org.tattour.server.domain.order.domain.OrderStatus;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UpdateOrderStatusReq {
 
-    private int id;
+    private int orderId;
     private OrderStatus orderStatus;
 
-    public static UpdateOrderStatusReq of(int id, OrderStatus orderStatus) {
-        return new UpdateOrderStatusReq(id, orderStatus);
+    public static UpdateOrderStatusReq of(int orderId, OrderStatus orderStatus) {
+        return new UpdateOrderStatusReq(orderId, orderStatus);
     }
 }

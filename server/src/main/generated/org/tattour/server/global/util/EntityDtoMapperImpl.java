@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes;
 import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderStatus;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
@@ -16,19 +18,20 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
+import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
+import org.tattour.server.domain.user.provider.vo.UserContactInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-11T19:26:12+0900",
+    date = "2023-08-13T01:02:36+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 11.0.19 (Amazon.com Inc.)"
 )
 @Component
 public class EntityDtoMapperImpl implements EntityDtoMapper {
 
     @Override
-    public UserProfileInfo toUserProfileInfo(User user) {
+    public HomeUserInfo toHomeUserInfo(User user) {
         if ( user == null ) {
             return null;
         }
@@ -39,24 +42,41 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         name = user.getName();
         point = user.getPoint();
 
-        UserProfileInfo userProfileInfo = new UserProfileInfo( name, point );
+        HomeUserInfo homeUserInfo = new HomeUserInfo( name, point );
 
-        return userProfileInfo;
+        return homeUserInfo;
     }
 
     @Override
-    public GetUserInfoDto toGetUserInfoDto(User user) {
+    public UserContactInfo toUserContactInfo(User user) {
         if ( user == null ) {
             return null;
         }
 
-        GetUserInfoDto getUserInfoDto = new GetUserInfoDto();
+        UserContactInfo userContactInfo = new UserContactInfo();
 
-        getUserInfoDto.setId( user.getId() );
-        getUserInfoDto.setName( user.getName() );
-        getUserInfoDto.setPhoneNumber( user.getPhoneNumber() );
+        userContactInfo.setId( user.getId() );
+        userContactInfo.setName( user.getName() );
+        userContactInfo.setPhoneNumber( user.getPhoneNumber() );
 
-        return getUserInfoDto;
+        return userContactInfo;
+    }
+
+    @Override
+    public UserProfileInfo toUserProfileInfo(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        UserProfileInfo.UserProfileInfoBuilder userProfileInfo = UserProfileInfo.builder();
+
+        if ( user.getId() != null ) {
+            userProfileInfo.id( user.getId() );
+        }
+        userProfileInfo.name( user.getName() );
+        userProfileInfo.phoneNumber( user.getPhoneNumber() );
+
+        return userProfileInfo.build();
     }
 
     @Override
@@ -160,7 +180,7 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public OrderHistoryInfo toGetOrderHistoryRes(Order order) {
+    public OrderHistoryInfo toOrderHistoryInfo(Order order) {
         if ( order == null ) {
             return null;
         }
@@ -175,6 +195,7 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         if ( id1 != null ) {
             orderHistoryInfo.setStickerId( id1 );
         }
+        orderHistoryInfo.setOrderStatus( orderOrderStatusValue( order ) );
         if ( order.getId() != null ) {
             orderHistoryInfo.setId( order.getId() );
         }
@@ -206,14 +227,14 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
     }
 
     @Override
-    public List<OrderHistoryInfo> toGetOrderHistoryListRes(Page<Order> orderList) {
-        if ( orderList == null ) {
+    public List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<Order> orderPage) {
+        if ( orderPage == null ) {
             return null;
         }
 
         List<OrderHistoryInfo> list = new ArrayList<OrderHistoryInfo>();
-        for ( Order order : orderList ) {
-            list.add( toGetOrderHistoryRes( order ) );
+        for ( Order order : orderPage ) {
+            list.add( toOrderHistoryInfo( order ) );
         }
 
         return list;
@@ -287,6 +308,35 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
         List<CreateCustomSummaryRes> list = new ArrayList<CreateCustomSummaryRes>( customList.size() );
         for ( Custom custom : customList ) {
             list.add( toCustomApplySummaryInfo( custom ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public ReadCustomSummaryRes toReadCustomSummaryRes(Custom custom) {
+        if ( custom == null ) {
+            return null;
+        }
+
+        ReadCustomSummaryRes.ReadCustomSummaryResBuilder readCustomSummaryRes = ReadCustomSummaryRes.builder();
+
+        readCustomSummaryRes.imageUrl( custom.getMainImageUrl() );
+        readCustomSummaryRes.id( custom.getId() );
+        readCustomSummaryRes.name( custom.getName() );
+
+        return readCustomSummaryRes.build();
+    }
+
+    @Override
+    public List<ReadCustomSummaryRes> toReadCustomSummaryResList(List<Custom> customList) {
+        if ( customList == null ) {
+            return null;
+        }
+
+        List<ReadCustomSummaryRes> list = new ArrayList<ReadCustomSummaryRes>( customList.size() );
+        for ( Custom custom : customList ) {
+            list.add( toReadCustomSummaryRes( custom ) );
         }
 
         return list;
@@ -380,6 +430,21 @@ public class EntityDtoMapperImpl implements EntityDtoMapper {
             return null;
         }
         return id;
+    }
+
+    private String orderOrderStatusValue(Order order) {
+        if ( order == null ) {
+            return null;
+        }
+        OrderStatus orderStatus = order.getOrderStatus();
+        if ( orderStatus == null ) {
+            return null;
+        }
+        String value = orderStatus.getValue();
+        if ( value == null ) {
+            return null;
+        }
+        return value;
     }
 
     private Integer pointChargeRequestUserId(PointChargeRequest pointChargeRequest) {

@@ -1,12 +1,11 @@
 package org.tattour.server.domain.custom.facade.dto.response;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import org.tattour.server.domain.custom.domain.Custom;
 
 @Getter
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 public class ReadCustomSummaryRes {
 
 	private Integer id;

@@ -2,6 +2,8 @@ package org.tattour.server.domain.point.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +13,6 @@ import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.point.repository.impl.UserPointLogRepositoryImpl;
 import org.tattour.server.domain.user.domain.User;
 
 @Entity
@@ -22,7 +23,10 @@ public class UserPointLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String title;
+//    private String title;
+    @Column(name = "title")
+    @Enumerated(EnumType.STRING)
+    private PointLogCategory pointLogCategory;
     private String content;
     @Column(columnDefinition = "Timestamp")
     private String createdAt;
@@ -34,17 +38,17 @@ public class UserPointLog {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private UserPointLog(String title, String content, Integer amount, Integer resultPointAmount,
+    private UserPointLog(PointLogCategory pointLogCategory, String content, Integer amount, Integer resultPointAmount,
             User user) {
-        this.title = title;
+        this.pointLogCategory = pointLogCategory;
         this.content = content;
         this.amount = amount;
         this.resultPointAmount = resultPointAmount;
         this.user = user;
     }
 
-    public static UserPointLog of(String title, String content, Integer amount,
+    public static UserPointLog of(PointLogCategory pointLogCategory, String content, Integer amount,
             Integer resultPointAmount, User user) {
-        return new UserPointLog(title, content, amount, resultPointAmount, user);
+        return new UserPointLog(pointLogCategory, content, amount, resultPointAmount, user);
     }
 }

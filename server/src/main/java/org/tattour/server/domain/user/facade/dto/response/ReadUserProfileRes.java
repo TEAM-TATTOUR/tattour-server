@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
+import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 
 @Schema(description = "user profile 정보 Response")
 @Getter
@@ -12,9 +12,9 @@ import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 @AllArgsConstructor
 public class ReadUserProfileRes {
 
-    private UserProfileInfo userProfileInfo;
+    private HomeUserInfo homeUserInfo;
 
-    public static ReadUserProfileRes of(UserProfileInfo userProfileInfo) {
-        return new ReadUserProfileRes(userProfileInfo);
+    public static ReadUserProfileRes of(HomeUserInfo homeUserInfo) {
+        return new ReadUserProfileRes(homeUserInfo);
     }
 }
