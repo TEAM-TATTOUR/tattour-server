@@ -5,11 +5,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.domain.custom.domain.CustomProcess;
-import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomInfo;
+import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomReq;
 
 @Getter
 @NoArgsConstructor
-public class UpdateCustomProcessReq {
+public class PatchCustomProcessReq {
 
 	@NotNull
 	@Schema(description = "커스텀 id")
@@ -20,8 +20,8 @@ public class UpdateCustomProcessReq {
 	@Schema(example = "receiving, receiptComplete, receiptFailed, shipping, shipped", type = "receiving")
 	String process;
 
-	public UpdateCustomInfo newUpdateCustomInfo(Integer userId) {
+	public UpdateCustomReq newUpdateCustomReq(Integer userId) {
 		CustomProcess customProcess = CustomProcess.getProcess(process);
-		return UpdateCustomInfo.of(userId, customId, customProcess);
+		return UpdateCustomReq.of(userId, customId, customProcess);
 	}
 }

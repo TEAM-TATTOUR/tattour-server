@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,16 +22,16 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.custom.controller.dto.request.PostCustomReq;
-import org.tattour.server.domain.custom.controller.dto.request.FetchCustomReq;
-import org.tattour.server.domain.custom.controller.dto.response.FetchCustomRes;
+import org.tattour.server.domain.custom.controller.dto.request.PatchCustomReq;
+import org.tattour.server.domain.custom.controller.dto.response.PatchCustomRes;
 import org.tattour.server.domain.custom.controller.dto.response.PostCustomRes;
-import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessType;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/custom")
@@ -52,7 +53,6 @@ public class CustomController {
 		@Parameter(hidden = true) @UserId Integer userId,
 		@RequestBody @Valid PostCustomReq request
 	) {
-
 		PostCustomRes response = PostCustomRes.from(
 			(customFacade.createCustom(request.getHaveDesign(), userId)));
 		return BaseResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
@@ -65,24 +65,23 @@ public class CustomController {
 		+ " / 테마, 스타일 타입은  Integer")
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "200", description = "success",
-			content = @Content(schema = @Schema(implementation = FetchCustomRes.class))),
+			content = @Content(schema = @Schema(implementation = PatchCustomRes.class))),
 		@ApiResponse(responseCode = "400, 500", description = "error",
 			content = @Content(schema = @Schema(implementation = FailResponse.class)))
 	})
-	public ResponseEntity<?> fetchCustom(
+	public ResponseEntity<?> patchCustom(
 		@Parameter(hidden = true) @UserId Integer userId,
-		@RequestPart @Valid FetchCustomReq customInfo,
+		@RequestPart @Valid PatchCustomReq customInfo,
 		@RequestPart(required = false) MultipartFile handDrawingImage,
-		@RequestPart List<MultipartFile> customImages
+		@RequestPart(required = false)  List<MultipartFile> customImages
 	) {
-		FetchCustomRes response =
-			FetchCustomRes.from(
+		PatchCustomRes response =
+			PatchCustomRes.from(
 				customFacade.updateCustom(
-					customInfo.newUpdateCustomInfo(
+					customInfo.newUpdateCustomReq(
 						userId,
 						customImages,
-						handDrawingImage,
-						CustomProcess.RECEIVING)));
+						handDrawingImage)));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
 	}
 }

@@ -1,6 +1,5 @@
 package org.tattour.server.domain.user.facade.dto.request;
 
-import java.net.InetSocketAddress;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,9 +13,9 @@ public class CreateLoginReq {
     private SocialPlatform socialPlatform;
     private String code;
     // TODO : prod에서는 수정해야함
-    private InetSocketAddress host;
+    private String origin;
 
-    public static CreateLoginReq of(SocialPlatform socialPlatform, String code, InetSocketAddress host) {
-        return new CreateLoginReq(socialPlatform, code, host);
+    public static CreateLoginReq of(SocialPlatform socialPlatform, String code, String origin) {
+        return new CreateLoginReq(socialPlatform, code, origin);
     }
 }

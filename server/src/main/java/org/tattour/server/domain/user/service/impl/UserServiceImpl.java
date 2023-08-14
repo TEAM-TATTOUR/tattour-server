@@ -8,6 +8,8 @@ import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.global.exception.BusinessException;
+import org.tattour.server.global.exception.ErrorType;
 
 @Service
 @RequiredArgsConstructor

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.tattour.server.domain.style.facade.dto.response.ReadStyleListRes;
 import org.tattour.server.domain.style.facade.dto.response.ReadStyleRes;
 
 @Getter
@@ -15,12 +16,13 @@ public class GetStyleListRes {
 	@Schema(description = "스타일 리스트")
 	List<GetStyleRes> readStyleRes;
 
-	public static GetStyleListRes from(List<ReadStyleRes> readStyleResList) {
+	public static GetStyleListRes from(ReadStyleListRes readStyleListRes) {
 		return new GetStyleListRes(
-			readStyleResList
-				.stream()
-				.map(GetStyleRes::from)
-				.collect(Collectors.toList()));
+				readStyleListRes
+						.getReadStyleRes()
+						.stream()
+						.map(GetStyleRes::from)
+						.collect(Collectors.toList()));
 	}
 
 }

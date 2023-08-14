@@ -97,4 +97,8 @@ public class User {
         this.accessToken = null;
         this.refreshToken = null;
     }
+
+    public boolean isLackOfPoint(int amount) {
+        return this.point < amount;
+    }
 }

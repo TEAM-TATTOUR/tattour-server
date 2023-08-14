@@ -13,13 +13,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.domain.theme.domain.Theme;
 
 @Getter
 @Table(name = "custom_theme")
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@DynamicInsert
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomTheme {
 

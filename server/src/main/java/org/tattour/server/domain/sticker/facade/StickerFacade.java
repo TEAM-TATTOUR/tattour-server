@@ -17,8 +17,6 @@ public interface StickerFacade {
 
     ReadStickerSummaryListRes readSimilarStickerSummaryList(Integer stickerId);
 
-    ReadStickerSummaryListRes readSearchStickerSummaryList(String word);
-
     ReadStickerSummaryListRes readFilterStickerSummaryList(String sort, String theme, String style);
 
     ReadOrderSheetStickerRes readOrderSheetSticker(Integer stickerId);

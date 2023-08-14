@@ -29,8 +29,7 @@ public class KakaoSocialService extends SocialService {
     public KakaoLoginInfo getSocialLoginResponse(GetSocialLoginReq req) {
         // TODO : prod에서는 수정해야함
         // 요청자의 redirect url로 변경
-        String redirectUrl = "http://" + req.getHost() + "/login/oauth2/callback";
-        System.out.println(redirectUrl);
+        String redirectUrl = req.getOrigin() + "/login/oauth2/callback";
 
         // Authorization code로 Access Token 불러오기
         KakaoAccessTokenRes tokenResponse = kakaoAuthApiClient.getOAuth2AccessToken(

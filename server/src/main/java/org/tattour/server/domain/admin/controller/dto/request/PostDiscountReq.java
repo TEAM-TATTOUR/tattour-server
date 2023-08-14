@@ -6,27 +6,28 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq;
 
 @Getter
 @NoArgsConstructor
-public class CreateDiscountReq {
+public class PostDiscountReq {
 
-	@NotNull
+	@NotNull(message = "name은 필수입니다.")
 	@Schema(description = "할인 정책 이름", example = "Open Event!")
 	private String name;
 
-	@Range(min = 0, max = 100)
+	@Range(min = 0, max = 100, message = "discountRate은 0~100 사이여야 합니다.")
 	@Schema(description = "할인률 : 0~100")
 	private Integer discountRate;
 
-	@NotNull
+	@NotNull(message = "startAt은 필수입니다.")
 	private LocalDateTime startAt;
 
-	@NotNull
+	@NotNull(message = "endedAt은 필수입니다.")
 	private LocalDateTime endedAt;
 
-	public org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq newDiscountInfo() {
-		return org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq.of(name, discountRate, startAt, endedAt);
+	public CreateDiscountReq newCreateDiscountReq() {
+		return CreateDiscountReq.of(name, discountRate, startAt, endedAt);
 	}
 
 }
