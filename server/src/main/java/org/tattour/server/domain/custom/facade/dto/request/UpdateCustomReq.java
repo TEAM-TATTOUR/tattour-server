@@ -109,6 +109,6 @@ public class UpdateCustomReq {
 		if(customProcess == null) {
 			return null;
 		}
-		return isCompleted ? CustomProcess.RECEIVING : null;
+		return customProcess;
 	}
 }
