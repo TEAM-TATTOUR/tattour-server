@@ -1,13 +1,11 @@
 package org.tattour.server.domain.custom.facade.dto.request;
 
 import java.util.List;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.domain.Custom.CustomBuilder;
 import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.domain.CustomSize;
 

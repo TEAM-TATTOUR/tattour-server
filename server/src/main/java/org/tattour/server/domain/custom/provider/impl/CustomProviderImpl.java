@@ -11,8 +11,6 @@ import org.tattour.server.domain.custom.provider.CustomProvider;
 import org.tattour.server.domain.custom.repository.CustomRepository;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryListRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
-import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.UnauthorizedException;
 import org.tattour.server.global.util.EntityDtoMapper;
 
@@ -21,15 +19,13 @@ import org.tattour.server.global.util.EntityDtoMapper;
 public class CustomProviderImpl implements CustomProvider {
 
     private final CustomRepository customRepository;
-    private final UserServiceImpl userService;
 
     @Override
     @Transactional(readOnly = true)
     public Custom getCustomById(Integer customId, Integer userId) {
         Custom custom = customRepository.findById(customId)
                 .orElseThrow(NotFoundCustomException::new);
-        User user = userService.readUserById(userId);
-        if (!custom.getUser().equals(user) && !userId.equals(1)) {
+        if (!custom.getUser().getId().equals(userId) && !userId.equals(1)) {
             throw new UnauthorizedException();
         }
         return custom;

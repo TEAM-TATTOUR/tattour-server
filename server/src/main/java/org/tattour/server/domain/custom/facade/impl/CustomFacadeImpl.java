@@ -11,6 +11,8 @@ import org.tattour.server.domain.custom.domain.CustomImage;
 import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomReq;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
+import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
+import org.tattour.server.domain.custom.repository.CustomRepository;
 import org.tattour.server.domain.custom.service.CustomImageService;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.custom.service.CustomStyleService;
@@ -37,6 +39,7 @@ public class CustomFacadeImpl implements CustomFacade {
 	private final UserService userService;
 	private final PointService pointService;
 	private final CustomProviderImpl customProvider;
+	private final CustomRepository customRepository;
 
 	private static final String directoryPath = "custom";
 	private static final Integer customPoint = 990;
@@ -49,7 +52,6 @@ public class CustomFacadeImpl implements CustomFacade {
 			throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
 		}
 		userService.updateUserPoint(user, -customPoint);
-		Custom custom = customService.createInitCustom(user, haveDesign);
 		pointService.savePointLog(
 				UserPointLog.of(
 						PointLogCategory.APPLY_CUSTOM,
@@ -57,8 +59,35 @@ public class CustomFacadeImpl implements CustomFacade {
 						customPoint,
 						user.getPoint(),
 						user));
+		Custom custom = customService.createInitCustom(user, haveDesign);
 		customService.save(custom);
 		return custom.getId();
+	}
+
+	@Override
+	public ReadCustomRes readCustomById(Integer customId, Integer userId) {
+		Custom custom = customProvider.getCustomById(customId, userId);
+		return ReadCustomRes.from(custom);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ReadCustomSummaryListRes getCustomSummaryCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedTrue(userId);
+		return ReadCustomSummaryListRes.from(customs);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ReadCustomSummaryListRes getCustomSummaryInCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
+		return ReadCustomSummaryListRes.from(customs);
+	}
+
+	@Override
+	public ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(int userId, String date) {
+		List<Custom> customs = customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
+		return ReadCustomSummaryListRes.from(customs);
 	}
 
 	@Override
@@ -95,17 +124,20 @@ public class CustomFacadeImpl implements CustomFacade {
 
 		// 테마 등록
 		if (!Objects.isNull(updateCustomReq.getThemes())) {
-			customThemeService.saveAllByCustomAndThemeIdList(updateCustom,
+			customThemeService.saveAllByCustomAndThemeIdList(
+					updateCustom,
 					updateCustomReq.getThemes());
 		}
 
 		// 스타일 등록
 		if (!Objects.isNull(updateCustomReq.getStyles())) {
-			customStyleService.saveByCustomAndStyleIdList(updateCustom,
+			customStyleService.saveByCustomAndStyleIdList(
+					updateCustom,
 					updateCustomReq.getStyles());
 		}
 
-		return ReadCustomRes.from(customService.updateCustom(updateCustom));
+		return ReadCustomRes.from(
+				customService.updateCustom(updateCustom));
 	}
 
 	@Override
