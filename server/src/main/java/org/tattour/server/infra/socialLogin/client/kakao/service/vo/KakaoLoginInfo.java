@@ -1,8 +1,8 @@
 package org.tattour.server.infra.socialLogin.client.kakao.service.vo;
 
 import lombok.Getter;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.KakaoAccessTokenRes;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.KakaoUserInfoRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoAccessTokenRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoUserInfoRes;
 
 @Getter
 public class KakaoLoginInfo extends SocialLoginInfo {

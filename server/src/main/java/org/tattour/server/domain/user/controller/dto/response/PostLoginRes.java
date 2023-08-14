@@ -17,9 +17,9 @@ public class PostLoginRes {
     private String accessToken;
 
     @Schema(description = "user 회원가입 완료 여부")
-    private boolean isUserExist;
+    private Boolean isUserSignUpCompleted;
 
-    public static PostLoginRes of(Integer userId, String accessToken, boolean isUserExist) {
-        return new PostLoginRes(userId, accessToken, isUserExist);
+    public static PostLoginRes of(Integer userId, String accessToken, Boolean isUserSignUpCompleted) {
+        return new PostLoginRes(userId, accessToken, isUserSignUpCompleted);
     }
 }
