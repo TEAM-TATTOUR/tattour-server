@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.KakaoAccessTokenRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoAccessTokenRes;
 
 @FeignClient(name = "kakaoAuthApiClient", url = "https://kauth.kakao.com")
 public interface KakaoAuthApiClient {

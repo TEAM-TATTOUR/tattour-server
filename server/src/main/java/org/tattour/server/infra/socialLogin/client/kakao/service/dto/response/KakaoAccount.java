@@ -1,4 +1,4 @@
-package org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response;
+package org.tattour.server.infra.socialLogin.client.kakao.service.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

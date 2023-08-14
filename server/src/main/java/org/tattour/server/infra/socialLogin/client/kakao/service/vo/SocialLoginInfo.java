@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.SocialAccessTokenRes;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.response.SocialUserInfoRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.SocialAccessTokenRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.SocialUserInfoRes;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

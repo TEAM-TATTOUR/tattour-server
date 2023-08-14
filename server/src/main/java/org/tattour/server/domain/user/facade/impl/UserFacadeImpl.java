@@ -1,5 +1,6 @@
 package org.tattour.server.domain.user.facade.impl;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
@@ -44,6 +45,11 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public PostLoginRes signup(CreateLoginReq req) {
+        if(Objects.isNull(req.getOrigin())) {
+            throw new BusinessException(ErrorType.NOT_FOUND_HEADER_ORGIN);
+        }
+        System.out.println("Origin = " + req.getOrigin());
+
         SocialService socialService = socialServiceProvider
                 .getSocialService(req.getSocialPlatform());
 
