@@ -107,15 +107,12 @@ public class CustomServiceImpl implements CustomService {
 
 	@Override
 	public Custom updateCustomProcess(Custom custom, CustomProcess customProcess) {
-		log.info("1111111111111111111");
 		if(Objects.isNull(custom.getIsCompleted())) {
 			throw new InvalidCustomCompletedException();
 		}
-		log.info("2222222222222222222");
 		if (!custom.getIsCompleted()) {
 			throw new InvalidCustomCompletedException();
 		}
-		log.info("3333333333333333333");
 		custom.setCustomProcess(customProcess);
 		return custom;
 	}
