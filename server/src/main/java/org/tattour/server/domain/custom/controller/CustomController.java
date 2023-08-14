@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,13 +25,13 @@ import org.tattour.server.domain.custom.controller.dto.request.PostCustomReq;
 import org.tattour.server.domain.custom.controller.dto.request.PatchCustomReq;
 import org.tattour.server.domain.custom.controller.dto.response.PatchCustomRes;
 import org.tattour.server.domain.custom.controller.dto.response.PostCustomRes;
-import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.global.config.resolver.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessType;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/custom")

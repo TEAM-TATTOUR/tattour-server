@@ -32,9 +32,16 @@ public class ReadOrderSheetStickerRes {
         this.discountedPrice = discountedPrice;
     }
 
-    public static ReadOrderSheetStickerRes of(String mainImageUrl, String name, Integer price,
+    public static ReadOrderSheetStickerRes of(
+            String mainImageUrl,
+            String name,
+            Integer price,
             Integer discountedPrice) {
-        return new ReadOrderSheetStickerRes(mainImageUrl, name, price, discountedPrice);
+        return new ReadOrderSheetStickerRes(
+                mainImageUrl,
+                name,
+                price,
+                discountedPrice);
     }
 
     public void setCount(int count) {

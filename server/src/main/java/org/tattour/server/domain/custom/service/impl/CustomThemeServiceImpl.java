@@ -3,6 +3,7 @@ package org.tattour.server.domain.custom.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.domain.CustomTheme;
@@ -10,6 +11,7 @@ import org.tattour.server.domain.custom.repository.CustomThemeRepository;
 import org.tattour.server.domain.custom.service.CustomThemeService;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomThemeServiceImpl implements CustomThemeService {
@@ -24,11 +26,15 @@ public class CustomThemeServiceImpl implements CustomThemeService {
 
 	@Override
 	public List<CustomTheme> saveAll(List<CustomTheme> customThemes) {
-		return customThemes
+		String createdAt = customThemes.get(0)
+				.getCustom()
+				.getCreatedAt();
+		List<CustomTheme> save = customThemes
 				.stream()
 				.filter(this::isUniqueCustomTheme)
 				.map(customThemeRepository::save)
 				.collect(Collectors.toList());
+		return save;
 	}
 
 	@Override

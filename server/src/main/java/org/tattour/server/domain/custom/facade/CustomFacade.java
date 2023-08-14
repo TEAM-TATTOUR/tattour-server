@@ -16,6 +16,7 @@ public interface CustomFacade {
     ReadCustomSummaryListRes getCustomSummaryInCompleteListByUserId(Integer userId);
 
     ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(int userId, String date);
+
     ReadCustomRes updateCustom(UpdateCustomReq updateCustomReq);
 
     ReadCustomRes updateCustomProcess(UpdateCustomReq updateCustomReq);

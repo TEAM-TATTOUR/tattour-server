@@ -33,21 +33,9 @@ public class ReadCustomRes {
 	private Integer viewCount;
 
 	public static ReadCustomRes from(Custom custom) {
-		List<String> themes = custom
-				.getCustomThemes()
-				.stream()
-				.map(customTheme -> customTheme.getTheme().getName())
-				.collect(Collectors.toList());
-		List<String> styles = custom
-				.getCustomStyles()
-				.stream()
-				.map(customStyle -> customStyle.getStyle().getName())
-				.collect(Collectors.toList());
-		List<String> images = custom
-				.getImages()
-				.stream()
-				.map(customImage -> customImage.getImageUrl())
-				.collect(Collectors.toList());
+		List<String> themes = getThemeNameList(custom);
+		List<String> styles = getStyleList(custom);
+		List<String> images = getImageList(custom);
 		return ReadCustomRes.builder()
 				.id(custom.getId())
 				.userId(custom.getUser().getId())
@@ -68,6 +56,39 @@ public class ReadCustomRes {
 				.process(getProcess(custom))
 				.viewCount(custom.getViewCount())
 				.build();
+	}
+
+	private static List<String> getImageList(Custom custom) {
+		if (Objects.isNull(custom.getImages())) {
+			return null;
+		}
+		return custom
+				.getImages()
+				.stream()
+				.map(customImage -> customImage.getImageUrl())
+				.collect(Collectors.toList());
+	}
+
+	private static List<String> getStyleList(Custom custom) {
+		if (Objects.isNull(custom.getCustomStyles())) {
+			return null;
+		}
+		return custom
+				.getCustomStyles()
+				.stream()
+				.map(customStyle -> customStyle.getStyle().getName())
+				.collect(Collectors.toList());
+	}
+
+	private static List<String> getThemeNameList(Custom custom) {
+		if (Objects.isNull(custom.getCustomThemes())) {
+			return null;
+		}
+		return custom
+				.getCustomThemes()
+				.stream()
+				.map(customTheme -> customTheme.getTheme().getName())
+				.collect(Collectors.toList());
 	}
 
 	private static String getSize(Custom custom) {

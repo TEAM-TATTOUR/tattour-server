@@ -83,13 +83,14 @@ public class UpdateCustomReq {
 
 	public Custom newCustom() {
 		Custom.CustomBuilder custom = Custom.builder();
+		custom.id(customId);
 		custom.size(getCustomSize());
-		custom.isColored(isColored);
 		custom.name(name);
-		custom.demand(demand);
 		custom.description(description);
-		custom.isPublic(isPublic);
+		custom.demand(demand);
 		custom.count(count);
+		custom.isColored(isColored);
+		custom.isPublic(isPublic);
 		custom.isCompleted(isCompleted);
 		custom.process(getCustomProcess());
 		custom.viewCount(viewCount);
@@ -105,6 +106,9 @@ public class UpdateCustomReq {
 	}
 
 	public CustomProcess getCustomProcess() {
+		if(customProcess == null) {
+			return null;
+		}
 		return isCompleted ? CustomProcess.RECEIVING : null;
 	}
 }

@@ -11,7 +11,9 @@ public interface CustomService {
 
 	Custom createInitCustom(User user, Boolean haveDesign);
 
-	Custom updateCustom(Custom updateCustom);
+//	Custom updateCustom(Custom updateCustom);
+
+	Custom updateCustom(Custom custom, Custom updateCustomInfo);
 
 	Custom updateCustomProcess(Custom updateCustom, CustomProcess customProcess);
 

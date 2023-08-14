@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.custom.domain.Custom;
@@ -25,8 +26,10 @@ import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
+import org.tattour.server.infra.discord.service.DiscordMessageService;
 import org.tattour.server.infra.s3.S3Service;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CustomFacadeImpl implements CustomFacade {
@@ -35,9 +38,10 @@ public class CustomFacadeImpl implements CustomFacade {
 	private final CustomImageService customImageService;
 	private final CustomThemeService customThemeService;
 	private final CustomStyleService customStyleService;
-	private final S3Service s3Service;
 	private final UserService userService;
 	private final PointService pointService;
+	private final S3Service s3Service;
+	private final DiscordMessageService discordMessageService;
 	private final CustomProviderImpl customProvider;
 	private final CustomRepository customRepository;
 
@@ -93,15 +97,10 @@ public class CustomFacadeImpl implements CustomFacade {
 	@Override
 	@Transactional
 	public ReadCustomRes updateCustom(UpdateCustomReq updateCustomReq) {
+		Custom custom = customProvider.getCustomById(
+				updateCustomReq.getCustomId(),
+				updateCustomReq.getUserId());
 		Custom updateCustom = updateCustomReq.newCustom();
-
-		// 이미지 리스트의 첫번째가 메인 이미지임
-		if (updateCustomReq.getImages().size() > 0) {
-			customService.setMainImageUrl(
-					updateCustom,
-					updateCustomReq.getImages().get(0));
-			updateCustomReq.getImages().remove(0);
-		}
 
 		// 손그림 등록
 		if (!Objects.isNull(updateCustomReq.getHandDrawingImage())) {
@@ -110,6 +109,15 @@ public class CustomFacadeImpl implements CustomFacade {
 					updateCustomReq.getHandDrawingImage());
 		}
 
+		// 이미지 리스트의 첫번째가 메인 이미지임
+		if (updateCustomReq.getImages().size() > 0) {
+			customService.setMainImageUrl(
+					updateCustom,
+					updateCustomReq.getImages().get(0));
+			updateCustomReq.getImages().remove(0);
+		}
+		customService.updateCustom(custom, updateCustom);
+
 		// 이미지들 등록
 		if (!Objects.isNull(updateCustomReq.getImages())) {
 			List<CustomImage> customImages =
@@ -117,7 +125,7 @@ public class CustomFacadeImpl implements CustomFacade {
 									updateCustomReq.getImages(),
 									directoryPath)
 							.stream()
-							.map(image -> CustomImage.of(image, updateCustom))
+							.map(image -> CustomImage.of(image, custom))
 							.collect(Collectors.toList());
 			customImageService.saveAll(customImages);
 		}
@@ -125,19 +133,21 @@ public class CustomFacadeImpl implements CustomFacade {
 		// 테마 등록
 		if (!Objects.isNull(updateCustomReq.getThemes())) {
 			customThemeService.saveAllByCustomAndThemeIdList(
-					updateCustom,
+					custom,
 					updateCustomReq.getThemes());
 		}
 
 		// 스타일 등록
 		if (!Objects.isNull(updateCustomReq.getStyles())) {
 			customStyleService.saveByCustomAndStyleIdList(
-					updateCustom,
+					custom,
 					updateCustomReq.getStyles());
 		}
-
-		return ReadCustomRes.from(
-				customService.updateCustom(updateCustom));
+		if( custom.getIsCompleted()) {
+			discordMessageService.sendCustomApplyMessage(custom);
+			userService.updateUserPoint(custom.getUser(), custom.getPrice());
+		}
+		return ReadCustomRes.from(custom);
 	}
 
 	@Override

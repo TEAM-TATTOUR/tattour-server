@@ -114,21 +114,49 @@ public class Custom extends AuditingTimeEntity {
         this.size = size;
     }
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
 
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+    public void setHaveDesign(Boolean haveDesign) {
+        this.haveDesign = haveDesign;
+    }
 
-//    public void setCount(Integer count) {
-//        this.count = count;
-//    }
+    public void setColored(Boolean colored) {
+        isColored = colored;
+    }
 
-//    public void setPublic(Boolean aPublic) {
-//        isPublic = aPublic;
-//    }
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
+    }
+
+    public void setProcess(CustomProcess process) {
+        this.process = process;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
 
     public void setCustomProcess(CustomProcess process) {
         this.process = process;

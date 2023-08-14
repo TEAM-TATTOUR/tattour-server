@@ -97,21 +97,21 @@ public class StickerFacadeImpl implements StickerFacade {
 	public Integer createSticker(CreateStickerReq request) {
 		String mainImageUrl = s3Service.uploadImage(request.getMainImage(), directoryPath);
 		Sticker sticker = Sticker.of(
-			request.getName(),
-			request.getDescription(),
-			mainImageUrl,
-			request.getIsCustom(),
-			request.getPrice(),
-			request.getComposition(),
-			request.getSize(),
-			request.getShippingFee(),
-			true);
+				request.getName(),
+				request.getDescription(),
+				mainImageUrl,
+				request.getIsCustom(),
+				request.getPrice(),
+				request.getComposition(),
+				request.getSize(),
+				request.getShippingFee(),
+				true);
 		stickerService.save(sticker);
 		request.getImages()
-			.stream()
-			.map(image -> s3Service.uploadImage(image, directoryPath))
-			.map(imageUrl -> StickerImage.of(sticker, imageUrl))
-			.forEach(stickerImageService::save);
+				.stream()
+				.map(image -> s3Service.uploadImage(image, directoryPath))
+				.map(imageUrl -> StickerImage.of(sticker, imageUrl))
+				.forEach(stickerImageService::save);
 		/*
 		// Todo: 테스트 해보기
 		if (!Objects.isNull(request.getImages())) {
@@ -123,13 +123,13 @@ public class StickerFacadeImpl implements StickerFacade {
 		}
 		 */
 		request
-			.getThemes()
-			.stream()
-			.map(themeId -> StickerTheme.of(sticker, themeProvider.getById(themeId)))
-			.forEach(stickerThemeService::save);
+				.getThemes()
+				.stream()
+				.map(themeId -> StickerTheme.of(sticker, themeProvider.getById(themeId)))
+				.forEach(stickerThemeService::save);
 		request.getStyles().stream()
-			.map(styleId -> StickerStyle.of(sticker, styleProvider.getById(styleId)))
-			.forEach(stickerStyleService::save);
+				.map(styleId -> StickerStyle.of(sticker, styleProvider.getById(styleId)))
+				.forEach(stickerStyleService::save);
 		return sticker.getId();
 	}
 
@@ -147,11 +147,11 @@ public class StickerFacadeImpl implements StickerFacade {
 		List<Sticker> result = new ArrayList<>();
 		Sticker sticker = stickerProvider.getById(stickerId);
 		List<Theme> themes = sticker.getStickerThemes().stream()
-			.map(stickerTheme -> stickerTheme.getTheme())
-			.collect(Collectors.toList());
+				.map(stickerTheme -> stickerTheme.getTheme())
+				.collect(Collectors.toList());
 		List<Style> styles = sticker.getStickerStyles().stream()
-			.map(stickerStyle -> stickerStyle.getStyle())
-			.collect(Collectors.toList());
+				.map(stickerStyle -> stickerStyle.getStyle())
+				.collect(Collectors.toList());
 		stickerService.addStickerListByThemeList(result, themes);
 		stickerService.addStickerListByStyleList(result, styles);
 		result.remove(sticker);
@@ -161,9 +161,9 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerSummaryListRes readFilterStickerSummaryList(
-		String sort,
-		String theme,
-		String style) {
+			String sort,
+			String theme,
+			String style) {
 		List<Sticker> result = new ArrayList<>();
 		StickerSort stickerSort = StickerSort.getStickerSort(sort);
 		if (theme.isEmpty() && style.isEmpty()) {
@@ -171,13 +171,13 @@ public class StickerFacadeImpl implements StickerFacade {
 			sortStickerListByStickerSort(result, stickerSort);
 			return ReadStickerSummaryListRes.from(result);
 		}
-		if (style.isEmpty()) {
+		if (!style.isEmpty()) {
 			Theme fileterTheme = themeProvider.getByName(theme);
 			stickerService.addStickerListByTheme(result, fileterTheme);
 			sortStickerListByStickerSort(result, stickerSort);
 			return ReadStickerSummaryListRes.from(result);
 		}
-		if (theme.isEmpty()) {
+		if (!theme.isEmpty()) {
 			Style filterStyle = styleProvider.getByName(style);
 			stickerService.addStickerListByStyle(result, filterStyle);
 			sortStickerListByStickerSort(result, stickerSort);
@@ -195,19 +195,12 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	public ReadOrderSheetStickerRes readOrderSheetSticker(Integer stickerId) {
 		Sticker sticker = stickerProvider.getById(stickerId);
-		Integer discountedPrice = getDiscountPrice(sticker);
+		sticker.getDiscountPrice();
 		return ReadOrderSheetStickerRes.of(
-			sticker.getMainImageUrl(),
-			sticker.getName(),
-			sticker.getPrice(),
-			discountedPrice);
-	}
-
-	private static Integer getDiscountPrice(Sticker sticker) {
-		if (Objects.isNull(sticker.getDiscount())) {
-			return null;
-		}
-		return (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate())) / 100;
+				sticker.getMainImageUrl(),
+				sticker.getName(),
+				sticker.getPrice(),
+				sticker.getDiscountPrice());
 	}
 
 	private void sortStickerListByStickerSort(List<Sticker> stickers, StickerSort sort) {
