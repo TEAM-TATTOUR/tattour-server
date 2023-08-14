@@ -6,14 +6,13 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
-import org.tattour.server.domain.custom.domain.CustomProcess;
-import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomInfo;
+import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomReq;
 
 @Getter
 @NoArgsConstructor
-public class FetchCustomReq {
+public class PatchCustomReq {
 
-	@NotNull
+	@NotNull(message = "customId는 필수 값입니다.")
 	@Schema(description = "커스텀 id")
 	private Integer customId;
 
@@ -53,12 +52,11 @@ public class FetchCustomReq {
 	@Schema(description = "작성중인 커스텀 뷰 번호")
 	private Integer viewCount;
 
-	public UpdateCustomInfo newUpdateCustomInfo(
+	public UpdateCustomReq newUpdateCustomReq(
 		Integer userId,
 		List<MultipartFile> images,
-		MultipartFile handDrawingImage,
-		CustomProcess customProcess) {
-		return UpdateCustomInfo.of(
+		MultipartFile handDrawingImage) {
+		return UpdateCustomReq.of(
 			userId,
 			customId,
 			size,
@@ -75,6 +73,6 @@ public class FetchCustomReq {
 			isCompleted,
 			viewCount,
 			price,
-			customProcess);
+			null);
 	}
 }

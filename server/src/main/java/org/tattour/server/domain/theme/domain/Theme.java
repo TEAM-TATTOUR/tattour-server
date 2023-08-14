@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.tattour.server.domain.custom.domain.CustomTheme;
 import org.tattour.server.domain.sticker.domain.StickerTheme;
 

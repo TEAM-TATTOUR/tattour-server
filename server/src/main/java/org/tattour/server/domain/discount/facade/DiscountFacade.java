@@ -5,7 +5,7 @@ import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerRes;
 
 public interface DiscountFacade {
 
-    CreateDiscountReq createDiscount(CreateDiscountReq createDiscountReq);
+    void createDiscount(CreateDiscountReq createDiscountReq);
 
     ReadStickerRes applyStickerDiscount(Integer stickerId, Integer discountId);
 }

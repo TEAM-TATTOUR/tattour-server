@@ -38,7 +38,8 @@ public class SearchController {
 	})
 	public ResponseEntity<?> getSearchStickerList(@RequestParam(name = "word") String word) {
 		GetStickerSummaryListRes response =
-				GetStickerSummaryListRes.from(searchFacade.searchSticker(word));
+				GetStickerSummaryListRes.from(
+						searchFacade.searchSticker(word));
 		return BaseResponse.success(SuccessType.READ_SEARCH_ALL_STICKER_SUCCESS, response);
 	}
 }

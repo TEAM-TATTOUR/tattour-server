@@ -6,10 +6,12 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.tattour.server.global.config.resolver.DivisibleBy;
 
 @Schema(description = "포인트 충전 요청 취소 Request")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CancelPointChargeRequestReq {
 

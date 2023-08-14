@@ -3,13 +3,15 @@ package org.tattour.server.domain.custom.controller.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 
 @Getter
-@Builder(access = AccessLevel.PRIVATE)
-public class FetchCustomRes {
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class PatchCustomRes {
 
 	@Schema(description = "커스텀 아이디")
 	private Integer id;
@@ -68,28 +70,28 @@ public class FetchCustomRes {
 	@Schema(description = "커스텀 신청 조회수")
 	private Integer viewCount;
 
-	public static FetchCustomRes from(ReadCustomRes readCustomRes) {
-		return FetchCustomRes.builder()
-			.id(readCustomRes.getId())
-			.userId(readCustomRes.getUserId())
-			.stickerId(readCustomRes.getStickerId())
-			.themes(readCustomRes.getThemes())
-			.styles(readCustomRes.getStyles())
-			.mainImageUrl(readCustomRes.getMainImageUrl())
-			.handDrawingImageUrl(readCustomRes.getHandDrawingImageUrl())
-			.images(readCustomRes.getImages())
-			.haveDesign(readCustomRes.getHaveDesign())
-			.size(readCustomRes.getSize())
-			.name(readCustomRes.getName())
-			.description(readCustomRes.getDescription())
-			.demand(readCustomRes.getDemand())
-			.count(readCustomRes.getCount())
-			.isColored(readCustomRes.getIsColored())
-			.isPublic(readCustomRes.getIsPublic())
-			.isCompleted(readCustomRes.getIsCompleted())
-			.process(readCustomRes.getProcess())
-			.viewCount(readCustomRes.getViewCount())
-			.build();
+	public static PatchCustomRes from(ReadCustomRes readCustomRes) {
+		return PatchCustomRes.builder()
+				.id(readCustomRes.getId())
+				.userId(readCustomRes.getUserId())
+				.stickerId(readCustomRes.getStickerId())
+				.themes(readCustomRes.getThemes())
+				.styles(readCustomRes.getStyles())
+				.mainImageUrl(readCustomRes.getMainImageUrl())
+				.handDrawingImageUrl(readCustomRes.getHandDrawingImageUrl())
+				.images(readCustomRes.getImages())
+				.haveDesign(readCustomRes.getHaveDesign())
+				.size(readCustomRes.getSize())
+				.name(readCustomRes.getName())
+				.description(readCustomRes.getDescription())
+				.demand(readCustomRes.getDemand())
+				.count(readCustomRes.getCount())
+				.isColored(readCustomRes.getIsColored())
+				.isPublic(readCustomRes.getIsPublic())
+				.isCompleted(readCustomRes.getIsCompleted())
+				.process(readCustomRes.getProcess())
+				.viewCount(readCustomRes.getViewCount())
+				.build();
 	}
 
 }

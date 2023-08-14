@@ -11,9 +11,12 @@ public interface CustomRepository {
 
 	Optional<Custom> findById(Integer id);
 
+	// Todo : qeury dsl
 	List<Custom> findAllByUser_IdAndIsCompletedTrue(Integer userId);
 
+	// Todo : qeury dsl
 	List<Custom> findAllByUser_IdAndIsCompletedFalse(Integer userId);
 
+	// Todo : qeury dsl
 	List<Custom> findAllByUser_IdAndCreatedAtAfter(Integer userId, String date);
 }

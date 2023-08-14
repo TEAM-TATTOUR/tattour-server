@@ -46,8 +46,11 @@ public class StickerController {
 	})
 	public ResponseEntity<?> getHotCustomStickerList() {
 		GetStickerSummaryListRes response =
-			GetStickerSummaryListRes.from(stickerFacade.readHotCustomStickerList());
-		return BaseResponse.success(SuccessType.READ_HOT_CUSTOM_STICKER_SUCCESS, response);
+			GetStickerSummaryListRes.from(
+					stickerFacade.readHotCustomStickerList());
+		return BaseResponse.success(
+				SuccessType.READ_HOT_CUSTOM_STICKER_SUCCESS,
+				response);
 	}
 
 	@GetMapping("/{stickerId}")
@@ -67,8 +70,11 @@ public class StickerController {
 		@PathVariable Integer stickerId
 	) {
 		GetStickerForUserRes response =
-			GetStickerForUserRes.from(stickerFacade.readStickerForUser(stickerId, authorization));
-		return BaseResponse.success(SuccessType.READ_STICKER_INFO_SUCCESS, response);
+			GetStickerForUserRes.from(
+					stickerFacade.readStickerForUser(stickerId, authorization));
+		return BaseResponse.success(
+				SuccessType.READ_STICKER_INFO_SUCCESS,
+				response);
 	}
 
 	@GetMapping("/{stickerId}/related")
@@ -87,7 +93,9 @@ public class StickerController {
 		GetStickerSummaryListRes response =
 			GetStickerSummaryListRes.from(
 				stickerFacade.readSimilarStickerSummaryList(stickerId));
-		return BaseResponse.success(SuccessType.READ_SIMILAR_STICKER_SUCCESS, response);
+		return BaseResponse.success(
+				SuccessType.READ_SIMILAR_STICKER_SUCCESS,
+				response);
 	}
 
 	@GetMapping
@@ -114,6 +122,8 @@ public class StickerController {
 				sort,
 				theme,
 				style));
-		return BaseResponse.success(SuccessType.READ_FILTER_ALL_STICKER_SUCCESS, response);
+		return BaseResponse.success(
+				SuccessType.READ_FILTER_ALL_STICKER_SUCCESS,
+				response);
 	}
 }

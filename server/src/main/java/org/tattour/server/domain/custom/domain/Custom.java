@@ -98,16 +98,6 @@ public class Custom extends AuditingTimeEntity {
         this.sticker = sticker;
     }
 
-    public void setCustomThemes(
-            List<CustomTheme> customThemes) {
-        this.customThemes = customThemes;
-    }
-
-    public void setCustomStyles(
-            List<CustomStyle> customStyles) {
-        this.customStyles = customStyles;
-    }
-
     public void setMainImageUrl(String mainImageUrl) {
         this.mainImageUrl = mainImageUrl;
     }
@@ -124,6 +114,34 @@ public class Custom extends AuditingTimeEntity {
         this.size = size;
     }
 
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
+
+    public void setHaveDesign(Boolean haveDesign) {
+        this.haveDesign = haveDesign;
+    }
+
+    public void setColored(Boolean colored) {
+        isColored = colored;
+    }
+
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
+    }
+
+    public void setProcess(CustomProcess process) {
+        this.process = process;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -132,39 +150,32 @@ public class Custom extends AuditingTimeEntity {
         this.description = description;
     }
 
-    public void setDemand(String demand) {
-        this.demand = demand;
-    }
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public void setColored(Boolean colored) {
-        isColored = colored;
     }
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
     }
 
-    public void setCompleted(Boolean completed) {
-        isCompleted = completed;
-    }
-
     public void setCustomProcess(CustomProcess process) {
         this.process = process;
     }
 
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public void calPrice() {
-        price = size.getPrice() * count;
+    public Integer calPrice() {
+        Integer price = size.getPrice() * count;
         if (isPublic) {
             price -= size.getDiscountPrice();
         }
+        return price;
+    }
+
+    public Boolean isNotSameUser(Integer userId) {
+        return !user.getId().equals(userId);
+    }
+
+    public Boolean isNotAdmin(Integer userId) {
+        return !userId.equals(1);
     }
 
     public static Custom of(

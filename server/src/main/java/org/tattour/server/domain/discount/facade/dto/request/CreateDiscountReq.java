@@ -15,15 +15,6 @@ public class CreateDiscountReq {
 	private LocalDateTime startAt;
 	private LocalDateTime endedAt;
 
-	public static CreateDiscountReq from(Discount discount) {
-		return CreateDiscountReq.builder()
-			.name(discount.getName())
-			.discountRate(builder().discountRate)
-			.startAt(discount.getStartAt())
-			.endedAt(discount.getExpiredAt())
-			.build();
-	}
-
 	public static CreateDiscountReq of(
 		String name,
 		Integer discountRate,

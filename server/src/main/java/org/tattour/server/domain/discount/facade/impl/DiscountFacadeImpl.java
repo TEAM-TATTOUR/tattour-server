@@ -22,14 +22,13 @@ public class DiscountFacadeImpl implements DiscountFacade {
 
 	@Override
 	@Transactional
-	public CreateDiscountReq createDiscount(CreateDiscountReq createDiscountReq) {
+	public void createDiscount(CreateDiscountReq createDiscountReq) {
 		Discount discount = Discount.of(createDiscountReq.getName(),
 				createDiscountReq.getDiscountRate(),
 				createDiscountReq.getStartAt(),
 				createDiscountReq.getEndedAt(),
 				false);
 		discountRepository.save(discount);
-		return CreateDiscountReq.from(discount);
 	}
 
 	@Override
