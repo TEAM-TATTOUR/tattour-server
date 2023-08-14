@@ -32,11 +32,6 @@ public class CustomThemeServiceImpl implements CustomThemeService {
 	}
 
 	@Override
-	public List<CustomTheme> saveByCustomAndCustomId(List<CustomTheme> customThemes) {
-		return null;
-	}
-
-	@Override
 	public List<CustomTheme> saveAllByCustomAndThemeIdList(
 			Custom custom,
 			List<Integer> themeIdList) {

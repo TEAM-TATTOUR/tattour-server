@@ -9,9 +9,5 @@ public interface CustomThemeService {
 	CustomTheme save(CustomTheme customTheme);
 
 	List<CustomTheme> saveAll(List<CustomTheme> customThemes);
-
-	List<CustomTheme> saveByCustomAndCustomId(List<CustomTheme> customThemes);
-
 	List<CustomTheme> saveAllByCustomAndThemeIdList(Custom custom, List<Integer> customIdList);
-
 }

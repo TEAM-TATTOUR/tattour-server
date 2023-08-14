@@ -114,40 +114,24 @@ public class Custom extends AuditingTimeEntity {
         this.size = size;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
-    public void setDemand(String demand) {
-        this.demand = demand;
-    }
+//    public void setCount(Integer count) {
+//        this.count = count;
+//    }
 
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public void setColored(Boolean colored) {
-        isColored = colored;
-    }
-
-    public void setPublic(Boolean aPublic) {
-        isPublic = aPublic;
-    }
-
-    public void setCompleted(Boolean completed) {
-        isCompleted = completed;
-    }
+//    public void setPublic(Boolean aPublic) {
+//        isPublic = aPublic;
+//    }
 
     public void setCustomProcess(CustomProcess process) {
         this.process = process;
-    }
-
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
     }
 
     public Integer calPrice() {
@@ -156,6 +140,14 @@ public class Custom extends AuditingTimeEntity {
             price -= size.getDiscountPrice();
         }
         return price;
+    }
+
+    public Boolean isNotSameUser(Integer userId) {
+        return !user.getId().equals(userId);
+    }
+
+    public Boolean isNotAdmin(Integer userId) {
+        return !userId.equals(1);
     }
 
     public static Custom of(
