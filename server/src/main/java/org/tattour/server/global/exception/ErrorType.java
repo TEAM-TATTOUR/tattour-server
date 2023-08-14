@@ -20,7 +20,6 @@ public enum ErrorType {
     INVALID_CUSTOM_PRICE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 커스텀 가격 입니다."),
     INVALID_JWT_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "지원하지 않는 JWT 토큰입니다."),
     INVALID_CUSTOM_COMPLETED_EXCEPTION(HttpStatus.BAD_REQUEST, "완성되지 않은 커스텀 도안입니다."),
-    INVALID_HEADER_HOST(HttpStatus.BAD_REQUEST, "Origin을 찾을 수 없습니다."),
 
     /**
      * 401 UNAUTHORIZED
@@ -50,6 +49,8 @@ public enum ErrorType {
     NOT_FOUND_SAVE_IMAGE_EXCEPTION(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다."),
     NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 포인트 충전 요청입니다."),
     NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다."),
+    NOT_FOUND_HEADER_ORGIN(HttpStatus.BAD_REQUEST, "Origin을 찾을 수 없습니다."),
+
 
     /**
      * 405 METHOD NOT ALLOWED

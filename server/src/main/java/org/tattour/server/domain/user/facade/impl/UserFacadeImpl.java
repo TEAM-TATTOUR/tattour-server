@@ -1,7 +1,6 @@
 package org.tattour.server.domain.user.facade.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
@@ -45,12 +44,11 @@ public class UserFacadeImpl implements UserFacade {
     private final JwtService jwtService;
 
     @Override
-    public PostLoginRes signup(CreateLoginReq req) throws UnsupportedEncodingException {
-        if (req.getOrigin() == null) {
-            throw new BusinessException(ErrorType.INVALID_HEADER_HOST);
+    public PostLoginRes signup(CreateLoginReq req) {
+        if(Objects.isNull(req.getOrigin())) {
+            throw new BusinessException(ErrorType.NOT_FOUND_HEADER_ORGIN);
         }
-        String decodedOrigin = URLDecoder.decode(req.getOrigin(), "UTF-8");
-        System.out.println("decodedOrigin = " + decodedOrigin);
+        System.out.println("Origin = " + req.getOrigin());
 
         SocialService socialService = socialServiceProvider
                 .getSocialService(req.getSocialPlatform());
