@@ -1,5 +1,6 @@
 package org.tattour.server.domain.user.facade.impl;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
@@ -44,13 +45,17 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public PostLoginRes signup(CreateLoginReq req) {
+        // TODO : prod 에선 지우기
+        if(Objects.isNull(req.getHost().toString()))
+            throw new BusinessException(ErrorType.INVALID_HEADER_HOST);
+
         SocialService socialService = socialServiceProvider
                 .getSocialService(req.getSocialPlatform());
 
         // 로그인
         KakaoLoginInfo kakaoLoginInfo =
                 (KakaoLoginInfo) socialService.getSocialLoginResponse(
-                        GetSocialLoginReq.of(req.getCode(), req.getReferer()));
+                        GetSocialLoginReq.of(req.getCode(), req.getHost().toString()));
 
         // 중복 확인
         boolean isUserExist = userProvider.checkDuplicationByKakaoId(

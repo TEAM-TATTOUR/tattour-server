@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,10 +89,9 @@ public class UserController {
     public ResponseEntity<?> signup(
             @Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
             @RequestBody @Valid PostLoginReq req,
-            HttpServletRequest request) {
-
+            HttpEntity request) {
         return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
-                userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code, request.getHeader("referer"))));
+                userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code, request.getHeaders().getHost())));
     }
 
 
