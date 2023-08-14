@@ -1,5 +1,6 @@
 package org.tattour.server.domain.user.facade;
 
+import java.io.UnsupportedEncodingException;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
@@ -12,7 +13,7 @@ import org.tattour.server.domain.user.facade.dto.request.SaveUserShippingAddrReq
 
 public interface UserFacade {
     // 회원가입, 로그인
-    PostLoginRes signup(CreateLoginReq req);
+    PostLoginRes signup(CreateLoginReq req) throws UnsupportedEncodingException;
 
     // 유저 로그아웃
     void userLogout(int userId);
