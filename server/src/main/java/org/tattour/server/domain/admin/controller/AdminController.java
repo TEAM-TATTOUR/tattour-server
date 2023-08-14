@@ -29,7 +29,7 @@ import org.tattour.server.domain.admin.controller.dto.request.CancelPointChargeR
 import org.tattour.server.domain.admin.controller.dto.request.ConfirmPointChargeRequestReq;
 import org.tattour.server.domain.admin.controller.dto.request.PostStickerReq;
 import org.tattour.server.domain.admin.controller.dto.request.PostDiscountReq;
-import org.tattour.server.domain.admin.controller.dto.request.UpdateCustomProcessReq;
+import org.tattour.server.domain.admin.controller.dto.request.PatchCustomProcessReq;
 import org.tattour.server.domain.admin.controller.dto.response.PostStickerRes;
 import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
@@ -315,11 +315,12 @@ public class AdminController {
 	})
 	public ResponseEntity<?> updateCustomProcess(
 			@Parameter(hidden = true) @UserId Integer userId,
-			@RequestBody @Valid UpdateCustomProcessReq request
+			@RequestBody @Valid PatchCustomProcessReq request
 	) {
 		jwtService.compareJwtWithPathVar(userId, 1);
-		ReadCustomRes response = customFacade.updateCustomProcess(
-				request.newUpdateCustomInfo(userId));
+		ReadCustomRes response =
+				customFacade.updateCustomProcess(
+						request.newUpdateCustomReq(userId));
 		return BaseResponse.success(SuccessType.UPDATE_CUSTOM_PROCESS_SUCCESS, response);
 	}
 
