@@ -29,7 +29,6 @@ import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.provider.StyleProvider;
 import org.tattour.server.domain.theme.domain.Theme;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
-import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
 import org.tattour.server.domain.user.service.ProductLikedService;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
@@ -40,14 +39,14 @@ import org.tattour.server.infra.s3.S3Service;
 @RequiredArgsConstructor
 public class StickerFacadeImpl implements StickerFacade {
 
-	private final StickerProvider stickerProvider;
-	private final ThemeProvider themeProvider;
-	private final StyleProvider styleProvider;
 	private final StickerService stickerService;
 	private final StickerImageService stickerImageService;
 	private final StickerThemeService stickerThemeService;
 	private final StickerStyleService stickerStyleService;
 	private final ProductLikedService productLikedService;
+	private final StickerProvider stickerProvider;
+	private final ThemeProvider themeProvider;
+	private final StyleProvider styleProvider;
 	private final JwtService jwtService;
 	private final S3Service s3Service;
 
@@ -157,11 +156,6 @@ public class StickerFacadeImpl implements StickerFacade {
 		stickerService.addStickerListByStyleList(result, styles);
 		result.remove(sticker);
 		return ReadStickerSummaryListRes.from(result);
-	}
-
-	@Override
-	public ReadStickerSummaryListRes readSearchStickerSummaryList(String word) {
-		return null;
 	}
 
 	@Override

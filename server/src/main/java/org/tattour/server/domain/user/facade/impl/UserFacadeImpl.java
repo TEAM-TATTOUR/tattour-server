@@ -50,7 +50,7 @@ public class UserFacadeImpl implements UserFacade {
         // 로그인
         KakaoLoginInfo kakaoLoginInfo =
                 (KakaoLoginInfo) socialService.getSocialLoginResponse(
-                        GetSocialLoginReq.of(req.getCode(), req.getReferer()));
+                        GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
 
         // 중복 확인
         boolean isUserExist = userProvider.checkDuplicationByKakaoId(

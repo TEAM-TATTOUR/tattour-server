@@ -42,7 +42,9 @@ public class StyleController {
 	public ResponseEntity<?> readStyleList() {
 		GetStyleListRes response = GetStyleListRes.from(
 				styleFacade.readAllStyle());
-		return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUCCESS, response);
+		return BaseResponse.success(
+				SuccessType.READ_ALL_STYLE_SUCCESS,
+				response);
 	}
 
 	@GetMapping("/summary")
@@ -57,6 +59,8 @@ public class StyleController {
 		GetStyleSummaryListRes response =
 				GetStyleSummaryListRes.from(
 						styleFacade.readAllStyleSummary());
-		return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS, response);
+		return BaseResponse.success(
+				SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS,
+				response);
 	}
 }

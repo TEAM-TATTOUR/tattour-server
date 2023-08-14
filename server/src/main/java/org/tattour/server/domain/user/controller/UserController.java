@@ -90,10 +90,9 @@ public class UserController {
 			@Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
 			@RequestBody @Valid PostLoginReq req,
 			HttpServletRequest request) {
-
 		return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
 				userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code,
-						request.getHeader("referer"))));
+						request.getHeader("origin"))));
 	}
 
 
