@@ -40,6 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 // 자격증명 사용을 허용한다.
                 // 해당 옵션 사용시 allowedOrigins를 * (전체)로 설정할 수 없다.
-                .allowCredentials(true);
+                .allowCredentials(false);
     }
 }
