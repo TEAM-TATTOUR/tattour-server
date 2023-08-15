@@ -48,57 +48,45 @@ public class CustomServiceImpl implements CustomService {
 				0);
 	}
 
-//	@Override
-//	public Custom updateCustom(Custom updateCustom) {
-//		if (updateCustom.getIsCompleted()) {
-//			if (!isValidatePrice(updateCustom)) {
-//				throw new InvalidCustomPriceException();
-//			}
-//			updateCustom.setCustomProcess(CustomProcess.RECEIVING);
-//			discordMessageService.sendCustomApplyMessage(updateCustom);
-//		}
-//		return customRepository.save(updateCustom);
-//	}
-
 	@Override
-	public Custom updateCustom(Custom custom, Custom updateCustomInfo) {
-		if(Objects.isNull(updateCustomInfo.getMainImageUrl())) {
-			custom.setMainImageUrl(updateCustomInfo.getMainImageUrl());
+	public Custom updateCustom(Custom custom, Custom updateCustom) {
+		if(!Objects.isNull(updateCustom.getMainImageUrl())) {
+			custom.setMainImageUrl(updateCustom.getMainImageUrl());
 		}
-		if(Objects.isNull(updateCustomInfo.getHandDrawingImageUrl())) {
-			custom.setHandDrawingImageUrl(updateCustomInfo.getHandDrawingImageUrl());
+		if(!Objects.isNull(updateCustom.getHandDrawingImageUrl())) {
+			custom.setHandDrawingImageUrl(updateCustom.getHandDrawingImageUrl());
 		}
-		if (!Objects.isNull(updateCustomInfo.getSize())) {
-			custom.setSize(updateCustomInfo.getSize());
+		if (!Objects.isNull(updateCustom.getSize())) {
+			custom.setSize(updateCustom.getSize());
 		}
-		if (!Objects.isNull(updateCustomInfo.getName())) {
-			custom.setName(updateCustomInfo.getName());
+		if (!Objects.isNull(updateCustom.getName())) {
+			custom.setName(updateCustom.getName());
 		}
-		if (!Objects.isNull(updateCustomInfo.getDescription())) {
-			custom.setDescription(updateCustomInfo.getDescription());
+		if (!Objects.isNull(updateCustom.getDescription())) {
+			custom.setDescription(updateCustom.getDescription());
 		}
-		if (!Objects.isNull(updateCustomInfo.getDemand())) {
-			custom.setDemand(updateCustomInfo.getDemand());
+		if (!Objects.isNull(updateCustom.getDemand())) {
+			custom.setDemand(updateCustom.getDemand());
 		}
-		if (!Objects.isNull(updateCustomInfo.getCount())) {
-			custom.setCount(updateCustomInfo.getCount());
+		if (!Objects.isNull(updateCustom.getCount())) {
+			custom.setCount(updateCustom.getCount());
 		}
-		if (!Objects.isNull(updateCustomInfo.getIsColored())) {
-			custom.setColored(updateCustomInfo.getIsColored());
+		if (!Objects.isNull(updateCustom.getIsColored())) {
+			custom.setColored(updateCustom.getIsColored());
 		}
-		if (!Objects.isNull(updateCustomInfo.getIsPublic())) {
-			custom.setPublic(updateCustomInfo.getIsPublic());
+		if (!Objects.isNull(updateCustom.getIsPublic())) {
+			custom.setPublic(updateCustom.getIsPublic());
 		}
-		if (!Objects.isNull(updateCustomInfo.getViewCount())) {
-			custom.setViewCount(updateCustomInfo.getViewCount());
+		if (!Objects.isNull(updateCustom.getViewCount())) {
+			custom.setViewCount(updateCustom.getViewCount());
 		}
-		if (!Objects.isNull(updateCustomInfo.getIsCompleted())) {
-			if (updateCustomInfo.getIsCompleted()) {
-				if (!custom.calPrice().equals(updateCustomInfo.getPrice())) {
+		if (!Objects.isNull(updateCustom.getIsCompleted())) {
+			if (updateCustom.getIsCompleted()) {
+				if (!custom.calPrice().equals(updateCustom.getPrice())) {
 					throw new InvalidCustomPriceException();
 				}
-				custom.setPrice(updateCustomInfo.getPrice());
-				custom.setCompleted(updateCustomInfo.getIsCompleted());
+				custom.setPrice(updateCustom.getPrice());
+				custom.setCompleted(updateCustom.getIsCompleted());
 				custom.setCustomProcess(CustomProcess.RECEIVING);
 			}
 		}
