@@ -89,7 +89,9 @@ public class CustomFacadeImpl implements CustomFacade {
 	}
 
 	@Override
-	public ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(int userId, String date) {
+	public ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(
+			int userId,
+			String date) {
 		List<Custom> customs = customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
 		return ReadCustomSummaryListRes.from(customs);
 	}
@@ -136,14 +138,13 @@ public class CustomFacadeImpl implements CustomFacade {
 					custom,
 					updateCustomReq.getThemes());
 		}
-
 		// 스타일 등록
 		if (!Objects.isNull(updateCustomReq.getStyles())) {
 			customStyleService.saveByCustomAndStyleIdList(
 					custom,
 					updateCustomReq.getStyles());
 		}
-		if( custom.getIsCompleted()) {
+		if (custom.getIsCompleted()) {
 			discordMessageService.sendCustomApplyMessage(custom);
 			userService.updateUserPoint(custom.getUser(), custom.getPrice());
 		}

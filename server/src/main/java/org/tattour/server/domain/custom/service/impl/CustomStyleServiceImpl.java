@@ -3,6 +3,7 @@ package org.tattour.server.domain.custom.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.domain.CustomStyle;
@@ -10,6 +11,7 @@ import org.tattour.server.domain.custom.repository.CustomStyleRepository;
 import org.tattour.server.domain.custom.service.CustomStyleService;
 import org.tattour.server.domain.style.provider.StyleProvider;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomStyleServiceImpl implements CustomStyleService {
