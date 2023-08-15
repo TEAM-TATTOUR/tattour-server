@@ -28,13 +28,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // Header의 Origin에 들어있는 주소가 아래 주소인 경우를 허용한다
                 .allowedOrigins(
-                        "https://api.tattour.shop",
-                        "http://api.tattour.shop",
-                        "https://tattour.kr",
-                        "https://dev.tattour.shop",
-                        "http://localhost:8080",
-                        "http://localhost:5173",
-                        "http://127.0.0.1:5173")
+                        "*"
+//                        "https://tattour.kr",
+//                        "https://api.tattour.shop",
+//                        "https://dev.tattour.shop"
+                )
                 .allowedHeaders()
                 // 모든 HTTP Method를 허용한다.
                 .allowedMethods("*")
