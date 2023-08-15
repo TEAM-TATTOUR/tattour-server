@@ -33,7 +33,6 @@ public class WebConfig implements WebMvcConfigurer {
 //                        "https://api.tattour.shop",
 //                        "https://dev.tattour.shop"
                 )
-                .allowedHeaders()
                 // 모든 HTTP Method를 허용한다.
                 .allowedMethods("*")
                 // HTTP 요청의 Header에 어떤 값이든 들어갈 수 있도록 허용한다.
