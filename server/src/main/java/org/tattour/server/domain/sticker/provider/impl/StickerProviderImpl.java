@@ -3,6 +3,7 @@ package org.tattour.server.domain.sticker.provider.impl;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
@@ -10,6 +11,7 @@ import org.tattour.server.domain.sticker.provider.StickerProvider;
 import org.tattour.server.domain.sticker.repository.StickerRepository;
 import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StickerProviderImpl implements StickerProvider {
@@ -33,8 +35,17 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAllByIsCustomTrueAndStateTrue() {
-		return stickerRepository.findAllByIsCustomTrueAndStateTrue();
+	public List<Sticker> getAllCustomStickerOrderByOrder() {
+		List<Sticker> result = stickerRepository.findAllByStateAndCustomInOrderOrder();
+		for (Sticker sticker : result) {
+			log.info("sticker.getId() = {}", sticker.getId());
+		}
+		return result;
+	}
+
+	@Override
+	public List<Sticker> getAllHotCustom() {
+		return null;
 	}
 
 	@Override

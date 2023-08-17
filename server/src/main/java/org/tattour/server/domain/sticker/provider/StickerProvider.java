@@ -13,7 +13,9 @@ public interface StickerProvider {
 
     List<Sticker> getAllByStateTrue();
 
-    List<Sticker> getAllByIsCustomTrueAndStateTrue();
+    List<Sticker> getAllCustomStickerOrderByOrder();
+
+    List<Sticker> getAllHotCustom();
 
     List<Sticker> getAllByNameLike(String name);
 

@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,31 +60,27 @@ public class Sticker extends AuditingTimeEntity {
     @JoinColumn(name = "discount_id")
     private Discount discount;
 
-    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerTheme> stickerThemes;
+    /**
+     * Mapped By
+     */
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerStyle> stickerStyles;
+    private List<StickerTheme> stickerThemes = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerImage> stickerImages;
+    private List<StickerStyle> stickerStyles = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<Order> orderItems;
+    private List<StickerImage> stickerImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<ProductLiked> productLikeds;
+    private List<Order> orders = new ArrayList<>();
 
-    public void setStickerThemes(
-            List<StickerTheme> stickerThemes) {
-        this.stickerThemes = stickerThemes;
-    }
+    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    private List<ProductLiked> productLikeds = new ArrayList<>();
 
-    public void setStickerStyles(
-            List<StickerStyle> stickerStyles) {
-        this.stickerStyles = stickerStyles;
-    }
 
+    // Todo : Refactoring
     public void setImages(List<StickerImage> stickerImages) {
         this.stickerImages = stickerImages;
     }

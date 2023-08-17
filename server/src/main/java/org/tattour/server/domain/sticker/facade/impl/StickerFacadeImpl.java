@@ -136,7 +136,7 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerSummaryListRes readHotCustomStickerList() {
-		List<Sticker> stickers = stickerProvider.getAllByIsCustomTrueAndStateTrue();
+		List<Sticker> stickers = stickerProvider.getAllCustomStickerOrderByOrder();
 		return ReadStickerSummaryListRes.from(stickers);
 	}
 
