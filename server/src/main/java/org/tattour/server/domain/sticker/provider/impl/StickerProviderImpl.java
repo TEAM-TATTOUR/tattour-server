@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.provider.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -36,16 +37,15 @@ public class StickerProviderImpl implements StickerProvider {
 
 	@Override
 	public List<Sticker> getAllCustomStickerOrderByOrder() {
-		List<Sticker> result = stickerRepository.findAllByStateAndCustomInOrderOrder();
-		for (Sticker sticker : result) {
-			log.info("sticker.getId() = {}", sticker.getId());
-		}
-		return result;
+		return stickerRepository.findAllByStateAndIsCustomInOrderOrder();
 	}
 
 	@Override
-	public List<Sticker> getAllHotCustom() {
-		return null;
+	public List<Sticker> getAllSameThemeOrStyleBySticker(Integer id) {
+		log.info("1111111111111111111");
+		List<Sticker> result = stickerRepository.findAllSameThemeOrStyleById(id);
+		log.info("2222222222222222222");
+		return result;
 	}
 
 	@Override

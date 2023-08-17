@@ -55,18 +55,14 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerForUserRes readStickerForUser(Integer stickerId, String authorization) {
-		Boolean productLiked = getProductLiked(stickerId, authorization);
 		Sticker sticker = stickerProvider.getById(stickerId);
-		return ReadStickerForUserRes.of(sticker, productLiked);
-	}
-
-	// Todo : 위치 옮기기
-	private Boolean getProductLiked(Integer stickerId, String authorization) {
-		Integer userId = getUserId(authorization);
-		if (Objects.isNull(userId)) {
-			return false;
+		if (Objects.isNull(authorization)) {
+			return ReadStickerForUserRes.of(sticker, false);
 		}
-		return productLikedService.checkProductLikedExists(userId, stickerId);
+		// Todo : authorization을 통해 userId 가져오기 -> 메서드 분리하기
+		Integer userId = getUserId(authorization);
+		Boolean productLiked = productLikedService.checkProductLikedExists(userId, stickerId);
+		return ReadStickerForUserRes.of(sticker, productLiked);
 	}
 
 	// Todo : 위치 옮기기
@@ -112,16 +108,6 @@ public class StickerFacadeImpl implements StickerFacade {
 				.map(image -> s3Service.uploadImage(image, directoryPath))
 				.map(imageUrl -> StickerImage.of(sticker, imageUrl))
 				.forEach(stickerImageService::save);
-		/*
-		// Todo: 테스트 해보기
-		if (!Objects.isNull(request.getImages())) {
-			List<String> imageUrls = s3Service.uploadImageList(request.getImages(), directoryPath);
-			imageUrls
-				.stream()
-				.map(imageUrl -> StickerImage.from(sticker, imageUrl))
-				.forEach(stickerImageService::save);
-		}
-		 */
 		request
 				.getThemes()
 				.stream()
@@ -140,10 +126,15 @@ public class StickerFacadeImpl implements StickerFacade {
 		return ReadStickerSummaryListRes.from(stickers);
 	}
 
-	// Todo : querydsl로 변경하기
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerSummaryListRes readSimilarStickerSummaryList(Integer stickerId) {
+		List<Sticker> stickers =
+				stickerProvider.getAllSameThemeOrStyleBySticker(stickerId);
+		stickers.removeIf(sticker -> sticker.getId().equals(stickerId));
+		return ReadStickerSummaryListRes.from(stickers);
+		//Todo : 여기 작업중
+		/*
 		List<Sticker> result = new ArrayList<>();
 		Sticker sticker = stickerProvider.getById(stickerId);
 		List<Theme> themes = sticker.getStickerThemes().stream()
@@ -156,6 +147,8 @@ public class StickerFacadeImpl implements StickerFacade {
 		stickerService.addStickerListByStyleList(result, styles);
 		result.remove(sticker);
 		return ReadStickerSummaryListRes.from(result);
+
+		 */
 	}
 
 	@Override
