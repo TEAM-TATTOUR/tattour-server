@@ -41,12 +41,15 @@ public class Sticker extends AuditingTimeEntity {
     private String name;
     private String description;
     private Integer price;
+
     @Column(name = "discount_price")
     private Integer discountPrice;
+
     @Column(name = "shipping_fee")
     private Integer shippingFee;
     private String composition;
     private String size;
+
     @Column(columnDefinition = "tinyint")
     private Boolean state;
 
@@ -73,17 +76,8 @@ public class Sticker extends AuditingTimeEntity {
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
     private List<StickerImage> stickerImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sticker")
     private List<Order> orders = new ArrayList<>();
-
-    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<ProductLiked> productLikeds = new ArrayList<>();
-
-
-    // Todo : Refactoring
-    public void setImages(List<StickerImage> stickerImages) {
-        this.stickerImages = stickerImages;
-    }
 
     public void applyDiscount(Discount discount) {
         this.discount = discount;

@@ -28,15 +28,4 @@ public class ThemeProviderImpl implements ThemeProvider {
 	public List<Theme> getAll() {
 		return themeRepository.findAll();
 	}
-
-	@Override
-	public Theme getByName(String name) {
-		return themeRepository.findByName(name)
-			.orElseThrow(NotFoundThemeException::new);
-	}
-
-	@Override
-	public List<Theme> getAllByNameLike(String name) {
-		return themeRepository.findByNameLike(name);
-	}
 }

@@ -21,18 +21,7 @@ public class StyleProviderImpl implements StyleProvider {
 	}
 
 	@Override
-	public Style getByName(String name) {
-		return styleRepository.findByName(name)
-			.orElseThrow(NotFoundStyleException::new);
-	}
-
-	@Override
 	public List<Style> getAll() {
 		return styleRepository.findAll();
-	}
-
-	@Override
-	public List<Style> getAllByNameLike(String name) {
-		return styleRepository.findByNameLike(name);
 	}
 }

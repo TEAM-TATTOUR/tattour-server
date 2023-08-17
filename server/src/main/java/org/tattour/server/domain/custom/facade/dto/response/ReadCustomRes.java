@@ -45,7 +45,7 @@ public class ReadCustomRes {
 				.images(images)
 				.handDrawingImageUrl(custom.getHandDrawingImageUrl())
 				.haveDesign(custom.getHaveDesign())
-				.size(getSize(custom))
+				.size(getSizeString(custom))
 				.name(custom.getName())
 				.description(custom.getDescription())
 				.demand(custom.getDemand())
@@ -53,15 +53,16 @@ public class ReadCustomRes {
 				.isColored(custom.getIsColored())
 				.isPublic(custom.getIsPublic())
 				.isCompleted(custom.getIsCompleted())
-				.process(getProcess(custom))
+				.process(getProcessString(custom))
 				.viewCount(custom.getViewCount())
 				.build();
 	}
+	// Todo : 주석 지우기
 
 	private static List<String> getImageList(Custom custom) {
-		if (Objects.isNull(custom.getImages())) {
-			return null;
-		}
+//		if (Objects.isNull(custom.getImages())) {
+//			return null;
+//		}
 		return custom
 				.getImages()
 				.stream()
@@ -70,9 +71,9 @@ public class ReadCustomRes {
 	}
 
 	private static List<String> getStyleList(Custom custom) {
-		if (Objects.isNull(custom.getCustomStyles())) {
-			return null;
-		}
+//		if (Objects.isNull(custom.getCustomStyles())) {
+//			return null;
+//		}
 		return custom
 				.getCustomStyles()
 				.stream()
@@ -81,9 +82,9 @@ public class ReadCustomRes {
 	}
 
 	private static List<String> getThemeNameList(Custom custom) {
-		if (Objects.isNull(custom.getCustomThemes())) {
-			return null;
-		}
+//		if (Objects.isNull(custom.getCustomThemes())) {
+//			return null;
+//		}
 		return custom
 				.getCustomThemes()
 				.stream()
@@ -91,14 +92,14 @@ public class ReadCustomRes {
 				.collect(Collectors.toList());
 	}
 
-	private static String getSize(Custom custom) {
+	private static String getSizeString(Custom custom) {
 		if (Objects.isNull(custom.getSize())) {
 			return null;
 		}
 		return custom.getSize().getSize();
 	}
 
-	private static String getProcess(Custom custom) {
+	private static String getProcessString(Custom custom) {
 		if (Objects.isNull(custom.getProcess())) {
 			return null;
 		}

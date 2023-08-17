@@ -9,10 +9,6 @@ public interface StickerProvider {
     // 스티커 엔티티 가져오기
     Sticker getById(Integer id);
 
-    List<Sticker> getAll();
-
-    List<Sticker> getAllByStateTrue();
-
     List<Sticker> getAllCustomStickerOrderByOrder();
 
     List<Sticker> getAllByThemeAndStyleOrderByOrder(String theme, String style);
@@ -23,7 +19,7 @@ public interface StickerProvider {
 
     List<Sticker> getAllSameThemeOrStyleById(Integer id);
 
-    List<Sticker> getAllByNameLike(String name);
+    List<Sticker> getAllByThemeOrStyleOrNameLike(String word);
 
     // 결제 시트에서 스티커 정보 가져오기
     ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker);

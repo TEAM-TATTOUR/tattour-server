@@ -7,5 +7,5 @@ public interface CustomProvider {
 
 	Custom getCustomById(Integer customId, Integer userId);
 
-	List<Custom> readCustomSummaryInfoAfterDateByUserId(int userId, String date);
+	List<Custom> getCustomByUserIdAfterDate(int userId, String date);
 }

@@ -9,8 +9,4 @@ public interface StyleRepository {
 	Optional<Style> findById(Integer styleId);
 
 	List<Style> findAll();
-
-	Optional<Style> findByName(String name);
-
-	List<Style> findByNameLike(String name);
 }

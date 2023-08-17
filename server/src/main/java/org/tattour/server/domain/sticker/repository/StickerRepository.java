@@ -12,9 +12,8 @@ public interface StickerRepository {
 
 	Optional<Sticker> findById(Integer id);
 
-	List<Sticker> findAll();
-
-	@Query("select s from Sticker s left join s.orders "
+	@Query("select s "
+			+ "from Sticker s left join s.orders "
 			+ "where s.isCustom = true and s.state = true "
 			+ "group by s.id "
 			+ "order by count(*) desc ")
@@ -25,8 +24,9 @@ public interface StickerRepository {
 			+ "from Sticker s1 "
 			+ "left join s1.stickerThemes st1 "
 			+ "left join s1.stickerStyles ss1 "
-			+ "where (st1.theme in (select st2.theme from StickerTheme st2 where st2.sticker.id = :id)) "
-			+ "or (ss1.style in (select ss2.style from StickerStyle ss2 where ss2.sticker.id = :id)) "
+			+ "where ((st1.theme in (select st2.theme from StickerTheme st2 where st2.sticker.id = :id)) "
+			+ "or (ss1.style in (select ss2.style from StickerStyle ss2 where ss2.sticker.id = :id))) "
+			+ "and s1.state = true "
 			+ "order by s1.id")
 	List<Sticker> findAllSameThemeOrStyleById(@Param("id") Integer id);
 
@@ -62,7 +62,12 @@ public interface StickerRepository {
 			+ "order by s.price desc")
 	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(@Param("theme") String theme, @Param("style") String style);
 
-	List<Sticker> findAllByStateTrue();
-
-	List<Sticker> findByNameContaining(String name);
+	@Query("select distinct s from Sticker s "
+			+ "left join s.stickerThemes st "
+			+ "left join s.stickerStyles ss "
+			+ "where (st.theme in (select tt from Theme tt where tt.name like %:word%)) "
+			+ "or (ss.style in (select ss from Style ss where ss.name like %:word%)) "
+			+ "or (s.name like %:word%) "
+			+ "and s.state = true ")
+	List<Sticker> findAllByThemeNameOrStyleNameOrNameContaining(@Param("word") String word);
 }

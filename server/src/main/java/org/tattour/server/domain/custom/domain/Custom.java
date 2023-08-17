@@ -1,7 +1,7 @@
 package org.tattour.server.domain.custom.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,20 +48,11 @@ public class Custom extends AuditingTimeEntity {
     @JoinColumn(name = "sticker_id")
     private Sticker sticker;
 
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomTheme> customThemes;
-
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomStyle> customStyles;
-
     @Column(name = "main_image_url", columnDefinition = "text")
     private String mainImageUrl;
 
     @Column(name = "hand_drawing_image_url", columnDefinition = "text")
     private String handDrawingImageUrl;
-
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomImage> images;
 
     @Column(name = "have_design", columnDefinition = "tinyint")
     private Boolean haveDesign;
@@ -94,6 +85,18 @@ public class Custom extends AuditingTimeEntity {
 
     private Integer price;
 
+    /**
+     * Mapped By
+     */
+    @OneToMany(mappedBy = "custom")
+    private List<CustomTheme> customThemes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "custom")
+    private List<CustomStyle> customStyles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "custom")
+    private List<CustomImage> images = new ArrayList<>();
+
     public void setSticker(Sticker sticker) {
         this.sticker = sticker;
     }
@@ -116,10 +119,6 @@ public class Custom extends AuditingTimeEntity {
 
     public void setDemand(String demand) {
         this.demand = demand;
-    }
-
-    public void setHaveDesign(Boolean haveDesign) {
-        this.haveDesign = haveDesign;
     }
 
     public void setColored(Boolean colored) {
@@ -172,10 +171,6 @@ public class Custom extends AuditingTimeEntity {
 
     public Boolean isNotSameUser(Integer userId) {
         return !user.getId().equals(userId);
-    }
-
-    public Boolean isNotAdmin(Integer userId) {
-        return !userId.equals(1);
     }
 
     public static Custom of(

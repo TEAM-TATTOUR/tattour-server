@@ -2,8 +2,9 @@ package org.tattour.server.domain.custom.repository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.order.domain.Order;
 
 public interface CustomRepository {
 
@@ -11,12 +12,17 @@ public interface CustomRepository {
 
 	Optional<Custom> findById(Integer id);
 
-	// Todo : qeury dsl
-	List<Custom> findAllByUser_IdAndIsCompletedTrue(Integer userId);
+	@Query("select c "
+			+ "from Custom c "
+			+ "where c.user.id = :userId "
+			+ "and c.isCompleted = true")
+	List<Custom> findAllByUserIdAndIsCompleted(@Param("userId") Integer userId);
 
-	// Todo : qeury dsl
-	List<Custom> findAllByUser_IdAndIsCompletedFalse(Integer userId);
+	@Query("select c "
+			+ "from Custom c "
+			+ "where c.user.id = :userId "
+			+ "and c.isCompleted = false")
+	List<Custom> findAllByUserIdAndIsCompletedFalse(Integer userId);
 
-	// Todo : qeury dsl
 	List<Custom> findAllByUser_IdAndCreatedAtAfter(Integer userId, String date);
 }

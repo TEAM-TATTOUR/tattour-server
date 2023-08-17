@@ -106,7 +106,7 @@ public class PointFacadeImpl implements PointFacade {
 				// 커스텀 신청내역
 				ReadCustomSummaryListRes readCustomSummaryListRes =
 						ReadCustomSummaryListRes.from(
-								customProvider.readCustomSummaryInfoAfterDateByUserId(
+								customProvider.getCustomByUserIdAfterDate(
 										req.getUserId(),
 										baseDate)
 						);

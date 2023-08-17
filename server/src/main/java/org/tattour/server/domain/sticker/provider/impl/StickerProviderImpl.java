@@ -25,16 +25,6 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAll() {
-		return stickerRepository.findAll();
-	}
-
-	@Override
-	public List<Sticker> getAllByStateTrue() {
-		return stickerRepository.findAllByStateTrue();
-	}
-
-	@Override
 	public List<Sticker> getAllCustomStickerOrderByOrder() {
 		return stickerRepository
 				.findAllByStateAndIsCustomInOrderOrder();
@@ -65,16 +55,18 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAllByNameLike(String name) {
+	public List<Sticker> getAllByThemeOrStyleOrNameLike(String word) {
+		if(Objects.isNull(word)) {
+			return null;
+		}
 		return stickerRepository
-				.findByNameContaining(name);
+				.findAllByThemeNameOrStyleNameOrNameContaining(word);
 	}
 
-	// Todo : 리펙토링하기
+	// Todo : 리펙토링하기  of -> from?
 	@Override
 	public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker) {
 		Integer discountedPrice = getDiscountPrice(sticker);
-
 		return ReadOrderSheetStickerInfo.of(
 				sticker.getMainImageUrl(),
 				sticker.getName(),

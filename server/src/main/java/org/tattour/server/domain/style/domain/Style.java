@@ -31,10 +31,4 @@ public class Style {
 
     @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
-
-    @OneToMany(mappedBy = "style")
-    private List<StickerStyle> stickerStyles;
-
-    @OneToMany(mappedBy = "style")
-    private List<CustomStyle> customStyles;
 }

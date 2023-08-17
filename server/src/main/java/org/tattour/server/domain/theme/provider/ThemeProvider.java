@@ -9,8 +9,4 @@ public interface ThemeProvider {
 	Theme getById(Integer id);
 
 	List<Theme> getAll();
-
-	Theme getByName(String name);
-
-	List<Theme> getAllByNameLike(String name);
 }

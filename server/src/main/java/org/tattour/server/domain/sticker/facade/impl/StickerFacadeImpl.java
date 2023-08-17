@@ -81,13 +81,6 @@ public class StickerFacadeImpl implements StickerFacade {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public ReadStickerSummaryListRes readStickerSummaryList() {
-		List<Sticker> stickers = stickerProvider.getAllByStateTrue();
-		return ReadStickerSummaryListRes.from(stickers);
-	}
-
-	@Override
 	@Transactional
 	public Integer createSticker(CreateStickerReq request) {
 		String mainImageUrl = s3Service.uploadImage(request.getMainImage(), directoryPath);
@@ -159,16 +152,5 @@ public class StickerFacadeImpl implements StickerFacade {
 			default:
 				throw new NotFoundStickerSortException();
 		}
-	}
-
-	@Override
-	public ReadOrderSheetStickerRes readOrderSheetSticker(Integer stickerId) {
-		Sticker sticker = stickerProvider.getById(stickerId);
-		sticker.getDiscountPrice();
-		return ReadOrderSheetStickerRes.of(
-				sticker.getMainImageUrl(),
-				sticker.getName(),
-				sticker.getPrice(),
-				sticker.getDiscountPrice());
 	}
 }
