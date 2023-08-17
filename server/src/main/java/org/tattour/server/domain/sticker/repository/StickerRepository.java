@@ -14,7 +14,6 @@ public interface StickerRepository {
 
 	List<Sticker> findAll();
 
-	// 인기 많은 순으로 스티커 조회
 	@Query("select s from Sticker s left join s.orders "
 			+ "where s.isCustom = true and s.state = true "
 			+ "group by s.id "
@@ -30,6 +29,38 @@ public interface StickerRepository {
 			+ "or (ss1.style in (select ss2.style from StickerStyle ss2 where ss2.sticker.id = :id)) "
 			+ "order by s1.id")
 	List<Sticker> findAllSameThemeOrStyleById(@Param("id") Integer id);
+
+	@Query("select distinct s "
+			+ "from Sticker s "
+			+ "left join s.stickerThemes st "
+			+ "left join s.stickerStyles ss "
+			+ "left join fetch s.orders o "
+			+ "where (st.theme in (select t from Theme t where (:theme is null or t.name = :theme))) "
+			+ "and (ss.style in (select s2 from Style s2 where (:style is null or s2.name = :style))) "
+			+ "and s.state = true ")
+	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderOrder(@Param("theme") String theme, @Param("style") String style);
+
+	@Query("select distinct s "
+			+ "from Sticker s "
+			+ "left join s.stickerThemes st "
+			+ "left join s.stickerStyles ss "
+			+ "left join fetch s.orders o "
+			+ "where (st.theme in (select t from Theme t where (:theme is null or t.name = :theme))) "
+			+ "and (ss.style in (select s2 from Style s2 where (:style is null or s2.name = :style))) "
+			+ "and s.state = true "
+			+ "order by s.price asc")
+	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPrice(@Param("theme") String theme, @Param("style") String style);
+
+	@Query("select distinct s "
+			+ "from Sticker s "
+			+ "left join s.stickerThemes st "
+			+ "left join s.stickerStyles ss "
+			+ "left join fetch s.orders o "
+			+ "where (st.theme in (select t from Theme t where (:theme is null or t.name = :theme))) "
+			+ "and (ss.style in (select s2 from Style s2 where (:style is null or s2.name = :style))) "
+			+ "and s.state = true "
+			+ "order by s.price desc")
+	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(@Param("theme") String theme, @Param("style") String style);
 
 	List<Sticker> findAllByStateTrue();
 

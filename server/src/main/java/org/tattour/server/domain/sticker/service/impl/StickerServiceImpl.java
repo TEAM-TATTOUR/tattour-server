@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,10 @@ public class StickerServiceImpl implements StickerService {
 				stickers.add(sticker);
 			}
 		}
+	}
+
+	@Override
+	public void sortStickerListByNumberOfOrderDesc(List<Sticker> stickers) {
+		Collections.sort(stickers, (o1, o2) -> o2.getOrders().size() - o1.getOrders().size());
 	}
 }

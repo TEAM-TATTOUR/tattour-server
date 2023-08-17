@@ -2,7 +2,6 @@ package org.tattour.server.domain.discount.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +33,7 @@ public class Discount extends AuditingTimeEntity {
 
 	private String name;
 
-	@OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "discount")
 	private List<Sticker> stickers;
 
 	@Column(name = "discount_rate")

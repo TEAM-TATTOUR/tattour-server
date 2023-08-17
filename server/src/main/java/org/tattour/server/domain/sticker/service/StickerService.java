@@ -16,4 +16,7 @@ public interface StickerService {
 	void addStickerListByTheme(List<Sticker> stickers, Theme theme);
 
 	void addStickerListByStyle(List<Sticker> stickers, Style style);
+
+	void sortStickerListByNumberOfOrderDesc(List<Sticker> stickers);
+
 }

@@ -15,7 +15,14 @@ public interface StickerProvider {
 
     List<Sticker> getAllCustomStickerOrderByOrder();
 
-    List<Sticker> getAllSameThemeOrStyleBySticker(Integer id);
+    List<Sticker> getAllByThemeAndStyleOrderByOrder(String theme, String style);
+
+    List<Sticker> getAllByThemeAndStyleOrderByPrice(String theme, String style);
+
+    List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String theme, String style);
+
+    List<Sticker> getAllSameThemeOrStyleById(Integer id);
+
     List<Sticker> getAllByNameLike(String name);
 
     // 결제 시트에서 스티커 정보 가져오기
