@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,12 +41,15 @@ public class Sticker extends AuditingTimeEntity {
     private String name;
     private String description;
     private Integer price;
+
     @Column(name = "discount_price")
     private Integer discountPrice;
+
     @Column(name = "shipping_fee")
     private Integer shippingFee;
     private String composition;
     private String size;
+
     @Column(columnDefinition = "tinyint")
     private Boolean state;
 
@@ -59,34 +63,21 @@ public class Sticker extends AuditingTimeEntity {
     @JoinColumn(name = "discount_id")
     private Discount discount;
 
-    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerTheme> stickerThemes;
+    /**
+     * Mapped By
+     */
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerStyle> stickerStyles;
+    private List<StickerTheme> stickerThemes = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<StickerImage> stickerImages;
+    private List<StickerStyle> stickerStyles = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<Order> orderItems;
+    private List<StickerImage> stickerImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sticker", cascade = CascadeType.ALL)
-    private List<ProductLiked> productLikeds;
-
-    public void setStickerThemes(
-            List<StickerTheme> stickerThemes) {
-        this.stickerThemes = stickerThemes;
-    }
-
-    public void setStickerStyles(
-            List<StickerStyle> stickerStyles) {
-        this.stickerStyles = stickerStyles;
-    }
-
-    public void setImages(List<StickerImage> stickerImages) {
-        this.stickerImages = stickerImages;
-    }
+    @OneToMany(mappedBy = "sticker")
+    private List<Order> orders = new ArrayList<>();
 
     public void applyDiscount(Discount discount) {
         this.discount = discount;

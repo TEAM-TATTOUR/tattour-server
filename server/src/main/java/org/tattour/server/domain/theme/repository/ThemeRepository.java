@@ -9,8 +9,4 @@ public interface ThemeRepository {
 	Optional<Theme> findById(Integer themeId);
 
 	List<Theme> findAll();
-
-	Optional<Theme> findByName(String name);
-
-	List<Theme> findByNameLike(String name);
 }

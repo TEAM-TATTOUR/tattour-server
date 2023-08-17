@@ -2,6 +2,7 @@ package org.tattour.server.domain.theme.provider.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.theme.domain.Theme;
@@ -9,6 +10,7 @@ import org.tattour.server.domain.theme.exception.NotFoundThemeException;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
 import org.tattour.server.domain.theme.repository.ThemeRepository;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ThemeProviderImpl implements ThemeProvider {
@@ -25,16 +27,5 @@ public class ThemeProviderImpl implements ThemeProvider {
 	@Override
 	public List<Theme> getAll() {
 		return themeRepository.findAll();
-	}
-
-	@Override
-	public Theme getByName(String name) {
-		return themeRepository.findByName(name)
-			.orElseThrow(NotFoundThemeException::new);
-	}
-
-	@Override
-	public List<Theme> getAllByNameLike(String name) {
-		return themeRepository.findByNameLike(name);
 	}
 }

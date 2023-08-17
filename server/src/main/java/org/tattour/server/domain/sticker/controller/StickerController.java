@@ -113,8 +113,8 @@ public class StickerController {
 	public ResponseEntity<?> getFilterStickerList(
 		@Parameter(description = "<popularity, price_low, price_high> 기본값 popularity")
 		@RequestParam(name = "sort", defaultValue = "popularity") String sort,
-		@Parameter(description = "null값 허용, 테마 이름") @RequestParam(name = "theme", defaultValue = "") String theme,
-		@Parameter(description = "null값 허용, 스타일 이름") @RequestParam(name = "style", defaultValue = "") String style
+		@Parameter(description = "null값 허용, 테마 이름") @RequestParam(name = "theme", required = false) String theme,
+		@Parameter(description = "null값 허용, 스타일 이름") @RequestParam(name = "style", required = false) String style
 	) {
 		GetStickerSummaryListRes response =
 			GetStickerSummaryListRes.from(

@@ -2,11 +2,10 @@ package org.tattour.server.domain.sticker.facade.impl;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -15,6 +14,7 @@ import org.tattour.server.domain.sticker.domain.StickerImage;
 import org.tattour.server.domain.sticker.domain.StickerSort;
 import org.tattour.server.domain.sticker.domain.StickerStyle;
 import org.tattour.server.domain.sticker.domain.StickerTheme;
+import org.tattour.server.domain.sticker.exception.NotFoundStickerSortException;
 import org.tattour.server.domain.sticker.facade.StickerFacade;
 import org.tattour.server.domain.sticker.facade.dto.response.ReadOrderSheetStickerRes;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
@@ -25,9 +25,7 @@ import org.tattour.server.domain.sticker.service.StickerImageService;
 import org.tattour.server.domain.sticker.service.StickerService;
 import org.tattour.server.domain.sticker.service.StickerStyleService;
 import org.tattour.server.domain.sticker.service.StickerThemeService;
-import org.tattour.server.domain.style.domain.Style;
 import org.tattour.server.domain.style.provider.StyleProvider;
-import org.tattour.server.domain.theme.domain.Theme;
 import org.tattour.server.domain.theme.provider.ThemeProvider;
 import org.tattour.server.domain.user.service.ProductLikedService;
 import org.tattour.server.global.config.jwt.JwtService;
@@ -35,6 +33,7 @@ import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.infra.s3.S3Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StickerFacadeImpl implements StickerFacade {
@@ -55,18 +54,14 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerForUserRes readStickerForUser(Integer stickerId, String authorization) {
-		Boolean productLiked = getProductLiked(stickerId, authorization);
 		Sticker sticker = stickerProvider.getById(stickerId);
-		return ReadStickerForUserRes.of(sticker, productLiked);
-	}
-
-	// Todo : 위치 옮기기
-	private Boolean getProductLiked(Integer stickerId, String authorization) {
-		Integer userId = getUserId(authorization);
-		if (Objects.isNull(userId)) {
-			return false;
+		if (Objects.isNull(authorization)) {
+			return ReadStickerForUserRes.of(sticker, false);
 		}
-		return productLikedService.checkProductLikedExists(userId, stickerId);
+		// Todo : authorization을 통해 userId 가져오기 -> 메서드 분리하기
+		Integer userId = getUserId(authorization);
+		Boolean productLiked = productLikedService.checkProductLikedExists(userId, stickerId);
+		return ReadStickerForUserRes.of(sticker, productLiked);
 	}
 
 	// Todo : 위치 옮기기
@@ -83,13 +78,6 @@ public class StickerFacadeImpl implements StickerFacade {
 		}
 		String tokenContents = jwtService.getJwtContents(token);
 		return Integer.parseInt(tokenContents);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public ReadStickerSummaryListRes readStickerSummaryList() {
-		List<Sticker> stickers = stickerProvider.getAllByStateTrue();
-		return ReadStickerSummaryListRes.from(stickers);
 	}
 
 	@Override
@@ -112,16 +100,6 @@ public class StickerFacadeImpl implements StickerFacade {
 				.map(image -> s3Service.uploadImage(image, directoryPath))
 				.map(imageUrl -> StickerImage.of(sticker, imageUrl))
 				.forEach(stickerImageService::save);
-		/*
-		// Todo: 테스트 해보기
-		if (!Objects.isNull(request.getImages())) {
-			List<String> imageUrls = s3Service.uploadImageList(request.getImages(), directoryPath);
-			imageUrls
-				.stream()
-				.map(imageUrl -> StickerImage.from(sticker, imageUrl))
-				.forEach(stickerImageService::save);
-		}
-		 */
 		request
 				.getThemes()
 				.stream()
@@ -136,26 +114,17 @@ public class StickerFacadeImpl implements StickerFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerSummaryListRes readHotCustomStickerList() {
-		List<Sticker> stickers = stickerProvider.getAllByIsCustomTrueAndStateTrue();
+		List<Sticker> stickers = stickerProvider.getAllCustomStickerOrderByOrder();
 		return ReadStickerSummaryListRes.from(stickers);
 	}
 
-	// Todo : querydsl로 변경하기
 	@Override
 	@Transactional(readOnly = true)
 	public ReadStickerSummaryListRes readSimilarStickerSummaryList(Integer stickerId) {
-		List<Sticker> result = new ArrayList<>();
-		Sticker sticker = stickerProvider.getById(stickerId);
-		List<Theme> themes = sticker.getStickerThemes().stream()
-				.map(stickerTheme -> stickerTheme.getTheme())
-				.collect(Collectors.toList());
-		List<Style> styles = sticker.getStickerStyles().stream()
-				.map(stickerStyle -> stickerStyle.getStyle())
-				.collect(Collectors.toList());
-		stickerService.addStickerListByThemeList(result, themes);
-		stickerService.addStickerListByStyleList(result, styles);
-		result.remove(sticker);
-		return ReadStickerSummaryListRes.from(result);
+		List<Sticker> stickers =
+				stickerProvider.getAllSameThemeOrStyleById(stickerId);
+		stickers.removeIf(sticker -> sticker.getId().equals(stickerId));
+		return ReadStickerSummaryListRes.from(stickers);
 	}
 
 	@Override
@@ -164,55 +133,24 @@ public class StickerFacadeImpl implements StickerFacade {
 			String sort,
 			String theme,
 			String style) {
-		List<Sticker> result = new ArrayList<>();
 		StickerSort stickerSort = StickerSort.getStickerSort(sort);
-		if (theme.isEmpty() && style.isEmpty()) {
-			result = stickerProvider.getAll();
-			sortStickerListByStickerSort(result, stickerSort);
-			return ReadStickerSummaryListRes.from(result);
-		}
-		if (!style.isEmpty()) {
-			Theme fileterTheme = themeProvider.getByName(theme);
-			stickerService.addStickerListByTheme(result, fileterTheme);
-			sortStickerListByStickerSort(result, stickerSort);
-			return ReadStickerSummaryListRes.from(result);
-		}
-		if (!theme.isEmpty()) {
-			Style filterStyle = styleProvider.getByName(style);
-			stickerService.addStickerListByStyle(result, filterStyle);
-			sortStickerListByStickerSort(result, stickerSort);
-			return ReadStickerSummaryListRes.from(result);
-		}
-		Theme fileterTheme = themeProvider.getByName(theme);
-		Style filterStyle = styleProvider.getByName(style);
-		stickerService.addStickerListByTheme(result, fileterTheme);
-		stickerService.addStickerListByStyle(result, filterStyle);
-		sortStickerListByStickerSort(result, stickerSort);
-		return ReadStickerSummaryListRes.from(result);
-	}
-
-	// Todo : provider 코드 대체하기
-	@Override
-	public ReadOrderSheetStickerRes readOrderSheetSticker(Integer stickerId) {
-		Sticker sticker = stickerProvider.getById(stickerId);
-		sticker.getDiscountPrice();
-		return ReadOrderSheetStickerRes.of(
-				sticker.getMainImageUrl(),
-				sticker.getName(),
-				sticker.getPrice(),
-				sticker.getDiscountPrice());
-	}
-
-	private void sortStickerListByStickerSort(List<Sticker> stickers, StickerSort sort) {
-		switch (sort) {
+		List<Sticker> result = new ArrayList<>();
+		switch (stickerSort) {
 			case POPULARITY:
-				break;
+				result = stickerProvider
+						.getAllByThemeAndStyleOrderByOrder(theme, style);
+				stickerService.sortStickerListByNumberOfOrderDesc(result);
+				return ReadStickerSummaryListRes.from(result);
 			case PRICE_HIGH:
-				Collections.sort(stickers, (o1, o2) -> o2.getPrice() - o1.getPrice());
-				break;
+				result = stickerProvider
+						.getAllByThemeAndStyleOrderByPriceDesc(theme, style);
+				return ReadStickerSummaryListRes.from(result);
 			case PRICE_LOW:
-				Collections.sort(stickers, (o1, o2) -> o1.getPrice() - o2.getPrice());
-				break;
+				result = stickerProvider
+						.getAllByThemeAndStyleOrderByPrice(theme, style);
+				return ReadStickerSummaryListRes.from(result);
+			default:
+				throw new NotFoundStickerSortException();
 		}
 	}
 }

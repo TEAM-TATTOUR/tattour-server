@@ -9,13 +9,17 @@ public interface StickerProvider {
     // 스티커 엔티티 가져오기
     Sticker getById(Integer id);
 
-    List<Sticker> getAll();
+    List<Sticker> getAllCustomStickerOrderByOrder();
 
-    List<Sticker> getAllByStateTrue();
+    List<Sticker> getAllByThemeAndStyleOrderByOrder(String theme, String style);
 
-    List<Sticker> getAllByIsCustomTrueAndStateTrue();
+    List<Sticker> getAllByThemeAndStyleOrderByPrice(String theme, String style);
 
-    List<Sticker> getAllByNameLike(String name);
+    List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String theme, String style);
+
+    List<Sticker> getAllSameThemeOrStyleById(Integer id);
+
+    List<Sticker> getAllByThemeOrStyleOrNameLike(String word);
 
     // 결제 시트에서 스티커 정보 가져오기
     ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker);

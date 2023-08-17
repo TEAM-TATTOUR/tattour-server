@@ -7,8 +7,6 @@ import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerSummaryL
 
 public interface StickerFacade {
 
-    ReadStickerSummaryListRes readStickerSummaryList();
-
     Integer createSticker(CreateStickerReq request);
 
     ReadStickerSummaryListRes readHotCustomStickerList();
@@ -18,6 +16,4 @@ public interface StickerFacade {
     ReadStickerSummaryListRes readSimilarStickerSummaryList(Integer stickerId);
 
     ReadStickerSummaryListRes readFilterStickerSummaryList(String sort, String theme, String style);
-
-    ReadOrderSheetStickerRes readOrderSheetSticker(Integer stickerId);
 }

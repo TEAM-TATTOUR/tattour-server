@@ -7,9 +7,5 @@ public interface StyleProvider {
 
 	Style getById(Integer id);
 
-	Style getByName(String name);
-
 	List<Style> getAll();
-
-	List<Style> getAllByNameLike(String name);
 }

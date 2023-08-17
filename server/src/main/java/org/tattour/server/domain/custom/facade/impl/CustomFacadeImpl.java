@@ -76,23 +76,15 @@ public class CustomFacadeImpl implements CustomFacade {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ReadCustomSummaryListRes getCustomSummaryCompleteListByUserId(Integer userId) {
-		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedTrue(userId);
+	public ReadCustomSummaryListRes readCustomSummaryCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUserIdAndIsCompleted(userId);
 		return ReadCustomSummaryListRes.from(customs);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public ReadCustomSummaryListRes getCustomSummaryInCompleteListByUserId(Integer userId) {
-		List<Custom> customs = customRepository.findAllByUser_IdAndIsCompletedFalse(userId);
-		return ReadCustomSummaryListRes.from(customs);
-	}
-
-	@Override
-	public ReadCustomSummaryListRes readCustomSummaryInfoAfterDateByUserId(
-			int userId,
-			String date) {
-		List<Custom> customs = customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
+	public ReadCustomSummaryListRes readCustomSummaryInCompleteListByUserId(Integer userId) {
+		List<Custom> customs = customRepository.findAllByUserIdAndIsCompletedFalse(userId);
 		return ReadCustomSummaryListRes.from(customs);
 	}
 

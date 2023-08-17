@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
@@ -62,8 +61,6 @@ public class UserController {
 
 	private final UserFacade userFacade;
 	private final PointFacade pointFacade;
-
-	private final CustomProviderImpl customProvider;
 	private final CustomFacade customFacade;
 
 	@Operation(summary = "소셜 회원가입 / 로그인", description = "소셜 회원가입 / 로그인 api")
@@ -395,7 +392,7 @@ public class UserController {
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		ReadCustomSummaryListRes response =
-				customFacade.getCustomSummaryCompleteListByUserId(userId);
+				customFacade.readCustomSummaryCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 
@@ -413,7 +410,7 @@ public class UserController {
 			@Parameter(hidden = true) @UserId Integer userId
 	) {
 		ReadCustomSummaryListRes response =
-				customFacade.getCustomSummaryInCompleteListByUserId(userId);
+				customFacade.readCustomSummaryInCompleteListByUserId(userId);
 		return BaseResponse.success(SuccessType.READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS, response);
 	}
 

@@ -21,7 +21,7 @@ public class CustomProviderImpl implements CustomProvider {
     public Custom getCustomById(Integer customId, Integer userId) {
         Custom custom = customRepository.findById(customId)
                 .orElseThrow(NotFoundCustomException::new);
-        if (custom.isNotAdmin(userId)) {
+        if (isNotAdmin(userId)) {
             if (custom.isNotSameUser(userId)) {
                 throw new UnauthorizedException();
             }
@@ -29,8 +29,13 @@ public class CustomProviderImpl implements CustomProvider {
         return custom;
     }
 
+    // Todo : refactoring
+    boolean isNotAdmin(Integer userId) {
+        return userId != 1;
+    }
+
     @Override
-    public List<Custom> readCustomSummaryInfoAfterDateByUserId(int userId, String date) {
+    public List<Custom> getCustomByUserIdAfterDate(int userId, String date) {
         return customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
     }
 }
