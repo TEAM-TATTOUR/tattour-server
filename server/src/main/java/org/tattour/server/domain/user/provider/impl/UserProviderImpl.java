@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.order.provider.dto.request.CheckUserPointLackReqDto;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -29,6 +30,12 @@ public class UserProviderImpl implements UserProvider {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public UserProfileInfo readUserProfileInfo(User user) {
+        return EntityDtoMapper.INSTANCE.toUserProfileInfo(user);
+    }
+
 
     @Override
     public GetUserProfileRes getUserProfile(Integer id) {
