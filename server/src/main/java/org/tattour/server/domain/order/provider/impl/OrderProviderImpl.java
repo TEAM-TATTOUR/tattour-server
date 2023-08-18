@@ -22,7 +22,9 @@ import org.tattour.server.domain.order.provider.dto.response.PageInfoRes;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.domain.sticker.provider.dto.response.GetOrderSheetStickerInfo;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
+import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -43,6 +45,11 @@ public class OrderProviderImpl implements OrderProvider {
 
     @Override
     public GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req) {
+        User user = userProvider.getUserById(req.getUserId());
+
+        // 유저 프로필 정보
+        UserProfileInfo userProfileInfo = userProvider.readUserProfileInfo(user);
+
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
         GetOrderSheetStickerInfo getOrderSheetStickerInfo =
                 stickerProvider.getOrderSheetStickerInfo(req.getStickerId());
@@ -80,7 +87,7 @@ public class OrderProviderImpl implements OrderProvider {
         GetUserOrderPointRes getUserOrderPointRes = GetUserOrderPointRes.of(userPoint, resultPoint,
                 isLacked);
 
-        return GetOrderSheetRes.of(getOrderSheetStickerInfo, getOrderAmountRes,
+        return GetOrderSheetRes.of(userProfileInfo, getOrderSheetStickerInfo, getOrderAmountRes,
                 getUserOrderPointRes);
     }
 

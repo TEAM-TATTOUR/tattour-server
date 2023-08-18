@@ -18,6 +18,7 @@ import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.dto.response.GetUserInfoDto;
 import org.tattour.server.domain.user.provider.dto.response.GetUserProfileRes;
+import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {
@@ -26,6 +27,8 @@ public interface EntityDtoMapper {
 
     // User
     GetUserProfileRes toGetUserProfileRes(User user);
+    @Mapping(target = "id", source = "user.id")
+    UserProfileInfo toUserProfileInfo(User user);
 
     GetUserInfoDto toGetUserInfoDto(User user);
 

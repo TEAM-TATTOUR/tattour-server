@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GetOrderAmountRes {
 
+
     @Schema(description = "총 결제금액", example = "12000")
     private Integer totalAmount;
 
