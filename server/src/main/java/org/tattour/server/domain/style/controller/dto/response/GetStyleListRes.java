@@ -7,14 +7,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.tattour.server.domain.style.facade.dto.response.ReadStyleListRes;
-import org.tattour.server.domain.style.facade.dto.response.ReadStyleRes;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetStyleListRes {
 
 	@Schema(description = "스타일 리스트")
-	List<GetStyleRes> readStyleRes;
+	List<GetStyleRes> styleInfos;
 
 	public static GetStyleListRes from(ReadStyleListRes readStyleListRes) {
 		return new GetStyleListRes(
