@@ -25,6 +25,8 @@ public enum SuccessType {
 	READ_ALL_STYLE_SUCCESS(HttpStatus.OK, "스타일 조회에 성공했습니다."),
 	READ_ALL_STYLE_SUMMARY_SUCCESS(HttpStatus.OK, "스타일 요약 정보 조회에 성공했습니다."),
 	READ_ONE_CUSTOM_SUCCESS(HttpStatus.OK, "커스텀 정보 조회에 성공했습니다."),
+	READ_ONE_MAGAZINE_SUCCESS(HttpStatus.OK, "한 개 매거진 정보 조회에 성공했습니다."),
+	READ_ALL_MAGAZINE_SUCCESS(HttpStatus.OK, "매거진 조회에 성공했습니다."),
 	UPDATE_CUSTOM_PROCESS_SUCCESS(HttpStatus.OK, "커스텀 배송 상태 수정에 성공했습니다."),
 	READ_COMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "신청 완료된 커스텀 요약 정보 조회에 성공했습니다."),
 	READ_INCOMPLETE_CUSTOM_SUMMARY_SUCCESS(HttpStatus.OK, "임시저장 커스텀 요약 정보 조회에 성공했습니다."),
