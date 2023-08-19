@@ -46,7 +46,7 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public PostLoginRes signup(CreateLoginReq req) {
         if(Objects.isNull(req.getOrigin())) {
-            throw new BusinessException(ErrorType.NOT_FOUND_HEADER_ORGIN);
+            throw new BusinessException(ErrorType.NOT_FOUND_HEADER_ORIGIN);
         }
         System.out.println("Origin = " + req.getOrigin());
 
