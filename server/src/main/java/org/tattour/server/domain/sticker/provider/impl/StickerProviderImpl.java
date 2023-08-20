@@ -31,9 +31,9 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByOrder(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByOrder(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderOrder(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderOrder(themeName, styleName);
 	}
 
 	@Override
