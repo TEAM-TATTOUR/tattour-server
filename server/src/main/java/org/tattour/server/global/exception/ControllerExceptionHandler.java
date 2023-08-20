@@ -34,6 +34,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<?> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
         FieldError fieldError = Objects.requireNonNull(e.getFieldError());
         return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION,
                 String.format("%s. (%s)", fieldError.getDefaultMessage(), fieldError.getField()));
@@ -44,6 +45,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BindException.class)
     public ResponseEntity<?> handleBadRequest(BindException e) {
+        log.error(e.getMessage(), e);
         FieldError fieldError = Objects.requireNonNull(e.getFieldError());
         return BaseResponse.error(ErrorType.VALIDATION_WRONG_TYPE_EXCEPTION,
                 String.format("%s (%s)", fieldError.getDefaultMessage(), fieldError.getField()));
@@ -54,6 +56,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleDateTimeFormatException1(HttpMessageNotReadableException e) {
+        log.error(e.getMessage(), e);
         return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
     }
 
@@ -62,6 +65,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e) {
+        log.error(e.getMessage(), e);
         return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
     }
 
@@ -71,12 +75,14 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<?> handleDateTimeFormatException2(
             HttpRequestMethodNotSupportedException e) {
+        log.error(e.getMessage(), e);
         return BaseResponse.error(ErrorType.VALIDATION_WRONG_HTTP_METHOD_EXCEPTION);
     }
 
     // 나중에 수정하기
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> illegalArgumentExceptionAdvice(IllegalArgumentException e) {
+        log.error(e.getMessage(), e);
         return BaseResponse.error(ErrorType.INVALID_ARGUMENT_EXCEPTION);
     }
 
@@ -91,6 +97,7 @@ public class ControllerExceptionHandler {
             TypeMismatchException.class
     })
     public ResponseEntity<?> handleBadRequestException(Exception e) {
+        log.error(e.getMessage(), e);
         return BaseResponse.error(ErrorType.VALIDATION_INPUT_EXCEPTION);
     }
 
@@ -99,12 +106,8 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handleInternalServerException(Exception e) {
-//		System.out.println("e = " + e);
-//		System.out.println("e.getClass() = " + e.getClass());
-//		System.out.println(("e.getMessage() = " + e.getMessage()));
-
+        log.error(e.getMessage(), e);
         logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
-
         return BaseResponse.error(ErrorType.INTERNAL_SERVER_ERROR);
     }
 
@@ -113,12 +116,8 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<?> handleBusinessException(BusinessException e) {
-//		System.out.println("e = " + e);
-//		System.out.println("e.getClass() = " + e.getClass());
-//		System.out.println(("e.getMessage() = " + e.getMessage()));
-
+        log.error(e.getMessage(), e);
         logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
-
         return BaseResponse.error(e.getErrorType());
     }
 }
