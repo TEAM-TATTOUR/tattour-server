@@ -1,8 +1,4 @@
-<<<<<<< HEAD:.github/workflows/ci.yml
-name: Tattour-Server-Prod CI
-=======
 name: Tattour-Server-Dev CI
->>>>>>> fbd36b8026c1a319f42a3371e4e639b4f6d5906d:.github/workflows/ci_dev.yml
 on:
   pull_request:
     branches: [ "dev" ]

@@ -41,7 +41,7 @@ out/
 *.yaml
 
 ### log ###
-logs
+logs/
 
 ### script file ###
-sh
+scripts/
