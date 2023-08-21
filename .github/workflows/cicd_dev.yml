@@ -1,8 +1,4 @@
-<<<<<<< HEAD:.github/workflows/cicd.yml
-name: Tattour-Server-Prod CD
-=======
 name: Tattour-Server-Dev CD
->>>>>>> fbd36b8026c1a319f42a3371e4e639b4f6d5906d:.github/workflows/cicd_dev.yml
 on:
   push:
     branches: [ "dev" ]
