@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 
-  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-  <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
-  <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
-  <!-- 로그 파일이 저장될 경로 -->
-  <!--    <springProperty name="filePath" source="logging.file.path"/>-->
-  <property name="LOG_PATH" value="/var/log/tattour"/>
-  <!--     <property name="LOG_PATH" value="./logs"/>-->
+    <!-- 로그 파일이 저장될 경로 -->
+<!--    <springProperty name="filePath" source="logging.file.path"/>-->
+   <property name="LOG_PATH" value="/var/log/tattour"/>
+<!--     <property name="LOG_PATH" value="./logs"/>-->
 
-  <!-- 로그 파일 이름 -->
-  <property name="LOG_FILE_NAME" value="error"/>
+    <!-- 로그 파일 이름 -->
+    <property name="LOG_FILE_NAME" value="error"/>
 
-  <!-- 로그 출력 패턴 -->
-  <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+    <!-- 로그 출력 패턴 -->
+    <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
 
-  <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){green} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-  <property name="CONSOLE_LOG_CHARSET" value="${CONSOLE_LOG_CHARSET:-default}"/>
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){green} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="CONSOLE_LOG_CHARSET" value="${CONSOLE_LOG_CHARSET:-default}"/>
 
-  <!-- 로그 레벨 -->
-  <!--
-    1) ERROR : 오류 메시지 표시
-      2) WARN  : 경고성 메시지 표시
-      3) INFO  : 정보성 메시지 표시
-      4) DEBUG : 디버깅하기 위한 메시지 표시
-      5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
+    <!-- 로그 레벨 -->
+    <!--
+    	1) ERROR : 오류 메시지 표시
+        2) WARN  : 경고성 메시지 표시
+        3) INFO  : 정보성 메시지 표시
+        4) DEBUG : 디버깅하기 위한 메시지 표시
+        5) TRACE :  Debug보다 훨씬 상세한 메시지 표시
 
-      아래에서는 info로 설정하였는데, 이 경우엔 INFO 보다 위에 있는 DEBUG와 TRACE는 표시하지 않는다.
-  -->
-  <property name="LOG_LEVEL" value="info"/>
+        아래에서는 info로 설정하였는데, 이 경우엔 INFO 보다 위에 있는 DEBUG와 TRACE는 표시하지 않는다.
+    -->
+    <property name="LOG_LEVEL" value="info"/>
 
-  <!-- CONSOLE에 로그 출력 세팅 -->
-  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-      <charset>${CONSOLE_LOG_CHARSET}</charset>
-    </encoder>
-  </appender>
+    <!-- CONSOLE에 로그 출력 세팅 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
 
-  <!-- File에 로그 출력 세팅 -->
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!-- 파일 경로 설정 -->
-    <!--        <file>${filePath}/${LOG_FILE_NAME}.log</file>-->
-    <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+    <!-- File에 로그 출력 세팅 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 파일 경로 설정 -->
+<!--        <file>${filePath}/${LOG_FILE_NAME}.log</file>-->
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
 
-    <!-- 출력패턴 설정-->
-    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${LOG_PATTERN}</pattern>
-    </encoder>
+        <!-- 출력패턴 설정-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
 
     <!-- Rolling 정책 -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tattour.server.global.config.resolver.DivisibleBy;
+import org.tattour.server.global.config.annotations.DivisibleBy;
 
 @Schema(description = "포인트 충전 요청 취소 Request")
 @Getter
