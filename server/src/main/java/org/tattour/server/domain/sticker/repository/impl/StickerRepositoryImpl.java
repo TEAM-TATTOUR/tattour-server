@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.repository.impl;
 
+import static org.tattour.server.domain.order.domain.QOrder.*;
 import static org.tattour.server.domain.sticker.domain.QSticker.*;
 import static org.tattour.server.domain.sticker.domain.QStickerStyle.*;
 import static org.tattour.server.domain.sticker.domain.QStickerTheme.*;
@@ -62,7 +63,7 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
 				.from(sticker)
 				.leftJoin(sticker.stickerThemes, stickerTheme)
 				.leftJoin(sticker.stickerStyles, stickerStyle)
-				.leftJoin(sticker.orders)
+				.leftJoin(sticker.orders, order)
 				.fetchJoin()
 				.where(sticker.state.eq(true))
 				.where(stickerTheme.theme.in(
@@ -76,6 +77,58 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
 								.from(style)
 								.where(eqStyleName(styleName))
 				)))
+				.fetch();
+	}
+
+	@Override
+	public List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPrice(String themeName,
+			String styleName) {
+		return queryFactory
+				.select(sticker).distinct()
+				.from(sticker)
+				.leftJoin(sticker.stickerThemes, stickerTheme)
+				.leftJoin(sticker.stickerStyles, stickerStyle)
+				.leftJoin(sticker.orders, order)
+				.fetchJoin()
+				.where(sticker.state.eq(true))
+				.where(stickerTheme.theme.in(
+						queryFactory
+								.select(theme)
+								.from(theme)
+								.where(eqThemeName(themeName))
+				).and(stickerStyle.style.in(
+						queryFactory
+								.select(style)
+								.from(style)
+								.where(eqStyleName(styleName))
+				)))
+				.orderBy(sticker.price.asc())
+				.fetch();
+	}
+
+	@Override
+	public List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(String themeName,
+			String styleName) {
+		return queryFactory
+				.select(sticker).distinct()
+				.from(sticker)
+				.leftJoin(sticker.stickerThemes, stickerTheme)
+				.leftJoin(sticker.stickerStyles, stickerStyle)
+				.leftJoin(sticker.orders, order)
+				.fetchJoin()
+				.where(sticker.state.eq(true))
+				.where(stickerTheme.theme.in(
+						queryFactory
+								.select(theme)
+								.from(theme)
+								.where(eqThemeName(themeName))
+				).and(stickerStyle.style.in(
+						queryFactory
+								.select(style)
+								.from(style)
+								.where(eqStyleName(styleName))
+				)))
+				.orderBy(sticker.price.desc())
 				.fetch();
 	}
 

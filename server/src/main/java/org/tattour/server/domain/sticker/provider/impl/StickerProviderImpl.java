@@ -37,15 +37,15 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByPrice(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByPrice(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderPrice(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderPrice(themeName, styleName);
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(themeName, styleName);
 	}
 
 	@Override

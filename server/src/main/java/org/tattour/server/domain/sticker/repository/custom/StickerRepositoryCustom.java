@@ -10,4 +10,8 @@ public interface StickerRepositoryCustom {
 	List<Sticker> findAllSameThemeOrStyleById(Integer id);
 
 	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderOrder(String themeName, String styleName);
+
+	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPrice(String themeName, String styleName);
+
+	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(String themeName, String styleName);
 }
