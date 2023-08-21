@@ -1,11 +1,33 @@
 package org.tattour.server.domain.custom.repository.impl;
 
-import org.springframework.data.repository.Repository;
+import static org.tattour.server.domain.custom.domain.QCustom.*;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.repository.CustomRepository;
+import org.tattour.server.domain.custom.repository.custom.CustomRepositoryCustom;
 
-public interface CustomRepositoryImpl extends
-		Repository<Custom, Integer>,
-		CustomRepository {
+@RequiredArgsConstructor
+public class CustomRepositoryImpl implements CustomRepositoryCustom {
 
+	private final JPAQueryFactory queryFactory;
+
+	@Override
+	public List<Custom> findAllByUserIdAndIsCompleted(Integer userId) {
+		return queryFactory
+				.select(custom)
+				.from(custom)
+				.where(custom.user.id.eq(userId), custom.isCompleted.eq(true))
+				.fetch();
+	}
+
+	@Override
+	public List<Custom> findAllByUserIdAndIsCompletedFalse(Integer userId) {
+		return queryFactory
+				.select(custom)
+				.from(custom)
+				.where(custom.user.id.eq(userId), custom.isCompleted.eq(false))
+				.fetch();
+	}
 }

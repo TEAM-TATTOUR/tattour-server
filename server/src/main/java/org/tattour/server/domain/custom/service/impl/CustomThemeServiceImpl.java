@@ -26,15 +26,11 @@ public class CustomThemeServiceImpl implements CustomThemeService {
 
 	@Override
 	public List<CustomTheme> saveAll(List<CustomTheme> customThemes) {
-		String createdAt = customThemes.get(0)
-				.getCustom()
-				.getCreatedAt();
-		List<CustomTheme> save = customThemes
+		List<CustomTheme> result = customThemes
 				.stream()
 				.filter(this::isUniqueCustomTheme)
-				.map(customThemeRepository::save)
 				.collect(Collectors.toList());
-		return save;
+		return customThemeRepository.saveAll(result);
 	}
 
 	@Override

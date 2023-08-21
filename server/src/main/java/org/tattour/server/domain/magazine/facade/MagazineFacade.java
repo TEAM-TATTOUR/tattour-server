@@ -1,11 +1,12 @@
 package org.tattour.server.domain.magazine.facade;
 
-import org.tattour.server.domain.magazine.facade.dto.response.ReadMagazineListRes;
+import java.util.List;
+import org.tattour.server.domain.magazine.facade.dto.response.ReadMagazineRes;
 import org.tattour.server.domain.magazine.facade.dto.response.ReadMagazineUrlRes;
 
 public interface MagazineFacade {
 
-	ReadMagazineListRes readMagazineList();
+	List<ReadMagazineRes> readMagazineList();
 
 	ReadMagazineUrlRes readMagazineUrlById(Integer id);
 }

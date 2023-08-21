@@ -24,7 +24,7 @@ import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-15T16:02:04+0900",
+    date = "2023-08-20T21:01:59+0900",
     comments = "version: 1.5.4.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
-import org.tattour.server.domain.sticker.repository.StickerRepository;
 import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.repository.StickerRepository;
 
 @Slf4j
 @Service
@@ -31,21 +31,21 @@ public class StickerProviderImpl implements StickerProvider {
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByOrder(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByOrder(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderOrder(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderOrder(themeName, styleName);
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByPrice(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByPrice(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderPrice(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderPrice(themeName, styleName);
 	}
 
 	@Override
-	public List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String theme, String style) {
+	public List<Sticker> getAllByThemeAndStyleOrderByPriceDesc(String themeName, String styleName) {
 		return stickerRepository
-				.findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(theme, style);
+				.findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(themeName, styleName);
 	}
 
 	@Override
