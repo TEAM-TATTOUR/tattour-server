@@ -14,4 +14,6 @@ public interface StickerRepositoryCustom {
 	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPrice(String themeName, String styleName);
 
 	List<Sticker> findAllByThemeNameAndStyleNameAndStateInOrderPriceDesc(String themeName, String styleName);
+
+	List<Sticker> findAllByThemeNameOrStyleNameOrNameContaining(String word);
 }

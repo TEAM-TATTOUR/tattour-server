@@ -1,10 +1,7 @@
 package org.tattour.server.domain.sticker.repository;
 
-import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.Param;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.repository.custom.StickerRepositoryCustom;
 
@@ -15,13 +12,4 @@ public interface StickerRepository extends
 	Sticker save(Sticker sticker);
 
 	Optional<Sticker> findById(Integer id);
-
-	@Query("select distinct s from Sticker s "
-			+ "left join s.stickerThemes st "
-			+ "left join s.stickerStyles ss "
-			+ "where (st.theme in (select tt from Theme tt where tt.name like %:word%)) "
-			+ "or (ss.style in (select ss from Style ss where ss.name like %:word%)) "
-			+ "or (s.name like %:word%) "
-			+ "and s.state = true ")
-	List<Sticker> findAllByThemeNameOrStyleNameOrNameContaining(@Param("word") String word);
 }

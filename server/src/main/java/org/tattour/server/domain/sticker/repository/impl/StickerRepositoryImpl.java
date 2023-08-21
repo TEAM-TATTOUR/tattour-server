@@ -132,6 +132,28 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
 				.fetch();
 	}
 
+	@Override
+	public List<Sticker> findAllByThemeNameOrStyleNameOrNameContaining(String word) {
+		return queryFactory
+				.select(sticker).distinct()
+				.from(sticker)
+				.leftJoin(sticker.stickerThemes, stickerTheme)
+				.leftJoin(sticker.stickerStyles, stickerStyle)
+				.where(sticker.state.eq(true))
+				.where(stickerTheme.theme.in(
+						queryFactory
+								.select(theme)
+								.from(theme)
+								.where(theme.name.contains(word))
+				).or(stickerStyle.style.in(
+						queryFactory
+								.select(style)
+								.from(style)
+								.where(style.name.contains(word))
+				)).or(sticker.name.contains(word)))
+				.fetch();
+	}
+
 	private BooleanExpression eqStyleName(String styleName) {
 		return styleName == null ? null : style.name.eq(styleName);
 	}
