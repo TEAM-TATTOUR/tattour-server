@@ -43,7 +43,6 @@ public class CustomFacadeImpl implements CustomFacade {
 	private final S3Service s3Service;
 	private final DiscordMessageService discordMessageService;
 	private final CustomProviderImpl customProvider;
-	private final CustomRepository customRepository;
 
 	private static final String directoryPath = "custom";
 	private static final Integer customPoint = 990;
@@ -77,14 +76,14 @@ public class CustomFacadeImpl implements CustomFacade {
 	@Override
 	@Transactional(readOnly = true)
 	public ReadCustomSummaryListRes readCustomSummaryCompleteListByUserId(Integer userId) {
-		List<Custom> customs = customRepository.findAllByUserIdAndIsCompleted(userId);
+		List<Custom> customs = customProvider.getAllByUserIdAndIsCompleted(userId);
 		return ReadCustomSummaryListRes.from(customs);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public ReadCustomSummaryListRes readCustomSummaryInCompleteListByUserId(Integer userId) {
-		List<Custom> customs = customRepository.findAllByUserIdAndIsCompletedFalse(userId);
+		List<Custom> customs = customProvider.getAllByUserIdAndIsCompletedFalse(userId);
 		return ReadCustomSummaryListRes.from(customs);
 	}
 

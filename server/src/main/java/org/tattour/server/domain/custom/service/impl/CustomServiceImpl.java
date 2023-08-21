@@ -10,11 +10,9 @@ import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.domain.CustomProcess;
 import org.tattour.server.domain.custom.exception.InvalidCustomCompletedException;
 import org.tattour.server.domain.custom.exception.InvalidCustomPriceException;
-import org.tattour.server.domain.custom.provider.CustomProvider;
 import org.tattour.server.domain.custom.repository.CustomRepository;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.infra.discord.service.DiscordMessageService;
 import org.tattour.server.infra.s3.S3Service;
 
 @Slf4j
@@ -23,8 +21,6 @@ import org.tattour.server.infra.s3.S3Service;
 public class CustomServiceImpl implements CustomService {
 
 	private final CustomRepository customRepository;
-	private final CustomProvider customProvider;
-	private final DiscordMessageService discordMessageService;
 	private final S3Service s3Service;
 
 

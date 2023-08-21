@@ -8,4 +8,8 @@ public interface CustomProvider {
 	Custom getCustomById(Integer customId, Integer userId);
 
 	List<Custom> getCustomByUserIdAfterDate(int userId, String date);
+
+	List<Custom> getAllByUserIdAndIsCompleted(Integer userId);
+
+	List<Custom> getAllByUserIdAndIsCompletedFalse(Integer userId);
 }

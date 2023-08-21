@@ -27,11 +27,11 @@ public class CustomStyleServiceImpl implements CustomStyleService {
 
 	@Override
 	public List<CustomStyle> saveAll(List<CustomStyle> customStyles) {
-		return customStyles
+		List<CustomStyle> result = customStyles
 				.stream()
 				.filter(this::isUniqueCustomStyle)
-				.map(customStyleRepository::save)
 				.collect(Collectors.toList());
+		return customStyleRepository.saveAll(result);
 	}
 
 	@Override

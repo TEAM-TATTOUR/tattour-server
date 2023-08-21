@@ -38,4 +38,14 @@ public class CustomProviderImpl implements CustomProvider {
     public List<Custom> getCustomByUserIdAfterDate(int userId, String date) {
         return customRepository.findAllByUser_IdAndCreatedAtAfter(userId, date);
     }
+
+    @Override
+    public List<Custom> getAllByUserIdAndIsCompleted(Integer userId) {
+        return customRepository.findAllByUserIdAndIsCompleted(userId);
+    }
+
+    @Override
+    public List<Custom> getAllByUserIdAndIsCompletedFalse(Integer userId) {
+        return customRepository.findAllByUserIdAndIsCompletedFalse(userId);
+    }
 }
