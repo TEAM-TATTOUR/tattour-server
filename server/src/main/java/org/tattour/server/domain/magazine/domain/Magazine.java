@@ -25,6 +25,10 @@ public class Magazine extends AuditingTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	private String title;
+
+	private String content;
+
 	@Column(name = "magazine_url", columnDefinition = "text")
 	private String magazineUrl;
 

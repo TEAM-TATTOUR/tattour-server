@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.magazine.facade.dto.response.ReadMagazineListRes;
+import org.tattour.server.domain.magazine.facade.dto.response.ReadMagazineRes;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -16,10 +16,9 @@ public class GetMagazineListRes {
 	@Schema(description = "매거진 리스트")
 	List<GetMagazineRes> magazines;
 
-	static public GetMagazineListRes from(ReadMagazineListRes readMagazineListRes) {
+	static public GetMagazineListRes from(List<ReadMagazineRes> readMagazineResList) {
 		return new GetMagazineListRes(
-				readMagazineListRes
-						.getMagazines()
+				readMagazineResList
 						.stream()
 						.map(GetMagazineRes::from)
 						.collect(Collectors.toList()));
