@@ -33,6 +33,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+
+    implementation "com.querydsl:querydsl-jpa:5.0.0"
+    implementation "com.querydsl:querydsl-apt:5.0.0"
+    annotationProcessor(
+            "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jpa",
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api")
+
     // Health Check
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
@@ -54,7 +62,6 @@ dependencies {
 
     // S3
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.112'
-//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 
     // model struct
     implementation 'org.mapstruct:mapstruct:1.5.4.Final'
@@ -72,4 +79,17 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def queryDslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDirs += [queryDslDir]
+}
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory = file(queryDslDir)
+}
+
+clean.doLast {
+    file(queryDslDir).deleteDir()
 }

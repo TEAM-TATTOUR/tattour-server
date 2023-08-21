@@ -49,6 +49,9 @@ public enum ErrorType {
     NOT_FOUND_SAVE_IMAGE_EXCEPTION(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다."),
     NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 포인트 충전 요청입니다."),
     NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다."),
+    NOT_FOUND_HEADER_ORIGIN(HttpStatus.BAD_REQUEST, "Origin을 찾을 수 없습니다."),
+    NOT_FOUND_MAGAZINE_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않은 매거진 입니다."),
+
 
     /**
      * 405 METHOD NOT ALLOWED

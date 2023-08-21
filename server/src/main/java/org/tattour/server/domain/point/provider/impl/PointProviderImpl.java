@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.point.dao.PointDao;
 import org.tattour.server.domain.point.domain.PointChargeRequest;
+import org.tattour.server.domain.point.domain.PointLogCategory;
 import org.tattour.server.domain.point.provider.PointProvider;
-import org.tattour.server.domain.point.provider.dto.request.GetPointChargeRequestAfterDate;
-import org.tattour.server.domain.point.provider.dto.request.GetPointLogListReq;
-import org.tattour.server.domain.point.provider.dto.response.GetPointChargeRequestListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogListRes;
-import org.tattour.server.domain.point.provider.dto.response.GetPointLogRes;
+import org.tattour.server.domain.point.facade.dto.response.ReadPointChargeRequestListRes;
+import org.tattour.server.domain.point.provider.vo.PointLogInfo;
 import org.tattour.server.domain.point.repository.impl.PointChargeRequestRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -24,34 +22,29 @@ public class PointProviderImpl implements PointProvider {
     private final PointChargeRequestRepositoryImpl pointChargeRequestRepository;
 
     @Override
-    public PointChargeRequest getPointChargeRequestById(Integer id) {
+    public PointChargeRequest readPointChargeRequestById(Integer id) {
         return pointChargeRequestRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(
                         ErrorType.NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION));
     }
 
     @Override
-    public GetPointChargeRequestListRes getPointChargeRequestAfterDate(
-            GetPointChargeRequestAfterDate req) {
-        return GetPointChargeRequestListRes.of(
+    public ReadPointChargeRequestListRes readPointChargeRequestAfterDate(int userId, String date) {
+        return ReadPointChargeRequestListRes.of(
                 EntityDtoMapper.INSTANCE.toGetPointChargeRequestResList(
                         pointChargeRequestRepository
-                                .findPointChargeRequestByUser_IdAndCreatedAtAfter(req.getUserId(),
-                                        req.getDate())));
+                                .findPointChargeRequestByUser_IdAndCreatedAtAfter(userId, date)));
     }
 
     @Override
-    public GetPointChargeRequestListRes getAllPointChargeRequest(Integer userId,
+    public ReadPointChargeRequestListRes readAllPointChargeRequest(Integer userId,
             Boolean isCompleted) {
-        return GetPointChargeRequestListRes.of(
-                pointDao.getPointChargeRequestResList(userId, isCompleted));
+        return ReadPointChargeRequestListRes.of(
+                pointDao.findPointChargeRequestResList(userId, isCompleted));
     }
 
     @Override
-    public GetPointLogListRes getPointLog(GetPointLogListReq req) {
-        List<GetPointLogRes> userPointLogList = pointDao.getPointLogResList(req.getUserId(),
-                req.getTitle());
-
-        return GetPointLogListRes.of(userPointLogList);
+    public List<PointLogInfo> readPointLog(Integer userId, String category) {
+        return pointDao.findPointLogResList(userId, category);
     }
 }

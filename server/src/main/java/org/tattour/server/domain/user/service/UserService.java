@@ -1,27 +1,21 @@
 package org.tattour.server.domain.user.service;
 
-import org.tattour.server.domain.user.service.dto.request.UpdateUserPointReq;
-import org.tattour.server.domain.user.service.dto.request.SaveUserReq;
-import org.tattour.server.domain.user.service.dto.request.UpdateUserInfoReq;
 import org.tattour.server.domain.user.domain.User;
 
 public interface UserService {
-
-    // 소셜 유저 생성
-    User saveSocialUser(SaveUserReq req);
 
     // 유저 저장
     void saveUser(User user);
 
     // userId로 user 가져오기
-    User getUserByUserId(Integer userId);
+    User readUserById(Integer userId);
 
     // 회원가입 시 이름, 전화번호 추가
-    void updateUserInfo(UpdateUserInfoReq req);
+    void updateUserProfile(User user, String name, String phoneNumber);
 
     // 로그아웃
-    void userLogout(Integer userId);
+    void deleteSocialAccessToken(Integer userId);
 
     // 유저 포인트 수정
-    Integer updateUserPoint(UpdateUserPointReq req);
+    void updateUserPoint(User user, Integer totalAmount);
 }

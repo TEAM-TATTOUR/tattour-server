@@ -1,8 +1,11 @@
 package org.tattour.server.domain.custom.repository.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 import org.tattour.server.domain.custom.domain.CustomTheme;
+import org.tattour.server.domain.custom.repository.CustomThemeRepository;
 
-public interface CustomThemeRepositoryImpl extends JpaRepository<CustomTheme, Integer> {
+public interface CustomThemeRepositoryImpl extends
+		Repository<CustomTheme, Integer>,
+		CustomThemeRepository {
 
 }

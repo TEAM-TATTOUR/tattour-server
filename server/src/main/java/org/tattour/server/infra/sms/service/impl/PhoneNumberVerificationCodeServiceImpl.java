@@ -19,6 +19,6 @@ public class PhoneNumberVerificationCodeServiceImpl implements PhoneNumberVerifi
     @Transactional
     public void saveVerificationCode(int code, Integer userId) {
         phoneNumberVerificationCodeRepository.save(
-                PhoneNumberVerificationCode.of(code, userProvider.getUserById(userId)));
+                PhoneNumberVerificationCode.of(code, userProvider.readUserById(userId)));
     }
 }

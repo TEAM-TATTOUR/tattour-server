@@ -1,26 +1,32 @@
 package org.tattour.server.domain.order.provider;
 
-import org.tattour.server.domain.order.controller.dto.response.GetOrderSheetRes;
+import java.util.List;
+import org.springframework.data.domain.Page;
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderHistoryAfterDateReq;
-import org.tattour.server.domain.order.provider.dto.request.GetOrderSheetReqDto;
-import org.tattour.server.domain.order.provider.dto.response.GetOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.dto.response.GetUserOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
+import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 
 public interface OrderProvider {
 
     // 결제 내역 1개 가져오기
-    Order getOrderById(int id);
-
-    // 결제 페이지 불러오기
-    GetOrderSheetRes getOrderSheetRes(GetOrderSheetReqDto req);
+    Order readOrderById(int orderId);
 
     // 페이지로 결제 내역 불러오기
-    GetOrderHistoryListRes getOrderHistoryByPage(int page);
+    Page<Order> readOrderHistoryByPage(int page);
 
     // 유저 결제 내역 불러오기
-    GetUserOrderHistoryListRes getOrderHistoryByUserId(Integer userId);
+    ReadUserOrderHistoryListRes readOrderHistoryByUserId(int userId);
 
     // 기준날짜로 결제 내역 불러오기
-    GetUserOrderHistoryListRes getOrderHistoryAfterDate(GetOrderHistoryAfterDateReq req);
+    List<UserOrderHistoryInfo> readOrderHistoryAfterDate(int userId, String date);
+
+    // 결제 금액정보 가져오기
+    OrderAmountInfo readOrderAmountRes(int price, int count, int shippingFee);
+
+    // 상품 금액 계산
+    int calculateProductAmount(int price, int count);
+
+    // 총 결제금액 계산
+    int calculateTotalAmount(int productAmount, int shippingFee);
 }
