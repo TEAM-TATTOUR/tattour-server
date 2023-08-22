@@ -1,4 +1,4 @@
-package org.tattour.server.global.config.resolver;
+package org.tattour.server.global.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

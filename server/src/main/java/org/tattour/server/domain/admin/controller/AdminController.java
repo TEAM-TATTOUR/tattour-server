@@ -49,7 +49,7 @@ import org.tattour.server.domain.sticker.facade.StickerFacade;
 import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerRes;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.global.config.jwt.JwtService;
-import org.tattour.server.global.config.resolver.UserId;
+import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessResponse;

@@ -24,7 +24,7 @@ import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
 import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;
 import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
-import org.tattour.server.global.config.resolver.UserId;
+import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessResponse;

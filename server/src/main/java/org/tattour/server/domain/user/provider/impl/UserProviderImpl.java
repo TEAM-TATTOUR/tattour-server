@@ -3,6 +3,7 @@ package org.tattour.server.domain.user.provider.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
@@ -69,5 +70,10 @@ public class UserProviderImpl implements UserProvider {
     @Override
     public int calculateRestPointAfterOrder(int userPoint, int totalAmount) {
         return userPoint - totalAmount;
+    }
+
+    @Override
+    public boolean isUserAdmin(User user) {
+        return user.getUserRole().equals(UserRole.ADMIN);
     }
 }

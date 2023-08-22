@@ -11,6 +11,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -21,7 +22,6 @@ import org.tattour.server.global.exception.ErrorType;
 public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     private final JwtService jwtService;
-
     private static final String HEADER_PREFIX = "Bearer ";
 
     @Override
@@ -37,32 +37,24 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         final String bearerHeader = request.getHeader("Authorization");
 
-        System.out.println("bearerHeader = " + bearerHeader);
         if (!StringUtils.hasText(bearerHeader) || !bearerHeader.startsWith(HEADER_PREFIX)) {
-            throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
-                    (String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
-                            parameter.getMethod())));
+            throw new BusinessException(ErrorType.NOT_SUPPORTED_JWT_TOKEN_EXCEPTION);
         }
 
         String token = bearerHeader.substring(HEADER_PREFIX.length());
 
         // 토큰 검증
         if (!jwtService.verifyToken(token)) {
-            throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION,
-                    String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
-                            parameter.getMethod()));
+            throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
         }
 
         // 유저 아이디 반환
         final String tokenContents = jwtService.getJwtContents(token);
-        System.out.println("tokenContents = " + tokenContents);
 
         try {
             return Integer.parseInt(tokenContents);
         } catch (NumberFormatException e) {
-            throw new RuntimeException(
-                    String.format("USER_ID를 가져오지 못했습니다. (%s - %s)", parameter.getClass(),
-                            parameter.getMethod()));
+            throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_CONTENT_EXCEPTION);
         }
     }
 }

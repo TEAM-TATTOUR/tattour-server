@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.tattour.server.global.config.resolver.UserIdResolver;
 
 import java.util.List;
+import org.tattour.server.global.config.interceptors.UserRoleInterceptor;
 
 @RequiredArgsConstructor
 @Configuration
@@ -16,10 +18,16 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final UserIdResolver userIdResolver;
+    private final UserRoleInterceptor userRoleInterceptor;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(userIdResolver);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userRoleInterceptor).addPathPatterns("/api/v1/admin/**");
     }
 
     @Override

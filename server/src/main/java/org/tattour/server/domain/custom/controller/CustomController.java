@@ -26,7 +26,7 @@ import org.tattour.server.domain.custom.controller.dto.request.PatchCustomReq;
 import org.tattour.server.domain.custom.controller.dto.response.PatchCustomRes;
 import org.tattour.server.domain.custom.controller.dto.response.PostCustomRes;
 import org.tattour.server.domain.custom.facade.CustomFacade;
-import org.tattour.server.global.config.resolver.UserId;
+import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessType;

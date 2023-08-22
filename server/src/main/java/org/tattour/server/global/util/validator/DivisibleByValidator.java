@@ -2,7 +2,7 @@ package org.tattour.server.global.util.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import org.tattour.server.global.config.resolver.DivisibleBy;
+import org.tattour.server.global.config.annotations.DivisibleBy;
 
 public class DivisibleByValidator implements ConstraintValidator<DivisibleBy, Integer> {
 
