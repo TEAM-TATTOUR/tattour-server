@@ -13,7 +13,6 @@ import org.tattour.server.domain.custom.facade.CustomFacade;
 import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomReq;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryListRes;
-import org.tattour.server.domain.custom.repository.CustomRepository;
 import org.tattour.server.domain.custom.service.CustomImageService;
 import org.tattour.server.domain.custom.service.CustomService;
 import org.tattour.server.domain.custom.service.CustomStyleService;
@@ -103,11 +102,13 @@ public class CustomFacadeImpl implements CustomFacade {
 		}
 
 		// 이미지 리스트의 첫번째가 메인 이미지임
-		if (updateCustomReq.getImages().size() > 0) {
-			customService.setMainImageUrl(
-					updateCustom,
-					updateCustomReq.getImages().get(0));
-			updateCustomReq.getImages().remove(0);
+		if (!Objects.isNull(updateCustomReq.getImages())) {
+			if (updateCustomReq.getImages().size() > 0) {
+				customService.setMainImageUrl(
+						updateCustom,
+						updateCustomReq.getImages().get(0));
+				updateCustomReq.getImages().remove(0);
+			}
 		}
 		customService.updateCustom(custom, updateCustom);
 
