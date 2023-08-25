@@ -64,6 +64,9 @@ public class PatchCustomRes {
 	@Schema(description = "커스텀 신청 완료 여부")
 	private Boolean isCompleted;
 
+	@Schema(description = "커스텀 신청 가격")
+	private Integer price;
+
 	@Schema(description = "커스텀 신청 진행 상태", example = "receiving, receiptComplete, receiptFailed, shipping, shipped")
 	private String process;
 
@@ -89,6 +92,7 @@ public class PatchCustomRes {
 				.isColored(readCustomRes.getIsColored())
 				.isPublic(readCustomRes.getIsPublic())
 				.isCompleted(readCustomRes.getIsCompleted())
+				.price(readCustomRes.getPrice())
 				.process(readCustomRes.getProcess())
 				.viewCount(readCustomRes.getViewCount())
 				.build();

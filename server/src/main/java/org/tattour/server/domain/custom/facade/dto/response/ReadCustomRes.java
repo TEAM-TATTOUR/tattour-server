@@ -29,6 +29,7 @@ public class ReadCustomRes {
 	private Boolean isColored;
 	private Boolean isPublic;
 	private Boolean isCompleted;
+	private Integer price;
 	private String process;
 	private Integer viewCount;
 
@@ -53,6 +54,7 @@ public class ReadCustomRes {
 				.isColored(custom.getIsColored())
 				.isPublic(custom.getIsPublic())
 				.isCompleted(custom.getIsCompleted())
+				.price(custom.getPrice())
 				.process(getProcessString(custom))
 				.viewCount(custom.getViewCount())
 				.build();
