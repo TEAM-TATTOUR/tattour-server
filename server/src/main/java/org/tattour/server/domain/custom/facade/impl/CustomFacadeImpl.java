@@ -138,7 +138,7 @@ public class CustomFacadeImpl implements CustomFacade {
 		}
 		if (custom.getIsCompleted()) {
 			discordMessageService.sendCustomApplyMessage(custom);
-			userService.updateUserPoint(custom.getUser(), custom.getPrice());
+			userService.updateUserPoint(custom.getUser(), -custom.getPrice());
 		}
 		return ReadCustomRes.from(custom);
 	}
