@@ -50,7 +50,7 @@ jobs:
       run: cp appspec.yml ./deploy
 
     - name: Copy script
-      run: cp ./scripts/*.sh ./deploy
+      run: cp ./scripts/deploy_dev.sh ./deploy
       
     - name: Make zip file
       run: zip -r ./tattour_server_dev.zip ./deploy
@@ -72,7 +72,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CODEDEPLOY_ACCESS_KEY }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY }}
       run:
-        aws deploy create-deployment 
+        aws deploy create-deployment
         --application-name tattour-codeDepoly-test
         --deployment-group-name tattour-codeDepoly-test-group
         --file-exists-behavior OVERWRITE 
