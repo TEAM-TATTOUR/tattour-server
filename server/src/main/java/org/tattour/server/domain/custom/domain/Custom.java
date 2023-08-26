@@ -1,7 +1,7 @@
 package org.tattour.server.domain.custom.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,20 +48,11 @@ public class Custom extends AuditingTimeEntity {
     @JoinColumn(name = "sticker_id")
     private Sticker sticker;
 
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomTheme> customThemes;
-
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomStyle> customStyles;
-
     @Column(name = "main_image_url", columnDefinition = "text")
     private String mainImageUrl;
 
     @Column(name = "hand_drawing_image_url", columnDefinition = "text")
     private String handDrawingImageUrl;
-
-    @OneToMany(mappedBy = "custom", cascade = CascadeType.ALL)
-    private List<CustomImage> images;
 
     @Column(name = "have_design", columnDefinition = "tinyint")
     private Boolean haveDesign;
@@ -94,18 +85,20 @@ public class Custom extends AuditingTimeEntity {
 
     private Integer price;
 
+    /**
+     * Mapped By
+     */
+    @OneToMany(mappedBy = "custom")
+    private List<CustomTheme> customThemes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "custom")
+    private List<CustomStyle> customStyles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "custom")
+    private List<CustomImage> images = new ArrayList<>();
+
     public void setSticker(Sticker sticker) {
         this.sticker = sticker;
-    }
-
-    public void setCustomThemes(
-            List<CustomTheme> customThemes) {
-        this.customThemes = customThemes;
-    }
-
-    public void setCustomStyles(
-            List<CustomStyle> customStyles) {
-        this.customStyles = customStyles;
     }
 
     public void setMainImageUrl(String mainImageUrl) {
@@ -124,6 +117,30 @@ public class Custom extends AuditingTimeEntity {
         this.size = size;
     }
 
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
+
+    public void setColored(Boolean colored) {
+        isColored = colored;
+    }
+
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
+    }
+
+    public void setProcess(CustomProcess process) {
+        this.process = process;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -132,42 +149,31 @@ public class Custom extends AuditingTimeEntity {
         this.description = description;
     }
 
-    public void setDemand(String demand) {
-        this.demand = demand;
-    }
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public void setColored(Boolean colored) {
-        isColored = colored;
     }
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
     }
 
-    public void setCompleted(Boolean completed) {
-        isCompleted = completed;
-    }
-
     public void setCustomProcess(CustomProcess process) {
         this.process = process;
     }
 
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public void calPrice() {
-        price = size.getPrice() * count;
+    public Integer calPrice() {
+        Integer price = size.getPrice() * count;
         if (isPublic) {
             price -= size.getDiscountPrice();
         }
+        return price;
     }
 
-    public static Custom from(
+    public Boolean isNotSameUser(Integer userId) {
+        return !user.getId().equals(userId);
+    }
+
+    public static Custom of(
             User user,
             Boolean haveDesign,
             String name,

@@ -34,7 +34,7 @@ public class StickerImage {
     @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
 
-    public static StickerImage from(Sticker sticker, String imageUrl) {
+    public static StickerImage of(Sticker sticker, String imageUrl) {
         return StickerImage.builder()
                 .sticker(sticker)
                 .imageUrl(imageUrl)

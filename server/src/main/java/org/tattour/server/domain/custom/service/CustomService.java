@@ -1,13 +1,21 @@
 package org.tattour.server.domain.custom.service;
 
-import org.tattour.server.domain.custom.service.dto.request.UpdateCustomInfo;
-import org.tattour.server.domain.custom.service.dto.response.CustomInfo;
+import org.springframework.web.multipart.MultipartFile;
+import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.domain.CustomProcess;
+import org.tattour.server.domain.user.domain.User;
 
 public interface CustomService {
 
-    Integer createCustom(Boolean haveDesign, Integer userId);
+	Custom save(Custom custom);
 
-    CustomInfo updateCustom(UpdateCustomInfo updateCustomInfo);
+	Custom createInitCustom(User user, Boolean haveDesign);
 
-    CustomInfo updateCustomProcess(UpdateCustomInfo updateCustomInfo);
+	Custom updateCustom(Custom custom, Custom updateCustomInfo);
+
+	Custom updateCustomProcess(Custom updateCustom, CustomProcess customProcess);
+
+	void setHandDrawingImage(Custom updateCustom, MultipartFile handDrawingImage);
+
+	void setMainImageUrl(Custom updateCustom, MultipartFile mainImage);
 }

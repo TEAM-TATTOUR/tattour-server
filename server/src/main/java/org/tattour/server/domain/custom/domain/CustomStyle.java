@@ -18,8 +18,8 @@ import org.tattour.server.domain.style.domain.Style;
 @Getter
 @Table(name = "custom_style")
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomStyle {
 
@@ -35,7 +35,7 @@ public class CustomStyle {
     @JoinColumn(name = "style_id")
     private Style style;
 
-    public static CustomStyle from(Custom custom, Style style) {
+    public static CustomStyle of(Custom custom, Style style) {
         return CustomStyle.builder()
                 .custom(custom)
                 .style(style)

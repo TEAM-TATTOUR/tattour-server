@@ -11,9 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.style.service.StyleService;
-import org.tattour.server.domain.style.service.dto.response.StyleInfoList;
-import org.tattour.server.domain.style.service.dto.response.StyleSummaryList;
+import org.tattour.server.domain.style.controller.dto.response.GetStyleListRes;
+import org.tattour.server.domain.style.controller.dto.response.GetStyleSummaryListRes;
+import org.tattour.server.domain.style.controller.dto.response.GetStyleSummaryRes;
+import org.tattour.server.domain.style.facade.StyleFacade;
+import org.tattour.server.domain.style.facade.dto.response.ReadStyleListRes;
+import org.tattour.server.domain.style.facade.dto.response.ReadStyleSummaryListRes;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
 import org.tattour.server.global.dto.SuccessType;
@@ -24,31 +27,40 @@ import org.tattour.server.global.dto.SuccessType;
 @Tag(name = "Style", description = "Style API Document")
 public class StyleController {
 
-    private final StyleService styleService;
+	private final StyleFacade styleFacade;
 
-    @GetMapping
-    @Operation(summary = "스타일 리스트 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "success",
-                    content = @Content(schema = @Schema(implementation = StyleInfoList.class))),
-            @ApiResponse(responseCode = "400, 500", description = "error",
-                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
-    })
-    public ResponseEntity<?> getStyleList() {
-        StyleInfoList response = styleService.getAllStyle();
-        return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUCCESS, response);
-    }
+	@GetMapping
+	@Operation(summary = "스타일 리스트 조회")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200",
+					description = "success",
+					content = @Content(schema = @Schema(implementation = GetStyleListRes.class))),
+			@ApiResponse(responseCode = "400, 500",
+					description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> readStyleList() {
+		GetStyleListRes response = GetStyleListRes.from(
+				styleFacade.readAllStyle());
+		return BaseResponse.success(
+				SuccessType.READ_ALL_STYLE_SUCCESS,
+				response);
+	}
 
-    @GetMapping("/summary")
-    @Operation(summary = "스타일 요약 정보 리스트 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "success",
-                    content = @Content(schema = @Schema(implementation = StyleSummaryList.class))),
-            @ApiResponse(responseCode = "400, 500", description = "error",
-                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
-    })
-    public ResponseEntity<?> getStyleSummaryList() {
-        StyleSummaryList response = styleService.getAllStyleSummary();
-        return BaseResponse.success(SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS, response);
-    }
+	@GetMapping("/summary")
+	@Operation(summary = "스타일 요약 정보 리스트 조회")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "success",
+					content = @Content(schema = @Schema(implementation = GetStyleSummaryListRes.class))),
+			@ApiResponse(responseCode = "400, 500", description = "error",
+					content = @Content(schema = @Schema(implementation = FailResponse.class)))
+	})
+	public ResponseEntity<?> readStyleSummaryList() {
+		GetStyleSummaryListRes response =
+				GetStyleSummaryListRes.from(
+						styleFacade.readAllStyleSummary());
+		return BaseResponse.success(
+				SuccessType.READ_ALL_STYLE_SUMMARY_SUCCESS,
+				response);
+	}
 }

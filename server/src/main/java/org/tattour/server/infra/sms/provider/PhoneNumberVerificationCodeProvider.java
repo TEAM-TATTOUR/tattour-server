@@ -6,5 +6,5 @@ public interface PhoneNumberVerificationCodeProvider {
     int getLatestValidVerificationCode(Integer userId);
 
     // 인증코드 비교하기
-    Boolean compareVerficationCode(Integer userId, Integer verificationCode);
+    boolean compareVerficationCode(Integer userId, Integer verificationCode);
 }

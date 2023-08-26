@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.tattour.server.global.config.resolver.UserIdResolver;
 
 import java.util.List;
+import org.tattour.server.global.config.interceptors.UserRoleInterceptor;
 
 @RequiredArgsConstructor
 @Configuration
@@ -16,10 +18,16 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final UserIdResolver userIdResolver;
+    private final UserRoleInterceptor userRoleInterceptor;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(userIdResolver);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userRoleInterceptor).addPathPatterns("/api/v1/admin/**");
     }
 
     @Override
@@ -28,19 +36,17 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // Header의 Origin에 들어있는 주소가 아래 주소인 경우를 허용한다
                 .allowedOrigins(
-                        "https://api.tattour.shop",
-                        "http://api.tattour.shop",
-                        "https://tattour.kr",
-                        "http://localhost:8080",
-                        "http://localhost:5173",
-                        "http://127.0.0.1:5173")
-                .allowedHeaders()
+                        "*"
+//                        "https://tattour.kr",
+//                        "https://api.tattour.shop",
+//                        "https://dev.tattour.shop"
+                )
                 // 모든 HTTP Method를 허용한다.
                 .allowedMethods("*")
                 // HTTP 요청의 Header에 어떤 값이든 들어갈 수 있도록 허용한다.
                 .allowedHeaders("*")
                 // 자격증명 사용을 허용한다.
                 // 해당 옵션 사용시 allowedOrigins를 * (전체)로 설정할 수 없다.
-                .allowCredentials(true);
+                .allowCredentials(false);
     }
 }

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tattour.server.global.config.resolver.DivisibleBy;
+import org.tattour.server.global.config.annotations.DivisibleBy;
 
 @Schema(description = "포인트 충전 요청 확정 Request")
 @Getter

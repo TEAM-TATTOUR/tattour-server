@@ -43,13 +43,13 @@ public class PointChargeRequest {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private PointChargeRequest(Integer chargeAmount, User user) {
-        this.chargeAmount = chargeAmount;
+    private PointChargeRequest(User user, Integer chargeAmount) {
         this.user = user;
+        this.chargeAmount = chargeAmount;
     }
 
-    public static PointChargeRequest of(Integer chargeAmount, User user) {
-        return new PointChargeRequest(chargeAmount, user);
+    public static PointChargeRequest of(User user, Integer chargeAmount) {
+        return new PointChargeRequest(user, chargeAmount);
     }
 
     public void setProperties(Integer transferredAmount, Boolean isDeposited,

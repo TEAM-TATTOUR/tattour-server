@@ -7,7 +7,6 @@ import org.tattour.server.domain.user.domain.UserShippingAddress;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.repository.impl.UserShippingAddressRepositoryImpl;
 import org.tattour.server.domain.user.service.UserShippingAddressService;
-import org.tattour.server.domain.user.service.dto.request.SaveUserShippingAddrReq;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +16,18 @@ public class UserShippingAddressServiceImpl implements UserShippingAddressServic
     private final UserProviderImpl userProvider;
 
     @Override
-    public void saveUserShippingAddr(SaveUserShippingAddrReq request) {
-        User user = userProvider.getUserById(request.getUserId());
+    public void saveUserShippingAddr(
+            int userId, String recipientName, String contact, String mailingAddress,
+            String baseAddress, String detailAddress) {
+        User user = userProvider.readUserById(userId);
 
         userShippingAddressRepository.save(
                 UserShippingAddress.of(
-                        request.getRecipientName(),
-                        request.getContact(),
-                        request.getMailingAddress(),
-                        request.getBaseAddress(),
-                        request.getDetailAddress(),
-                        user
-                ));
+                        recipientName,
+                        contact,
+                        mailingAddress,
+                        baseAddress,
+                        detailAddress,
+                        user));
     }
 }

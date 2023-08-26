@@ -35,7 +35,7 @@ public class StickerStyle {
     @JoinColumn(name = "style_id")
     private Style style;
 
-    public static StickerStyle from(Sticker sticker, Style style) {
+    public static StickerStyle of(Sticker sticker, Style style) {
         return StickerStyle.builder()
                 .sticker(sticker)
                 .style(style)

@@ -35,7 +35,7 @@ public class StickerTheme {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    public static StickerTheme from(Sticker sticker, Theme theme) {
+    public static StickerTheme of(Sticker sticker, Theme theme) {
         return StickerTheme.builder()
                 .sticker(sticker)
                 .theme(theme)
