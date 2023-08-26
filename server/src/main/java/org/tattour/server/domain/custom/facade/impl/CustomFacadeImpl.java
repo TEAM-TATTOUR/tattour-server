@@ -138,7 +138,8 @@ public class CustomFacadeImpl implements CustomFacade {
 		}
 		if (custom.getIsCompleted()) {
 			discordMessageService.sendCustomApplyMessage(custom);
-			userService.updateUserPoint(custom.getUser(), -custom.getPrice());
+			// Todo : user point 관리자 페이지에서 관리할 수 있도록 하기
+//			userService.updateUserPoint(custom.getUser(), -custom.getPrice());
 		}
 		return ReadCustomRes.from(custom);
 	}
