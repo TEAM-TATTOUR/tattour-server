@@ -46,11 +46,11 @@ jobs:
     - name: Copy Jar
       run: cp ./server/build/libs/*.jar ./deploy
     
-    - name: Copy appspec.yml
-      run: cp appspec.yml ./deploy
+    - name: Copy appspec_dev.yml
+      run: cp appspec_dev.yml ./deploy
 
     - name: Copy script
-      run: cp ./scripts/*.sh ./deploy
+      run: cp ./scripts/deploy_dev.sh ./deploy
       
     - name: Make zip file
       run: zip -r ./tattour_server_dev.zip ./deploy
