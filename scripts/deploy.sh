@@ -8,10 +8,10 @@ DEPLOY_PATH=/home/ubuntu/app/nonstop/jar/
 cp $BUILD_PATH $DEPLOY_PATH
 
 echo "> 현재 구동중인 Set 확인"
-if [ "$DEPLOY_ENV" == "main" ]
+if [ $DEPLOY_ENV == "main" ]
 then
   CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile)
-elif [ "$DEPLOY_ENV" == "dev" ]
+elif [ $DEPLOY_ENV == "dev" ]
 then
   CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile)
 echo "> $CURRENT_PROFILE"
