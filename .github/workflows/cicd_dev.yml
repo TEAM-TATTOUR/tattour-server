@@ -10,6 +10,8 @@ jobs:
   build:
     name: Code deployment
     runs-on: ubuntu-latest
+    env: 
+      DEPLOY_ENV: dev
 
     steps:
     
@@ -46,11 +48,11 @@ jobs:
     - name: Copy Jar
       run: cp ./server/build/libs/*.jar ./deploy
     
-    - name: Copy appspec_dev.yml
-      run: cp appspec_dev.yml ./deploy
+    - name: Copy appspec.yml
+      run: cp appspe.yml ./deploy
 
     - name: Copy script
-      run: cp ./scripts/deploy_dev.sh ./deploy
+      run: cp ./scripts/*.sh ./deploy
       
     - name: Make zip file
       run: zip -r ./tattour_server_dev.zip ./deploy
