@@ -10,6 +10,8 @@ jobs:
   build:
     name: Code deployment
     runs-on: ubuntu-latest
+    env: 
+      DEPLOY_ENV: main
 
     steps:
     
