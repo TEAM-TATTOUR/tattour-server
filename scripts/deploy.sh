@@ -1,6 +1,5 @@
 #!/bin/bash
-set -e
-export $(xargs < /etc/environment)
+source /etc/environment
 
 BUILD_PATH=$(ls /home/ubuntu/app/server-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_PATH)
