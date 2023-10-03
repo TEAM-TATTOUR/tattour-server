@@ -61,8 +61,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_CODEDEPLOY_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_CODEDEPLOY_ACCESS_KEY_DEV }}
+        aws-secret-access-key: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY_DEV }}
         aws-region: ap-northeast-2
         
     - name: Upload to S3
@@ -71,12 +71,12 @@ jobs:
     # Deploy
     - name: Deploy
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CODEDEPLOY_ACCESS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_CODEDEPLOY_ACCESS_KEY_DEV }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_CODEDEPLOY_SECRET_ACCESS_KEY_DEV }}
       run:
         aws deploy create-deployment 
-        --application-name tattour-codeDepoly-test
-        --deployment-group-name tattour-codeDepoly-test-group
+        --application-name tattour-dev-codedeploy
+        --deployment-group-name tattour-dev-codedeploy-group
         --file-exists-behavior OVERWRITE 
         --s3-location bucket=tattour-storage,bundleType=zip,key=tattour_server_dev.zip
         --region ap-northeast-2
