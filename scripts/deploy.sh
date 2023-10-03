@@ -8,12 +8,14 @@ DEPLOY_PATH=/home/ubuntu/app/nonstop/jar/
 cp $BUILD_PATH $DEPLOY_PATH
 
 echo "> 현재 구동중인 Set 확인"
-if [ $DEPLOY_ENV == "main" ]
+if [ $DEPLOY_ENV == main ]
 then
   CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile)
-elif [ $DEPLOY_ENV == "dev" ]
+elif [ $DEPLOY_ENV == dev ]
 then
   CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile)
+else
+  echo "> 일치하는 DEPLOY_ENV가 없습니다. DEPLOY_ENV: $DEPLOY_ENV"
 echo "> $CURRENT_PROFILE"
 
 # 쉬고 있는 set 찾기: set1이 사용중이면 set2가 쉬고 있고, 반대면 set1이 쉬고 있음
