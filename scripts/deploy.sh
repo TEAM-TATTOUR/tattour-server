@@ -16,6 +16,7 @@ then
   CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile)
 else
   echo "> 일치하는 DEPLOY_ENV가 없습니다. DEPLOY_ENV: $DEPLOY_ENV"
+fi
 echo "> $CURRENT_PROFILE"
 
 # 쉬고 있는 set 찾기: set1이 사용중이면 set2가 쉬고 있고, 반대면 set1이 쉬고 있음
