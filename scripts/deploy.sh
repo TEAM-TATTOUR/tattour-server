@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+export $(xargs < /etc/environment)
+
 BUILD_PATH=$(ls /home/ubuntu/app/server-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_PATH)
 echo "> build 파일명: $JAR_NAME"
@@ -10,12 +13,14 @@ cp $BUILD_PATH $DEPLOY_PATH
 echo "> 현재 구동중인 Set 확인"
 if [ $DEPLOY_ENV == main ]
 then
+  echo $DEPLOY_ENV
   CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile)
 elif [ $DEPLOY_ENV == dev ]
 then
+  echo $DEPLOY_ENV
   CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile)
 else
-  echo "> 일치하는 DEPLOY_ENV가 없습니다. DEPLOY_ENV: $DEPLOY_ENV"
+  echo "> DEPLOY_ENV가 설정되지 않았습니. DEPLOY_ENV: $DEPLOY_ENV"
 fi
 echo "> $CURRENT_PROFILE"
 
