@@ -284,14 +284,14 @@ public class AdminController {
     @GetMapping("/pointlog")
     public ResponseEntity<?> getPointLog(
             @Parameter(description = "user id") @RequestParam(required = false) Integer userId,
-            @Parameter(description = "포인트 로그 카테고리", example = "충전취소")
+            @Parameter(description = "포인트 로그 카테고리", example = "충전 취소")
             @RequestParam(required = false) String category
     ) {
         return BaseResponse.success(
                 SuccessType.READ_POINT_LOG_SUCCESS, pointFacade.readPointLog(
                         ReadPointLogListReq.of(
                                 userId,
-                                PointLogCategory.valueOf(category))));
+                                PointLogCategory.fromValue(category))));
     }
 
     @PostMapping(value = "/stickers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -310,15 +310,14 @@ public class AdminController {
             @RequestPart(value = "stickerImages", required = false) List<MultipartFile> stickerImages
     ) {
         PostStickerRes response =
-                PostStickerRes.of(
-                        stickerFacade.createSticker(
-                                stickerInfo.newCreateStickerReq(
-                                        stickerMainImage,
-                                        stickerImages)));
+                PostStickerRes.of(stickerFacade.createSticker(
+                        stickerInfo.newCreateStickerReq(
+                                stickerMainImage,
+                                stickerImages)));
         return BaseResponse.success(SuccessType.CREATE_SUCCESS, response);
     }
 
-    @PostMapping(value = "/custom/recieve/{customId}")
+    @PostMapping(value = "/custom/receive/{customId}")
     @Operation(summary = "커스텀 도안 상태 변경하기",
             description = "process : <receiving, receiptComplete, receiptFailed, shipping, shipped>")
     @ApiResponses(value = {
