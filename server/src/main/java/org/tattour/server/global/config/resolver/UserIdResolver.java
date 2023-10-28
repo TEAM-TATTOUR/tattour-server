@@ -38,7 +38,7 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         final String bearerHeader = request.getHeader("Authorization");
 
-        if (jwtService.validateBearerHeader(bearerHeader)) {
+        if (!jwtService.validateBearerHeader(bearerHeader)) {
             throw new BusinessException(ErrorType.NOT_SUPPORTED_JWT_TOKEN_EXCEPTION);
         }
 
@@ -53,7 +53,7 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         try {
             UserRole role = UserRole.valueOf(content.getRole());
             Integer userId = Integer.parseInt(content.getUserId());
-            
+
             if (!role.equals(UserRole.USER)) {
                 throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
             }
