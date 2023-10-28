@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.facade.UserFacade;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
@@ -76,7 +77,7 @@ public class UserFacadeImpl implements UserFacade {
 
         return PostLoginRes.of(
                 user.getId(),
-                jwtService.issuedToken(user.getId()),
+                jwtService.issuedToken(user.getId(), UserRole.USER.toString()),
                 isUserSignUpCompleted);
     }
 

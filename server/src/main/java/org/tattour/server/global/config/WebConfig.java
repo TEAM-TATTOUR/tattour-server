@@ -1,5 +1,6 @@
 package org.tattour.server.global.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -7,10 +8,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.tattour.server.global.config.resolver.UserIdResolver;
-
-import java.util.List;
 import org.tattour.server.global.config.interceptors.UserRoleInterceptor;
+import org.tattour.server.global.config.resolver.UserIdResolver;
 
 @RequiredArgsConstructor
 @Configuration
@@ -27,7 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(userRoleInterceptor).addPathPatterns("/api/v1/admin/**");
+        registry.addInterceptor(userRoleInterceptor)
+                .addPathPatterns("/api/v1/admin/**")
+                .excludePathPatterns("/api/v1/admin/login");
     }
 
     @Override
