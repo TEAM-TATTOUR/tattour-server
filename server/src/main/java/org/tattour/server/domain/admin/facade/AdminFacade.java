@@ -5,5 +5,5 @@ import org.tattour.server.domain.admin.controller.dto.response.AdminLoginRes;
 
 public interface AdminFacade {
 
-    AdminLoginRes login(AdminLoginReq req);
+    AdminLoginRes login(AdminLoginReq req, String accessIp);
 }

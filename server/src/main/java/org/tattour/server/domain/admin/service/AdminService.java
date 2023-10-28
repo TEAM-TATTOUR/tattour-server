@@ -8,9 +8,11 @@ public interface AdminService {
 
     Admin readAdminByAdminName(String adminName);
 
-    boolean compareCredentials(Admin admin, String adminName, String password);
+    boolean validateCredentials(Admin admin, String adminName, String password);
 
     boolean isAccountLocked(Admin admin);
 
     void addLoginFailCnt(Admin admin);
+
+    void saveAdminAccessLog(Admin admin, String accessIp);
 }

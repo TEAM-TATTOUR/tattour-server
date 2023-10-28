@@ -2,7 +2,7 @@ package org.tattour.server.global.exception;
 
 public class BusinessException extends RuntimeException {
 
-    private ErrorType errorType;
+    private final ErrorType errorType;
 
     public BusinessException(ErrorType errorType) {
         super(errorType.getMessage());
