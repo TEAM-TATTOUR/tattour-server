@@ -29,7 +29,4 @@ public interface UserProvider {
 
     // 주문 후 남은 포인트 계산
     int calculateRestPointAfterOrder(int userPoint, int totalAmount);
-
-    // 유저가 admin인지 검사
-    boolean isUserAdmin(User user);
 }

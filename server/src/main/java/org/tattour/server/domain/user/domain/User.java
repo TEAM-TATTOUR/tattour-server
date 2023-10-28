@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 
 @Entity
@@ -37,10 +36,6 @@ public class User {
     private String accessToken;
     private String refreshToken;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
-
     @Enumerated(EnumType.STRING)
     private SocialPlatform socialPlatform;
 
@@ -56,27 +51,26 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProductLiked> productLikeds;
 
-    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform, String accessToken,
+    public User(Long kakaoId, SocialPlatform socialPlatform, String accessToken,
             String refreshToken) {
-        this.userRole = userRole;
         this.kakaoId = kakaoId;
         this.socialPlatform = socialPlatform;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public User(UserRole userRole, Long kakaoId, SocialPlatform socialPlatform) {
-        this.userRole = userRole;
+    public User(Long kakaoId, SocialPlatform socialPlatform) {
         this.kakaoId = kakaoId;
         this.socialPlatform = socialPlatform;
     }
 
-    public static User of(Long kakaoId, SocialPlatform socialPlatform, String accessToken, String refreshToken) {
-        return new User(UserRole.USER, kakaoId, SocialPlatform.KAKAO, accessToken, refreshToken);
+    public static User of(Long kakaoId, SocialPlatform socialPlatform, String accessToken,
+            String refreshToken) {
+        return new User(kakaoId, socialPlatform, accessToken, refreshToken);
     }
 
     public static User of(Long kakaoId, SocialPlatform socialPlatform) {
-        return new User(UserRole.USER, kakaoId, SocialPlatform.KAKAO);
+        return new User(kakaoId, socialPlatform);
     }
 
     public void setUserInfo(String name, String phoneNumber) {
