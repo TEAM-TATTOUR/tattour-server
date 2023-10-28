@@ -29,4 +29,8 @@ public class Admin {
     private Integer loginFailCnt;
 
     private Timestamp createdAt;
+
+    public void addLoginFailCnt() {
+        this.loginFailCnt += 1;
+    }
 }

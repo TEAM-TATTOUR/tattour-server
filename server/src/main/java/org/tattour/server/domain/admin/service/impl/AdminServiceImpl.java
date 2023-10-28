@@ -17,6 +17,11 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepositoryImpl adminRepository;
 
     @Override
+    public void saveAdmin(Admin admin) {
+        adminRepository.save(admin);
+    }
+
+    @Override
     public Admin readAdminByAdminName(String adminName) {
         return adminRepository.findByAdminName(adminName)
                 .orElseThrow(
@@ -24,8 +29,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean compareCredentials(Admin user, String userName, String password) {
-        return user.getAdminName().equals(userName)
-                && passwordEncoder.matches(password, user.getPassword());
+    public boolean compareCredentials(Admin admin, String adminName, String password) {
+        return admin.getAdminName().equals(adminName)
+                && passwordEncoder.matches(password, admin.getPassword());
+    }
+
+    @Override
+    public boolean isAccountLocked(Admin admin) {
+        return admin.getLoginFailCnt() == 5;
+    }
+
+    @Override
+    public void addLoginFailCnt(Admin admin) {
+        admin.addLoginFailCnt();
+        saveAdmin(admin);
     }
 }

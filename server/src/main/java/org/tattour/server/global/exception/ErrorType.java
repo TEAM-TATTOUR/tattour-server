@@ -12,7 +12,6 @@ public enum ErrorType {
      */
     VALIDATION_INPUT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     VALIDATION_WRONG_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 타입이 입력되었습니다."),
-    INVALID_PASSWORD_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다."),
     INVALID_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 인자가 입력되었습니다."),
     INVALID_IMAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 이미지 파일입니다."),
     INVALID_CUSTOM_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "이미지 파일이 1개 이상이어야합니다."),
@@ -35,6 +34,7 @@ public enum ErrorType {
      * 403 FORBIDDEN
      */
     LACK_OF_POINT_EXCEPTION(HttpStatus.FORBIDDEN, "포인트가 부족하여 결제할 수 없습니다."),
+    ACCOUNT_LOCKED_EXCEPTION(HttpStatus.FORBIDDEN, "과도한 로그인 시도 실패로 인해 계정이 잠겼습니다."),
 
     /**
      * 404 NOT FOUND

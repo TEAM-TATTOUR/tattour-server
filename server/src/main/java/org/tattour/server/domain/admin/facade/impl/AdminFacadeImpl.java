@@ -21,7 +21,13 @@ public class AdminFacadeImpl implements AdminFacade {
     @Override
     public AdminLoginRes login(AdminLoginReq req) {
         Admin admin = adminService.readAdminByAdminName(req.getUserName());
+
+        if (adminService.isAccountLocked(admin)) {
+            throw new BusinessException(ErrorType.ACCOUNT_LOCKED_EXCEPTION);
+        }
+
         if (adminService.compareCredentials(admin, req.getUserName(), req.getPassword())) {
+            adminService.addLoginFailCnt(admin);
             throw new BusinessException(ErrorType.AUTHENTICATION_FAILED_EXCEPTION);
         }
 
