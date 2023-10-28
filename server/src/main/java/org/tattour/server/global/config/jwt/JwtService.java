@@ -1,7 +1,5 @@
 package org.tattour.server.global.config.jwt;
 
-import static ch.qos.logback.classic.PatternLayout.HEADER_PREFIX;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
@@ -16,6 +14,8 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.exception.UnauthorizedException;
 
@@ -27,6 +27,7 @@ public class JwtService {
 
     @Value("${jwt.access-expired}")
     private Integer accessExpired;
+    private static final String HEADER_PREFIX = "Bearer ";
 
     @PostConstruct
     protected void init() {
@@ -83,7 +84,14 @@ public class JwtService {
         return JwtContent.of(claims.get("userId"), claims.get("role"));
     }
 
-    public boolean validateBearerHeader(String bearerHeader) {
-        return bearerHeader == null || !bearerHeader.startsWith(HEADER_PREFIX);
+    public String getTokenFromHeader(String bearerHeader) {
+        validateBearerHeader(bearerHeader);
+        return bearerHeader.substring(HEADER_PREFIX.length());
+    }
+
+    public void validateBearerHeader(String bearerHeader) {
+        if (!StringUtils.hasText(bearerHeader) || !bearerHeader.startsWith(HEADER_PREFIX)) {
+            throw new BusinessException(ErrorType.NOT_SUPPORTED_JWT_TOKEN_EXCEPTION);
+        }
     }
 }

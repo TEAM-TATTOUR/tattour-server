@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.tattour.server.domain.user.domain.UserRole;
-import org.tattour.server.domain.user.provider.UserProvider;
 import org.tattour.server.global.config.jwt.JwtContent;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
@@ -17,8 +16,6 @@ import org.tattour.server.global.exception.ErrorType;
 public class AdminRoleInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
-    private final UserProvider userProvider;
-    private static final String HEADER_PREFIX = "Bearer ";
 
     @Override
     public boolean preHandle(
@@ -26,11 +23,7 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler) throws Exception {
         String bearerHeader = request.getHeader("Authorization");
-
-        if (!jwtService.validateBearerHeader(bearerHeader)) {
-            throw new BusinessException(ErrorType.NOT_SUPPORTED_JWT_TOKEN_EXCEPTION);
-        }
-        String token = bearerHeader.substring(HEADER_PREFIX.length());
+        String token = jwtService.getTokenFromHeader(bearerHeader);
 
         if (!jwtService.verifyToken(token)) {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
@@ -39,6 +32,8 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
         final JwtContent content = jwtService.getJwtContents(token);
 
         try {
+            System.out.println("content.getRole() = " + content.getRole());
+
             final UserRole role = UserRole.valueOf(content.getRole());
 
             if (!role.equals(UserRole.ADMIN)) {
