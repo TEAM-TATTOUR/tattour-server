@@ -17,17 +17,16 @@ public enum ErrorType {
     INVALID_CUSTOM_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "이미지 파일이 1개 이상이어야합니다."),
     INVALID_MULTIPART_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 파일 확장자입니다."),
     INVALID_CUSTOM_PRICE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 커스텀 가격 입니다."),
-    INVALID_JWT_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 JWT 토큰입니다."),
-    NOT_SUPPORTED_JWT_TOKEN_EXCEPTION(HttpStatus.BAD_REQUEST, "지원하지 않는 JWT 토큰입니다."),
-    INVALID_JWT_TOKEN_CONTENT_EXCEPTION(HttpStatus.BAD_REQUEST, "USER 정보를 가져오지 못했습니다."),
     INVALID_CUSTOM_COMPLETED_EXCEPTION(HttpStatus.BAD_REQUEST, "완성되지 않은 커스텀 도안입니다."),
 
     /**
      * 401 UNAUTHORIZED
      */
-    VALIDATION_UNAUTHORIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, "리소스에 접근 권한이 없습니다."),
-    TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
-    TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
+    INVALID_JWT_TOKEN_CONTENT_EXCEPTION(HttpStatus.UNAUTHORIZED, "USER 정보를 가져오지 못했습니다."),
+    INVALID_JWT_TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED, "유효하지 않은 JWT 토큰입니다."),
+    TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 JWT 토큰입니다."),
+    UNAUTHORIZED_ACCESS_EXCEPTION(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다."),
+    NOT_SUPPORTED_JWT_TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED, "지원하지 않는 JWT 토큰입니다."),
     AUTHENTICATION_FAILED_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
 
     /**
@@ -52,8 +51,8 @@ public enum ErrorType {
     NOT_FOUND_SAVE_IMAGE_EXCEPTION(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다."),
     NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 포인트 충전 요청입니다."),
     NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다."),
-    NOT_FOUND_HEADER_ORIGIN(HttpStatus.BAD_REQUEST, "Origin을 찾을 수 없습니다."),
-    NOT_FOUND_MAGAZINE_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않은 매거진 입니다."),
+    NOT_FOUND_HEADER_ORIGIN(HttpStatus.NOT_FOUND, "Origin을 찾을 수 없습니다."),
+    NOT_FOUND_MAGAZINE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않은 매거진 입니다."),
 
     /**
      * 405 METHOD NOT ALLOWED
