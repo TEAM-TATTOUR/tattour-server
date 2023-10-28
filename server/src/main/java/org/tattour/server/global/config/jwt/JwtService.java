@@ -43,7 +43,6 @@ public class JwtService {
                 .setSubject("access_token")
                 .setIssuedAt(now)
                 .setExpiration(Date.from(Instant.now().plus(accessExpired, ChronoUnit.MINUTES)));
-//			.setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
 
         //private claim 등록
         claims.put("userId", strUserId);

@@ -29,6 +29,7 @@ public enum ErrorType {
     VALIDATION_UNAUTHORIZED_EXCEPTION(HttpStatus.UNAUTHORIZED, "리소스에 접근 권한이 없습니다."),
     TOKEN_TIME_EXPIRED_EXCEPTION(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
+    AUTHENTICATION_FAILED_EXCEPTION(HttpStatus.UNAUTHORIZED, "유저 정보가 일치하지 않습니다."),
 
     /**
      * 403 FORBIDDEN
@@ -53,7 +54,6 @@ public enum ErrorType {
     NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다."),
     NOT_FOUND_HEADER_ORIGIN(HttpStatus.BAD_REQUEST, "Origin을 찾을 수 없습니다."),
     NOT_FOUND_MAGAZINE_EXCEPTION(HttpStatus.BAD_REQUEST, "존재하지 않은 매거진 입니다."),
-
 
     /**
      * 405 METHOD NOT ALLOWED
