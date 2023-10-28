@@ -9,7 +9,9 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.global.config.annotations.UserId;
+import org.tattour.server.global.config.jwt.JwtContent;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -46,10 +48,17 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
         }
 
-        final String tokenContents = jwtService.getJwtContents(token).getUserId();
+        final JwtContent content = jwtService.getJwtContents(token);
 
         try {
-            return Integer.parseInt(tokenContents);
+            UserRole role = UserRole.valueOf(content.getRole());
+            Integer userId = Integer.parseInt(content.getUserId());
+            
+            if (!role.equals(UserRole.USER)) {
+                throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
+            }
+
+            return userId;
         } catch (NumberFormatException e) {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_CONTENT_EXCEPTION);
         }

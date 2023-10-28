@@ -72,7 +72,7 @@ public class AdminController {
     private final StickerFacade stickerFacade;
     private final CustomFacade customFacade;
 
-    @Operation(summary = "Admin 로그인")
+    @Operation(summary = "로그인")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",

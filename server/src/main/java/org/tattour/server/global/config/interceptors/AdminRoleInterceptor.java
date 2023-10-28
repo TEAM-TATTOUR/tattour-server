@@ -7,13 +7,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.provider.UserProvider;
+import org.tattour.server.global.config.jwt.JwtContent;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 
 @Component
 @RequiredArgsConstructor
-public class UserRoleInterceptor implements HandlerInterceptor {
+public class AdminRoleInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
     private final UserProvider userProvider;
@@ -35,10 +36,10 @@ public class UserRoleInterceptor implements HandlerInterceptor {
             throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
         }
 
-        final String roleValue = jwtService.getJwtContents(token).getRole();
+        final JwtContent content = jwtService.getJwtContents(token);
 
         try {
-            final UserRole role = UserRole.valueOf(roleValue);
+            final UserRole role = UserRole.valueOf(content.getRole());
 
             if (!role.equals(UserRole.ADMIN)) {
                 throw new BusinessException(ErrorType.INVALID_JWT_TOKEN_EXCEPTION);
