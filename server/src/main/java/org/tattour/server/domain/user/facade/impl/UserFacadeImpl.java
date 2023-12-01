@@ -98,8 +98,8 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public Boolean verifyCode(CompareVerificationCodeReq req) {
-        return phoneNumberVerificationCodeProvider.compareVerficationCode(req.getUserId(),
-                req.getVerificationCode());
+        return phoneNumberVerificationCodeProvider
+                .compareVerficationCode(req.getUserId(), req.getVerificationCode());
     }
 
     @Override

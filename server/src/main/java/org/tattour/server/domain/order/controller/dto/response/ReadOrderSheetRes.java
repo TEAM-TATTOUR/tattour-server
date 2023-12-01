@@ -5,8 +5,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
-import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
-import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
@@ -16,17 +14,12 @@ import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 public class ReadOrderSheetRes {
     private UserProfileInfo userProfileInfo;
     private ReadOrderSheetStickerInfo readOrderSheetStickerInfo;
-    
     private OrderAmountInfo orderAmountInfo;
-    
-    private UserPointAfterOrderInfo userPointAfterOrderInfo;
 
     public static ReadOrderSheetRes of(
             UserProfileInfo userProfileInfo,
             ReadOrderSheetStickerInfo readOrderSheetStickerInfo,
-            OrderAmountInfo orderAmountInfo,
-            UserPointAfterOrderInfo userPointAfterOrderInfo) {
-        return new ReadOrderSheetRes(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo,
-                userPointAfterOrderInfo);
+            OrderAmountInfo orderAmountInfo) {
+        return new ReadOrderSheetRes(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo);
     }
 }

@@ -15,7 +15,4 @@ public interface UserService {
 
     // 로그아웃
     void deleteSocialAccessToken(Integer userId);
-
-    // 유저 포인트 수정
-    void updateUserPoint(User user, Integer totalAmount);
 }
