@@ -51,15 +51,13 @@ public class UserFacadeImpl implements UserFacade {
         }
         System.out.println("Origin = " + req.getOrigin());
 
-        SocialService socialService = socialServiceProvider
-                .getSocialService(req.getSocialPlatform());
+        SocialService socialService = socialServiceProvider.getSocialService(req.getSocialPlatform());
 
-        KakaoLoginInfo kakaoLoginInfo =
-                (KakaoLoginInfo) socialService.getSocialLoginResponse(
-                        GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
+        KakaoLoginInfo kakaoLoginInfo = (KakaoLoginInfo) socialService
+                .getSocialLoginResponse(GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
 
-        boolean isUserExist = userProvider.checkDuplicationByKakaoId(
-                kakaoLoginInfo.getSocialUserInfoRes().getId());
+        boolean isUserExist = userProvider
+                .checkDuplicationByKakaoId(kakaoLoginInfo.getSocialUserInfoRes().getId());
 
         User user = isUserExist
                 ? userProvider.readUserByKakaoId(kakaoLoginInfo.getSocialUserInfoRes().getId())

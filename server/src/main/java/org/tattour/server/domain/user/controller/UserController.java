@@ -83,12 +83,11 @@ public class UserController {
 	})
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(
-			@Parameter(description = "Authentication Code", required = true) @RequestHeader("code") String code,
+			@Parameter(description = "Authentication Code", required = true) @RequestHeader String code,
 			@RequestBody @Valid PostLoginReq req,
 			HttpServletRequest request) {
 		return BaseResponse.success(SuccessType.LOGIN_SUCCESS,
-				userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code,
-						request.getHeader("origin"))));
+				userFacade.signup(CreateLoginReq.of(req.getSocialPlatform(), code, request.getHeader("origin"))));
 	}
 
 
