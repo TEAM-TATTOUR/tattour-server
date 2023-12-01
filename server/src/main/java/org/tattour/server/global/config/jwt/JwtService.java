@@ -14,6 +14,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.exception.UnauthorizedException;
@@ -26,6 +27,7 @@ public class JwtService {
 
     @Value("${jwt.access-expired}")
     private Integer accessExpired;
+    private static final String HEADER_PREFIX = "Bearer ";
 
     @PostConstruct
     protected void init() {
@@ -33,20 +35,17 @@ public class JwtService {
                 .encodeToString(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    // JWT 토큰 발급
-    public String issuedToken(Integer userId) {
+    public String issuedToken(Integer userId, String role) {
         String strUserId = String.valueOf(userId);
         final Date now = new Date();
 
-        // 클레임 생성
         final Claims claims = Jwts.claims()
                 .setSubject("access_token")
                 .setIssuedAt(now)
                 .setExpiration(Date.from(Instant.now().plus(accessExpired, ChronoUnit.MINUTES)));
-//			.setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
 
-        //private claim 등록
         claims.put("userId", strUserId);
+        claims.put("role", role);
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
@@ -55,12 +54,6 @@ public class JwtService {
                 .compact();
     }
 
-    private Key getSigningKey() {
-        final byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    // JWT 토큰 검증
     public Boolean verifyToken(String token) {
         try {
             final Claims claims = getBody(token);
@@ -73,6 +66,11 @@ public class JwtService {
         }
     }
 
+    private Key getSigningKey() {
+        final byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
     private Claims getBody(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -81,16 +79,19 @@ public class JwtService {
                 .getBody();
     }
 
-    // JWT 토큰 내용 확인
-    public String getJwtContents(String token) {
+    public JwtContent getJwtContents(String token) {
         final Claims claims = getBody(token);
-        return (String) claims.get("userId");
+        return JwtContent.of(claims.get("userId"), claims.get("role"));
     }
 
-    // Jwt 토큰에서 추출한 userId와 Path variable의 userId를 비교
-    public void compareJwtWithPathVar(Integer jwtUserId, Integer userId) {
-		if (jwtUserId != userId) {
-			throw new BusinessException(ErrorType.TOKEN_USERID_PATH_USERID_MISMATCH_EXCEPTION);
-		}
+    public String getTokenFromHeader(String bearerHeader) {
+        validateBearerHeader(bearerHeader);
+        return bearerHeader.substring(HEADER_PREFIX.length());
+    }
+
+    public void validateBearerHeader(String bearerHeader) {
+        if (!StringUtils.hasText(bearerHeader) || !bearerHeader.startsWith(HEADER_PREFIX)) {
+            throw new BusinessException(ErrorType.NOT_SUPPORTED_JWT_TOKEN_EXCEPTION);
+        }
     }
 }

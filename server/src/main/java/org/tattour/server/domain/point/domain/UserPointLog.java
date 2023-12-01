@@ -23,7 +23,6 @@ public class UserPointLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    private String title;
     @Column(name = "title")
     @Enumerated(EnumType.STRING)
     private PointLogCategory pointLogCategory;
@@ -38,8 +37,8 @@ public class UserPointLog {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private UserPointLog(PointLogCategory pointLogCategory, String content, Integer amount, Integer resultPointAmount,
-            User user) {
+    private UserPointLog(PointLogCategory pointLogCategory, String content, Integer amount,
+            Integer resultPointAmount, User user) {
         this.pointLogCategory = pointLogCategory;
         this.content = content;
         this.amount = amount;

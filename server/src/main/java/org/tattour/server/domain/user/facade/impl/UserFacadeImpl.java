@@ -5,25 +5,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
 import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.facade.UserFacade;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
 import org.tattour.server.domain.user.facade.dto.request.RemoveProductLikedReq;
 import org.tattour.server.domain.user.facade.dto.request.SaveProductLikedReq;
-import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
-import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
-import org.tattour.server.domain.user.facade.dto.response.ProductLikedListRes;
-import org.tattour.server.domain.user.provider.impl.ProductLikedProviderImpl;
-import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.facade.dto.request.SaveUserShippingAddrReq;
-import org.tattour.server.domain.user.service.impl.ProductLikedServiceImpl;
+import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
+import org.tattour.server.domain.user.facade.dto.response.ProductLikedListRes;
+import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
+import org.tattour.server.domain.user.provider.ProductLikedProvider;
+import org.tattour.server.domain.user.provider.UserProvider;
+import org.tattour.server.domain.user.service.ProductLikedService;
+import org.tattour.server.domain.user.service.UserShippingAddressService;
 import org.tattour.server.domain.user.service.impl.UserServiceImpl;
-import org.tattour.server.domain.user.service.impl.UserShippingAddressServiceImpl;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
-import org.tattour.server.infra.sms.provider.impl.PhoneNumberVerificationCodeProviderImpl;
+import org.tattour.server.infra.sms.provider.PhoneNumberVerificationCodeProvider;
 import org.tattour.server.infra.socialLogin.client.kakao.domain.SocialPlatform;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialServiceProvider;
@@ -36,16 +37,16 @@ public class UserFacadeImpl implements UserFacade {
 
     private final SocialServiceProvider socialServiceProvider;
     private final UserServiceImpl userService;
-    private final UserProviderImpl userProvider;
-    private final PhoneNumberVerificationCodeProviderImpl phoneNumberVerificationCodeProvider;
-    private final ProductLikedServiceImpl productLikedService;
-    private final ProductLikedProviderImpl productLikedProvider;
-    private final UserShippingAddressServiceImpl userShippingAddressService;
+    private final UserProvider userProvider;
+    private final PhoneNumberVerificationCodeProvider phoneNumberVerificationCodeProvider;
+    private final ProductLikedService productLikedService;
+    private final ProductLikedProvider productLikedProvider;
+    private final UserShippingAddressService userShippingAddressService;
     private final JwtService jwtService;
 
     @Override
     public PostLoginRes signup(CreateLoginReq req) {
-        if(Objects.isNull(req.getOrigin())) {
+        if (Objects.isNull(req.getOrigin())) {
             throw new BusinessException(ErrorType.NOT_FOUND_HEADER_ORIGIN);
         }
         System.out.println("Origin = " + req.getOrigin());
@@ -53,19 +54,15 @@ public class UserFacadeImpl implements UserFacade {
         SocialService socialService = socialServiceProvider
                 .getSocialService(req.getSocialPlatform());
 
-        // 로그인
         KakaoLoginInfo kakaoLoginInfo =
                 (KakaoLoginInfo) socialService.getSocialLoginResponse(
                         GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
 
-        // 중복 확인
         boolean isUserExist = userProvider.checkDuplicationByKakaoId(
                 kakaoLoginInfo.getSocialUserInfoRes().getId());
 
         User user = isUserExist
-                // 존재시 불러오기
                 ? userProvider.readUserByKakaoId(kakaoLoginInfo.getSocialUserInfoRes().getId())
-                // 없으면 user 생성
                 : User.of(
                         kakaoLoginInfo.getSocialUserInfoRes().getId(),
                         SocialPlatform.KAKAO);
@@ -80,7 +77,7 @@ public class UserFacadeImpl implements UserFacade {
 
         return PostLoginRes.of(
                 user.getId(),
-                jwtService.issuedToken(user.getId()),
+                jwtService.issuedToken(user.getId(), UserRole.USER.toString()),
                 isUserSignUpCompleted);
     }
 
