@@ -3,9 +3,11 @@ package org.tattour.server.domain.sticker.provider.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
@@ -28,6 +30,16 @@ public class StickerProviderImpl implements StickerProvider {
     @Override
     public StickerOrderInfo getStickerOrderInfoFromOrder(int stickerId, int count) {
         return StickerOrderInfo.of(Map.of(getById(stickerId), count));
+    }
+
+    @Override
+    public StickerOrderInfo getStickerOrderInfoFromCart(List<Cart> carts) {
+        return carts.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                Cart::getSticker,
+                                Cart::getCount),
+                        StickerOrderInfo::of));
     }
 
     @Override

@@ -16,14 +16,8 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
 
     @Override
-    public void mergeOrAddToCart(User user, Sticker sticker, int count) {
-        Cart cart = findByUserAndSticker(user, sticker)
-                .map(cartExisting -> {
-                    cartExisting.addCount(count);
-                    return cartExisting;
-                })
-                .orElseGet(() -> createNewCart(user, sticker, count));
-        save(cart);
+    public List<Cart> findByUserId(int userId) {
+        return cartRepository.findByUser_Id(userId);
     }
 
     @Override
@@ -32,8 +26,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Cart> findByUser(User user) {
-        return cartRepository.findByUser(user);
+    public void mergeOrAddToCart(User user, Sticker sticker, int count) {
+        Cart cart = findByUserAndSticker(user, sticker)
+                .map(cartExisting -> {
+                    cartExisting.addCount(count);
+                    return cartExisting;
+                })
+                .orElseGet(() -> createNewCart(user, sticker, count));
+        cartRepository.save(cart);
     }
 
     @Override
@@ -43,10 +43,5 @@ public class CartServiceImpl implements CartService {
                 .user(user)
                 .sticker(sticker)
                 .build();
-    }
-
-    @Override
-    public void save(Cart cart) {
-        cartRepository.save(cart);
     }
 }
