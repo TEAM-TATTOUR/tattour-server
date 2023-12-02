@@ -1,5 +1,6 @@
 package org.tattour.server.domain.cart.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class CartServiceImpl implements CartService {
     @Override
     public Optional<Cart> findByUserAndSticker(User user, Sticker sticker) {
         return cartRepository.findCartByUserAndSticker(user, sticker);
+    }
+
+    @Override
+    public List<Cart> findByUser(User user) {
+        return cartRepository.findByUser(user);
     }
 
     @Override

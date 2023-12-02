@@ -5,6 +5,8 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
+import org.tattour.server.domain.cart.controller.dto.response.CartItemRes;
+import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes;
@@ -69,4 +71,16 @@ public interface EntityDtoMapper {
     ReadCustomSummaryRes toReadCustomSummaryRes(Custom custom);
 
     List<ReadCustomSummaryRes> toReadCustomSummaryResList(List<Custom> customList);
+
+
+    // Cart
+    @Mapping(target = "stickerId", source = "cart.sticker.id")
+    @Mapping(target = "mainImageUrl", source = "cart.sticker.mainImageUrl")
+    @Mapping(target = "name", source = "cart.sticker.name")
+    @Mapping(target = "price", source = "cart.sticker.price")
+    @Mapping(target = "discountPrice", source = "cart.sticker.discountPrice")
+    CartItemRes toCartItemRes(Cart cart);
+
+    List<CartItemRes> toCartItemsRes(List<Cart> carts);
+
 }
