@@ -1,9 +1,8 @@
 package org.tattour.server.domain.user.provider;
 
-import java.util.List;
-import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
+import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 public interface UserProvider {
@@ -12,10 +11,6 @@ public interface UserProvider {
     User readUserById(int id);
 
     User readUserByKakaoId(Long KakaoId);
-
-    //TODO : 테스트용. 지우기
-    // 모든 유저 가져오기
-    List<User> readAllUsers();
 
     // 홈 유저 정보 가져오기
     HomeUserInfo readHomeUserInfo(User user);
@@ -34,7 +29,4 @@ public interface UserProvider {
 
     // 주문 후 남은 포인트 계산
     int calculateRestPointAfterOrder(int userPoint, int totalAmount);
-
-    // 유저가 admin인지 검사
-    boolean isUserAdmin(User user);
 }
