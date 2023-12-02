@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -68,8 +67,8 @@ public class OrderController {
     @GetMapping("/ordersheet")
     public ResponseEntity<?> getOrderSheet(
             @Parameter(hidden = true) @UserId Integer userId,
-            @Parameter(description = "타투 스티커 id") @RequestParam @NotNull(message = "stickerId is null") Integer stickerId,
-            @Parameter(description = "상품 개수", example = "3") @RequestParam @NotNull(message = "count is null") Integer count
+            @Parameter(description = "타투 스티커 id") @RequestParam(required = false) Integer stickerId,
+            @Parameter(description = "상품 개수") @RequestParam(required = false) Integer count
     ) {
         return BaseResponse.success(
                 SuccessType.GET_SUCCESS, orderFacade.readOrderSheet(ReadOrderSheetReq.of(userId, stickerId, count)));
