@@ -62,9 +62,9 @@ public class Order {
     private Sticker sticker;
 
     public Order(String productName, String productSize, String productImageUrl, Integer productAmount,
-            Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
-            String contact, String mailingAddress, String baseAddress, String detailAddress,
-            User user, Sticker sticker) {
+                 Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
+                 String contact, String mailingAddress, String baseAddress, String detailAddress,
+                 User user, Sticker sticker) {
         this.productName = productName;
         this.productSize = productSize;
         this.productImageUrl = productImageUrl;
@@ -82,15 +82,15 @@ public class Order {
     }
 
     public static Order of(String productName, String productSize, String productImageUrl, Integer productAmount,
-            Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
-            String contact, String mailingAddress, String baseAddress, String detailAddress,
-            User user, Sticker sticker){
+                           Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
+                           String contact, String mailingAddress, String baseAddress, String detailAddress,
+                           User user, Sticker sticker) {
         return new Order(productName, productSize, productImageUrl, productCount, productAmount,
                 shippingFee, totalAmount, recipientName, contact, mailingAddress, baseAddress,
                 detailAddress, user, sticker);
     }
 
-    public void setOrderStatus(OrderStatus orderStatus){
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 }

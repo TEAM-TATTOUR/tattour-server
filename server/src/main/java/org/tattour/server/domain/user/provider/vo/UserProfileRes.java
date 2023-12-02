@@ -7,7 +7,7 @@ import lombok.Getter;
 @Schema(name = "유저 프로필 정보")
 @Builder
 @Getter
-public class UserProfileInfo {
+public class UserProfileRes {
 
     @Schema(description = "user Id")
     private int id;

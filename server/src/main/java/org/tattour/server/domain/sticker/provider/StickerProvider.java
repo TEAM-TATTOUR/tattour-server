@@ -1,13 +1,17 @@
 package org.tattour.server.domain.sticker.provider;
 
 import java.util.List;
+import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 
 public interface StickerProvider {
 
-    // 스티커 엔티티 가져오기
     Sticker getById(Integer id);
+
+    StickerOrderInfo getStickerOrderInfoFromOrder(int stickerId, int count);
+
+    StickerOrderInfo getStickerOrderInfoFromCart(List<Cart> carts);
 
     List<Sticker> getAllCustomStickerOrderByOrder();
 
@@ -21,6 +25,4 @@ public interface StickerProvider {
 
     List<Sticker> getAllByThemeOrStyleOrNameLike(String word);
 
-    // 결제 시트에서 스티커 정보 가져오기
-    ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker);
 }

@@ -1,14 +1,17 @@
 package org.tattour.server.domain.sticker.provider.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.exception.NotFoundStickerException;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
-import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 import org.tattour.server.domain.sticker.repository.StickerRepository;
 
 @Slf4j
@@ -22,6 +25,21 @@ public class StickerProviderImpl implements StickerProvider {
     public Sticker getById(Integer id) {
         return stickerRepository.findById(id)
                 .orElseThrow(NotFoundStickerException::new);
+    }
+
+    @Override
+    public StickerOrderInfo getStickerOrderInfoFromOrder(int stickerId, int count) {
+        return StickerOrderInfo.of(Map.of(getById(stickerId), count));
+    }
+
+    @Override
+    public StickerOrderInfo getStickerOrderInfoFromCart(List<Cart> carts) {
+        return carts.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                Cart::getSticker,
+                                Cart::getCount),
+                        StickerOrderInfo::of));
     }
 
     @Override
@@ -61,22 +79,5 @@ public class StickerProviderImpl implements StickerProvider {
         }
         return stickerRepository
                 .findAllByThemeNameOrStyleNameOrNameContaining(word);
-    }
-
-    @Override
-    public ReadOrderSheetStickerInfo readOrderSheetStickerInfo(Sticker sticker) {
-        Integer discountedPrice = getDiscountPrice(sticker);
-        return ReadOrderSheetStickerInfo.of(
-                sticker.getMainImageUrl(),
-                sticker.getName(),
-                sticker.getPrice(),
-                discountedPrice);
-    }
-
-    private static Integer getDiscountPrice(Sticker sticker) {
-        if (Objects.isNull(sticker.getDiscount())) {
-            return null;
-        }
-        return (sticker.getPrice() * (100 - sticker.getDiscount().getDiscountRate())) / 100;
     }
 }
