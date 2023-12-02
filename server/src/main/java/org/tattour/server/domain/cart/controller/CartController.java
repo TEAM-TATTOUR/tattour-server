@@ -8,10 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +62,7 @@ public class CartController {
     @PostMapping("/items")
     public ResponseEntity<?> saveCartItem(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody SaveCartReq saveCartReq
+            @RequestBody @Valid SaveCartReq saveCartReq
     ) {
         cartFacade.saveCartItem(userId, saveCartReq);
         return BaseResponse.success(SuccessType.CREATE_SUCCESS);
@@ -85,6 +88,33 @@ public class CartController {
             @Parameter(hidden = true) @UserId Integer userId
     ) {
         return BaseResponse.success(SuccessType.GET_SUCCESS, cartFacade.getUserCartItems(userId));
+    }
+
+    @Operation(summary = "장바구니 수량 1개 더하기")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "갱신에 성공했습니다.",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청입니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 장바구니입니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "알 수 없는 서버 에러가 발생했습니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    @PatchMapping("/items/{cartId}")
+    public ResponseEntity<?> addCartCount(
+            @Parameter(hidden = true) @UserId Integer userId,
+            @PathVariable Integer cartId) {
+        cartFacade.increaseCartCount(userId, cartId);
+        return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
     }
 }
 

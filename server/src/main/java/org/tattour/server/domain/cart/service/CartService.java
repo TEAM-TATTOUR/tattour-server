@@ -10,9 +10,12 @@ public interface CartService {
     List<Cart> findByUserId(int userId);
 
     Optional<Cart> findByUserAndSticker(User user, Sticker sticker);
-    
+
+    Cart findByIdAndUserId(int userId, int cartId);
+
     void mergeOrAddToCart(User user, Sticker sticker, int count);
 
     Cart createNewCart(User user, Sticker sticker, int count);
 
+    void increaseCartCount(Cart cart);
 }

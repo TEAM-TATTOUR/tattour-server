@@ -7,4 +7,6 @@ public interface CartFacade {
     void saveCartItem(int userId, SaveCartReq req);
 
     CartItemsRes getUserCartItems(int userId);
+
+    void increaseCartCount(int userId, int cartId);
 }

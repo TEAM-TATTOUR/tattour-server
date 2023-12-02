@@ -21,6 +21,8 @@ import org.tattour.server.domain.user.domain.User;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
+    private final static int COUNT_INCREMENT = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,5 +38,9 @@ public class Cart {
 
     public void addCount(int count) {
         this.count += count;
+    }
+
+    public void increaseCount() {
+        this.count += COUNT_INCREMENT;
     }
 }

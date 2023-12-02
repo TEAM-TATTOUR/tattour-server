@@ -44,4 +44,10 @@ public class CartFacadeImpl implements CartFacade {
                 EntityDtoMapper.INSTANCE.toCartItemsRes(carts),
                 EntityDtoMapper.INSTANCE.toOrderAmountRes(stickerOrderInfo, SHIPPING_FEE));
     }
+
+    @Override
+    public void increaseCartCount(int userId, int cartId) {
+        Cart cart = cartService.findByIdAndUserId(userId, cartId);
+        cartService.increaseCartCount(cart);
+    }
 }
