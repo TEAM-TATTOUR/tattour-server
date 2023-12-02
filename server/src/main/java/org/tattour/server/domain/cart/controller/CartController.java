@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -115,6 +116,33 @@ public class CartController {
             @PathVariable Integer cartId) {
         cartFacade.increaseCartCount(userId, cartId);
         return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
+    }
+
+    @Operation(summary = "장바구니 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "삭제에 성공했습니다.",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청입니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 장바구니입니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "알 수 없는 서버 에러가 발생했습니다.",
+                    content = @Content(schema = @Schema(implementation = FailResponse.class)))
+    })
+    @DeleteMapping("/items/{cartId}")
+    public ResponseEntity<?> deleteCartCount(
+            @Parameter(hidden = true) @UserId Integer userId,
+            @PathVariable Integer cartId) {
+        cartFacade.deleteCartItem(userId, cartId);
+        return BaseResponse.success(SuccessType.DELETE_SUCCESS);
     }
 }
 

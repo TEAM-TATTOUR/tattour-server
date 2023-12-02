@@ -18,4 +18,6 @@ public interface CartService {
     Cart createNewCart(User user, Sticker sticker, int count);
 
     void increaseCartCount(Cart cart);
+
+    void delete(Cart cart);
 }

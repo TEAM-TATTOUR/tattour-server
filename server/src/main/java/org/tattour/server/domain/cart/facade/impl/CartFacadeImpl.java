@@ -50,4 +50,10 @@ public class CartFacadeImpl implements CartFacade {
         Cart cart = cartService.findByIdAndUserId(userId, cartId);
         cartService.increaseCartCount(cart);
     }
+
+    @Override
+    public void deleteCartItem(int userId, int cartId) {
+        Cart cart = cartService.findByIdAndUserId(userId, cartId);
+        cartService.delete(cart);
+    }
 }

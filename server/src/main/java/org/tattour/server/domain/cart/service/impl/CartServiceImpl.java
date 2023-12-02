@@ -60,4 +60,9 @@ public class CartServiceImpl implements CartService {
         cart.increaseCount();
         cartRepository.save(cart);
     }
+
+    @Override
+    public void delete(Cart cart) {
+        cartRepository.delete(cart);
+    }
 }

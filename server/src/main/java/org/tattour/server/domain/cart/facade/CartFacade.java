@@ -9,4 +9,6 @@ public interface CartFacade {
     CartItemsRes getUserCartItems(int userId);
 
     void increaseCartCount(int userId, int cartId);
+
+    void deleteCartItem(int userId, int cartId);
 }
