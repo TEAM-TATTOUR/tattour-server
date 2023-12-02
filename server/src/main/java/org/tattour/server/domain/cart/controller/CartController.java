@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.cart.controller.dto.request.SaveCartReq;
+import org.tattour.server.domain.cart.controller.dto.response.CartItemsRes;
 import org.tattour.server.domain.cart.facade.CartFacade;
 import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.dto.BaseResponse;
@@ -74,7 +75,7 @@ public class CartController {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회에 성공했습니다.",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+                    content = @Content(schema = @Schema(implementation = CartItemsRes.class))),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청입니다.",
