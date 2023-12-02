@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.tattour.server.infra.socialLogin.client.kakao.KakaoApiClient;
 import org.tattour.server.infra.socialLogin.client.kakao.KakaoAuthApiClient;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoAccessTokenRes;
-import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoUserInfoRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.SocialService;
 import org.tattour.server.infra.socialLogin.client.kakao.service.dto.request.GetSocialLoginReq;
-import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.service.impl.UserServiceImpl;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoAccessTokenRes;
+import org.tattour.server.infra.socialLogin.client.kakao.service.dto.response.KakaoUserInfoRes;
 import org.tattour.server.infra.socialLogin.client.kakao.service.vo.KakaoLoginInfo;
 
 @Service
@@ -22,8 +20,6 @@ public class KakaoSocialService extends SocialService {
 
     private final KakaoApiClient kakaoApiClient;
     private final KakaoAuthApiClient kakaoAuthApiClient;
-    private final UserServiceImpl userService;
-    private final UserProviderImpl userProvider;
 
     @Override
     public KakaoLoginInfo getSocialLoginResponse(GetSocialLoginReq req) {

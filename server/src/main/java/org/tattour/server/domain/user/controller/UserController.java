@@ -148,8 +148,7 @@ public class UserController {
         return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
     }
 
-    // TODO : 수정
-    @Operation(summary = "user profile 정보 가져오기", description = "user 이름, 포인트 불러오기")
+    @Operation(summary = "user profile 정보 가져오기")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -178,7 +177,6 @@ public class UserController {
 
     @Operation(summary = "인증번호 검증", description = "user 전화번호 인증번호 검증")
     @ApiResponses(value = {
-            // TODO : 명세서 Schema 검증하기
             @ApiResponse(
                     responseCode = "200",
                     description = "인증코드 검증에 성공했습니다.",

@@ -21,7 +21,6 @@ import org.tattour.server.global.exception.ErrorType;
 public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     private final JwtService jwtService;
-    private static final String HEADER_PREFIX = "Bearer ";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -46,8 +45,6 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         final JwtContent content = jwtService.getJwtContents(token);
 
         try {
-            System.out.println("content.getRole() = " + content.getRole());
-
             final UserRole role = UserRole.valueOf(content.getRole());
             final Integer userId = Integer.parseInt(content.getUserId());
 

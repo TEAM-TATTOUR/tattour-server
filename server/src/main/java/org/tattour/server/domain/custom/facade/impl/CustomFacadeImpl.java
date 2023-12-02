@@ -39,7 +39,6 @@ public class CustomFacadeImpl implements CustomFacade {
 
     private static final String directoryPath = "custom";
 
-    //todo: 수정
     @Override
     @Transactional
     public Integer createCustom(Boolean haveDesign, Integer userId) {

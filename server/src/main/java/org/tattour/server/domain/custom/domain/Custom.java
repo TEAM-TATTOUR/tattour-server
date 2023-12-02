@@ -162,7 +162,7 @@ public class Custom extends AuditingTimeEntity {
     }
 
     public Integer calPrice() {
-        Integer price = size.getPrice() * count;
+        int price = size.getPrice() * count;
         if (isPublic) {
             price -= size.getDiscountPrice();
         }

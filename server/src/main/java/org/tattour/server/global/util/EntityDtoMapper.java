@@ -15,7 +15,6 @@ import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
-import org.tattour.server.domain.user.provider.vo.UserContactInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
 @org.mapstruct.Mapper(componentModel = "spring")
@@ -25,9 +24,6 @@ public interface EntityDtoMapper {
 
     // User
     HomeUserInfo toHomeUserInfo(User user);
-
-    @Mapping(target = "id", source = "user.id")
-    UserContactInfo toUserContactInfo(User user);
 
     @Mapping(target = "id", source = "user.id")
     UserProfileInfo toUserProfileInfo(User user);
