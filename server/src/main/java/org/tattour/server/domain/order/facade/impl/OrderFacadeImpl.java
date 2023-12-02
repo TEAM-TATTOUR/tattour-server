@@ -13,22 +13,17 @@ import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
 import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
 import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
-import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
-import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
-import org.tattour.server.domain.point.domain.PointLogCategory;
-import org.tattour.server.domain.point.domain.UserPointLog;
-import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.provider.vo.UserPointAfterOrderInfo;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
+import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
+import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
-import org.tattour.server.domain.point.service.impl.PointServiceImpl;
-import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
+import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
-import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -42,8 +37,6 @@ public class OrderFacadeImpl implements OrderFacade {
     private final OrderServiceImpl orderService;
     private final StickerProviderImpl stickerProvider;
     private final UserProviderImpl userProvider;
-    private final UserServiceImpl userService;
-    private final PointServiceImpl pointService;
     private final DiscordMessageService discordMessageService;
 
     @Override
@@ -56,8 +49,7 @@ public class OrderFacadeImpl implements OrderFacade {
         UserProfileInfo userProfileInfo = userProvider.readUserProfileInfo(user);
 
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        ReadOrderSheetStickerInfo readOrderSheetStickerInfo =
-                stickerProvider.readOrderSheetStickerInfo(sticker);
+        ReadOrderSheetStickerInfo readOrderSheetStickerInfo = stickerProvider.readOrderSheetStickerInfo(sticker);
         readOrderSheetStickerInfo.setCount(req.getCount());
 
         // 결제 금액 정보
@@ -70,28 +62,15 @@ public class OrderFacadeImpl implements OrderFacade {
                         req.getCount(),
                         req.getShippingFee());
 
-        // 포인트
-        // 보유 포인트, 남는 포인트
-        UserPointAfterOrderInfo userPointAfterOrderInfo =
-                userProvider.readUserPointAfterOrderInfo(
-                        user,
-                        orderAmountInfo.getTotalAmount());
-
-        return ReadOrderSheetRes.of(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo,
-                userPointAfterOrderInfo);
+        return ReadOrderSheetRes.of(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo);
     }
 
     @Override
     @Transactional
     public void createOrder(CreateOrderRequest req) {
         User user = userProvider.readUserById(req.getUserId());
-
-        if (userProvider.isUserPointLack(user, req.getTotalAmount())) {
-            throw new BusinessException(ErrorType.LACK_OF_POINT_EXCEPTION);
-        }
-
-        // 주문내역 생성
         Sticker sticker = stickerProvider.getById(req.getStickerId());
+        
         Order order = orderService.saveOrder(
                 Order.of(
                         sticker.getName(),
@@ -108,19 +87,6 @@ public class OrderFacadeImpl implements OrderFacade {
                         req.getDetailAddress(),
                         user,
                         sticker));
-
-        // userPoint 수정
-        userService.updateUserPoint(user, -req.getTotalAmount());
-
-        // 포인트 로그 저장
-        pointService.savePointLog(
-                UserPointLog.of(
-                        PointLogCategory.PURCHASE,
-                        null,
-                        -req.getTotalAmount(),
-                        user.getPoint(),
-                        user
-                ));
 
         discordMessageService.sendOrderStickerMessage(order);
     }
@@ -144,34 +110,18 @@ public class OrderFacadeImpl implements OrderFacade {
     }
 
     @Override
+    @Transactional
     public void updateOrderStatus(UpdateOrderStatusReq req) {
         Order order = orderProvider.readOrderById(req.getOrderId());
-        User user = userProvider.readUserById(order.getUser().getId());
+        OrderStatus requestedStatus = req.getOrderStatus();
 
-        // 주문취소일 경우
-        if (req.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            if (!order.getOrderStatus().equals(OrderStatus.CANCEL)) {
-                // 상태 변경
-                order.setOrderStatus(req.getOrderStatus());
-                orderService.saveOrder(order);
-
-                // 유저 포인트 변경
-                userService.updateUserPoint(user, order.getTotalAmount());
-
-                // 포인트 로그 남기기
-                pointService.savePointLog(
-                        UserPointLog.of(
-                                PointLogCategory.CANCEL_PURCHASE,
-                                order.getSticker().getName(),
-                                order.getTotalAmount(),
-                                user.getPoint(),
-                                user));
-            } else {
+        if (order.getOrderStatus().equals(requestedStatus)) {
+            if (requestedStatus.equals(OrderStatus.CANCEL)) {
                 throw new BusinessException(ErrorType.ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION);
             }
-        } else {
-            order.setOrderStatus(req.getOrderStatus());
-            orderService.saveOrder(order);
         }
+
+        order.setOrderStatus(req.getOrderStatus());
+        orderService.saveOrder(order);
     }
 }

@@ -11,12 +11,9 @@ import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
-import org.tattour.server.domain.point.domain.PointChargeRequest;
-import org.tattour.server.domain.point.provider.vo.PointChargeRequestInfo;
 import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.provider.vo.UserContactInfo;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 
@@ -27,9 +24,6 @@ public interface EntityDtoMapper {
 
     // User
     HomeUserInfo toHomeUserInfo(User user);
-
-    @Mapping(target = "id", source = "user.id")
-    UserContactInfo toUserContactInfo(User user);
 
     @Mapping(target = "id", source = "user.id")
     UserProfileInfo toUserProfileInfo(User user);
@@ -65,12 +59,6 @@ public interface EntityDtoMapper {
     @IterableMapping(elementTargetType = OrderHistoryInfo.class)
     List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<Order> orderPage);
 
-    // Point
-    @Mapping(target = "userId", source = "user.id")
-    PointChargeRequestInfo toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
-
-    List<PointChargeRequestInfo> toGetPointChargeRequestResList(
-            List<PointChargeRequest> pointChargeRequestList);
 
     // Custom
     CreateCustomSummaryRes toCustomApplySummaryInfo(Custom custom);
