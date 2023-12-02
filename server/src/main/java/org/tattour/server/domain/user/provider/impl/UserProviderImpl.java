@@ -6,7 +6,6 @@ import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.exception.NotFoundUserException;
 import org.tattour.server.domain.user.provider.UserProvider;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
-import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;
 import org.tattour.server.global.util.EntityDtoMapper;
 
@@ -31,11 +30,6 @@ public class UserProviderImpl implements UserProvider {
     @Override
     public HomeUserInfo readHomeUserInfo(User user) {
         return EntityDtoMapper.INSTANCE.toHomeUserInfo(user);
-    }
-
-    @Override
-    public UserProfileInfo readUserProfileInfo(User user) {
-        return EntityDtoMapper.INSTANCE.toUserProfileInfo(user);
     }
 
     @Override

@@ -11,16 +11,18 @@ public class ReadOrderSheetReq {
 
     @NotNull(message = "userId is null")
     private Integer userId;
+
     @NotNull(message = "stickerId is null")
     private Integer stickerId;
 
     @NotNull(message = "count is null")
     private Integer count;
 
-    @NotNull(message = "shippingFee is null")
-    private Integer shippingFee;
+    public static ReadOrderSheetReq of(Integer userId, Integer stickerId, Integer count) {
+        return new ReadOrderSheetReq(userId, stickerId, count);
+    }
 
-    public static ReadOrderSheetReq of(Integer userId, Integer stickerId, Integer count, Integer shippingFee) {
-        return new ReadOrderSheetReq(userId, stickerId, count, shippingFee);
+    public boolean isCartOrder() {
+        return stickerId != null && count != null;
     }
 }

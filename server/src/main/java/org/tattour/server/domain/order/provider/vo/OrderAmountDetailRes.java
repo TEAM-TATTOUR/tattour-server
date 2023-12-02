@@ -7,7 +7,7 @@ import lombok.Getter;
 @Schema(description = "결제 금액 정보")
 @Getter
 @AllArgsConstructor
-public class OrderAmountInfo {
+public class OrderAmountDetailRes {
 
     @Schema(description = "총 결제금액", example = "12000")
     private Integer totalAmount;
@@ -18,7 +18,7 @@ public class OrderAmountInfo {
     @Schema(description = "배송비", example = "3000")
     private Integer shippingFee;
 
-    public static OrderAmountInfo of(Integer totalAmount, Integer productAmount, Integer shippingFee) {
-        return new OrderAmountInfo(totalAmount, productAmount, shippingFee);
+    public static OrderAmountDetailRes of(Integer totalAmount, Integer productAmount, Integer shippingFee) {
+        return new OrderAmountDetailRes(totalAmount, productAmount, shippingFee);
     }
 }

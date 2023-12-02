@@ -1,10 +1,13 @@
 package org.tattour.server.domain.order.facade.impl;
 
-import java.util.Objects;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tattour.server.domain.cart.domain.Cart;
+import org.tattour.server.domain.cart.service.CartService;
+import org.tattour.server.domain.order.controller.dto.response.OrderSheetStickerRes;
 import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
 import org.tattour.server.domain.order.domain.Order;
 import org.tattour.server.domain.order.domain.OrderStatus;
@@ -15,15 +18,15 @@ import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
-import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
+import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
 import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
-import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
+import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
-import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
+import org.tattour.server.domain.user.provider.vo.UserProfileRes;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -32,37 +35,41 @@ import org.tattour.server.infra.discord.service.DiscordMessageService;
 @Service
 @RequiredArgsConstructor
 public class OrderFacadeImpl implements OrderFacade {
+    public final static int SHIPPING_FEE = 3000;
 
     private final OrderProviderImpl orderProvider;
     private final OrderServiceImpl orderService;
+    private final CartService cartService;
     private final StickerProviderImpl stickerProvider;
     private final UserProviderImpl userProvider;
     private final DiscordMessageService discordMessageService;
 
+    //todo : 나중에 배달 지역별로 배송비 책정하기
     @Override
     @Transactional
     public ReadOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
         User user = userProvider.readUserById(req.getUserId());
-        Sticker sticker = stickerProvider.getById(req.getStickerId());
+        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(req);
 
-        // 유저 프로필 정보
-        UserProfileInfo userProfileInfo = userProvider.readUserProfileInfo(user);
+        UserProfileRes userProfileRes =
+                EntityDtoMapper.INSTANCE.toUserProfileInfo(user);
 
-        // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        ReadOrderSheetStickerInfo readOrderSheetStickerInfo = stickerProvider.readOrderSheetStickerInfo(sticker);
-        readOrderSheetStickerInfo.setCount(req.getCount());
+        List<OrderSheetStickerRes> orderSheetStickersRes =
+                EntityDtoMapper.INSTANCE.toOrderSheetStickerRes(stickerOrderInfo);
 
-        // 결제 금액 정보
-        // 총 결제 금액, 총 상품 금액, 배송비
-        OrderAmountInfo orderAmountInfo =
-                orderProvider.readOrderAmountRes(
-                        Objects.isNull(sticker.getDiscountPrice())
-                                ? sticker.getPrice()
-                                : sticker.getDiscountPrice(),
-                        req.getCount(),
-                        req.getShippingFee());
+        OrderAmountDetailRes orderAmountDetailRes =
+                EntityDtoMapper.INSTANCE.toOrderAmountRes(stickerOrderInfo, SHIPPING_FEE);
 
-        return ReadOrderSheetRes.of(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo);
+        return ReadOrderSheetRes.of(userProfileRes, orderSheetStickersRes, orderAmountDetailRes);
+    }
+
+    private StickerOrderInfo getStickerOrderInfo(ReadOrderSheetReq req) {
+        if (req.isCartOrder()) {
+            List<Cart> carts = cartService.findByUserId(req.getUserId());
+            return stickerProvider.getStickerOrderInfoFromCart(carts);
+        } else {
+            return stickerProvider.getStickerOrderInfoFromOrder(req.getStickerId(), req.getCount());
+        }
     }
 
     @Override
@@ -70,7 +77,7 @@ public class OrderFacadeImpl implements OrderFacade {
     public void createOrder(CreateOrderRequest req) {
         User user = userProvider.readUserById(req.getUserId());
         Sticker sticker = stickerProvider.getById(req.getStickerId());
-        
+
         Order order = orderService.saveOrder(
                 Order.of(
                         sticker.getName(),
