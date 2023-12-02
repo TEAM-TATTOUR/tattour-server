@@ -24,7 +24,6 @@ import org.tattour.server.domain.sticker.provider.vo.ReadOrderSheetStickerInfo;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.provider.impl.UserProviderImpl;
 import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
-import org.tattour.server.domain.user.service.impl.UserServiceImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
 import org.tattour.server.global.util.EntityDtoMapper;
@@ -38,10 +37,8 @@ public class OrderFacadeImpl implements OrderFacade {
     private final OrderServiceImpl orderService;
     private final StickerProviderImpl stickerProvider;
     private final UserProviderImpl userProvider;
-    private final UserServiceImpl userService;
     private final DiscordMessageService discordMessageService;
 
-    //todo: 수정
     @Override
     @Transactional
     public ReadOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
@@ -52,8 +49,7 @@ public class OrderFacadeImpl implements OrderFacade {
         UserProfileInfo userProfileInfo = userProvider.readUserProfileInfo(user);
 
         // 스티커 정보(배너이미지, 이름, 원래가격, 할인가격) + 개수
-        ReadOrderSheetStickerInfo readOrderSheetStickerInfo =
-                stickerProvider.readOrderSheetStickerInfo(sticker);
+        ReadOrderSheetStickerInfo readOrderSheetStickerInfo = stickerProvider.readOrderSheetStickerInfo(sticker);
         readOrderSheetStickerInfo.setCount(req.getCount());
 
         // 결제 금액 정보
@@ -69,14 +65,12 @@ public class OrderFacadeImpl implements OrderFacade {
         return ReadOrderSheetRes.of(userProfileInfo, readOrderSheetStickerInfo, orderAmountInfo);
     }
 
-    //todo: 수정
     @Override
     @Transactional
     public void createOrder(CreateOrderRequest req) {
         User user = userProvider.readUserById(req.getUserId());
-
-        // 주문내역 생성
         Sticker sticker = stickerProvider.getById(req.getStickerId());
+        
         Order order = orderService.saveOrder(
                 Order.of(
                         sticker.getName(),
@@ -115,23 +109,19 @@ public class OrderFacadeImpl implements OrderFacade {
                         orderHistoryInfoPage.getTotalPages()));
     }
 
-    // TODO : 수정
     @Override
+    @Transactional
     public void updateOrderStatus(UpdateOrderStatusReq req) {
         Order order = orderProvider.readOrderById(req.getOrderId());
+        OrderStatus requestedStatus = req.getOrderStatus();
 
-        // 주문취소일 경우
-        if (req.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            if (!order.getOrderStatus().equals(OrderStatus.CANCEL)) {
-                // 상태 변경
-                order.setOrderStatus(req.getOrderStatus());
-                orderService.saveOrder(order);
-            } else {
+        if (order.getOrderStatus().equals(requestedStatus)) {
+            if (requestedStatus.equals(OrderStatus.CANCEL)) {
                 throw new BusinessException(ErrorType.ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION);
             }
-        } else {
-            order.setOrderStatus(req.getOrderStatus());
-            orderService.saveOrder(order);
         }
+
+        order.setOrderStatus(req.getOrderStatus());
+        orderService.saveOrder(order);
     }
 }
