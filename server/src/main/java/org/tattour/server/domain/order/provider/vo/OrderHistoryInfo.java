@@ -1,10 +1,8 @@
 package org.tattour.server.domain.order.provider.vo;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.tattour.server.domain.order.domain.OrderStatus;
 
 @Getter
 @Setter

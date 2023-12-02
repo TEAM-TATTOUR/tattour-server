@@ -22,7 +22,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.tattour.server.domain.discount.domain.Discount;
 import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.user.domain.ProductLiked;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Table(name = "sticker")
