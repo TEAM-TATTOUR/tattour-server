@@ -1,11 +1,11 @@
 package org.tattour.server.domain.sticker.repository.impl;
 
-import static org.tattour.server.domain.order.domain.QOrder.order;
-import static org.tattour.server.domain.sticker.domain.QSticker.sticker;
-import static org.tattour.server.domain.sticker.domain.QStickerStyle.stickerStyle;
-import static org.tattour.server.domain.sticker.domain.QStickerTheme.stickerTheme;
-import static org.tattour.server.domain.style.domain.QStyle.style;
-import static org.tattour.server.domain.theme.domain.QTheme.theme;
+import static org.tattour.server.domain.order.domain.QOrderedProduct.*;
+import static org.tattour.server.domain.sticker.domain.QSticker.*;
+import static org.tattour.server.domain.sticker.domain.QStickerStyle.*;
+import static org.tattour.server.domain.sticker.domain.QStickerTheme.*;
+import static org.tattour.server.domain.style.domain.QStyle.*;
+import static org.tattour.server.domain.theme.domain.QTheme.*;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,10 +24,10 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
         return queryFactory
                 .select(sticker)
                 .from(sticker)
-                .leftJoin(sticker.orders)
+                .leftJoin(sticker.orderedProducts, orderedProduct)
                 .where(sticker.isCustom.eq(true), sticker.state.eq(true))
                 .groupBy(sticker.id)
-                .orderBy(sticker.orders.size().desc())
+                .orderBy(sticker.orderedProducts.size().desc())
                 .fetch();
     }
 
@@ -63,7 +63,7 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
                 .from(sticker)
                 .leftJoin(sticker.stickerThemes, stickerTheme)
                 .leftJoin(sticker.stickerStyles, stickerStyle)
-                .leftJoin(sticker.orders, order)
+                .leftJoin(sticker.orderedProducts, orderedProduct)
                 .fetchJoin()
                 .where(sticker.state.eq(true))
                 .where(stickerTheme.theme.in(
@@ -88,7 +88,7 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
                 .from(sticker)
                 .leftJoin(sticker.stickerThemes, stickerTheme)
                 .leftJoin(sticker.stickerStyles, stickerStyle)
-                .leftJoin(sticker.orders, order)
+                .leftJoin(sticker.orderedProducts, orderedProduct)
                 .fetchJoin()
                 .where(sticker.state.eq(true))
                 .where(stickerTheme.theme.in(
@@ -114,7 +114,7 @@ public class StickerRepositoryImpl implements StickerRepositoryCustom {
                 .from(sticker)
                 .leftJoin(sticker.stickerThemes, stickerTheme)
                 .leftJoin(sticker.stickerStyles, stickerStyle)
-                .leftJoin(sticker.orders, order)
+                .leftJoin(sticker.orderedProducts, orderedProduct)
                 .fetchJoin()
                 .where(sticker.state.eq(true))
                 .where(stickerTheme.theme.in(
