@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.cart.controller.dto.request.SaveCartReq;
+import org.tattour.server.domain.cart.controller.dto.request.CartItemReq;
+import org.tattour.server.domain.cart.controller.dto.request.UpdateCartCountReq;
 import org.tattour.server.domain.cart.controller.dto.response.CartItemsRes;
 import org.tattour.server.domain.cart.facade.CartFacade;
 import org.tattour.server.global.config.annotations.UserId;
@@ -64,9 +65,9 @@ public class CartController {
     @PostMapping
     public ResponseEntity<?> saveCartItem(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid SaveCartReq saveCartReq
+            @RequestBody @Valid CartItemReq cartItemReq
     ) {
-        cartFacade.saveCartItem(userId, saveCartReq);
+        cartFacade.saveCartItem(userId, cartItemReq);
         return BaseResponse.success(SuccessType.CREATE_SUCCESS);
     }
 
@@ -92,7 +93,7 @@ public class CartController {
         return BaseResponse.success(SuccessType.GET_SUCCESS, cartFacade.getUserCartItems(userId));
     }
 
-    @Operation(summary = "장바구니 수량 1개 더하기")
+    @Operation(summary = "장바구니 수량 일괄 수정")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -111,11 +112,11 @@ public class CartController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @PatchMapping("/{cartId}")
-    public ResponseEntity<?> addCartCount(
+    @PatchMapping
+    public ResponseEntity<?> updateCartCount(
             @Parameter(hidden = true) @UserId Integer userId,
-            @PathVariable Integer cartId) {
-        cartFacade.increaseCartCount(userId, cartId);
+            @RequestBody UpdateCartCountReq req) {
+        cartFacade.updateCartsCount(userId, req);
         return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
     }
 

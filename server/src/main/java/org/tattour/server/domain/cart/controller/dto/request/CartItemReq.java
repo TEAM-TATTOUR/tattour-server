@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SaveCartReq {
+public class CartItemReq {
     @NotNull
     private int stickerId;
-    
+
     @NotNull
     @Min(1)
     private int count;
