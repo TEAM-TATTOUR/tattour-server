@@ -1,5 +1,6 @@
 package org.tattour.server.domain.sticker.provider.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,7 +39,9 @@ public class StickerProviderImpl implements StickerProvider {
                 .collect(Collectors.collectingAndThen(
                         Collectors.toMap(
                                 Cart::getSticker,
-                                Cart::getCount),
+                                Cart::getCount,
+                                Integer::sum,
+                                LinkedHashMap::new),
                         StickerOrderInfo::of));
     }
 
