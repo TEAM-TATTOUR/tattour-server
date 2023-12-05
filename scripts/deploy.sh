@@ -10,20 +10,19 @@ DEPLOY_PATH=/home/ubuntu/app/nonstop/jar/
 cp $BUILD_PATH $DEPLOY_PATH
 
 echo "> 현재 구동중인 Set 확인"
-if [ $DEPLOY_ENV == main ]
-then
+if [ $DEPLOY_ENV = "main" ]; then
   echo $DEPLOY_ENV
-  CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile)
-elif [ $DEPLOY_ENV == dev ]
-then
+  CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile) || { echo "Curl 요청 실패";}
+elif [ $DEPLOY_ENV = "dev" ]; then
   echo $DEPLOY_ENV
-  CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile)
+  CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile) || { echo "Curl 요청 실패";}
 else
-  echo "> DEPLOY_ENV가 설정되지 않았습니. DEPLOY_ENV: $DEPLOY_ENV"
+  echo "> DEPLOY_ENV가 설정되지 않았습니다. DEPLOY_ENV: $DEPLOY_ENV"
+  exit 1
 fi
 echo "> $CURRENT_PROFILE"
 
-# 쉬고 있는 set 찾기: set1이 사용중이면 set2가 쉬고 있고, 반대면 set1이 쉬고 있음
+# 쉬고 있는 set 찾기
 if [ $CURRENT_PROFILE == set1 ]
 then
   IDLE_PROFILE=set2
@@ -58,7 +57,7 @@ else
 fi
 
 echo "> $IDLE_PROFILE 배포"
-# echo "> nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 & "
+echo "> nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 & "
 nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 &
 
 echo "> $IDLE_PROFILE 10초 후 Health check 시작"
