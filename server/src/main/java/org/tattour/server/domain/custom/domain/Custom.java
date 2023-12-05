@@ -85,9 +85,6 @@ public class Custom extends AuditingTimeEntity {
 
     private Integer price;
 
-    /**
-     * Mapped By
-     */
     @OneToMany(mappedBy = "custom")
     private List<CustomTheme> customThemes = new ArrayList<>();
 
