@@ -115,7 +115,7 @@ public class CartController {
     @PatchMapping
     public ResponseEntity<?> updateCartCount(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody UpdateCartCountReq req) {
+            @RequestBody @Valid UpdateCartCountReq req) {
         cartFacade.updateCartsCount(userId, req);
         return BaseResponse.success(SuccessType.UPDATE_SUCCESS);
     }
@@ -142,7 +142,7 @@ public class CartController {
     @DeleteMapping("/{cartId}")
     public ResponseEntity<?> deleteCartCount(
             @Parameter(hidden = true) @UserId Integer userId,
-            @PathVariable Integer cartId) {
+            @Parameter(description = "장바구니 Id") @PathVariable Integer cartId) {
         cartFacade.deleteCartItem(userId, cartId);
         return BaseResponse.success(SuccessType.DELETE_SUCCESS);
     }
