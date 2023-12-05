@@ -23,6 +23,10 @@ public class ReadOrderSheetReq {
     }
 
     public boolean isCartOrder() {
+        return stickerId == null && count == null;
+    }
+
+    public boolean isNotCartOrder() {
         return stickerId != null && count != null;
     }
 }

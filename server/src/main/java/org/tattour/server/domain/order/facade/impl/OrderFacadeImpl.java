@@ -67,8 +67,10 @@ public class OrderFacadeImpl implements OrderFacade {
         if (req.isCartOrder()) {
             List<Cart> carts = cartService.findByUserId(req.getUserId());
             return stickerProvider.getStickerOrderInfoFromCart(carts);
-        } else {
+        } else if (req.isNotCartOrder()) {
             return stickerProvider.getStickerOrderInfoFromOrder(req.getStickerId(), req.getCount());
+        } else {
+            throw new BusinessException(ErrorType.INVALID_ARGUMENT_EXCEPTION);
         }
     }
 
