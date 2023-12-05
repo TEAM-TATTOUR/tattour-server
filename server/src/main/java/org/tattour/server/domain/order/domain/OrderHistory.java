@@ -12,10 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.User;
 
 @Entity
@@ -23,16 +23,12 @@ import org.tattour.server.domain.user.domain.User;
 @DynamicInsert
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class OrderHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String productName;
-    private String productSize;
-    @Column(columnDefinition = "text")
-    private String productImageUrl;
+
     private Integer productAmount;
-    private Integer productCount;
     private Integer shippingFee;
     private Integer totalAmount;
     private String recipientName;
@@ -57,18 +53,9 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sticker_id")
-    private Sticker sticker;
-
-    public Order(String productName, String productSize, String productImageUrl, Integer productAmount,
-                 Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
-                 String contact, String mailingAddress, String baseAddress, String detailAddress,
-                 User user, Sticker sticker) {
-        this.productName = productName;
-        this.productSize = productSize;
-        this.productImageUrl = productImageUrl;
-        this.productCount = productCount;
+    @Builder
+    public OrderHistory(Integer productAmount, Integer shippingFee, Integer totalAmount, String recipientName,
+                        String contact, String mailingAddress, String baseAddress, String detailAddress, User user) {
         this.productAmount = productAmount;
         this.shippingFee = shippingFee;
         this.totalAmount = totalAmount;
@@ -78,16 +65,6 @@ public class Order {
         this.baseAddress = baseAddress;
         this.detailAddress = detailAddress;
         this.user = user;
-        this.sticker = sticker;
-    }
-
-    public static Order of(String productName, String productSize, String productImageUrl, Integer productAmount,
-                           Integer productCount, Integer shippingFee, Integer totalAmount, String recipientName,
-                           String contact, String mailingAddress, String baseAddress, String detailAddress,
-                           User user, Sticker sticker) {
-        return new Order(productName, productSize, productImageUrl, productCount, productAmount,
-                shippingFee, totalAmount, recipientName, contact, mailingAddress, baseAddress,
-                detailAddress, user, sticker);
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {

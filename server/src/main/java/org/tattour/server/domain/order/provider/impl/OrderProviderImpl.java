@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderHistory;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.OrderProvider;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
@@ -22,13 +22,13 @@ public class OrderProviderImpl implements OrderProvider {
     private final OrderRepositoryImpl orderRepository;
 
     @Override
-    public Order readOrderById(int orderId) {
-        return orderRepository.findById(orderId)
+    public OrderHistory readOrderHistoryById(int orderHistoryId) {
+        return orderRepository.findById(orderHistoryId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_ORDER_HISTORY));
     }
 
     @Override
-    public Page<Order> readOrderHistoryByPage(int page) {
+    public Page<OrderHistory> readOrderHistoryByPage(int page) {
         return orderRepository.findAll(
                 PageRequest.of(
                         page - 1,
