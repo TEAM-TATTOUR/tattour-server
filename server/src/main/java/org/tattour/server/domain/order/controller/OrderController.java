@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tattour.server.domain.order.controller.dto.request.PostOrderReq;
+import org.tattour.server.domain.order.controller.dto.request.OrderReq;
 import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
-import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
-import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
+import org.tattour.server.domain.order.domain.PurchaseRequest;
+import org.tattour.server.domain.order.facade.dto.request.CreateOrderReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;
 import org.tattour.server.global.config.annotations.UserId;
@@ -40,8 +40,11 @@ public class OrderController {
 
     private final OrderFacadeImpl orderFacade;
 
-    @Operation(summary = "결제 페이지 불러오기", description = "제품 상세 페이지에서 받은 정보를 바탕으로 결제 시트 정보 불러오기\n"
-            + "stickerId, count 매개변수가 없으면 장바구니에서 불러오는 결제 페이지 제공")
+    // todo: 장바구니 목록이 존재하지 않을 경우 예외처리하기
+    @Operation(summary = "결제 페이지 불러오기",
+            description = "결제 페이지 정보 불러오기"
+                    + "\n- stickerId, count가 존재하는 경우: **단일 상품 구매**"
+                    + "\n- stickerId, count가 존재하지 않는 경우: **장바구니 상품 구매**")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -71,11 +74,14 @@ public class OrderController {
             @Parameter(description = "상품 개수") @RequestParam(required = false) Integer count
     ) {
         return BaseResponse.success(
-                SuccessType.GET_SUCCESS, orderFacade.readOrderSheet(ReadOrderSheetReq.of(userId, stickerId, count)));
+                SuccessType.GET_SUCCESS, orderFacade.readOrderSheet(userId, PurchaseRequest.of(stickerId, count)));
     }
 
 
-    @Operation(summary = "결제하기", description = "결제 시트 페이지에서 결제하기")
+    @Operation(summary = "결제하기",
+            description = "결제 페이지에서 결제하기"
+                    + "\n- stickerId, count가 존재하는 경우: **단일 상품 구매**"
+                    + "\n- stickerId, count가 존재하지 않는 경우: **장바구니 상품 구매**")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -84,10 +90,6 @@ public class OrderController {
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청입니다.",
-                    content = @Content(schema = @Schema(implementation = FailResponse.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "포인트가 부족하여 결제할 수 없습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class))),
             @ApiResponse(
                     responseCode = "404",
@@ -105,19 +107,23 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> order(
             @Parameter(hidden = true) @UserId Integer userId,
-            @RequestBody @Valid PostOrderReq req
+            @RequestBody @Valid OrderReq orderReq,
+            @Parameter(description = "타투 스티커 id") @RequestParam(required = false) Integer stickerId,
+            @Parameter(description = "상품 개수") @RequestParam(required = false) Integer count
     ) {
-        orderFacade.createOrder(CreateOrderRequest.of(
-                userId,
-                req.getStickerId(),
-                req.getProductCount(),
-                req.getShippingFee(),
-                req.getTotalAmount(),
-                req.getRecipientName(),
-                req.getContact(),
-                req.getMailingAddress(),
-                req.getBaseAddress(),
-                req.getDetailAddress()));
+        orderFacade.order(
+                PurchaseRequest.of(stickerId, count),
+                CreateOrderReq.builder()
+                        .userId(userId)
+                        .productAmount(orderReq.getProductAmount())
+                        .shippingFee(orderReq.getShippingFee())
+                        .totalAmount(orderReq.getTotalAmount())
+                        .recipientName(orderReq.getRecipientName())
+                        .contact(orderReq.getContact())
+                        .mailingAddress(orderReq.getMailingAddress())
+                        .baseAddress(orderReq.getBaseAddress())
+                        .detailAddress(orderReq.getDetailAddress())
+                        .build());
 
         return BaseResponse.success(SuccessType.CREATE_ORDER_SUCCESS);
     }

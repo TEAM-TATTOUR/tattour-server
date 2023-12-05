@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderHistory;
 import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.infra.discord.client.DiscordApiClient;
 import org.tattour.server.infra.discord.dto.resquest.CustomApplyDiscordMessage;
@@ -42,15 +42,15 @@ public class DiscordMessageService {
     }
 
     @Transactional
-    public Boolean sendOrderStickerMessage(Order order) {
-        OrderStickerDiscordMessage payload = OrderStickerDiscordMessage.from(order);
+    public Boolean sendOrderStickerMessage(OrderHistory orderHistory) {
+        OrderStickerDiscordMessage payload = OrderStickerDiscordMessage.from(orderHistory);
         sendDiscordMessage(orderWebhookProperty.getClientId(), orderWebhookProperty.getToken(),
-                order.getUser(), "님이 스티커를 주문했습니다.", payload);
+                orderHistory.getUser(), "님이 스티커를 주문했습니다.", payload);
         return true;
     }
 
     public void sendDiscordMessage(String clientId, String token, User user, String content,
-            Object payload) {
+                                   Object payload) {
         DiscordMessageReq request = DiscordMessageReq.from(user, content, payload);
         discordApiClient.sendMessage(clientId, token, request);
     }

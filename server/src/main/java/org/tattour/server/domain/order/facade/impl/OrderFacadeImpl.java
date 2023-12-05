@@ -9,11 +9,11 @@ import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.cart.service.CartService;
 import org.tattour.server.domain.order.controller.dto.response.OrderSheetStickerRes;
 import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderHistory;
 import org.tattour.server.domain.order.domain.OrderStatus;
+import org.tattour.server.domain.order.domain.PurchaseRequest;
 import org.tattour.server.domain.order.facade.OrderFacade;
-import org.tattour.server.domain.order.facade.dto.request.CreateOrderRequest;
-import org.tattour.server.domain.order.facade.dto.request.ReadOrderSheetReq;
+import org.tattour.server.domain.order.facade.dto.request.CreateOrderReq;
 import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
@@ -21,7 +21,6 @@ import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryPageInfo;
 import org.tattour.server.domain.order.service.impl.OrderServiceImpl;
-import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.sticker.provider.impl.StickerProviderImpl;
 import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 import org.tattour.server.domain.user.domain.User;
@@ -44,12 +43,12 @@ public class OrderFacadeImpl implements OrderFacade {
     private final UserProviderImpl userProvider;
     private final DiscordMessageService discordMessageService;
 
-    //todo : 나중에 배달 지역별로 배송비 책정하기
+    //todo : 배달 지역별로 배송비 책정하기?
     @Override
     @Transactional
-    public ReadOrderSheetRes readOrderSheet(ReadOrderSheetReq req) {
-        User user = userProvider.readUserById(req.getUserId());
-        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(req);
+    public ReadOrderSheetRes readOrderSheet(int userId, PurchaseRequest purchaseRequest) {
+        User user = userProvider.readUserById(userId);
+        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(user, purchaseRequest);
 
         UserProfileRes userProfileRes =
                 EntityDtoMapper.INSTANCE.toUserProfileInfo(user);
@@ -63,41 +62,53 @@ public class OrderFacadeImpl implements OrderFacade {
         return ReadOrderSheetRes.of(userProfileRes, orderSheetStickersRes, orderAmountDetailRes);
     }
 
-    private StickerOrderInfo getStickerOrderInfo(ReadOrderSheetReq req) {
-        if (req.isCartOrder()) {
-            List<Cart> carts = cartService.findByUserId(req.getUserId());
-            return stickerProvider.getStickerOrderInfoFromCart(carts);
-        } else if (req.isNotCartOrder()) {
-            return stickerProvider.getStickerOrderInfoFromOrder(req.getStickerId(), req.getCount());
-        } else {
-            throw new BusinessException(ErrorType.INVALID_ARGUMENT_EXCEPTION);
+    private StickerOrderInfo getStickerOrderInfo(User user, PurchaseRequest purchaseRequest) {
+        if (purchaseRequest.isCartPurchase()) {
+            List<Cart> carts = cartService.findByUser(user);
+            if (carts.isEmpty()) {
+                throw new BusinessException(ErrorType.NOT_FOUND_CARTS_EXCEPTION);
+            }
+            return getCartStickersOrderInfo(carts);
         }
+
+        return getSingleStickerOrderInfo(purchaseRequest.getStickerId(), purchaseRequest.getCount());
+    }
+
+    private StickerOrderInfo getSingleStickerOrderInfo(int stickerId, int count) {
+        return stickerProvider.getStickerOrderInfoFromOrder(stickerId, count);
+    }
+
+    private StickerOrderInfo getCartStickersOrderInfo(List<Cart> carts) {
+        return stickerProvider.getStickerOrderInfoFromCart(carts);
     }
 
     @Override
     @Transactional
-    public void createOrder(CreateOrderRequest req) {
-        User user = userProvider.readUserById(req.getUserId());
-        Sticker sticker = stickerProvider.getById(req.getStickerId());
+    public void order(PurchaseRequest purchaseRequest, CreateOrderReq orderReq) {
+        // todo: totalAmount 비교하고 다름 감지 로직 추가하기 (vo OrderAmount)
+        User user = userProvider.readUserById(orderReq.getUserId());
+        OrderHistory orderHistory = orderService.saveOrder(
+                OrderHistory.builder()
+                        .productAmount(orderReq.getProductAmount())
+                        .shippingFee(orderReq.getShippingFee())
+                        .totalAmount(orderReq.getTotalAmount())
+                        .recipientName(orderReq.getRecipientName())
+                        .contact(orderReq.getContact())
+                        .mailingAddress(orderReq.getMailingAddress())
+                        .baseAddress(orderReq.getBaseAddress())
+                        .detailAddress(orderReq.getDetailAddress())
+                        .user(user)
+                        .build());
 
-        Order order = orderService.saveOrder(
-                Order.of(
-                        sticker.getName(),
-                        sticker.getSize(),
-                        sticker.getMainImageUrl(),
-                        sticker.getPrice(),
-                        req.getProductCount(),
-                        req.getShippingFee(),
-                        req.getTotalAmount(),
-                        req.getRecipientName(),
-                        req.getContact(),
-                        req.getMailingAddress(),
-                        req.getBaseAddress(),
-                        req.getDetailAddress(),
-                        user,
-                        sticker));
+        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(user, purchaseRequest);
+        orderService.saveOrderedProducts(orderHistory, stickerOrderInfo);
 
-        discordMessageService.sendOrderStickerMessage(order);
+        if (purchaseRequest.isCartPurchase()) {
+            cartService.deleteAllByUserId(user);
+        }
+
+        // todo: 디스코드 일반 구매 메시지 형식 수정하기
+        discordMessageService.sendOrderStickerMessage(orderHistory);
     }
 
     @Override
@@ -108,7 +119,7 @@ public class OrderFacadeImpl implements OrderFacade {
 
     @Override
     public ReadOrderHistoryListRes readOrderHistoryOnPage(int page) {
-        Page<Order> orderHistoryInfoPage = orderProvider.readOrderHistoryByPage(page);
+        Page<OrderHistory> orderHistoryInfoPage = orderProvider.readOrderHistoryByPage(page);
 
         return ReadOrderHistoryListRes.of(
                 EntityDtoMapper.INSTANCE.toOrderHistoryInfoPage(orderHistoryInfoPage),
@@ -121,16 +132,16 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     @Transactional
     public void updateOrderStatus(UpdateOrderStatusReq req) {
-        Order order = orderProvider.readOrderById(req.getOrderId());
+        OrderHistory orderHistory = orderProvider.readOrderHistoryById(req.getOrderId());
         OrderStatus requestedStatus = req.getOrderStatus();
 
-        if (order.getOrderStatus().equals(requestedStatus)) {
+        if (orderHistory.getOrderStatus().equals(requestedStatus)) {
             if (requestedStatus.equals(OrderStatus.CANCEL)) {
                 throw new BusinessException(ErrorType.ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION);
             }
         }
 
-        order.setOrderStatus(req.getOrderStatus());
-        orderService.saveOrder(order);
+        orderHistory.setOrderStatus(req.getOrderStatus());
+        orderService.saveOrder(orderHistory);
     }
 }

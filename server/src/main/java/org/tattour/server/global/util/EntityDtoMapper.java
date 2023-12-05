@@ -13,7 +13,7 @@ import org.tattour.server.domain.custom.domain.Custom;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes;
 import org.tattour.server.domain.order.controller.dto.response.OrderSheetStickerRes;
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderHistory;
 import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
@@ -53,19 +53,21 @@ public interface EntityDtoMapper {
     List<StickerLikedInfo> toStickerLikedInfoList(List<ProductLiked> productLiked);
 
     // Order
+    // todo: OrderedProduct 변경에 맞춰 수정하기
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "stickerId", source = "sticker.id")
-    UserOrderHistoryInfo toGetUserOrderHistoryRes(Order order);
+//    @Mapping(target = "stickerId", source = "sticker.id")
+    UserOrderHistoryInfo toGetUserOrderHistoryRes(OrderHistory orderHistory);
 
-    List<UserOrderHistoryInfo> toGetUserOrderHistoryListRes(List<Order> orderList);
+    List<UserOrderHistoryInfo> toGetUserOrderHistoryListRes(List<OrderHistory> orderHistoryList);
 
+    // todo: OrderedProduct 변경에 맞춰 수정하기
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "stickerId", source = "sticker.id")
+//    @Mapping(target = "stickerId", source = "sticker.id")
     @Mapping(target = "orderStatus", source = "orderStatus.value")
-    OrderHistoryInfo toOrderHistoryInfo(Order order);
+    OrderHistoryInfo toOrderHistoryInfo(OrderHistory orderHistory);
 
     @IterableMapping(elementTargetType = OrderHistoryInfo.class)
-    List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<Order> orderPage);
+    List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<OrderHistory> orderPage);
 
     default List<OrderSheetStickerRes> toOrderSheetStickerRes(StickerOrderInfo stickerOrderInfo) {
         return stickerOrderInfo.getStickerOrderInfos()

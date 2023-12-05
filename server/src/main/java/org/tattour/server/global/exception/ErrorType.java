@@ -13,6 +13,7 @@ public enum ErrorType {
     VALIDATION_INPUT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     VALIDATION_WRONG_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 타입이 입력되었습니다."),
     INVALID_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 인자가 입력되었습니다."),
+    INVALID_ORDERSHEET_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "stickerId와 count를 둘 다 제공하거나 제공하지 말아야 합니다."),
     INVALID_IMAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 이미지 파일입니다."),
     INVALID_CUSTOM_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "이미지 파일이 1개 이상이어야합니다."),
     INVALID_MULTIPART_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 파일 확장자입니다."),
@@ -32,7 +33,6 @@ public enum ErrorType {
     /**
      * 403 FORBIDDEN
      */
-    LACK_OF_POINT_EXCEPTION(HttpStatus.FORBIDDEN, "포인트가 부족하여 결제할 수 없습니다."),
     ACCOUNT_LOCKED_EXCEPTION(HttpStatus.FORBIDDEN, "과도한 로그인 시도 실패로 인해 계정이 잠겼습니다."),
 
     /**
@@ -50,10 +50,10 @@ public enum ErrorType {
     NOT_FOUND_CART_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니입니다."),
     NOT_FOUND_VERIFICATION_CODE_EXCEPTION(HttpStatus.NOT_FOUND, "유효한 인증번호가 존재하지 않습니다."),
     NOT_FOUND_SAVE_IMAGE_EXCEPTION(HttpStatus.NOT_FOUND, "이미지가 존재하지 않습니다."),
-    NOT_FOUND_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않는 포인트 충전 요청입니다."),
     NOT_FOUND_STICKER_SORT_EXCEPTION(HttpStatus.NOT_FOUND, "스티커 정렬 기준이 존재하지 않습니다."),
     NOT_FOUND_HEADER_ORIGIN(HttpStatus.NOT_FOUND, "Origin을 찾을 수 없습니다."),
     NOT_FOUND_MAGAZINE_EXCEPTION(HttpStatus.NOT_FOUND, "존재하지 않은 매거진 입니다."),
+    NOT_FOUND_CARTS_EXCEPTION(HttpStatus.NOT_FOUND, "장바구니에 상품이 존재하지 않습니다."),
 
     /**
      * 405 METHOD NOT ALLOWED
@@ -65,9 +65,7 @@ public enum ErrorType {
      */
     ALREADY_EXIST_USER_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 유저 이름입니다."),
     ALREADY_EXIST_PRODUCTLIKED_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 좋아요한 상품입니다."),
-    ALREADY_COMPLETED_POINT_CHARGE_REQUEST_EXCEPTION(HttpStatus.CONFLICT, "이미 처리된 포인트 충전 요청입니다."),
     ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION(HttpStatus.CONFLICT, "이미 취소 처리된 결제 내역입니다."),
-    AMOUNT_MATCHED_EXCEPTION(HttpStatus.CONFLICT, "송금 금액과 충전 금액이 일치합니다. 충전 요청을 취소할 수 없습니다."),
 
     /**
      * 500 INTERNAL SERVER ERROR
