@@ -40,7 +40,7 @@ public class Cart {
         this.count += count;
     }
 
-    public void increaseCount() {
-        this.count += COUNT_INCREMENT;
+    public void updateCount(int count) {
+        this.count = count;
     }
 }

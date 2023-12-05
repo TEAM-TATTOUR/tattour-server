@@ -6,7 +6,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.cart.controller.dto.request.SaveCartReq;
+import org.tattour.server.domain.cart.controller.dto.request.CartItemReq;
+import org.tattour.server.domain.cart.controller.dto.request.UpdateCartCountReq;
 import org.tattour.server.domain.cart.controller.dto.response.CartItemsRes;
 import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.cart.facade.CartFacade;
@@ -27,7 +28,7 @@ public class CartFacadeImpl implements CartFacade {
 
     @Override
     @Transactional
-    public void saveCartItem(int userId, SaveCartReq req) {
+    public void saveCartItem(int userId, CartItemReq req) {
         User user = userService.readUserById(userId);
         Sticker sticker = stickerProvider.getById(req.getStickerId());
 
@@ -36,6 +37,7 @@ public class CartFacadeImpl implements CartFacade {
 
     //todo : 배송 지역별 배송비 책정
     @Override
+    @Transactional(readOnly = true)
     public CartItemsRes getUserCartItems(int userId) {
         List<Cart> carts = cartService.findByUserId(userId);
         StickerOrderInfo stickerOrderInfo = stickerProvider.getStickerOrderInfoFromCart(carts);
@@ -46,14 +48,18 @@ public class CartFacadeImpl implements CartFacade {
     }
 
     @Override
-    public void increaseCartCount(int userId, int cartId) {
-        Cart cart = cartService.findByIdAndUserId(userId, cartId);
-        cartService.increaseCartCount(cart);
+    @Transactional
+    public void updateCartsCount(int userId, UpdateCartCountReq updateCartCountReq) {
+        updateCartCountReq.getCartCountReqs()
+                .forEach(req -> cartService
+                        .findByIdAndUserId(req.getCartId(), userId)
+                        .updateCount(req.getCount()));
     }
 
     @Override
+    @Transactional
     public void deleteCartItem(int userId, int cartId) {
-        Cart cart = cartService.findByIdAndUserId(userId, cartId);
+        Cart cart = cartService.findByIdAndUserId(cartId, userId);
         cartService.delete(cart);
     }
 }

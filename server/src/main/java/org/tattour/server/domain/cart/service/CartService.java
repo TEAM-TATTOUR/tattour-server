@@ -13,13 +13,11 @@ public interface CartService {
 
     Optional<Cart> findByUserAndSticker(User user, Sticker sticker);
 
-    Cart findByIdAndUserId(int userId, int cartId);
+    Cart findByIdAndUserId(int id, int userId);
 
     void mergeOrAddToCart(User user, Sticker sticker, int count);
 
     Cart createNewCart(User user, Sticker sticker, int count);
-
-    void increaseCartCount(Cart cart);
 
     void delete(Cart cart);
 

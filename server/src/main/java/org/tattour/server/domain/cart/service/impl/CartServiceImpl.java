@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.cart.repository.CartRepositoryImpl;
 import org.tattour.server.domain.cart.service.CartService;
@@ -34,7 +33,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart findByIdAndUserId(int userId, int id) {
+    public Cart findByIdAndUserId(int id, int userId) {
         return cartRepositoryImpl.findByIdAndUser_Id(id, userId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_CART_EXCEPTION));
     }
@@ -57,13 +56,6 @@ public class CartServiceImpl implements CartService {
                 .user(user)
                 .sticker(sticker)
                 .build();
-    }
-
-    @Override
-    @Transactional
-    public void increaseCartCount(Cart cart) {
-        cart.increaseCount();
-        cartRepositoryImpl.save(cart);
     }
 
     @Override
