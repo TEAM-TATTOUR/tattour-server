@@ -61,7 +61,7 @@ public class CartController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @PostMapping("/items")
+    @PostMapping
     public ResponseEntity<?> saveCartItem(
             @Parameter(hidden = true) @UserId Integer userId,
             @RequestBody @Valid SaveCartReq saveCartReq
@@ -85,7 +85,7 @@ public class CartController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @GetMapping("/items")
+    @GetMapping
     public ResponseEntity<?> getUserCartItem(
             @Parameter(hidden = true) @UserId Integer userId
     ) {
@@ -111,7 +111,7 @@ public class CartController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @PatchMapping("/items/{cartId}")
+    @PatchMapping("/{cartId}")
     public ResponseEntity<?> addCartCount(
             @Parameter(hidden = true) @UserId Integer userId,
             @PathVariable Integer cartId) {
@@ -138,7 +138,7 @@ public class CartController {
                     description = "알 수 없는 서버 에러가 발생했습니다.",
                     content = @Content(schema = @Schema(implementation = FailResponse.class)))
     })
-    @DeleteMapping("/items/{cartId}")
+    @DeleteMapping("/{cartId}")
     public ResponseEntity<?> deleteCartCount(
             @Parameter(hidden = true) @UserId Integer userId,
             @PathVariable Integer cartId) {
