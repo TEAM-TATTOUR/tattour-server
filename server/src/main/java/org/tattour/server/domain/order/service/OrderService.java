@@ -1,9 +1,10 @@
 package org.tattour.server.domain.order.service;
 
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 
 public interface OrderService {
+    OrderHistory saveOrder(OrderHistory orderHistory);
 
-    // 결제하기
-    Order saveOrder(Order order);
+    void saveOrderedProducts(OrderHistory orderHistory, StickerOrderInfo stickerOrderInfo);
 }

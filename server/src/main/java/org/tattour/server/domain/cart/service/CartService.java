@@ -9,6 +9,8 @@ import org.tattour.server.domain.user.domain.User;
 public interface CartService {
     List<Cart> findByUserId(int userId);
 
+    List<Cart> findByUser(User user);
+
     Optional<Cart> findByUserAndSticker(User user, Sticker sticker);
 
     Cart findByIdAndUserId(int userId, int cartId);
@@ -20,4 +22,6 @@ public interface CartService {
     void increaseCartCount(Cart cart);
 
     void delete(Cart cart);
+
+    void deleteAllByUserId(User user);
 }

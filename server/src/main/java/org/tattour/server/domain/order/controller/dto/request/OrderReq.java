@@ -10,23 +10,18 @@ import lombok.Getter;
 
 @Schema(description = "결제하기 Request")
 @Getter
-public class PostOrderReq {
-
-    @Schema(description = "타투 스티커 Id")
-    @NotNull(message = "stickerId is null")
-    private Integer stickerId;
-
-    @Schema(description = "상품 개수", example = "3")
-    @NotNull(message = "productCount is null")
-    @Min(value = 1)
-    private Integer productCount;
+public class OrderReq {
+    @Schema(description = "상품 금액", example = "9000")
+    @NotNull(message = "productAmount is null")
+    @Min(value = 0)
+    private Integer productAmount;
 
     @Schema(description = "배송비", example = "3000")
     @NotNull(message = "shippingFee is null")
     @Min(value = 0)
     private Integer shippingFee;
 
-    @Schema(description = "총 주문금액", example = "12000")
+    @Schema(description = "총 주문 금액", example = "12000")
     @NotNull(message = "totalAmount is null")
     @Min(value = 0)
     private Integer totalAmount;

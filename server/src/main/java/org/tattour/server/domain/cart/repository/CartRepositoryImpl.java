@@ -9,10 +9,14 @@ import org.tattour.server.domain.sticker.domain.Sticker;
 import org.tattour.server.domain.user.domain.User;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Integer> {
+public interface CartRepositoryImpl extends JpaRepository<Cart, Integer> {
     List<Cart> findByUser_Id(int userId);
+
+    List<Cart> findByUser(User user);
 
     Optional<Cart> findByIdAndUser_Id(int id, int userId);
 
     Optional<Cart> findCartByUserAndSticker(User user, Sticker sticker);
+
+    void deleteAllByUser(User user);
 }
