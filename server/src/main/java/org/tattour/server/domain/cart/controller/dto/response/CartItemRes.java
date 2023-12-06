@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CartItemRes {
+    private int id;
     private int stickerId;
     private String mainImageUrl;
     private String name;
