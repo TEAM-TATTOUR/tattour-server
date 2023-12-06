@@ -7,12 +7,5 @@ import org.tattour.server.domain.user.domain.User;
 
 @Repository
 public interface UserRepositoryImpl extends JpaRepository<User, Integer> {
-
-    @Override
-    <S extends User> S save(S entity);
-
-    @Override
-    Optional<User> findById(Integer integer);
-
-    Optional<User> findByKakaoId(Long kakaoId);
+    Optional<User> findBySocialId(Long socialId);
 }

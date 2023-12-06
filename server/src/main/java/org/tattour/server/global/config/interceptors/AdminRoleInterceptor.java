@@ -32,8 +32,6 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
         final JwtContent content = jwtService.getJwtContents(token);
 
         try {
-            System.out.println("content.getRole() = " + content.getRole());
-
             final UserRole role = UserRole.valueOf(content.getRole());
 
             if (!role.equals(UserRole.ADMIN)) {

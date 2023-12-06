@@ -30,8 +30,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private Long kakaoId;
-    private Integer point;
+    private Long socialId;
     private String phoneNumber;
     private String accessToken;
     private String refreshToken;
@@ -51,26 +50,26 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProductLiked> productLikeds;
 
-    public User(Long kakaoId, SocialPlatform socialPlatform, String accessToken,
-            String refreshToken) {
-        this.kakaoId = kakaoId;
+    public User(Long socialId, SocialPlatform socialPlatform, String accessToken,
+                String refreshToken) {
+        this.socialId = socialId;
         this.socialPlatform = socialPlatform;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public User(Long kakaoId, SocialPlatform socialPlatform) {
-        this.kakaoId = kakaoId;
+    public User(Long socialId, SocialPlatform socialPlatform) {
+        this.socialId = socialId;
         this.socialPlatform = socialPlatform;
     }
 
-    public static User of(Long kakaoId, SocialPlatform socialPlatform, String accessToken,
-            String refreshToken) {
-        return new User(kakaoId, socialPlatform, accessToken, refreshToken);
+    public static User of(Long socialId, SocialPlatform socialPlatform, String accessToken,
+                          String refreshToken) {
+        return new User(socialId, socialPlatform, accessToken, refreshToken);
     }
 
-    public static User of(Long kakaoId, SocialPlatform socialPlatform) {
-        return new User(kakaoId, socialPlatform);
+    public static User of(Long socialId, SocialPlatform socialPlatform) {
+        return new User(socialId, socialPlatform);
     }
 
     public void setUserInfo(String name, String phoneNumber) {
@@ -83,16 +82,8 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public void setUserPoint(int amount) {
-        this.point = amount;
-    }
-
     public void deleteToken() {
         this.accessToken = null;
         this.refreshToken = null;
-    }
-
-    public boolean isLackOfPoint(int amount) {
-        return this.point < amount;
     }
 }

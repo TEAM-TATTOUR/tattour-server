@@ -27,14 +27,9 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
     }
 
-    //TODO : 리팩토링?
     @Override
     public List<ProductLiked> readLikedProductsByUserId(Integer userId) {
         return productLikedRepository.findAllByUser_IdOrderByCreatedAtDesc(userId);
-        // 모아서 리스트로 만들기
-//        List<Sticker> stickerList = productLikedList.stream()
-//                .map(ProductLiked::getSticker)
-//                .collect(Collectors.toList());
     }
 
     @Override

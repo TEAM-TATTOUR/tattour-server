@@ -21,8 +21,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.tattour.server.domain.discount.domain.Discount;
-import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.user.domain.ProductLiked;
+import org.tattour.server.domain.order.domain.OrderedProduct;
 import org.tattour.server.global.util.AuditingTimeEntity;
 
 @Table(name = "sticker")
@@ -77,7 +76,7 @@ public class Sticker extends AuditingTimeEntity {
     private List<StickerImage> stickerImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "sticker")
-    private List<Order> orders = new ArrayList<>();
+    private List<OrderedProduct> orderedProducts = new ArrayList<>();
 
     public void applyDiscount(Discount discount) {
         this.discount = discount;
@@ -108,6 +107,3 @@ public class Sticker extends AuditingTimeEntity {
                 .build();
     }
 }
-
-
-

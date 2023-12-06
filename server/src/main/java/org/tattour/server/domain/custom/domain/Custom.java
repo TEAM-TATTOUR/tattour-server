@@ -85,9 +85,6 @@ public class Custom extends AuditingTimeEntity {
 
     private Integer price;
 
-    /**
-     * Mapped By
-     */
     @OneToMany(mappedBy = "custom")
     private List<CustomTheme> customThemes = new ArrayList<>();
 
@@ -162,7 +159,7 @@ public class Custom extends AuditingTimeEntity {
     }
 
     public Integer calPrice() {
-        Integer price = size.getPrice() * count;
+        int price = size.getPrice() * count;
         if (isPublic) {
             price -= size.getDiscountPrice();
         }
