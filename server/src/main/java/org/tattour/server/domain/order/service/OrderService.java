@@ -1,6 +1,6 @@
 package org.tattour.server.domain.order.service;
 
-import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 
 public interface OrderService {

@@ -3,7 +3,7 @@ package org.tattour.server.infra.discord.dto.resquest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.order.model.OrderHistory;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

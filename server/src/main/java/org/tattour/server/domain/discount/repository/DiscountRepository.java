@@ -1,7 +1,7 @@
 package org.tattour.server.domain.discount.repository;
 
 import java.util.Optional;
-import org.tattour.server.domain.discount.domain.Discount;
+import org.tattour.server.domain.discount.model.Discount;
 
 public interface DiscountRepository {
 

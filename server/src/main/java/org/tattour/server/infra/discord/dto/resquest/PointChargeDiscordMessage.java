@@ -3,7 +3,7 @@ package org.tattour.server.infra.discord.dto.resquest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.model.User;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

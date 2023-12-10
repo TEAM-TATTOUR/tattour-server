@@ -1,8 +1,8 @@
 package org.tattour.server.domain.sticker.provider;
 
 import java.util.List;
-import org.tattour.server.domain.cart.domain.Cart;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.cart.model.Cart;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 
 public interface StickerProvider {

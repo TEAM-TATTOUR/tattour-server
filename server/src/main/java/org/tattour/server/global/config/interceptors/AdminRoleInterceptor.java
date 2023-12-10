@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.tattour.server.domain.user.domain.UserRole;
+import org.tattour.server.domain.user.model.UserRole;
 import org.tattour.server.global.config.jwt.JwtContent;
 import org.tattour.server.global.config.jwt.JwtService;
 import org.tattour.server.global.exception.BusinessException;

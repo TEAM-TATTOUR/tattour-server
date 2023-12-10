@@ -3,7 +3,7 @@ package org.tattour.server.domain.style.facade.dto.response;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.tattour.server.domain.style.domain.Style;
+import org.tattour.server.domain.style.model.Style;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

@@ -1,7 +1,7 @@
 package org.tattour.server.domain.sticker.service;
 
 import java.util.List;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 
 public interface StickerService {
 

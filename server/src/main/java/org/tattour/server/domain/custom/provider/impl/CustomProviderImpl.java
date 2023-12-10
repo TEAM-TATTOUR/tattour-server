@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 import org.tattour.server.domain.custom.exception.NotFoundCustomException;
 import org.tattour.server.domain.custom.provider.CustomProvider;
 import org.tattour.server.domain.custom.repository.CustomRepository;

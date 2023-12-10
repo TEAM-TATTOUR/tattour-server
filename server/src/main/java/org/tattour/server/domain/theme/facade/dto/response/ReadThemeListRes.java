@@ -5,19 +5,19 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.theme.domain.Theme;
+import org.tattour.server.domain.theme.model.Theme;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReadThemeListRes {
 
-	List<ReadThemeRes> themeInfos;
+    List<ReadThemeRes> themeInfos;
 
-	public static ReadThemeListRes from(List<Theme> themes) {
-		return new ReadThemeListRes(
-				themes
-						.stream()
-						.map(ReadThemeRes::from)
-						.collect(Collectors.toList()));
-	}
+    public static ReadThemeListRes from(List<Theme> themes) {
+        return new ReadThemeListRes(
+                themes
+                        .stream()
+                        .map(ReadThemeRes::from)
+                        .collect(Collectors.toList()));
+    }
 }

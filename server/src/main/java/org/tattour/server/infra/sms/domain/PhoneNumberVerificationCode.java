@@ -12,7 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
-import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.model.User;
 
 @Entity
 @DynamicInsert

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.OrderProvider;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;

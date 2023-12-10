@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tattour.server.domain.cart.controller.dto.request.CartItemReq;
 import org.tattour.server.domain.cart.controller.dto.request.UpdateCartCountReq;
 import org.tattour.server.domain.cart.controller.dto.response.CartItemsRes;
-import org.tattour.server.domain.cart.domain.Cart;
 import org.tattour.server.domain.cart.facade.CartFacade;
+import org.tattour.server.domain.cart.model.Cart;
 import org.tattour.server.domain.cart.service.CartService;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
 import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
-import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.user.model.User;
 import org.tattour.server.domain.user.service.UserService;
 import org.tattour.server.global.util.EntityDtoMapper;
 

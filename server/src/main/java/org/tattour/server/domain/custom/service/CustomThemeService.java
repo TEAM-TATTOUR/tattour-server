@@ -1,8 +1,8 @@
 package org.tattour.server.domain.custom.service;
 
 import java.util.List;
-import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.domain.CustomTheme;
+import org.tattour.server.domain.custom.model.Custom;
+import org.tattour.server.domain.custom.model.CustomTheme;
 
 public interface CustomThemeService {
 

@@ -2,7 +2,7 @@ package org.tattour.server.domain.sticker.repository;
 
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.repository.custom.StickerRepositoryCustom;
 
 public interface StickerRepository extends

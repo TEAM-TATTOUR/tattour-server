@@ -3,7 +3,7 @@ package org.tattour.server.domain.sticker.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.repository.StickerRepository;
 import org.tattour.server.domain.sticker.service.StickerService;
 

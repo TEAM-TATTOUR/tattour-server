@@ -1,7 +1,6 @@
 package org.tattour.server.domain.sticker.repository;
 
-import java.util.List;
-import org.tattour.server.domain.sticker.domain.StickerTheme;
+import org.tattour.server.domain.sticker.model.StickerTheme;
 
 public interface StickerThemeRepository {
 
