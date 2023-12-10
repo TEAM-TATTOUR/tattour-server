@@ -3,12 +3,12 @@ package org.tattour.server.domain.discount.facade.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.discount.domain.Discount;
+import org.tattour.server.domain.discount.model.Discount;
 import org.tattour.server.domain.discount.provider.DiscountProvider;
 import org.tattour.server.domain.discount.repository.DiscountRepository;
 import org.tattour.server.domain.discount.facade.DiscountFacade;
 import org.tattour.server.domain.discount.facade.dto.request.CreateDiscountReq;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.facade.dto.response.ReadStickerRes;
 import org.tattour.server.domain.sticker.provider.StickerProvider;
 

@@ -1,7 +1,7 @@
 package org.tattour.server.domain.magazine.provider;
 
 import java.util.List;
-import org.tattour.server.domain.magazine.domain.Magazine;
+import org.tattour.server.domain.magazine.model.Magazine;
 
 public interface MagazineProvider {
 

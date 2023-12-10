@@ -2,7 +2,7 @@ package org.tattour.server.domain.order.provider;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 

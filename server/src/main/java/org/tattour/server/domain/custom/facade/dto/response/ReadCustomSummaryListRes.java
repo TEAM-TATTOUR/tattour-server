@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

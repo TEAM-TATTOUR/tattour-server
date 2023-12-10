@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.OrderReq;
 import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
-import org.tattour.server.domain.order.domain.PurchaseRequest;
+import org.tattour.server.domain.order.model.PurchaseRequest;
 import org.tattour.server.domain.order.facade.dto.request.CreateOrderReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;

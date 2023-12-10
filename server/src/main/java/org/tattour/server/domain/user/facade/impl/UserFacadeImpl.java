@@ -4,8 +4,6 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
-import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.facade.UserFacade;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
@@ -15,6 +13,8 @@ import org.tattour.server.domain.user.facade.dto.request.SaveUserShippingAddrReq
 import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
 import org.tattour.server.domain.user.facade.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
+import org.tattour.server.domain.user.model.User;
+import org.tattour.server.domain.user.model.UserRole;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
 import org.tattour.server.domain.user.provider.UserProvider;
 import org.tattour.server.domain.user.service.ProductLikedService;

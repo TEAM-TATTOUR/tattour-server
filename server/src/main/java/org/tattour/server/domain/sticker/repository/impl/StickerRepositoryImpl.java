@@ -1,17 +1,17 @@
 package org.tattour.server.domain.sticker.repository.impl;
 
-import static org.tattour.server.domain.order.domain.QOrderedProduct.*;
-import static org.tattour.server.domain.sticker.domain.QSticker.*;
-import static org.tattour.server.domain.sticker.domain.QStickerStyle.*;
-import static org.tattour.server.domain.sticker.domain.QStickerTheme.*;
-import static org.tattour.server.domain.style.domain.QStyle.*;
-import static org.tattour.server.domain.theme.domain.QTheme.*;
+import static org.tattour.server.domain.order.model.QOrderedProduct.orderedProduct;
+import static org.tattour.server.domain.sticker.model.QSticker.sticker;
+import static org.tattour.server.domain.sticker.model.QStickerStyle.stickerStyle;
+import static org.tattour.server.domain.sticker.model.QStickerTheme.stickerTheme;
+import static org.tattour.server.domain.style.model.QStyle.style;
+import static org.tattour.server.domain.theme.model.QTheme.theme;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.repository.custom.StickerRepositoryCustom;
 
 @RequiredArgsConstructor

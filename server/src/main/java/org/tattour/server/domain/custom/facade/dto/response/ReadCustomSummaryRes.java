@@ -2,7 +2,7 @@ package org.tattour.server.domain.custom.facade.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 
 @Getter
 @Builder

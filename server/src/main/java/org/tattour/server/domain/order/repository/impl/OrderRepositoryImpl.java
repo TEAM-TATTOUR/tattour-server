@@ -3,7 +3,7 @@ package org.tattour.server.domain.order.repository.impl;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.tattour.server.domain.order.domain.OrderHistory;
+import org.tattour.server.domain.order.model.OrderHistory;
 
 @Repository
 public interface OrderRepositoryImpl extends JpaRepository<OrderHistory, Integer> {

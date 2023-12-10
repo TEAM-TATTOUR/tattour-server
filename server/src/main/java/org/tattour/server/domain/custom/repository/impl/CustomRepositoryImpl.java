@@ -1,11 +1,11 @@
 package org.tattour.server.domain.custom.repository.impl;
 
-import static org.tattour.server.domain.custom.domain.QCustom.*;
+import static org.tattour.server.domain.custom.model.QCustom.*;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 import org.tattour.server.domain.custom.repository.custom.CustomRepositoryCustom;
 
 @RequiredArgsConstructor

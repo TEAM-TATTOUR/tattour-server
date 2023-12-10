@@ -2,8 +2,8 @@ package org.tattour.server.domain.user.provider.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.user.domain.User;
 import org.tattour.server.domain.user.exception.NotFoundUserException;
+import org.tattour.server.domain.user.model.User;
 import org.tattour.server.domain.user.provider.UserProvider;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
 import org.tattour.server.domain.user.repository.impl.UserRepositoryImpl;

@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.domain.CustomImage;
+import org.tattour.server.domain.custom.model.Custom;
+import org.tattour.server.domain.custom.model.CustomImage;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

@@ -3,7 +3,7 @@ package org.tattour.server.domain.magazine.provider.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.tattour.server.domain.magazine.domain.Magazine;
+import org.tattour.server.domain.magazine.model.Magazine;
 import org.tattour.server.domain.magazine.exception.NotFoundMagazineException;
 import org.tattour.server.domain.magazine.provider.MagazineProvider;
 import org.tattour.server.domain.magazine.repository.MagazineRepository;

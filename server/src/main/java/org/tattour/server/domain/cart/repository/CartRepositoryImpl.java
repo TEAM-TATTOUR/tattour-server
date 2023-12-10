@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.tattour.server.domain.cart.domain.Cart;
-import org.tattour.server.domain.sticker.domain.Sticker;
-import org.tattour.server.domain.user.domain.User;
+import org.tattour.server.domain.cart.model.Cart;
+import org.tattour.server.domain.sticker.model.Sticker;
+import org.tattour.server.domain.user.model.User;
 
 @Repository
 public interface CartRepositoryImpl extends JpaRepository<Cart, Integer> {

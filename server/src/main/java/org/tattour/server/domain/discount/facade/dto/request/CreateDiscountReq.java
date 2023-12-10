@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.tattour.server.domain.discount.domain.Discount;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
