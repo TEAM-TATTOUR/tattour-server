@@ -1,5 +1,5 @@
-#!/bin/bash
-source /etc/environment
+# !/bin/bash
+# source /etc/environment
 
 BUILD_PATH=$(ls /home/ubuntu/app/server-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_PATH)
@@ -10,14 +10,12 @@ DEPLOY_PATH=/home/ubuntu/app/nonstop/jar/
 cp $BUILD_PATH $DEPLOY_PATH
 
 echo "> 현재 구동중인 Set 확인"
-if [ $DEPLOY_ENV = "main" ]
-then
-  echo $DEPLOY_ENV
-  CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile) || { echo "Curl 요청 실패";}
-elif [ $DEPLOY_ENV = "dev" ]
-then
-  echo $DEPLOY_ENV
-  CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile) || { echo "Curl 요청 실패";}
+if [ "$DEPLOY_ENV" = "main" ]; then
+  echo "$DEPLOY_ENV"
+  CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile) || { echo "Curl 요청 실패"; }
+elif [ "$DEPLOY_ENV" = "dev" ]; then
+  echo "$DEPLOY_ENV"
+  CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile) || { echo "Curl 요청 실패"; }
 else
   echo "> DEPLOY_ENV가 설정되지 않았습니다. DEPLOY_ENV: $DEPLOY_ENV"
   exit 1
@@ -25,12 +23,10 @@ fi
 echo "> $CURRENT_PROFILE"
 
 # 쉬고 있는 set 찾기
-if [ $CURRENT_PROFILE == "set1" ]
-then
+if [ "$CURRENT_PROFILE" == "set1" ]; then
   IDLE_PROFILE=set2
   IDLE_PORT=8082
-elif [ $CURRENT_PROFILE == "set2" ]
-then
+elif [ "$CURRENT_PROFILE" == "set2" ]; then
   IDLE_PROFILE=set1
   IDLE_PORT=8081
 else
@@ -40,23 +36,22 @@ else
   IDLE_PORT=8081
 fi
 echo "> application.jar 교체"
-IDLE_APPLICATION=$IDLE_PROFILE-Tattour.jar
-IDLE_APPLICATION_PATH=$DEPLOY_PATH$IDLE_APPLICATION
-ln -Tfs $DEPLOY_PATH$JAR_NAME $IDLE_APPLICATION_PATH
+IDLE_APPLICATION="$IDLE_PROFILE-Tattour.jar"
+IDLE_APPLICATION_PATH="$DEPLOY_PATH$IDLE_APPLICATION"
+ln -Tfs "$DEPLOY_PATH$JAR_NAME" "$IDLE_APPLICATION_PATH"
 echo "> $IDLE_PROFILE 에서 구동중인 애플리케이션 pid 확인"
-IDLE_PID=$(pgrep -f $IDLE_APPLICATION)
+IDLE_PID=$(pgrep -f "$IDLE_APPLICATION")
 
-if [ -z $IDLE_PID ]
-then
+if [ -z "$IDLE_PID" ]; then
   echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
 else
   echo "> kill -15 $IDLE_PID"
-  kill -15 $IDLE_PID
+  kill -15 "$IDLE_PID"
   sleep 5
 fi
 echo "> $IDLE_PROFILE 배포"
 echo "> nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 & "
-nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 &
+nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active="$IDLE_PROFILE" "$IDLE_APPLICATION_PATH" >> /home/ubuntu/app/nohup.out 2>&1 &
 
 echo "> $IDLE_PROFILE 10초 후 Health check 시작"
 echo "> curl -s http://localhost:$IDLE_PORT/actuator/health "
@@ -65,9 +60,9 @@ sleep 10
 for retry_count in {1..10}
 do
   response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
-  up_count=$(echo $response | grep 'UP' | wc -l)
+  up_count=$(echo "$response" | grep 'UP' | wc -l)
 
-  if [ $up_count -ge 1 ]
+  if [ "$up_count" -ge 1 ]
   then # $up_count >= 1 ("UP" 문자열이 있는지 검증)
       echo "> Health check 성공"
       break
@@ -76,7 +71,7 @@ do
       echo "> Health check: ${response}"
   fi
 
-  if [ $retry_count -eq 10 ]
+  if [ "$retry_count" -eq 10 ]
   then
     echo "> Health check 실패. "
     echo "> Nginx에 연결하지 않고 배포를 종료합니다."
