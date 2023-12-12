@@ -23,11 +23,11 @@ fi
 echo "> $CURRENT_PROFILE"
 
 # 쉬고 있는 set 찾기
-if [ $CURRENT_PROFILE == set1 ]
+if [ $CURRENT_PROFILE == "set1" ]
 then
   IDLE_PROFILE=set2
   IDLE_PORT=8082
-elif [ $CURRENT_PROFILE == set2 ]
+elif [ $CURRENT_PROFILE == "set2" ]
 then
   IDLE_PROFILE=set1
   IDLE_PORT=8081
