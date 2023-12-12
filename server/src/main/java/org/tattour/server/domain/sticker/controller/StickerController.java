@@ -54,7 +54,7 @@ public class StickerController {
 	}
 
 	@GetMapping("/{stickerId}")
-	@Operation(summary = "커스텀 스티커 상세 정보 조회", description = "스티커 아이디 받음")
+	@Operation(summary = "스티커 상세 정보 조회", description = "스티커 아이디 받음")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
