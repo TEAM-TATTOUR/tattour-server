@@ -10,10 +10,12 @@ DEPLOY_PATH=/home/ubuntu/app/nonstop/jar/
 cp $BUILD_PATH $DEPLOY_PATH
 
 echo "> 현재 구동중인 Set 확인"
-if [ $DEPLOY_ENV = "main" ]; then
+if [ $DEPLOY_ENV = "main" ]
+then
   echo $DEPLOY_ENV
   CURRENT_PROFILE=$(curl -s https://api.tattour.shop/profile) || { echo "Curl 요청 실패";}
-elif [ $DEPLOY_ENV = "dev" ]; then
+elif [ $DEPLOY_ENV = "dev" ]
+then
   echo $DEPLOY_ENV
   CURRENT_PROFILE=$(curl -s https://dev.tattour.shop/profile) || { echo "Curl 요청 실패";}
 else
@@ -37,13 +39,10 @@ else
   IDLE_PROFILE=set1
   IDLE_PORT=8081
 fi
-
 echo "> application.jar 교체"
 IDLE_APPLICATION=$IDLE_PROFILE-Tattour.jar
 IDLE_APPLICATION_PATH=$DEPLOY_PATH$IDLE_APPLICATION
-
 ln -Tfs $DEPLOY_PATH$JAR_NAME $IDLE_APPLICATION_PATH
-
 echo "> $IDLE_PROFILE 에서 구동중인 애플리케이션 pid 확인"
 IDLE_PID=$(pgrep -f $IDLE_APPLICATION)
 
@@ -55,7 +54,6 @@ else
   kill -15 $IDLE_PID
   sleep 5
 fi
-
 echo "> $IDLE_PROFILE 배포"
 echo "> nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 & "
 nohup java -jar -Duser.timezone=Asia/Seoul -Dspring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> /home/ubuntu/app/nohup.out 2>&1 &
@@ -84,7 +82,6 @@ do
     echo "> Nginx에 연결하지 않고 배포를 종료합니다."
     exit 1
   fi
-
   echo "> Health check 연결 실패. 재시도..."
   sleep 10
 done
