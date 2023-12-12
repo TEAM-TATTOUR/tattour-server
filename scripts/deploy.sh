@@ -23,10 +23,10 @@ fi
 echo "> $CURRENT_PROFILE"
 
 # 쉬고 있는 set 찾기
-if [ "$CURRENT_PROFILE" == "set1" ]; then
+if [ "$CURRENT_PROFILE" = "set1" ]; then
   IDLE_PROFILE=set2
   IDLE_PORT=8082
-elif [ "$CURRENT_PROFILE" == "set2" ]; then
+elif [ "$CURRENT_PROFILE" = "set2" ]; then
   IDLE_PROFILE=set1
   IDLE_PORT=8081
 else
@@ -57,7 +57,7 @@ echo "> $IDLE_PROFILE 10초 후 Health check 시작"
 echo "> curl -s http://localhost:$IDLE_PORT/actuator/health "
 sleep 10
 
-for retry_count in {1..10}
+for retry_count in $(seq 1 10)
 do
   response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
   up_count=$(echo "$response" | grep 'UP' | wc -l)
