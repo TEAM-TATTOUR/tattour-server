@@ -1,9 +1,11 @@
 package org.tattour.server.infra.discord.dto.resquest;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.tattour.server.domain.order.model.OrderHistory;
+import org.tattour.server.domain.order.model.OrderedProduct;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -11,33 +13,34 @@ public class OrderStickerDiscordMessage {
 
     String title;
     String description;
-    DiscordCustomImage image;
 
-    // todo: 디스코드 메시지 내용 형식 수정
-    public static OrderStickerDiscordMessage from(OrderHistory orderHistory) {
-//        String title = "Order Id : " + orderHistory.getId();
-//        String description = "\n유저 Id : " + orderHistory.getUser().getId()
-//                + "\n수령인 : " + orderHistory.getRecipientName()
-//                + "\n연락처 : " + orderHistory.getContact()
-//                + "\n유저 이메일 : " + orderHistory.getMailingAddress()
-//                + "\n상품 Id : " + orderHistory.getProductName()
-//                + "\n상품 이름 : " + orderHistory.getProductName()
-//                + "\n상품 크기 : " + orderHistory.getProductSize()
-//                + "\n상품 금액 : " + orderHistory.getProductAmount()
-//                + "\n상품 개수 : " + orderHistory.getProductCount()
-//                + "\n총 주문 금액 : " + orderHistory.getTotalAmount()
-//                + "\n기본 주소 : " + orderHistory.getBaseAddress()
-//                + "\n싱세 주소 : " + orderHistory.getDetailAddress()
-//                + "\n배송비 : " + orderHistory.getShippingFee();
-//        return new OrderStickerDiscordMessage(
-//                title,
-//                description,
-//                new DiscordCustomImage(orderHistory.getProductImageUrl())
-//        );
-        return new OrderStickerDiscordMessage(
-                "[임시 응답]",
-                "메시지 형식에 대한 추가 개발이 필요해 임시 응답을 전달합니다.",
-                new DiscordCustomImage(null)
-        );
+    public static OrderStickerDiscordMessage from(
+            OrderHistory orderHistory,
+            List<OrderedProduct> orderedProducts) {
+        String title = "주문 번호: " + orderHistory.getId();
+        StringBuilder description = new StringBuilder();
+        description.append("\n\n### [주문 정보]")
+                .append("\n유저 번호: ").append(orderHistory.getUser().getId())
+                .append("\n상품 금액: ").append(orderHistory.getProductAmount())
+                .append("\n총 주문 금액: ").append(orderHistory.getTotalAmount());
+
+        description.append("\n\n### [주문 상품 내역]");
+        orderedProducts.forEach(product -> {
+            description.append("\n");
+            description.append("\n상품 번호: ").append(product.getSticker().getId());
+            description.append("\n상품명: ").append(product.getSticker().getName());
+            description.append("\n가격: ").append(product.getPrice());
+            description.append("\n수량: ").append(product.getCount());
+        });
+
+        description.append("\n\n### [배송 정보]")
+                .append("\n수령인: ").append(orderHistory.getRecipientName())
+                .append("\n연락처: ").append(orderHistory.getContact())
+                .append("\n우편 번호: ").append(orderHistory.getMailingAddress())
+                .append("\n기본 주소: ").append(orderHistory.getBaseAddress())
+                .append("\n싱세 주소: ").append(orderHistory.getDetailAddress())
+                .append("\n배송비: ").append(orderHistory.getShippingFee());
+
+        return new OrderStickerDiscordMessage(title, description.toString());
     }
 }

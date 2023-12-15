@@ -16,6 +16,7 @@ import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListR
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.model.OrderStatus;
+import org.tattour.server.domain.order.model.OrderedProduct;
 import org.tattour.server.domain.order.model.PurchaseRequest;
 import org.tattour.server.domain.order.provider.impl.OrderProviderImpl;
 import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
@@ -34,6 +35,7 @@ import org.tattour.server.infra.discord.service.DiscordMessageService;
 @Service
 @RequiredArgsConstructor
 public class OrderFacadeImpl implements OrderFacade {
+
     public final static int SHIPPING_FEE = 3000;
 
     private final OrderProviderImpl orderProvider;
@@ -71,7 +73,8 @@ public class OrderFacadeImpl implements OrderFacade {
             return getCartStickersOrderInfo(carts);
         }
 
-        return getSingleStickerOrderInfo(purchaseRequest.getStickerId(), purchaseRequest.getCount());
+        return getSingleStickerOrderInfo(purchaseRequest.getStickerId(),
+                purchaseRequest.getCount());
     }
 
     private StickerOrderInfo getSingleStickerOrderInfo(int stickerId, int count) {
@@ -101,14 +104,14 @@ public class OrderFacadeImpl implements OrderFacade {
                         .build());
 
         StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(user, purchaseRequest);
-        orderService.saveOrderedProducts(orderHistory, stickerOrderInfo);
+        List<OrderedProduct> orderedProducts = orderService.saveOrderedProducts(orderHistory,
+                stickerOrderInfo);
 
         if (purchaseRequest.isCartPurchase()) {
             cartService.deleteAllByUserId(user);
         }
 
-        // todo: 디스코드 일반 구매 메시지 형식 수정하기
-        discordMessageService.sendOrderStickerMessage(orderHistory);
+        discordMessageService.sendOrderStickerMessage(orderHistory, orderedProducts);
     }
 
     @Override

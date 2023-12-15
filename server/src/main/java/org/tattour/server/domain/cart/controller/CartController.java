@@ -33,10 +33,11 @@ import org.tattour.server.global.dto.SuccessType;
 @RestController
 @RequestMapping("/api/v1/cart")
 @SecurityRequirement(name = "JWT Auth")
-@Tag(name = "Cart(장바구니)", description = "Cart API Document")
+@Tag(name = "Cart", description = "Cart API Document")
 @RequiredArgsConstructor
 @Validated
 public class CartController {
+
     private final CartFacade cartFacade;
 
     @Operation(summary = "장바구니 아이템 추가")
