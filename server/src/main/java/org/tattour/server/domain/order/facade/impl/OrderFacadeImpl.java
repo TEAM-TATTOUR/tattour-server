@@ -14,6 +14,7 @@ import org.tattour.server.domain.order.facade.dto.request.CreateOrderReq;
 import org.tattour.server.domain.order.facade.dto.request.UpdateOrderStatusReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.order.model.OrderAmount;
 import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.model.OrderStatus;
 import org.tattour.server.domain.order.model.OrderedProduct;
@@ -88,13 +89,18 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     @Transactional
     public void order(PurchaseRequest purchaseRequest, CreateOrderReq orderReq) {
-        // todo: totalAmount 비교하고 다름 감지 로직 추가하기 (vo OrderAmount)
         User user = userProvider.readUserById(orderReq.getUserId());
+        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(user, purchaseRequest);
+        OrderAmount orderAmount = OrderAmount.calculate(
+                stickerOrderInfo,
+                orderReq.getTotalAmount(),
+                orderReq.getShippingFee());
+
         OrderHistory orderHistory = orderService.saveOrder(
                 OrderHistory.builder()
-                        .productAmount(orderReq.getProductAmount())
-                        .shippingFee(orderReq.getShippingFee())
-                        .totalAmount(orderReq.getTotalAmount())
+                        .productAmount(orderAmount.getProductAmount())
+                        .shippingFee(orderAmount.getShippingFee())
+                        .totalAmount(orderAmount.getTotalAmount())
                         .recipientName(orderReq.getRecipientName())
                         .contact(orderReq.getContact())
                         .mailingAddress(orderReq.getMailingAddress())
@@ -103,7 +109,6 @@ public class OrderFacadeImpl implements OrderFacade {
                         .user(user)
                         .build());
 
-        StickerOrderInfo stickerOrderInfo = getStickerOrderInfo(user, purchaseRequest);
         List<OrderedProduct> orderedProducts = orderService.saveOrderedProducts(orderHistory,
                 stickerOrderInfo);
 
