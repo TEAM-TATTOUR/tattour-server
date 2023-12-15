@@ -1,7 +1,6 @@
 package org.tattour.server.global.util;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapping;
@@ -17,7 +16,6 @@ import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
-import org.tattour.server.domain.sticker.model.Sticker;
 import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
 import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
 import org.tattour.server.domain.user.model.ProductLiked;
@@ -82,24 +80,12 @@ public interface EntityDtoMapper {
                 .collect(Collectors.toList());
     }
 
-    default OrderAmountDetailRes toOrderAmountRes(StickerOrderInfo stickerOrderInfo, int shippingFee) {
-        int productAmount = stickerOrderInfo.getStickerOrderInfos()
-                .entrySet()
-                .stream()
-                .mapToInt(entry -> calculateProductAmount(entry.getKey(), entry.getValue()))
-                .sum();
-        int totalAmount = calculateTotalAmount(productAmount, shippingFee);
+    default OrderAmountDetailRes toOrderAmountRes(StickerOrderInfo stickerOrderInfo,
+            int shippingFee) {
+        int productAmount = stickerOrderInfo.calculateProductAmount();
+        int totalAmount = stickerOrderInfo.calculateTotalAmount(shippingFee);
 
         return OrderAmountDetailRes.of(totalAmount, productAmount, shippingFee);
-    }
-
-    private int calculateProductAmount(Sticker sticker, int count) {
-        int price = Objects.isNull(sticker.getDiscountPrice()) ? sticker.getPrice() : sticker.getDiscountPrice();
-        return price * count;
-    }
-
-    private int calculateTotalAmount(int productAmount, int shippingFee) {
-        return productAmount + shippingFee;
     }
 
 

@@ -13,7 +13,8 @@ public enum ErrorType {
     VALIDATION_INPUT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     VALIDATION_WRONG_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 타입이 입력되었습니다."),
     INVALID_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 인자가 입력되었습니다."),
-    INVALID_ORDERSHEET_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST, "stickerId와 count를 둘 다 제공하거나 제공하지 말아야 합니다."),
+    INVALID_ORDERSHEET_ARGUMENT_EXCEPTION(HttpStatus.BAD_REQUEST,
+            "stickerId와 count를 둘 다 제공하거나 제공하지 말아야 합니다."),
     INVALID_IMAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 이미지 파일입니다."),
     INVALID_CUSTOM_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "이미지 파일이 1개 이상이어야합니다."),
     INVALID_MULTIPART_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "잘못된 파일 확장자입니다."),
@@ -66,6 +67,7 @@ public enum ErrorType {
     ALREADY_EXIST_USER_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 유저 이름입니다."),
     ALREADY_EXIST_PRODUCTLIKED_EXCEPTION(HttpStatus.CONFLICT, "이미 존재하는 좋아요한 상품입니다."),
     ALREADY_CANCELED_ORDER_HISTORY_EXCEPTION(HttpStatus.CONFLICT, "이미 취소 처리된 결제 내역입니다."),
+    ORDER_AMOUNT_NOT_MATCH_EXCEPTION(HttpStatus.CONFLICT, "주문 요청의 금액과 실제 결제 금액이 일치하지 않습니다."),
 
     /**
      * 500 INTERNAL SERVER ERROR
