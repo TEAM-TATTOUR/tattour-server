@@ -11,13 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tattour.server.domain.sticker.model.Sticker;
 
 @Entity
 @Table(name = "ordered_product")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderedProduct {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,8 +39,9 @@ public class OrderedProduct {
     private OrderHistory orderHistory;
 
     @Builder
-    private OrderedProduct(String name, Integer price, Integer count, String mainImageUrl, Sticker sticker,
-                           OrderHistory orderHistory) {
+    private OrderedProduct(String name, Integer price, Integer count, String mainImageUrl,
+            Sticker sticker,
+            OrderHistory orderHistory) {
         this.name = name;
         this.price = price;
         this.count = count;

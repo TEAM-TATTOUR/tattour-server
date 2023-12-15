@@ -1,5 +1,6 @@
 package org.tattour.server.domain.order.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,6 +26,7 @@ import org.tattour.server.domain.user.model.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -49,13 +52,18 @@ public class OrderHistory {
     @Column(columnDefinition = "tinyint")
     private Boolean state;
 
+    @OneToMany(mappedBy = "orderHistory")
+    private List<OrderedProduct> orderedProducts;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public OrderHistory(Integer productAmount, Integer shippingFee, Integer totalAmount, String recipientName,
-                        String contact, String mailingAddress, String baseAddress, String detailAddress, User user) {
+    public OrderHistory(Integer productAmount, Integer shippingFee, Integer totalAmount,
+            String recipientName,
+            String contact, String mailingAddress, String baseAddress, String detailAddress,
+            User user) {
         this.productAmount = productAmount;
         this.shippingFee = shippingFee;
         this.totalAmount = totalAmount;

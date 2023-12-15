@@ -26,7 +26,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void saveOrderedProducts(OrderHistory orderHistory, StickerOrderInfo stickerOrderInfo) {
+    public List<OrderedProduct> saveOrderedProducts(OrderHistory orderHistory,
+            StickerOrderInfo stickerOrderInfo) {
         List<OrderedProduct> orderedProducts = stickerOrderInfo.getStickerOrderInfos()
                 .entrySet()
                 .stream()
@@ -41,5 +42,6 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toUnmodifiableList());
 
         orderedProductRepository.saveAll(orderedProducts);
+        return orderedProducts;
     }
 }

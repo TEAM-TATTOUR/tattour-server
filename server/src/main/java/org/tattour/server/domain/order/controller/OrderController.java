@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tattour.server.domain.order.controller.dto.request.OrderReq;
 import org.tattour.server.domain.order.controller.dto.response.ReadOrderSheetRes;
-import org.tattour.server.domain.order.model.PurchaseRequest;
 import org.tattour.server.domain.order.facade.dto.request.CreateOrderReq;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
 import org.tattour.server.domain.order.facade.impl.OrderFacadeImpl;
+import org.tattour.server.domain.order.model.PurchaseRequest;
 import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.dto.BaseResponse;
 import org.tattour.server.global.dto.FailResponse;
@@ -74,7 +74,8 @@ public class OrderController {
             @Parameter(description = "상품 개수") @RequestParam(required = false) Integer count
     ) {
         return BaseResponse.success(
-                SuccessType.GET_SUCCESS, orderFacade.readOrderSheet(userId, PurchaseRequest.of(stickerId, count)));
+                SuccessType.GET_SUCCESS,
+                orderFacade.readOrderSheet(userId, PurchaseRequest.of(stickerId, count)));
     }
 
 
@@ -129,7 +130,8 @@ public class OrderController {
     }
 
 
-    // TODO : pageable로 리팩토링하기
+    // TODO: pageable로 리팩토링하기
+    // TODO: 결제 내역 response 내용 수정하기
     @Operation(summary = "유저 결제 내역 불러오기", description = "유저 id로 결제 내역 불러오기")
     @ApiResponses(value = {
             @ApiResponse(
