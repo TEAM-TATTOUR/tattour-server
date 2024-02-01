@@ -1,7 +1,7 @@
 package org.tattour.server.domain.custom.provider;
 
 import java.util.List;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 
 public interface CustomProvider {
 

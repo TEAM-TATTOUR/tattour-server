@@ -4,8 +4,6 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tattour.server.domain.user.controller.dto.response.PostLoginRes;
-import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.domain.UserRole;
 import org.tattour.server.domain.user.facade.UserFacade;
 import org.tattour.server.domain.user.facade.dto.request.CompareVerificationCodeReq;
 import org.tattour.server.domain.user.facade.dto.request.CreateLoginReq;
@@ -15,6 +13,8 @@ import org.tattour.server.domain.user.facade.dto.request.SaveUserShippingAddrReq
 import org.tattour.server.domain.user.facade.dto.request.UpdateUserProfileReq;
 import org.tattour.server.domain.user.facade.dto.response.ProductLikedListRes;
 import org.tattour.server.domain.user.facade.dto.response.ReadUserProfileRes;
+import org.tattour.server.domain.user.model.User;
+import org.tattour.server.domain.user.model.UserRole;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
 import org.tattour.server.domain.user.provider.UserProvider;
 import org.tattour.server.domain.user.service.ProductLikedService;
@@ -51,15 +51,13 @@ public class UserFacadeImpl implements UserFacade {
         }
         System.out.println("Origin = " + req.getOrigin());
 
-        SocialService socialService = socialServiceProvider
-                .getSocialService(req.getSocialPlatform());
+        SocialService socialService = socialServiceProvider.getSocialService(req.getSocialPlatform());
 
-        KakaoLoginInfo kakaoLoginInfo =
-                (KakaoLoginInfo) socialService.getSocialLoginResponse(
-                        GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
+        KakaoLoginInfo kakaoLoginInfo = (KakaoLoginInfo) socialService
+                .getSocialLoginResponse(GetSocialLoginReq.of(req.getCode(), req.getOrigin()));
 
-        boolean isUserExist = userProvider.checkDuplicationByKakaoId(
-                kakaoLoginInfo.getSocialUserInfoRes().getId());
+        boolean isUserExist = userProvider
+                .checkDuplicationByKakaoId(kakaoLoginInfo.getSocialUserInfoRes().getId());
 
         User user = isUserExist
                 ? userProvider.readUserByKakaoId(kakaoLoginInfo.getSocialUserInfoRes().getId())
@@ -100,8 +98,8 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public Boolean verifyCode(CompareVerificationCodeReq req) {
-        return phoneNumberVerificationCodeProvider.compareVerficationCode(req.getUserId(),
-                req.getVerificationCode());
+        return phoneNumberVerificationCodeProvider
+                .compareVerficationCode(req.getUserId(), req.getVerificationCode());
     }
 
     @Override

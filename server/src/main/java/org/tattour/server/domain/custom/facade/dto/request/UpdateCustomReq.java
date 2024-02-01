@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
-import org.tattour.server.domain.custom.domain.Custom;
-import org.tattour.server.domain.custom.domain.CustomProcess;
-import org.tattour.server.domain.custom.domain.CustomSize;
+import org.tattour.server.domain.custom.model.Custom;
+import org.tattour.server.domain.custom.model.CustomProcess;
+import org.tattour.server.domain.custom.model.CustomSize;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

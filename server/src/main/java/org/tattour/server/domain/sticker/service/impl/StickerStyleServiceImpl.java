@@ -2,7 +2,7 @@ package org.tattour.server.domain.sticker.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.sticker.domain.StickerStyle;
+import org.tattour.server.domain.sticker.model.StickerStyle;
 import org.tattour.server.domain.sticker.repository.StickerStyleRepository;
 import org.tattour.server.domain.sticker.service.StickerStyleService;
 

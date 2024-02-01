@@ -1,6 +1,6 @@
 package org.tattour.server.domain.admin.service;
 
-import org.tattour.server.domain.admin.domain.Admin;
+import org.tattour.server.domain.admin.model.Admin;
 
 public interface AdminService {
 

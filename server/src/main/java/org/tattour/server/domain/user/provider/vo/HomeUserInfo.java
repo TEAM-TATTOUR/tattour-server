@@ -11,10 +11,7 @@ public class HomeUserInfo {
     @Schema(description = "이름", example = "userName")
     private String name;
 
-    @Schema(description = "포인트", example = "3000")
-    private Integer point;
-
-    public static HomeUserInfo of(String name, Integer point) {
-        return new HomeUserInfo(name, point);
+    public static HomeUserInfo of(String name) {
+        return new HomeUserInfo(name);
     }
 }

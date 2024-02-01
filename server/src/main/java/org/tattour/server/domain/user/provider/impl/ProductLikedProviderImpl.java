@@ -3,7 +3,7 @@ package org.tattour.server.domain.user.provider.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.user.domain.ProductLiked;
+import org.tattour.server.domain.user.model.ProductLiked;
 import org.tattour.server.domain.user.provider.ProductLikedProvider;
 import org.tattour.server.domain.user.repository.impl.ProductLikedRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
@@ -27,14 +27,9 @@ public class ProductLikedProviderImpl implements ProductLikedProvider {
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_RESOURCE));
     }
 
-    //TODO : 리팩토링?
     @Override
     public List<ProductLiked> readLikedProductsByUserId(Integer userId) {
         return productLikedRepository.findAllByUser_IdOrderByCreatedAtDesc(userId);
-        // 모아서 리스트로 만들기
-//        List<Sticker> stickerList = productLikedList.stream()
-//                .map(ProductLiked::getSticker)
-//                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,24 +1,27 @@
 package org.tattour.server.global.util;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.cart.controller.dto.response.CartItemRes;
+import org.tattour.server.domain.cart.model.Cart;
 import org.tattour.server.domain.custom.facade.dto.response.CreateCustomSummaryRes;
 import org.tattour.server.domain.custom.facade.dto.response.ReadCustomSummaryRes;
-import org.tattour.server.domain.order.domain.Order;
+import org.tattour.server.domain.custom.model.Custom;
+import org.tattour.server.domain.order.controller.dto.response.OrderSheetStickerRes;
+import org.tattour.server.domain.order.model.OrderHistory;
+import org.tattour.server.domain.order.provider.vo.OrderAmountDetailRes;
 import org.tattour.server.domain.order.provider.vo.OrderHistoryInfo;
 import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
-import org.tattour.server.domain.point.domain.PointChargeRequest;
-import org.tattour.server.domain.point.provider.vo.PointChargeRequestInfo;
 import org.tattour.server.domain.sticker.provider.vo.StickerLikedInfo;
-import org.tattour.server.domain.user.domain.ProductLiked;
-import org.tattour.server.domain.user.domain.User;
-import org.tattour.server.domain.user.provider.vo.UserContactInfo;
+import org.tattour.server.domain.sticker.provider.vo.StickerOrderInfo;
+import org.tattour.server.domain.user.model.ProductLiked;
+import org.tattour.server.domain.user.model.User;
 import org.tattour.server.domain.user.provider.vo.HomeUserInfo;
-import org.tattour.server.domain.user.provider.vo.UserProfileInfo;
+import org.tattour.server.domain.user.provider.vo.UserProfileRes;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface EntityDtoMapper {
@@ -29,10 +32,7 @@ public interface EntityDtoMapper {
     HomeUserInfo toHomeUserInfo(User user);
 
     @Mapping(target = "id", source = "user.id")
-    UserContactInfo toUserContactInfo(User user);
-
-    @Mapping(target = "id", source = "user.id")
-    UserProfileInfo toUserProfileInfo(User user);
+    UserProfileRes toUserProfileInfo(User user);
 
     // StickerLikedInfo
     @Mapping(target = "stickerId", source = "productLiked.sticker.id")
@@ -51,26 +51,43 @@ public interface EntityDtoMapper {
     List<StickerLikedInfo> toStickerLikedInfoList(List<ProductLiked> productLiked);
 
     // Order
+    // todo: OrderedProduct 변경에 맞춰 수정하기
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "stickerId", source = "sticker.id")
-    UserOrderHistoryInfo toGetUserOrderHistoryRes(Order order);
+//    @Mapping(target = "stickerId", source = "sticker.id")
+    UserOrderHistoryInfo toGetUserOrderHistoryRes(OrderHistory orderHistory);
 
-    List<UserOrderHistoryInfo> toGetUserOrderHistoryListRes(List<Order> orderList);
+    List<UserOrderHistoryInfo> toGetUserOrderHistoryListRes(List<OrderHistory> orderHistoryList);
 
+    // todo: OrderedProduct 변경에 맞춰 수정하기
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "stickerId", source = "sticker.id")
+//    @Mapping(target = "stickerId", source = "sticker.id")
     @Mapping(target = "orderStatus", source = "orderStatus.value")
-    OrderHistoryInfo toOrderHistoryInfo(Order order);
+    OrderHistoryInfo toOrderHistoryInfo(OrderHistory orderHistory);
 
     @IterableMapping(elementTargetType = OrderHistoryInfo.class)
-    List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<Order> orderPage);
+    List<OrderHistoryInfo> toOrderHistoryInfoPage(Page<OrderHistory> orderPage);
 
-    // Point
-    @Mapping(target = "userId", source = "user.id")
-    PointChargeRequestInfo toGetPointChargeRequestRes(PointChargeRequest pointChargeRequest);
+    default List<OrderSheetStickerRes> toOrderSheetStickerRes(StickerOrderInfo stickerOrderInfo) {
+        return stickerOrderInfo.getStickerOrderInfos()
+                .entrySet()
+                .stream()
+                .map(entry -> OrderSheetStickerRes.of(
+                        entry.getKey().getMainImageUrl(),
+                        entry.getKey().getName(),
+                        entry.getKey().getPrice(),
+                        entry.getKey().getDiscountPrice(),
+                        entry.getValue()))
+                .collect(Collectors.toList());
+    }
 
-    List<PointChargeRequestInfo> toGetPointChargeRequestResList(
-            List<PointChargeRequest> pointChargeRequestList);
+    default OrderAmountDetailRes toOrderAmountRes(StickerOrderInfo stickerOrderInfo,
+            int shippingFee) {
+        int productAmount = stickerOrderInfo.calculateProductAmount();
+        int totalAmount = stickerOrderInfo.calculateTotalAmount(shippingFee);
+
+        return OrderAmountDetailRes.of(totalAmount, productAmount, shippingFee);
+    }
+
 
     // Custom
     CreateCustomSummaryRes toCustomApplySummaryInfo(Custom custom);
@@ -81,4 +98,15 @@ public interface EntityDtoMapper {
     ReadCustomSummaryRes toReadCustomSummaryRes(Custom custom);
 
     List<ReadCustomSummaryRes> toReadCustomSummaryResList(List<Custom> customList);
+
+
+    // Cart
+    @Mapping(target = "stickerId", source = "cart.sticker.id")
+    @Mapping(target = "mainImageUrl", source = "cart.sticker.mainImageUrl")
+    @Mapping(target = "name", source = "cart.sticker.name")
+    @Mapping(target = "price", source = "cart.sticker.price")
+    @Mapping(target = "discountPrice", source = "cart.sticker.discountPrice")
+    CartItemRes toCartItemRes(Cart cart);
+
+    List<CartItemRes> toCartItemsRes(List<Cart> carts);
 }

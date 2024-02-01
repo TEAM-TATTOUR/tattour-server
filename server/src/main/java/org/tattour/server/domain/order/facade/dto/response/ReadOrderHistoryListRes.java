@@ -16,7 +16,8 @@ public class ReadOrderHistoryListRes {
     private List<OrderHistoryInfo> orderHistoryInfoList;
     private OrderHistoryPageInfo orderHistoryPageInfo;
 
-    public static ReadOrderHistoryListRes of(List<OrderHistoryInfo> orderHistoryInfoList,
+    public static ReadOrderHistoryListRes of(
+            List<OrderHistoryInfo> orderHistoryInfoList,
             OrderHistoryPageInfo orderHistoryPageInfo) {
         return new ReadOrderHistoryListRes(orderHistoryInfoList, orderHistoryPageInfo);
     }

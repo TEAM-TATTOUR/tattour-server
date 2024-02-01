@@ -3,7 +3,7 @@ package org.tattour.server.domain.custom.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
-import org.tattour.server.domain.custom.domain.Custom;
+import org.tattour.server.domain.custom.model.Custom;
 import org.tattour.server.domain.custom.repository.custom.CustomRepositoryCustom;
 
 public interface CustomRepository extends

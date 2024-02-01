@@ -1,11 +1,11 @@
 package org.tattour.server.domain.style.provider;
 
 import java.util.List;
-import org.tattour.server.domain.style.domain.Style;
+import org.tattour.server.domain.style.model.Style;
 
 public interface StyleProvider {
 
-	Style getById(Integer id);
+    Style getById(Integer id);
 
-	List<Style> getAll();
+    List<Style> getAll();
 }

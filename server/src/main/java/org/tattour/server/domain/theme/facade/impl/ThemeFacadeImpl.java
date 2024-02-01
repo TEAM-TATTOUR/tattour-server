@@ -4,11 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tattour.server.domain.theme.domain.Theme;
 import org.tattour.server.domain.theme.facade.ThemeFacade;
-import org.tattour.server.domain.theme.provider.ThemeProvider;
 import org.tattour.server.domain.theme.facade.dto.response.ReadThemeListRes;
 import org.tattour.server.domain.theme.facade.dto.response.ReadThemeSummaryListRes;
+import org.tattour.server.domain.theme.model.Theme;
+import org.tattour.server.domain.theme.provider.ThemeProvider;
 
 @Service
 @RequiredArgsConstructor

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tattour.server.domain.custom.domain.CustomProcess;
+import org.tattour.server.domain.custom.model.CustomProcess;
 import org.tattour.server.domain.custom.facade.dto.request.UpdateCustomReq;
 
 @Getter

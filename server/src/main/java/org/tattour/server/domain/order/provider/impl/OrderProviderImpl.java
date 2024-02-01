@@ -6,11 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.order.domain.Order;
-import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
-import org.tattour.server.domain.order.provider.vo.OrderAmountInfo;
-import org.tattour.server.domain.order.provider.OrderProvider;
+import org.tattour.server.domain.order.model.OrderHistory;
 import org.tattour.server.domain.order.facade.dto.response.ReadUserOrderHistoryListRes;
+import org.tattour.server.domain.order.provider.OrderProvider;
+import org.tattour.server.domain.order.provider.vo.UserOrderHistoryInfo;
 import org.tattour.server.domain.order.repository.impl.OrderRepositoryImpl;
 import org.tattour.server.global.exception.BusinessException;
 import org.tattour.server.global.exception.ErrorType;
@@ -23,13 +22,13 @@ public class OrderProviderImpl implements OrderProvider {
     private final OrderRepositoryImpl orderRepository;
 
     @Override
-    public Order readOrderById(int orderId) {
-        return orderRepository.findById(orderId)
+    public OrderHistory readOrderHistoryById(int orderHistoryId) {
+        return orderRepository.findById(orderHistoryId)
                 .orElseThrow(() -> new BusinessException(ErrorType.NOT_FOUND_ORDER_HISTORY));
     }
 
     @Override
-    public Page<Order> readOrderHistoryByPage(int page) {
+    public Page<OrderHistory> readOrderHistoryByPage(int page) {
         return orderRepository.findAll(
                 PageRequest.of(
                         page - 1,
@@ -49,27 +48,9 @@ public class OrderProviderImpl implements OrderProvider {
     @Override
     public List<UserOrderHistoryInfo> readOrderHistoryAfterDate(int userId, String date) {
         return EntityDtoMapper.INSTANCE
-                        .toGetUserOrderHistoryListRes(
-                                orderRepository.findAllByUser_IdAndCreatedAtAfter(
-                                        userId,
-                                        date));
-    }
-
-    @Override
-    public OrderAmountInfo readOrderAmountRes(int price, int count, int shippingFee) {
-        int productAmount = calculateProductAmount(price, count);
-        int totalAmount = calculateTotalAmount(productAmount, shippingFee);
-
-        return OrderAmountInfo.of(totalAmount, productAmount, shippingFee);
-    }
-
-    @Override
-    public int calculateProductAmount(int price, int count) {
-        return price * count;
-    }
-
-    @Override
-    public int calculateTotalAmount(int productAmount, int shippingFee) {
-        return productAmount + shippingFee;
+                .toGetUserOrderHistoryListRes(
+                        orderRepository.findAllByUser_IdAndCreatedAtAfter(
+                                userId,
+                                date));
     }
 }

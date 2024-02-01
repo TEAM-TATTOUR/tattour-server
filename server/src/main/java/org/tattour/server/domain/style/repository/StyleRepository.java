@@ -2,11 +2,11 @@ package org.tattour.server.domain.style.repository;
 
 import java.util.List;
 import java.util.Optional;
-import org.tattour.server.domain.style.domain.Style;
+import org.tattour.server.domain.style.model.Style;
 
 public interface StyleRepository {
 
-	Optional<Style> findById(Integer styleId);
+    Optional<Style> findById(Integer styleId);
 
-	List<Style> findAll();
+    List<Style> findAll();
 }

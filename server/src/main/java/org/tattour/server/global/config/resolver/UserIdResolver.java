@@ -9,7 +9,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.tattour.server.domain.user.domain.UserRole;
+import org.tattour.server.domain.user.model.UserRole;
 import org.tattour.server.global.config.annotations.UserId;
 import org.tattour.server.global.config.jwt.JwtContent;
 import org.tattour.server.global.config.jwt.JwtService;
@@ -21,7 +21,6 @@ import org.tattour.server.global.exception.ErrorType;
 public class UserIdResolver implements HandlerMethodArgumentResolver {
 
     private final JwtService jwtService;
-    private static final String HEADER_PREFIX = "Bearer ";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -46,8 +45,6 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
         final JwtContent content = jwtService.getJwtContents(token);
 
         try {
-            System.out.println("content.getRole() = " + content.getRole());
-
             final UserRole role = UserRole.valueOf(content.getRole());
             final Integer userId = Integer.parseInt(content.getUserId());
 

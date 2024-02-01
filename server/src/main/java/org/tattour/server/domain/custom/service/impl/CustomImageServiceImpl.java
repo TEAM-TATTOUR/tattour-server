@@ -3,7 +3,7 @@ package org.tattour.server.domain.custom.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.tattour.server.domain.custom.domain.CustomImage;
+import org.tattour.server.domain.custom.model.CustomImage;
 import org.tattour.server.domain.custom.repository.CustomImageRepository;
 import org.tattour.server.domain.custom.service.CustomImageService;
 

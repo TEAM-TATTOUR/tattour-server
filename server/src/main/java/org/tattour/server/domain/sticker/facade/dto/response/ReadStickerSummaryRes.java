@@ -4,7 +4,7 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.tattour.server.domain.sticker.domain.Sticker;
+import org.tattour.server.domain.sticker.model.Sticker;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

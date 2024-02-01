@@ -1,7 +1,7 @@
 package org.tattour.server.domain.user.provider;
 
 import java.util.List;
-import org.tattour.server.domain.user.domain.ProductLiked;
+import org.tattour.server.domain.user.model.ProductLiked;
 
 public interface ProductLikedProvider {
 
