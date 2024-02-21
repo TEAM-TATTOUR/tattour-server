@@ -19,9 +19,10 @@ public class CustomApplyDiscordMessage {
         StringBuilder description = new StringBuilder();
 
         description.append("\n\n### [유저 정보]")
+                .append("\n- 유저 번호: ").append(user.getId())
                 .append("\n- 연락처: ").append(user.getPhoneNumber())
-                .append("\n- 이름: ").append(custom.getName())
                 .append("\n\n### [도안 신청 정보]")
+                .append("\n- 도안명: ").append(custom.getName())
                 .append("\n- 사이즈: ").append(custom.getSize().getSize())
                 .append("\n- 수량: ").append(custom.getCount());
 
