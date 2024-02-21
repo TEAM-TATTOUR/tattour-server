@@ -32,7 +32,6 @@ jobs:
         echo "${{ secrets.TATTOUR_DEV_APPLICATION }}" >> ./application.yaml
         cat ./application.yaml
       shell: bash
-      
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./server/gradlew

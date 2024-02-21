@@ -25,10 +25,14 @@ public class DiscordMessageService {
 
     @Transactional
     public void sendCustomApplyMessage(Custom custom) {
-        CustomApplyDiscordMessage payload = CustomApplyDiscordMessage.from(custom.getUser(),
-                custom);
-        sendDiscordMessage(customWebhookProperty.getClientId(), customWebhookProperty.getToken(),
-                custom.getUser(), "님이 커스텀 도안을 신청했습니다.", payload);
+        CustomApplyDiscordMessage payload =
+                CustomApplyDiscordMessage.from(custom.getUser(), custom);
+
+        sendDiscordMessage(customWebhookProperty.getClientId(),
+                customWebhookProperty.getToken(),
+                custom.getUser(),
+                "님이 커스텀 도안을 신청했습니다.",
+                payload);
     }
 
     @Transactional
@@ -36,6 +40,7 @@ public class DiscordMessageService {
             List<OrderedProduct> orderedProducts) {
         OrderStickerDiscordMessage payload =
                 OrderStickerDiscordMessage.from(orderHistory, orderedProducts);
+
         sendDiscordMessage(
                 orderWebhookProperty.getClientId(),
                 orderWebhookProperty.getToken(),
