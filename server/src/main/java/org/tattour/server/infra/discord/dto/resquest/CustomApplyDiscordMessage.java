@@ -15,28 +15,29 @@ public class CustomApplyDiscordMessage {
     DiscordCustomImage image;
 
     public static CustomApplyDiscordMessage from(User user, Custom custom) {
-        String title = "Custom Id : " + custom.getId();
-        String description;
+        String title = "커스텀 도안 번호 : " + custom.getId();
+        StringBuilder description = new StringBuilder();
+
+        description.append("\n\n### [유저 정보]")
+                .append("\n- 연락처: ").append(user.getPhoneNumber())
+                .append("\n- 이름: ").append(custom.getName())
+                .append("\n\n### [도안 신청 정보]")
+                .append("\n- 사이즈: ").append(custom.getSize().getSize())
+                .append("\n- 수량: ").append(custom.getCount());
+
         if (custom.getHaveDesign()) {
-            description = "유저 전화번호 : " + user.getPhoneNumber()
-                    + "\n이름 : " + custom.getName()
-                    + "\n사이즈 : " + custom.getSize().getSize()
-                    + "\n추가 요청 사항 : " + custom.getDemand()
-                    + "\n수량 : " + custom.getCount()
-                    + "\n그려둔 도안 있음";
+            description.append("\n- 추가 요청 사항: ").append(custom.getDemand())
+                    .append("\n- 도안: ").append("`있음`");
         } else {
-            description = "유저 전화번호 : " + user.getPhoneNumber()
-                    + "이름 : " + custom.getName()
-                    + "\n사이즈 : " + custom.getSize().getSize()
-                    + "\n추가 요청 사항 : " + custom.getDemand()
-                    + "\n색상 : " + custom.getIsColored()
-                    + "\n주제 및 설명 : " + custom.getDescription()
-                    + "\n수량 : " + custom.getCount()
-                    + "\n그려둔 도안 없음";
+            description.append("\n- 색상: ").append(custom.getIsColored())
+                    .append("\n- 주제 및 설명: \n").append(custom.getDescription())
+                    .append("\n- 추가 요청 사항: ").append(custom.getDemand())
+                    .append("\n- 도안: ").append("`없음`");
         }
+
         return new CustomApplyDiscordMessage(
                 title,
-                description,
+                description.toString(),
                 new DiscordCustomImage(custom.getMainImageUrl())
         );
     }

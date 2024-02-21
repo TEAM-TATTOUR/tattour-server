@@ -54,7 +54,7 @@ public class CustomController {
             @RequestBody @Valid PostCustomReq request
     ) {
         PostCustomRes response = PostCustomRes.from(
-                (customFacade.createCustom(request.getHaveDesign(), userId)));
+                customFacade.createCustom(request.getHaveDesign(), userId));
         return BaseResponse.success(SuccessType.CREATE_CUSTOM_SUCCESS, response);
     }
 
@@ -79,7 +79,10 @@ public class CustomController {
         PatchCustomRes response =
                 PatchCustomRes.from(
                         customFacade.updateCustom(
-                                customInfo.newUpdateCustomReq(userId, customImages, handDrawingImage)));
+                                customInfo.newUpdateCustomReq(
+                                        userId,
+                                        customImages,
+                                        handDrawingImage)));
 
         return BaseResponse.success(SuccessType.UPDATE_CUSTOM_SUCCESS, response);
     }
