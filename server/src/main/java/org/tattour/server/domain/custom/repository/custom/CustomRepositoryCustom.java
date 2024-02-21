@@ -5,7 +5,7 @@ import org.tattour.server.domain.custom.model.Custom;
 
 public interface CustomRepositoryCustom {
 
-	List<Custom> findAllByUserIdAndIsCompleted(Integer userId);
+    List<Custom> findAllByUserIdAndIsCompletedOrderByLastUpdatedAt(Integer userId);
 
-	List<Custom> findAllByUserIdAndIsCompletedFalse(Integer userId);
+    List<Custom> findAllByUserIdAndIsCompletedFalseOrderByLastUpdatedAt(Integer userId);
 }
