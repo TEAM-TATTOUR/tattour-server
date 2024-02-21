@@ -41,11 +41,11 @@ public class CustomProviderImpl implements CustomProvider {
 
     @Override
     public List<Custom> getAllByUserIdAndIsCompleted(Integer userId) {
-        return customRepository.findAllByUserIdAndIsCompleted(userId);
+        return customRepository.findAllByUserIdAndIsCompletedOrderByLastUpdatedAt(userId);
     }
 
     @Override
     public List<Custom> getAllByUserIdAndIsCompletedFalse(Integer userId) {
-        return customRepository.findAllByUserIdAndIsCompletedFalse(userId);
+        return customRepository.findAllByUserIdAndIsCompletedFalseOrderByLastUpdatedAt(userId);
     }
 }
